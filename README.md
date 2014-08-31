@@ -1,0 +1,4 @@
+BitPunch
+========
+
+Standalone McEliece implemetation
