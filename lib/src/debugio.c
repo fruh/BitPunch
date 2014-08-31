@@ -1,0 +1,196 @@
+#include "debugio.h"
+
+void printBinary(uint64_t in, int len) {
+    if (len > 0) {
+        printBinary(in >> 1, len - 1);
+
+        fprintf(stderr, "%d", (int) (in & (0x1ul)));
+    }
+}
+
+void printBinaryLn(uint64_t in, int len) {
+	printBinary(in, len);
+	fprintf(stderr, "\n");
+}
+
+void printBinary64(uint64_t in) {
+	printBinary(in, 64);
+}
+
+void printBinary64Ln(uint64_t in) {
+	printBinaryLn(in, 64);
+}
+
+void printBinaryLe(uint64_t in, int len) {
+    if (len > 0) {
+        fprintf(stderr, "%d", (int) (in & (0x1ul)));
+
+        printBinaryLe(in >> 1, len - 1);
+    }
+}
+
+void printBinaryLnLe(uint64_t in, int len) {
+    printBinaryLe(in, len);
+    fprintf(stderr, "\n");
+}
+
+void printBinary64Le(uint64_t in) {
+    printBinaryLe(in, 64);
+}
+
+void printBinary64LnLe(uint64_t in) {
+    printBinaryLnLe(in, 64);
+}
+
+void printGf2xMat(const Matrix_GF2_16x* in) {
+	uint32_t i;
+	uint32_t j;
+    fprintf(stderr, "Matrix size: %dx%d\n", in->k, in->n);
+
+	for(i = 0; i < in->k; i++) {
+        fprintf(stderr, "%3d: ",i);
+		for(j = 0; j < in->n; j++) {
+			fprintf(stderr, "%x ", in->elements[i][j]);//printBinary(in->elements[i][j], 4);
+		}
+		fprintf(stderr, "\n");
+	}
+}
+
+void printGf2Mat(const Matrix_GF2* m) {
+	int i, j, bits_to_print;
+
+    fprintf(stderr, "Matrix size: %dx%d\n", m->k, m->n);
+
+    for (i = 0; i < m->k; i++) {
+        fprintf(stderr, "%4d: ",i);
+
+        for (j = 0; j <= m->elements_in_row - 1; j++) {
+            if (j == m->elements_in_row-1) {
+                if (m->n%(m->element_bit_size) != 0) {
+                    bits_to_print = m->n % m->element_bit_size;
+                }
+                else {
+                    bits_to_print = m->element_bit_size;
+                }
+            }
+            else {
+                bits_to_print = m->element_bit_size;
+            }
+            printBinaryLe(m->elements[i][j], bits_to_print);
+            // fprintf(stderr, " "); // medzera medzi elementami
+        }
+        fprintf(stderr, "\n");
+    }
+}
+
+void printGf2Vec(const Vector_GF2* v) {
+    int j, bits_to_print;
+
+    fprintf(stderr, "Vec (%4d): ", v->len);
+    for (j = 0; j <= v->elements_in_row - 1; j++) {
+        if (j == v->elements_in_row-1) {
+            if (v->len % (v->element_bit_size) != 0) {
+                bits_to_print = v->len % v->element_bit_size;
+            }
+            else {
+                bits_to_print = v->element_bit_size;
+            }
+        }
+        else {
+            bits_to_print = v->element_bit_size;
+        }
+        printBinaryLe(v->elements[j], bits_to_print);
+        fprintf(stderr, " "); // medzera medzi elementami
+    }
+    fprintf(stderr, "\n");
+}
+
+void printGf2VecBe(const Vector_GF2* v) {
+    int j, bits_to_print;
+
+    fprintf(stderr, "Vec (%4d): ", v->len);
+    for (j = 0; j <= v->elements_in_row - 1; j++) {
+        if (j == v->elements_in_row-1) {
+            if (v->len % (v->element_bit_size) != 0) {
+                bits_to_print = v->len % v->element_bit_size;
+            }
+            else {
+                bits_to_print = v->element_bit_size;
+            }
+        }
+        else {
+            bits_to_print = v->element_bit_size;
+        }
+        printBinaryLn(v->elements[j], bits_to_print);
+        fprintf(stderr, " "); // medzera medzi elementami
+    }
+    fprintf(stderr, "\n");
+}
+
+void printPerm(const Permutation_Vector *permutation) {
+    int i;
+
+    fprintf(stderr, "Perm (%4d): ", permutation->size);
+    for (i = 0; i < permutation->size; i++) {
+        fprintf(stderr, "%i ",permutation->elements[i]);
+    }
+    fprintf(stderr, "\n");
+}
+
+void printGf2xPoly(const Polynomial_GF2_16x *p, const Arithmetic_Data *a_data) {
+    int i;
+    
+    fprintf(stderr, "Poly (deg = %d): ", p->deg);
+
+    if (p->deg == -1) {
+        fprintf(stderr, "0\n");
+
+        return;
+    }
+    for (i = p->deg; i >= 0; i--) {
+        if(p->coef[i] == 0)
+            continue;
+        if (i != p->deg) {
+            fprintf(stderr, "+ ");
+        }
+        fprintf(stderr, "alpha^(%d).x^%d ", a_data->log_table[p->coef[i]], i);
+    }
+    fprintf(stderr, "\n");
+}
+
+void printGf2xVec(const Vector_GF2_16x *v) {
+    int i;
+    for(i = 0; i < v->len; i++) {
+        fprintf(stderr, "%x ", v->elements[i]);
+    }
+    fprintf(stderr, "\n");
+}
+
+void printMceCtx(const McEliece_Ctx *mce_ctx) {
+    fprintf(stderr, "Galois field:\n");
+    fprintf(stderr, "\tOrd: %d\n", mce_ctx->a_data.ord);
+    fprintf(stderr, "\tMod: 0x%X\n", mce_ctx->a_data.mod);
+    fprintf(stderr, "2^m: 2^%d\n", mce_ctx->a_data.mod_deg);
+
+    fprintf(stderr, "Goppa polynomial:\n");
+    fprintf(stderr, "\t");
+    printGf2xPoly(&mce_ctx->priv_key.g, &mce_ctx->a_data);
+    fprintf(stderr, "\tdegre: %d\n", mce_ctx->pub_key.t);
+
+    fprintf(stderr, "Public key:\n");
+    fprintf(stderr, "\tG matrix size: %dx%d\n", mce_ctx->pub_key.g_mat.k, mce_ctx->pub_key.g_mat.n);
+
+    fprintf(stderr, "Private key:\n");
+    fprintf(stderr, "\tH matrix size: %dx%d\n", mce_ctx->priv_key.h_mat.k, mce_ctx->priv_key.h_mat.n);
+}
+
+void printGf2VecOnes(const Vector_GF2 *vec) {
+    int i;
+    for (i = 0; i < vec->len; ++i)
+    {
+        if (gf2VecGetBit(vec, i)) {
+            fprintf(stderr, "%d ", i);
+        }
+    }
+    fprintf(stderr, "\n");
+}
