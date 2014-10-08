@@ -25,14 +25,14 @@
 #include "types.h"
 
 /**
- * Makes CCA2 safe plaintext. out = r1 || gf2VecHashA(m || r2) NEED TO IMPLEMENT HASH FUNCTION!!!!
+ * Makes CCA2 safe plaintext. out = r1 || BITP_gf2VecHashA(m || r2) NEED TO IMPLEMENT HASH FUNCTION!!!!
  * @param  r1 random (k-l)-bit vector r1
  * @param  r2 random (l)-bit vector r2
  * @param  in (l)-bit vector - plaintext
  * @param  out CCA2 safe plaintext
  * @return     0 - succes, else error
  */
-int makeCCA2safePT(Vector_GF2 *r1, Vector_GF2 *r2, Vector_GF2 *in, Vector_GF2 *out);
+int BITP_makeCCA2safePT(Vector_GF2 *r1, Vector_GF2 *r2, Vector_GF2 *in, Vector_GF2 *out);
 
 /**
  * Add padding to message. Padding begins with 1. I t allocates ouput inside, so must be freed after use.
@@ -60,7 +60,7 @@ int delPaddingA(Vector_GF2 *message, const Vector_GF2 *padded_message);
  * @param  ctx  McEliece context
  * @return     0 - succes, else error
  */
-int encryptCCA2KobaraImai(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx);
+int BITP_encryptCCA2KobaraImai(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx);
 
 /**
  * Encrypt plaintext with CCA2 safe Kobara-Imai method. NEED TO IMPLEMENT HASH FUNCTION!!!!
@@ -69,7 +69,7 @@ int encryptCCA2KobaraImai(Vector_GF2 *out, const Vector_GF2 *message, const McEl
  * @param  ctx  McEliece context
  * @return     0 - succes, else error
  */
-int encryptCCA2KobaraImaiA(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx);
+int BITP_BIT_encryptCCA2KobaraImaiA(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx);
 
 /**
  * Encrypt plaintext with CCA2 safe Kobara-Imai method. NEED TO IMPLEMENT HASH FUNCTION!!!!
@@ -78,7 +78,7 @@ int encryptCCA2KobaraImaiA(Vector_GF2 *out, const Vector_GF2 *message, const McE
  * @param  ctx 	McEliece context
  * @return     0 - succes, else error
  */
-int encrypt(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx);
+int BITP_encrypt(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx);
 
 /**
  * Encrypt plaintext with CCA2 safe Kobara-Imai method. NEED TO IMPLEMENT HASH FUNCTION!!!!
@@ -87,7 +87,7 @@ int encrypt(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx)
  * @param  ctx 	McEliece context
  * @return     0 - succes, else error
  */
-int encryptA(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx);
+int BITP_encryptA(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx);
 
 /**
  * Generate monic irreducible polynopmial of degree t. Polynomial p must be afreed after use.
@@ -95,14 +95,14 @@ int encryptA(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx
  * @param t      [description]
  * @param a_data [description]
  */
-void gf2xPolyGenGoppaA(Polynomial_GF2_16x *p, int t, const Arithmetic_Data *a_data);
+void BITP_gf2xPolyGenGoppaA(Polynomial_GF2_16x *p, int t, const Arithmetic_Data *a_data);
 
 /**
- * Find polynomials a, b of degree <= (t div 2). We are using GCD to find them, gcd(tau, mod) = a, so: a = tau * b + mod * (some s***s). Out a and b are allocated inside, after use must be preed using freePoly().
+ * Find polynomials a, b of degree <= (t div 2). We are using GCD to find them, gcd(tau, mod) = a, so: a = tau * b + mod * (some s***s). Out a and b are allocated inside, after use must be preed using BITP_freePoly().
  * @param tau[in]    [description]
  * @param mod[in]    [description]
- * @param a[out]      polynomial is allocated inside, must be then freed using freePoly()
- * @param b[out]      polynomial is allocated inside, must be then freed using freePoly()
+ * @param a[out]      polynomial is allocated inside, must be then freed using BITP_freePoly()
+ * @param b[out]      polynomial is allocated inside, must be then freed using BITP_freePoly()
  * @param a_data[in] [description]
  */
 /// Find polynomials a, b of degree <= (t div 2)

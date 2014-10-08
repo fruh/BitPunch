@@ -74,7 +74,7 @@
 * @param len print len
 */
 /// Print number as binary string in big endian so msb is first printed.
-void printBinary(uint64_t in, int len);
+void BITP_printBinary(uint64_t in, int len);
 
 /**
 * Print number as binary string in big endian so msb is first printed. Print also new line at the end.
@@ -83,7 +83,7 @@ void printBinary(uint64_t in, int len);
 * @param len print len
 */
 /// Print number as binary string in big endian so msb is first printed.
-void printBinaryLn(uint64_t in, int len);
+void BITP_printBinaryLn(uint64_t in, int len);
 
 /**
 * Print number as binary string in big endian so msb is first printed. Do not print new line at the end.
@@ -92,7 +92,7 @@ void printBinaryLn(uint64_t in, int len);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in big endian so msb is first printed.
-void printBinary64(uint64_t in);
+void BITP_printBinary64(uint64_t in);
 
 /**
 * Print number as binary string in big endian so msb is first printed. Print also new line at the end.
@@ -101,7 +101,7 @@ void printBinary64(uint64_t in);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in big endian so msb is first printed.
-void printBinary64Ln(uint64_t in);
+void BITP_BIT_printBinary64Ln(uint64_t in);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Do not print new line at the end.
@@ -110,7 +110,7 @@ void printBinary64Ln(uint64_t in);
 * @param len print len
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void printBinaryLe(uint64_t in, int len);
+void BITP_printBinaryLe(uint64_t in, int len);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Print also new line at the end.
@@ -119,7 +119,7 @@ void printBinaryLe(uint64_t in, int len);
 * @param len print len
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void printBinaryLnLe(uint64_t in, int len);
+void BITP_BIT_printBinaryLnLe(uint64_t in, int len);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Do not print new line at the end.
@@ -128,7 +128,7 @@ void printBinaryLnLe(uint64_t in, int len);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void printBinary64Le(uint64_t in);
+void BITP_BIT_printBinary64Le(uint64_t in);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Print also new line at the end.
@@ -137,46 +137,46 @@ void printBinary64Le(uint64_t in);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void printBinary64LnLe(uint64_t in);
+void BITP_BIT_BIT_printBinary64LnLe(uint64_t in);
 
 /**
 * Print number as binary string. Print also new line at the end.
 * It will be padded 64 bits.
 * @param in input of max 64 bits
 */
-void printGf2xMat(const Matrix_GF2_16x *in);
+void BITP_printGf2xMat(const Matrix_GF2_16x *in);
 
 /**
 * Print matrix GF2 with new lines.
 * @param m matrix
 */
-void printGf2Mat(const Matrix_GF2 *m);
+void BITP_printGf2Mat(const Matrix_GF2 *m);
 
 /**
 * Print vector GF2 with new line.
 * @param v vector
 */
-void printGf2Vec(const Vector_GF2 *v);
+void BITP_printGf2Vec(const Vector_GF2 *v);
 
 /**
 * Print permutation.
 * @param permutation permutation
 */
-void printPerm(const Permutation_Vector *permutation);
+void BITP_printPerm(const Permutation_Vector *permutation);
 
 
-void printGf2xPoly(const Polynomial_GF2_16x *p, const Arithmetic_Data *a_data);
+void BITP_printGf2xPoly(const Polynomial_GF2_16x *p, const Arithmetic_Data *a_data);
 
-void printGf2xVec(const Vector_GF2_16x *v);
+void BITP_printGf2xVec(const Vector_GF2_16x *v);
 
 /**
  * Print McEliece context, so print all parameters.
  * @param mce_ctx pointer to McEliece_Ctx structure
  */
-void printMceCtx(const McEliece_Ctx *mce_ctx);
+void BITP_printMceCtx(const McEliece_Ctx *mce_ctx);
 
-void printGf2VecBe(const Vector_GF2* v);
+void BITP_printGf2VecBe(const Vector_GF2* v);
 
-void printGf2VecOnes(const Vector_GF2 *vec);
+void BITP_printGf2VecOnes(const Vector_GF2 *vec);
 
 #endif // DEBUGIO_H

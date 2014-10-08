@@ -24,26 +24,26 @@
 #include "init.h"
 #include "process.h"
 
-int mceInitCtx(McEliece_Ctx *ctx, uint8_t t_errors) {
+int BITP_mceInitCtx(McEliece_Ctx *ctx, uint8_t t_errors) {
 	int rc = 0;
 
 	ctx->pub_key.t = t_errors;
 
 	switch(t_errors) {
 		case 5:
-			rc = initLogExpTable(ctx, (GF2_16x)2, (GF2_16x) GF2_POLY_DEG_5);
+			rc = BITP_initLogExpTable(ctx, (GF2_16x)2, (GF2_16x) GF2_POLY_DEG_5);
 
 			break;
 		case 6:
-			rc = initLogExpTable(ctx, (GF2_16x)2, (GF2_16x) GF2_POLY_DEG_6);
+			rc = BITP_initLogExpTable(ctx, (GF2_16x)2, (GF2_16x) GF2_POLY_DEG_6);
 			
 			break;
 		case 7:
-			rc = initLogExpTable(ctx, (GF2_16x)2, (GF2_16x) GF2_POLY_DEG_6);
+			rc = BITP_initLogExpTable(ctx, (GF2_16x)2, (GF2_16x) GF2_POLY_DEG_6);
 			
 			break;
 		case 50:
-			rc = initLogExpTable(ctx, (GF2_16x)2, (GF2_16x) GF2_POLY_DEG_11);
+			rc = BITP_initLogExpTable(ctx, (GF2_16x)2, (GF2_16x) GF2_POLY_DEG_11);
 			
 			break;
 		default:
@@ -62,36 +62,36 @@ int mceInitCtx(McEliece_Ctx *ctx, uint8_t t_errors) {
 	return rc;
 }
 
-int mceEncrypt(Vector_GF2 *ct, const Vector_GF2 *pt, const McEliece_Ctx *ctx) {
-	return encrypt(ct, pt, ctx);
-	// return encryptCCA2KobaraImai(ct, pt, ctx);
+int BITP_mceEncrypt(Vector_GF2 *ct, const Vector_GF2 *pt, const McEliece_Ctx *ctx) {
+	return BITP_encrypt(ct, pt, ctx);
+	// return BITP_encryptCCA2KobaraImai(ct, pt, ctx);
 }
 
-int mceEncryptA(Vector_GF2 *ct, const Vector_GF2 *pt, const McEliece_Ctx *ctx) {
-	return encryptA(ct, pt, ctx);
+int BITP_mceEncryptA(Vector_GF2 *ct, const Vector_GF2 *pt, const McEliece_Ctx *ctx) {
+	return BITP_encryptA(ct, pt, ctx);
 }
 
-int mceDecrypt(Vector_GF2 *pt, Vector_GF2 *ct, const McEliece_Ctx *ctx) {
+int BITP_mceDecrypt(Vector_GF2 *pt, Vector_GF2 *ct, const McEliece_Ctx *ctx) {
 	return decrypt(pt, ct, ctx);
 	// return decryptCCA2KobaraImai(pt, ct, ctx);
 }
 
-int mceDecryptA(Vector_GF2 *pt, Vector_GF2 *ct, const McEliece_Ctx *ctx) {
+int BITP_mceDecryptA(Vector_GF2 *pt, Vector_GF2 *ct, const McEliece_Ctx *ctx) {
 	return decryptA(pt, ct, ctx);
 }
 
-int mceGenKeyPair(McEliece_Ctx *ctx) {
-	return genKeyPair(ctx, ctx->pub_key.t);
+int BITP_mceGenKeyPair(McEliece_Ctx *ctx) {
+	return BITP_genKeyPair(ctx, ctx->pub_key.t);
 }
 
-void mceFreeCtx(McEliece_Ctx *ctx) {
-	freeMcElieceCtx(ctx);
+void BITP_mceFreeCtx(McEliece_Ctx *ctx) {
+	BITP_freeMcElieceCtx(ctx);
 }
 
-int mceGetPtBlockSizeBits(McEliece_Ctx *ctx) {
+int BITP_mceGetPtBlockSizeBits(McEliece_Ctx *ctx) {
 	return ctx->max_pt_len_bit;
 }
 
-int mceGetCtBlockSizeBits(McEliece_Ctx *ctx) {
+int BITP_mceGetCtBlockSizeBits(McEliece_Ctx *ctx) {
 	return ctx->max_ct_len_bit;
 }

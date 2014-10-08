@@ -28,16 +28,16 @@
 #include "process.h"
 
 
-int initLogExpTable(McEliece_Ctx *mce_ctx, GF2_16x g, GF2_16x mod) {
+int BITP_initLogExpTable(McEliece_Ctx *mce_ctx, GF2_16x g, GF2_16x mod) {
     GF2_16x b = 1;
     int i = 0;
 
     // get group ord, number of elements
-    GF2_16x ord = ((1 << gf2xGetDeg(mod)) - 1);
+    GF2_16x ord = ((1 << BITP_gf2xGetDeg(mod)) - 1);
 
     // alocate memory for tables
     mce_ctx->a_data.mod = mod;
-    mce_ctx->a_data.mod_deg = gf2xGetDeg(mod);
+    mce_ctx->a_data.mod_deg = BITP_gf2xGetDeg(mod);
     mce_ctx->a_data.log_table = (uint32_t*) malloc(sizeof(uint32_t) * (ord + 1));
     mce_ctx->a_data.exp_table = (GF2_16x*) malloc(sizeof(GF2_16x) * (ord + 1));
 
@@ -63,12 +63,12 @@ int initLogExpTable(McEliece_Ctx *mce_ctx, GF2_16x g, GF2_16x mod) {
     return 0;
 }
 
-int initMatX(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly) {
+int BITP_initMatX(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly) {
     int i, j;
 
     // allocate memory
-    if (mallocMatrix(m, poly->deg, poly->deg)) {
-        printError("initMatX: allocation error");
+    if (BITP_mallocMatrix(m, poly->deg, poly->deg)) {
+        printError("BITP_initMatX: allocation error");
         
         return 1;
     }
@@ -86,12 +86,12 @@ int initMatX(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly) {
     return 0;
 }
 
-int initMatY(Matrix_GF2_16x *m, uint8_t t, Arithmetic_Data *a_data) {
+int BITP_initMatY(Matrix_GF2_16x *m, uint8_t t, Arithmetic_Data *a_data) {
     int i, j;
 
     // allocate memory
-    if (mallocMatrix(m, t, a_data->ord)) {
-        printError("initMatY: allocation error");
+    if (BITP_mallocMatrix(m, t, a_data->ord)) {
+        printError("BITP_initMatY: allocation error");
         
         return 1;
     }
@@ -111,12 +111,12 @@ int initMatY(Matrix_GF2_16x *m, uint8_t t, Arithmetic_Data *a_data) {
     return 0;
 }
 
-int initMatZ(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly, Arithmetic_Data *a_data) {
+int BITP_initMatZ(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly, Arithmetic_Data *a_data) {
     int i, j;
 
     // allocate memory
-    if (mallocMatrix(m, a_data->ord, a_data->ord)) {
-        printError("initMatZ: allocation error");        
+    if (BITP_mallocMatrix(m, a_data->ord, a_data->ord)) {
+        printError("BITP_initMatZ: allocation error");        
         return 1;
     }
     // insert data
@@ -136,7 +136,7 @@ int initMatZ(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly, Arithmetic_Data *a_dat
     return 0;
 }
 
-void freeMat(Matrix_GF2_16x *m, int is_dyn) {
+void BITP_freeMat(Matrix_GF2_16x *m, int is_dyn) {
     int i;
     
     // first free cols
@@ -151,7 +151,7 @@ void freeMat(Matrix_GF2_16x *m, int is_dyn) {
     }
 }
 
-void freeArithmeticData(Arithmetic_Data *a, int is_dyn) {
+void BITP_freeArithmeticData(Arithmetic_Data *a, int is_dyn) {
     free(a->exp_table);
     free(a->log_table);
 
@@ -160,7 +160,7 @@ void freeArithmeticData(Arithmetic_Data *a, int is_dyn) {
     }
 }
 
-void freePoly(Polynomial_GF2_16x *p, int is_dyn) {
+void BITP_freePoly(Polynomial_GF2_16x *p, int is_dyn) {
     free(p->coef);
 
     if (is_dyn) {
@@ -171,7 +171,7 @@ void freePoly(Polynomial_GF2_16x *p, int is_dyn) {
     }
 }
 
-void freePerm(Permutation_Vector *p, int is_dyn) {
+void BITP_freePerm(Permutation_Vector *p, int is_dyn) {
     free(p->elements);
 
     if (is_dyn) {
@@ -179,7 +179,7 @@ void freePerm(Permutation_Vector *p, int is_dyn) {
     }
 }
 
-void freeMatGF2(Matrix_GF2 *m, int is_dyn) {
+void BITP_freeMatGF2(Matrix_GF2 *m, int is_dyn) {
     int i;
     
     // first free cols
@@ -194,7 +194,7 @@ void freeMatGF2(Matrix_GF2 *m, int is_dyn) {
     }
 }
 
-void freeVecGF2(Vector_GF2 *v, int is_dyn) {  
+void BITP_freeVecGF2(Vector_GF2 *v, int is_dyn) {  
     // then free rows
     free(v->elements);
     
@@ -205,11 +205,11 @@ void freeVecGF2(Vector_GF2 *v, int is_dyn) {
 
 void freePrivateKey(McEliece_Priv_Key *priv_key, int is_dyn) {
     // free permutation
-    freePerm(&priv_key->permutation, is_dyn);
+    BITP_freePerm(&priv_key->permutation, is_dyn);
 
-    freePoly(&(priv_key->g), 0);
+    BITP_freePoly(&(priv_key->g), 0);
 
-    freeMat(&(priv_key->h_mat), 0);
+    BITP_freeMat(&(priv_key->h_mat), 0);
 
     if (is_dyn) {
         free(priv_key);
@@ -218,16 +218,16 @@ void freePrivateKey(McEliece_Priv_Key *priv_key, int is_dyn) {
 
 void freePublicKey(McEliece_Pub_Key *pub_key, int is_dyn) {
     // free matrix
-    freeMatGF2(&pub_key->g_mat, is_dyn);
+    BITP_freeMatGF2(&pub_key->g_mat, is_dyn);
 
     if (is_dyn) {
         free(pub_key);
     }
 }
 
-void freeMcElieceCtx(McEliece_Ctx *mce_ctx) {
+void BITP_freeMcElieceCtx(McEliece_Ctx *mce_ctx) {
     // free Aritmetics tables
-    freeArithmeticData(&(mce_ctx->a_data), 0);
+    BITP_freeArithmeticData(&(mce_ctx->a_data), 0);
 
     // free Private key
     freePrivateKey(&(mce_ctx->priv_key), 0);
@@ -238,34 +238,34 @@ void freeMcElieceCtx(McEliece_Ctx *mce_ctx) {
     // TODO: free other structures
 }
 
-int mallocPoly(Polynomial_GF2_16x *p, int16_t max_deg) {
+int BITP_mallocPoly(Polynomial_GF2_16x *p, int16_t max_deg) {
     // allocate memory
     p->deg = -1;
     p->max_deg = max_deg;
 
     if (p->max_deg < 0) {
-        printError("mallocPoly: max_deg must be at least 0");
+        printError("BITP_mallocPoly: max_deg must be at least 0");
 
         return -1;
     }
     p->coef = (GF2_16x*) calloc(max_deg + 1, sizeof(GF2_16x));
 
     if (!p->coef) {
-        printError("mallocPoly: can not allocate polynomial");
+        printError("BITP_mallocPoly: can not allocate polynomial");
 
         return -1;
     }
     return 0;
 }
 
-int mallocPerm(Permutation_Vector *p, int size) {
+int BITP_mallocPerm(Permutation_Vector *p, int size) {
     // allocate memory
     int i;
     p->size = size;
     p->elements = (uint32_t*) malloc(sizeof(uint32_t) * size);
 
     if (!p->elements) {
-        printError("mallocPerm: can not allocate permutation vector");
+        printError("BITP_mallocPerm: can not allocate permutation vector");
 
         return -1;
     }
@@ -275,7 +275,7 @@ int mallocPerm(Permutation_Vector *p, int size) {
     return 0;
 }
 
-int mallocMatrix(Matrix_GF2_16x *m, int rows, int cols) {
+int BITP_mallocMatrix(Matrix_GF2_16x *m, int rows, int cols) {
     int i;
     // rows
     m->k = rows;
@@ -285,7 +285,7 @@ int mallocMatrix(Matrix_GF2_16x *m, int rows, int cols) {
     m->elements = (GF2_16x **) malloc(sizeof(GF2_16x*) * m->k);
     
     if (!m->elements) {
-        printError("mallocMatrix: can not allocate memory for matrix rows");
+        printError("BITP_mallocMatrix: can not allocate memory for matrix rows");
         
         return 1;
     }
@@ -297,7 +297,7 @@ int mallocMatrix(Matrix_GF2_16x *m, int rows, int cols) {
     return 0;
 }
 
-int mallocMatrixGF2(Matrix_GF2 *m, int rows, int cols) {
+int BITP_mallocMatrixGF2(Matrix_GF2 *m, int rows, int cols) {
     int i;
 
     // element size
@@ -319,7 +319,7 @@ int mallocMatrixGF2(Matrix_GF2 *m, int rows, int cols) {
     m->elements = (GF2**) malloc(sizeof(GF2*) * m->k);
 
     if (!m->elements) {
-        printError("mallocMatrixGF2: can not allocate memory for matrix rows");
+        printError("BITP_mallocMatrixGF2: can not allocate memory for matrix rows");
         
         return 1;
     }
@@ -336,7 +336,7 @@ int mallocMatrixGF2(Matrix_GF2 *m, int rows, int cols) {
     return 0;
 }
 
-int mallocVectorGF2(Vector_GF2 *v, int len) {
+int BITP_mallocVectorGF2(Vector_GF2 *v, int len) {
     // element size in bits
     v->element_bit_size = sizeof(GF2) * 8;
 
@@ -358,7 +358,7 @@ int mallocVectorGF2(Vector_GF2 *v, int len) {
     printDebug("vector len: %d, element_bit_size: %d, elements_in_row: %d", v->len, v->element_bit_size, v->elements_in_row);
 #endif
     if (!v->elements) {
-        printError("mallocVectorGF2: can not allocate memory for vector of len %d", len);
+        printError("BITP_mallocVectorGF2: can not allocate memory for vector of len %d", len);
         
         return 1;
     }
@@ -368,7 +368,7 @@ int mallocVectorGF2(Vector_GF2 *v, int len) {
     return 0;
 }
 
-int genKeyPair(McEliece_Ctx *mce_ctx, uint8_t deg) {
+int BITP_genKeyPair(McEliece_Ctx *mce_ctx, uint8_t deg) {
 	int rc = 0;
     Matrix_GF2 temp, temp2;
     Permutation_Vector *permutation = NULL; // needed for equivalent codes
@@ -377,120 +377,120 @@ int genKeyPair(McEliece_Ctx *mce_ctx, uint8_t deg) {
     mce_ctx->pub_key.t = deg;
     mce_ctx->pub_key.m = mce_ctx->a_data.mod_deg;
 
-    gf2xPolyGenGoppaA(&(mce_ctx->priv_key.g), deg, &(mce_ctx->a_data));
+    BITP_gf2xPolyGenGoppaA(&(mce_ctx->priv_key.g), deg, &(mce_ctx->a_data));
 
-	rc = initMatH(&(mce_ctx->priv_key.h_mat), &(mce_ctx->priv_key.g), &(mce_ctx->a_data));
+	rc = BITP_initMatH(&(mce_ctx->priv_key.h_mat), &(mce_ctx->priv_key.g), &(mce_ctx->a_data));
 
 #ifdef DEBUG_INIT_MCE_CTX
     printDebug("Matrix H:");
-    printGf2xMat(&(mce_ctx->priv_key.h_mat));
+    BITP_printGf2xMat(&(mce_ctx->priv_key.h_mat));
     printf("\n");
 #endif
     while (permutation == NULL) {
-        permGenA(&(mce_ctx->priv_key.permutation), mce_ctx->priv_key.h_mat.n);
+        BITP_permGenA(&(mce_ctx->priv_key.permutation), mce_ctx->priv_key.h_mat.n);
         permIsValid(&(mce_ctx->priv_key.permutation));
 
     #ifdef DEBUG_INIT_MCE_CTX
         printDebug("Permutation:");
-        printPerm(&mce_ctx->priv_key.permutation);
+        BITP_printPerm(&mce_ctx->priv_key.permutation);
         printf("\n");
     #endif
-        mallocMatrix(&perm_matrix, mce_ctx->priv_key.h_mat.k, mce_ctx->priv_key.h_mat.n);
-        rc = gf2xMatPermute(&perm_matrix, &(mce_ctx->priv_key.h_mat), &(mce_ctx->priv_key.permutation));
+        BITP_mallocMatrix(&perm_matrix, mce_ctx->priv_key.h_mat.k, mce_ctx->priv_key.h_mat.n);
+        rc = BITP_gf2xMatPermute(&perm_matrix, &(mce_ctx->priv_key.h_mat), &(mce_ctx->priv_key.permutation));
 
     #ifdef DEBUG_INIT_MCE_CTX
         printDebug("Permuted Matrix H:");
-        printGf2xMat(&(mce_ctx->priv_key.h_mat));
+        BITP_printGf2xMat(&(mce_ctx->priv_key.h_mat));
     #endif
-        rc = gf2xMatConvertToGf2MatA(&temp, &perm_matrix, mce_ctx->a_data.mod_deg);
-        freeMat(&perm_matrix, 0);
+        rc = BITP_gf2xMatConvertToGf2MatA(&temp, &perm_matrix, mce_ctx->a_data.mod_deg);
+        BITP_freeMat(&perm_matrix, 0);
 
     #ifdef DEBUG_INIT_MCE_CTX
         printDebug("Converted matrix H2:");
-        printGf2Mat(&temp);
+        BITP_printGf2Mat(&temp);
     #endif
         permutation = gf2MatMakeSystematicA(&temp);
 
         if (permutation == NULL) {
-            freePerm(&(mce_ctx->priv_key.permutation), 0);
-            freeMatGF2(&temp, 0);
+            BITP_freePerm(&(mce_ctx->priv_key.permutation), 0);
+            BITP_freeMatGF2(&temp, 0);
         }
         else {
             permIsValid(permutation);
         }
     }
-    permPermute(&(mce_ctx->priv_key.permutation), permutation);
+    BITP_permPermute(&(mce_ctx->priv_key.permutation), permutation);
     permIsValid(&(mce_ctx->priv_key.permutation));
 
 #ifdef DEBUG_INIT_MCE_CTX
     printDebug("Permutation (systematic form):");
-    printPerm(permutation);
+    BITP_printPerm(permutation);
     printDebug("Matrix H2 in systematic form:");
-    printGf2Mat(&temp);
+    BITP_printGf2Mat(&temp);
 #endif
-    freePerm(permutation, 1);
+    BITP_freePerm(permutation, 1);
 
-    rc = gf2MatCropA(&temp2, &temp, (temp.n - temp.k));
+    rc = BITP_gf2MatCropA(&temp2, &temp, (temp.n - temp.k));
     
     if (rc != 0) {
-        printGf2Mat(&temp);
-        printError("genKeyPair: can not crop matrix");
+        BITP_printGf2Mat(&temp);
+        printError("BITP_genKeyPair: can not crop matrix");
 
         return -1;
     }
-    freeMatGF2(&temp, 0);
+    BITP_freeMatGF2(&temp, 0);
 
 #ifdef DEBUG_INIT_MCE_CTX
     printDebug("Croped Matrix H2:");
-    printGf2Mat(&temp2);
+    BITP_printGf2Mat(&temp2);
     printf("\n");
 #endif
-    rc = gf2MatTranspA(&mce_ctx->pub_key.g_mat, &temp2);
-    freeMatGF2(&temp2, 0);  
+    rc = BITP_gf2MatTranspA(&mce_ctx->pub_key.g_mat, &temp2);
+    BITP_freeMatGF2(&temp2, 0);  
 
-    // mallocMatrixGF2(&temp2, mce_ctx->pub_key.g_mat.k, mce_ctx->pub_key.g_mat.n);
-    // gf2MatCopy(&temp2, &(mce_ctx->pub_key.g_mat));
-    // freeMatGF2(&(mce_ctx->pub_key.g_mat), 0);
+    // BITP_mallocMatrixGF2(&temp2, mce_ctx->pub_key.g_mat.k, mce_ctx->pub_key.g_mat.n);
+    // BITP_gf2MatCopy(&temp2, &(mce_ctx->pub_key.g_mat));
+    // BITP_freeMatGF2(&(mce_ctx->pub_key.g_mat), 0);
     // gf2MatAppendIdenityA(&(mce_ctx->pub_key.g_mat), &temp2);
-    // freeMatGF2(&temp2, 0);
+    // BITP_freeMatGF2(&temp2, 0);
 
 #ifdef DEBUG_INIT_MCE_CTX
     printDebug("Transposed croped Matrix H2:");
-    printGf2Mat(&mce_ctx->pub_key.g_mat);
+    BITP_printGf2Mat(&mce_ctx->pub_key.g_mat);
     printf("\n");
 #endif
     return rc;
 }
 
-int initMatH(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly, Arithmetic_Data *a_data) {
+int BITP_initMatH(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly, Arithmetic_Data *a_data) {
     int rc = 0;
     Matrix_GF2_16x tmp_mat, x_m, y_m, z_m;
     
-    rc += initMatX(&(x_m), poly);
+    rc += BITP_initMatX(&(x_m), poly);
 
 #ifdef DEBUG_INIT_MAT_H
     printDebug("Matrix X:");
-    printGf2xMat(&(x_m));
+    BITP_printGf2xMat(&(x_m));
 #endif
-	rc += initMatY(&(y_m), poly->deg, a_data);
+	rc += BITP_initMatY(&(y_m), poly->deg, a_data);
 
 #ifdef DEBUG_INIT_MAT_H
     printDebug("Matrix Y:");
-    printGf2xMat(&(y_m));
+    BITP_printGf2xMat(&(y_m));
 #endif
-	rc += initMatZ(&(z_m), poly, a_data);
+	rc += BITP_initMatZ(&(z_m), poly, a_data);
 
 #ifdef DEBUG_INIT_MAT_H
     printDebug("Matrix Z:");
-    printGf2xMat(&(z_m));
+    BITP_printGf2xMat(&(z_m));
 #endif
-    rc += gf2xMatrixMulA(&tmp_mat, &(x_m), &(y_m), a_data);
-    rc += gf2xMatrixMulA(m, &tmp_mat, &(z_m),a_data);
+    rc += BITP_gf2xMatrixMulA(&tmp_mat, &(x_m), &(y_m), a_data);
+    rc += BITP_gf2xMatrixMulA(m, &tmp_mat, &(z_m),a_data);
 
-    freeMat(&tmp_mat, 0);
-    freeMat(&x_m, 0);
-    freeMat(&y_m, 0);
-    freeMat(&z_m, 0);
+    BITP_freeMat(&tmp_mat, 0);
+    BITP_freeMat(&x_m, 0);
+    BITP_freeMat(&y_m, 0);
+    BITP_freeMat(&z_m, 0);
     
 	return rc;
 }
@@ -499,7 +499,7 @@ int initMatH(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly, Arithmetic_Data *a_dat
 int initRandVector(Vector_GF2 *out, int l, int w) {
 	int i, j;
 
-	if (mallocVectorGF2(out, l)) {
+	if (BITP_mallocVectorGF2(out, l)) {
         printError("initRandVector: allocation error");
         return -1;
     }
@@ -531,14 +531,14 @@ int initRandVector(Vector_GF2 *out, int l, int w) {
 	return 0;
 }
 
-void mallocVectorGF2_16x(Vector_GF2_16x *vec, int size) {
+void BITP_mallocVectorGF2_16x(Vector_GF2_16x *vec, int size) {
     vec->len = size;
     vec->elements = (GF2_16x*)malloc(sizeof(GF2_16x) * size);
 
     memset((void *)(vec->elements), 0, sizeof(GF2_16x) * size);
 }
 
-void freeVectorGF2_16x(Vector_GF2_16x *vec, int is_dyn) {
+void BITP_freeVectorGF2_16x(Vector_GF2_16x *vec, int is_dyn) {
     free(vec->elements);
 
     if (is_dyn) {

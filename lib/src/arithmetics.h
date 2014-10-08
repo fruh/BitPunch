@@ -39,7 +39,7 @@ GF2_16x gf2xMulMod(GF2_16x a, GF2_16x b, GF2_16x mod);
 
 /**
 * Multiplication over Galois field, modulus mod.
-* It precalculated tables initLogExpTable
+* It precalculated tables BITP_initLogExpTable
 * @param a_data pointer to Aritmetic_Data structure, used by calculations
 * @param a first operant, GF2x element
 * @param b second operant, GF2x element
@@ -59,34 +59,34 @@ GF2_16x gf2xMulModT(const GF2_16x a, const GF2_16x b, const Arithmetic_Data *a_d
 GF2_16x gf2xPowerModT(GF2_16x a, int e, const Arithmetic_Data *a_data);
 
 /**
- * Matrix multiplication over finite field.  After work you have to free memory using call freeMat.
+ * Matrix multiplication over finite field.  After work you have to free memory using call BITP_freeMat.
  * x = a*b
  * @param[out] x matrix GF2^m, new matrix
  * @param[in] a matrix GF2^m
  * @param[in] b matrix GF2^m
  * @return on succes 0, on size error -1, on allocation error -2
  */
-int gf2xMatrixMulA(Matrix_GF2_16x *x, const Matrix_GF2_16x *a, const Matrix_GF2_16x *b, const Arithmetic_Data *a_data);
+int BITP_gf2xMatrixMulA(Matrix_GF2_16x *x, const Matrix_GF2_16x *a, const Matrix_GF2_16x *b, const Arithmetic_Data *a_data);
 
 /**
 * Vector and matrix multiplication over GF2.
-* x = v * b, vector is in 'line' format like [010111010001]. It selects i-th row from matrix b and xor it together, when vector v has at i-th column 1.  After work you have to free memory using call freeMat
+* x = v * b, vector is in 'line' format like [010111010001]. It selects i-th row from matrix b and xor it together, when vector v has at i-th column 1.  After work you have to free memory using call BITP_freeMat
 * @param[out] x vector GF2, it is matrix k = 1, n = length of vec, new vector (matrix)
 * @param[in] v vector GF2, it is matrix k = 1, n = length of vec
 * @param[in] b matrix GF2
 * @return on succes 0, on size error -1, on allocation error -2
 */
-int gf2VecMulMat(Vector_GF2 *x, const Vector_GF2 *v, const Matrix_GF2 *b);
+int BITP_gf2VecMulMat(Vector_GF2 *x, const Vector_GF2 *v, const Matrix_GF2 *b);
 
 /**
 * Vector and matrix multiplication over GF2.
-* x = v * b, vector is in 'line' format like [010111010001]. It selects i-th row from matrix b and xor it together, when vector v has at i-th column 1.  After work you have to free memory using call freeMat
+* x = v * b, vector is in 'line' format like [010111010001]. It selects i-th row from matrix b and xor it together, when vector v has at i-th column 1.  After work you have to free memory using call BITP_freeMat
 * @param[out] x vector GF2, it is matrix k = 1, n = length of vec, new vector (matrix)
 * @param[in] v vector GF2, it is matrix k = 1, n = length of vec
 * @param[in] b matrix GF2
 * @return on succes 0, on size error -1, on allocation error -2
 */
-int gf2VecMulMatA(Vector_GF2 *x, const Vector_GF2 *v, const Matrix_GF2 *b);
+int BITP_gf2VecMulMatA(Vector_GF2 *x, const Vector_GF2 *v, const Matrix_GF2 *b);
 
 /**
  * out = x * M over finite field
@@ -94,7 +94,7 @@ int gf2VecMulMatA(Vector_GF2 *x, const Vector_GF2 *v, const Matrix_GF2 *b);
  * @param mat [description]
  * @param out [description]
  */
-void gf2xVecMulMat(Vector_GF2_16x *out, const Vector_GF2_16x *x, const Matrix_GF2_16x *mat, const Arithmetic_Data *a_data);
+void BITP_gf2xVecMulMat(Vector_GF2_16x *out, const Vector_GF2_16x *x, const Matrix_GF2_16x *mat, const Arithmetic_Data *a_data);
 
 /**
  * XOR operation on rows of Matrix GF2. row[i] = row[i] ^ row[j]
@@ -112,10 +112,10 @@ void gf2MatXorRows(Matrix_GF2 *mat, int i, int j);
  * @return 0 - successm else error
  */
 /// Xor two Vectors GF2 and store result in first vector.
-int gf2VecXor(Vector_GF2 *out, const Vector_GF2 *in);
+int BITP_gf2VecXor(Vector_GF2 *out, const Vector_GF2 *in);
 
 /**
- * Plus operation on polynomials (out = a + b). All argumets must be allocated before using mallocPoly().
+ * Plus operation on polynomials (out = a + b). All argumets must be allocated before using BITP_mallocPoly().
  * @param out [description]
  * @param a   [description]
  * @param b   [description]
@@ -123,22 +123,22 @@ int gf2VecXor(Vector_GF2 *out, const Vector_GF2 *in);
 void gf2xPolyAdd(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Polynomial_GF2_16x *b);
 
 /**
- * Divide two polynomials. All argumets must be allocated before using mallocPoly().
+ * Divide two polynomials. All argumets must be allocated before using BITP_mallocPoly().
  * @param q [out] output quocient
  * @param r [out] output reminder
  * @param a [in] input polynomial
  * @param b [in] input polynomial
  */
-void gf2xPolyDiv(Polynomial_GF2_16x *q, Polynomial_GF2_16x *r, const Polynomial_GF2_16x *a, const Polynomial_GF2_16x *b, const Arithmetic_Data *a_data);
+void BITP_gf2xPolyDiv(Polynomial_GF2_16x *q, Polynomial_GF2_16x *r, const Polynomial_GF2_16x *a, const Polynomial_GF2_16x *b, const Arithmetic_Data *a_data);
 
 /**
- * Multiplicate two polynomials. All argumets must be allocated before using mallocPoly().
+ * Multiplicate two polynomials. All argumets must be allocated before using BITP_mallocPoly().
  * @param a   [in] input polynomial
  * @param b   [in] input polynomial
  * @param out [out] output polynomial
  * @param a_data log and exp table needed for multiplication of elements in GF2^m
  */
-void gf2xPolyMul(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Polynomial_GF2_16x *b, const Arithmetic_Data *a_data);
+void BITP_gf2xPolyMul(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Polynomial_GF2_16x *b, const Arithmetic_Data *a_data);
 
 /**
  * Shift polynomial right, it is like a div x^n.
@@ -146,7 +146,7 @@ void gf2xPolyMul(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Pol
  * @param n[in] shift
  */
 /// Shift polynomial right, it is like a div x^n.
-void gf2xPolyShr(Polynomial_GF2_16x *a, int n);
+void BITP_gf2xPolyShr(Polynomial_GF2_16x *a, int n);
 
 /**
  * Shift polynomial left, it is like a mul 1/x^n.
@@ -154,7 +154,7 @@ void gf2xPolyShr(Polynomial_GF2_16x *a, int n);
  * @param n[in] shift
  */
 /// Shift polynomial left, it is like a mul 1/x^n.
-void gf2xPolyShl(Polynomial_GF2_16x *a, int n);
+void BITP_gf2xPolyShl(Polynomial_GF2_16x *a, int n);
 
 /**
  * Calculate power of polynomial.
@@ -172,7 +172,7 @@ void gf2xPolyPower(Polynomial_GF2_16x *a, int e, const Arithmetic_Data *a_data);
  * @param a_data arithmetic data structure
  */
 /// Multiplication polynomial over GF2_16x and element from GF2_16x.
-void gf2xPolyMulEl(Polynomial_GF2_16x *a, GF2_16x el, const Arithmetic_Data *a_data);
+void BITP_gf2xPolyMulEl(Polynomial_GF2_16x *a, GF2_16x el, const Arithmetic_Data *a_data);
 
 /**
  * Calculate reminder of a. Example a mod b = reminder. ALl arguments must be allocated before use.
@@ -192,7 +192,7 @@ void gf2xPolyMod(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Pol
  * @param out    [description]
  * @param a_data [description]
  */
-void gf2xMatRootA(Matrix_GF2_16x *out, const Polynomial_GF2_16x *mod, const Arithmetic_Data *a_data);
+void BITP_gf2xMatRootA(Matrix_GF2_16x *out, const Polynomial_GF2_16x *mod, const Arithmetic_Data *a_data);
 
 /**
  * Function returns sqrt(element)
@@ -202,6 +202,6 @@ void gf2xMatRootA(Matrix_GF2_16x *out, const Polynomial_GF2_16x *mod, const Arit
  */
 GF2_16x gf2xRoot(GF2_16x element, const Arithmetic_Data *a_data);
 
-void gf2xPolyRoot(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *poly, const Polynomial_GF2_16x *mod, const Arithmetic_Data *a_data);
+void BITP_gf2xPolyRoot(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *poly, const Polynomial_GF2_16x *mod, const Arithmetic_Data *a_data);
 
 #endif // ARITHMETICS_H

@@ -16,11 +16,12 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "mceliece.h"
+#include "debugio.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <sys/time.h>
-#include "debugio.h"
 
 int main(int argc, char **argv) {
   McEliece_Ctx ctx;
@@ -31,12 +32,12 @@ int main(int argc, char **argv) {
   /***************************************/
   // mce initialisation t = 50, m = 11
   fprintf(stderr, "Initialisation...\n");
-  mceInitCtx(&ctx, 50);
+  BITP_mceInitCtx(&ctx, 50);
 
   /***************************************/
   fprintf(stderr, "Key generation...\n");
   // key pair generation
-  if (mceGenKeyPair(&ctx)) {
+  if (BITP_mceGenKeyPair(&ctx)) {
     printError("Key generation error");
   }
   /***************************************/
@@ -44,50 +45,50 @@ int main(int argc, char **argv) {
   if (initRandVector(&pt_in, ctx.pub_key.g_mat.k, 0)) {
     printError("PT initialisation error");
 
-    freeMcElieceCtx(&ctx);
+    BITP_freeMcElieceCtx(&ctx);
     return 1;
   }
   // alocate cipher text vector
-  if (mallocVectorGF2(&ct, ctx.priv_key.h_mat.n)) {
+  if (BITP_mallocVectorGF2(&ct, ctx.priv_key.h_mat.n)) {
     printError("CT vector allocation error");
 
-    freeVecGF2(&pt_in, 0);
-    freeMcElieceCtx(&ctx);
+    BITP_freeVecGF2(&pt_in, 0);
+    BITP_freeMcElieceCtx(&ctx);
     return 1;
   }
   /***************************************/
   fprintf(stderr, "Encryption...\n");
-  // encrypt plain text
-  if (mceEncrypt(&ct, &pt_in, &ctx)) {
+  // BITP_encrypt plain text
+  if (BITP_mceEncrypt(&ct, &pt_in, &ctx)) {
     printError("Encryption error");
 
-    freeVecGF2(&ct, 0);
-    freeVecGF2(&pt_in, 0);
-    freeMcElieceCtx(&ctx);
+    BITP_freeVecGF2(&ct, 0);
+    BITP_freeVecGF2(&pt_in, 0);
+    BITP_freeMcElieceCtx(&ctx);
     return 1;
   }
   /***************************************/
   fprintf(stderr, "Decryption...\n");
   // decrypt cipher text
-  if (mceDecrypt(&pt_out, &ct, &ctx)) {
+  if (BITP_mceDecrypt(&pt_out, &ct, &ctx)) {
     printError("Decryption error");
 
-    freeVecGF2(&ct, 0);
-    freeVecGF2(&pt_in, 0);
-    freeMcElieceCtx(&ctx);
+    BITP_freeVecGF2(&ct, 0);
+    BITP_freeVecGF2(&pt_in, 0);
+    BITP_freeMcElieceCtx(&ctx);
     return 1;
   }
   /***************************************/
   // debug output
   fprintf(stderr, "\nCT:\n");
-  printGf2Vec(&ct);
+  BITP_printGf2Vec(&ct);
   fprintf(stderr, "\nOutput PT:\n");
-  printGf2Vec(&pt_out);
+  BITP_printGf2Vec(&pt_out);
   fprintf(stderr, "\nInput random PT:\n");
-  printGf2Vec(&pt_in);
+  BITP_printGf2Vec(&pt_in);
 
   // check for correct decryption
-  if (gf2VecCmp(&pt_in, &pt_out)) {
+  if (BITP_gf2VecCmp(&pt_in, &pt_out)) {
     printError("\nOutput plain text differs from input");
   }
   else {
@@ -96,10 +97,10 @@ int main(int argc, char **argv) {
   // clean up
   /***************************************/
   fprintf(stderr, "\nCleaning up...\n");
-  freeVecGF2(&pt_in, 0);
-  freeVecGF2(&pt_out, 0);
-  freeVecGF2(&ct, 0);
-  freeMcElieceCtx(&ctx);
+  BITP_freeVecGF2(&pt_in, 0);
+  BITP_freeVecGF2(&pt_out, 0);
+  BITP_freeVecGF2(&ct, 0);
+  BITP_freeMcElieceCtx(&ctx);
 
   return 0;
 }

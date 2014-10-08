@@ -35,17 +35,17 @@
     int __test_was_eq_code;
 #endif
 
-int makeCCA2safePT(Vector_GF2 *r1, Vector_GF2 *r2, Vector_GF2 *in, Vector_GF2 *out) {
+int BITP_makeCCA2safePT(Vector_GF2 *r1, Vector_GF2 *r2, Vector_GF2 *in, Vector_GF2 *out) {
 
     Vector_GF2 temp, temp2;
     int rc = 0;
 
-    rc = gf2VecConcatA(&temp, in, r2);
-    rc = gf2VecHashA(&temp2, &temp, in->len);
-    rc = gf2VecConcatA(out, r1, &temp2);
+    rc = BITP_gf2VecConcatA(&temp, in, r2);
+    rc = BITP_gf2VecHashA(&temp2, &temp, in->len);
+    rc = BITP_gf2VecConcatA(out, r1, &temp2);
 
-    freeVecGF2(&temp, 0);
-    freeVecGF2(&temp2, 0);
+    BITP_freeVecGF2(&temp, 0);
+    BITP_freeVecGF2(&temp2, 0);
 
     return rc;
 }
@@ -54,8 +54,8 @@ int addPaddingA(Vector_GF2 *padded_message, const Vector_GF2 *message, const uin
     int i;
 
     // malloc space for padded message
-    if (mallocVectorGF2(padded_message, message->len + padding_len) != 0) {
-        printError("addPaddingA: mallocVectorGF2");
+    if (BITP_mallocVectorGF2(padded_message, message->len + padding_len) != 0) {
+        printError("addPaddingA: BITP_mallocVectorGF2");
         return -1;
     }
 
@@ -91,8 +91,8 @@ int delPaddingA(Vector_GF2 *message, const Vector_GF2 *padded_message) {
     }
 
     // malloc space for padded message
-    if (mallocVectorGF2(message, message_size) != 0) {
-        printError("del_padding: mallocVectorGF2");
+    if (BITP_mallocVectorGF2(message, message_size) != 0) {
+        printError("del_padding: BITP_mallocVectorGF2");
         return -1;
     }
 
@@ -106,16 +106,16 @@ int delPaddingA(Vector_GF2 *message, const Vector_GF2 *padded_message) {
     return 0;
 }
 
-int encryptCCA2KobaraImaiA(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx) {
-    if (mallocVectorGF2(out, ctx->max_ct_len_bit)) {
-        printError("encryptA: can not allocate ouput");
+int BITP_BIT_encryptCCA2KobaraImaiA(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx) {
+    if (BITP_mallocVectorGF2(out, ctx->max_ct_len_bit)) {
+        printError("BITP_encryptA: can not allocate ouput");
 
         return 1;
     }
-    return encryptCCA2KobaraImai(out, message, ctx);
+    return BITP_encryptCCA2KobaraImai(out, message, ctx);
 }
 
-int encryptCCA2KobaraImai(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx) {
+int BITP_encryptCCA2KobaraImai(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx) {
     int rc = 0;
     Vector_GF2 r1, r2, e, padded_message;
     Vector_GF2 cca2SafePT, m, temp, temp2, temp3;
@@ -151,20 +151,20 @@ int encryptCCA2KobaraImai(Vector_GF2 *out, const Vector_GF2 *message, const McEl
 
     // test the size of message and g_m
     if (message->len > 512) {
-        printError("encryption is supported for max message length 512 - hash limitation");
+        printError("BITP_encryption is supported for max message length 512 - hash limitation");
         return -1;
     }
 
 #ifdef DEBUG_ENCRYPT
     printDebug("plaintext w/o padding:");
-    printGf2Vec(message);
+    BITP_printGf2Vec(message);
 #endif
     // make padding to the correct message size with 1000... added to the end
     rc += addPaddingA(&padded_message, message, (max_message_len+MINIMAL_PADDING_SIZE) - message->len);
 
 #ifdef DEBUG_ENCRYPT
     printDebug("plaintext with padding:");
-    printGf2Vec(&padded_message);
+    BITP_printGf2Vec(&padded_message);
 #endif
     // generate random vector r1 = k-l bits = 986 bits
     rc += initRandVector(&r1, ctx->pub_key.g_mat.k - padded_message.len, 0);
@@ -177,20 +177,20 @@ int encryptCCA2KobaraImai(Vector_GF2 *out, const Vector_GF2 *message, const McEl
     rc += gf2MatAppendIdenityA(&G, &(ctx->pub_key.g_mat));
 
     // make cca2 safe plaintext
-    rc += makeCCA2safePT(&r1, &r2, &padded_message, &cca2SafePT);
+    rc += BITP_makeCCA2safePT(&r1, &r2, &padded_message, &cca2SafePT);
 
 #ifdef DEBUG_ENCRYPT
     printDebug("cca2 safe pt:");
-    printGf2Vec(&cca2SafePT);
+    BITP_printGf2Vec(&cca2SafePT);
 #endif
     // calculate cca2 safe plaintext * g_m = z'
     // FU
-    rc += gf2VecMulMatA(&m, &cca2SafePT, &G);
-    // rc += gf2VecMulMatA(&m, &cca2SafePT, &(ctx->pub_key.g_mat));
+    rc += BITP_gf2VecMulMatA(&m, &cca2SafePT, &G);
+    // rc += BITP_gf2VecMulMatA(&m, &cca2SafePT, &(ctx->pub_key.g_mat));
 
 #ifdef DEBUG_ENCRYPT
     printDebug("encoded plaintext:");
-    printGf2Vec(&m);
+    BITP_printGf2Vec(&m);
 #endif
     // generate random error vector e
     // FU
@@ -199,58 +199,58 @@ int encryptCCA2KobaraImai(Vector_GF2 *out, const Vector_GF2 *message, const McEl
 
 #ifdef DEBUG_ENCRYPT
     printDebug("error vector:");
-    printGf2Vec(&e);
+    BITP_printGf2Vec(&e);
 #endif
     // z' XOR e 
-    rc += gf2VecXor(&m, &e);
+    rc += BITP_gf2VecXor(&m, &e);
 
     // hash of r1
-    rc += gf2VecHashA(&temp, &r1, padded_message.len);
+    rc += BITP_gf2VecHashA(&temp, &r1, padded_message.len);
 
     // hash of r1 XOR message
-    rc += gf2VecXor(&temp, &padded_message);
+    rc += BITP_gf2VecXor(&temp, &padded_message);
 
     // hash of e
-    gf2VecHashA(&temp2, &e, padded_message.len);    
+    BITP_gf2VecHashA(&temp2, &e, padded_message.len);    
 
     // hash of e XOR r2
-    rc += gf2VecXor(&temp2, &r2);
+    rc += BITP_gf2VecXor(&temp2, &r2);
 
     // z' XOR e || hash of r1 XOR message
-    rc += gf2VecConcatA(&temp3, &m, &temp);
+    rc += BITP_gf2VecConcatA(&temp3, &m, &temp);
 
     // z' XOR e || hash of r1 XOR message || hash of e XOR r2
-    rc += gf2VecConcat(out, &temp3, &temp2);
+    rc += BITP_gf2VecConcat(out, &temp3, &temp2);
 
 #ifdef DEBUG_ENCRYPT
     printDebug("cipher text:");
-    printGf2Vec(out);
+    BITP_printGf2Vec(out);
     printDebug("###### ENCRYPT DONE ######\n");
 #endif
     // FU
-    freeMatGF2(&G, 0);
-    freeVecGF2(&r1, 0);
-    freeVecGF2(&r2, 0);
-    freeVecGF2(&e, 0);
-    freeVecGF2(&cca2SafePT, 0);
-    freeVecGF2(&m, 0);
-    freeVecGF2(&temp, 0);
-    freeVecGF2(&temp2, 0);
-    freeVecGF2(&temp3, 0);
-    freeVecGF2(&padded_message, 0);
+    BITP_freeMatGF2(&G, 0);
+    BITP_freeVecGF2(&r1, 0);
+    BITP_freeVecGF2(&r2, 0);
+    BITP_freeVecGF2(&e, 0);
+    BITP_freeVecGF2(&cca2SafePT, 0);
+    BITP_freeVecGF2(&m, 0);
+    BITP_freeVecGF2(&temp, 0);
+    BITP_freeVecGF2(&temp2, 0);
+    BITP_freeVecGF2(&temp3, 0);
+    BITP_freeVecGF2(&padded_message, 0);
     return rc;
 }
 
-int encryptA(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx) {
-    if (mallocVectorGF2(out, ctx->priv_key.h_mat.n)) {
-        printError("encryptA: can not allocate ouput");
+int BITP_encryptA(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx) {
+    if (BITP_mallocVectorGF2(out, ctx->priv_key.h_mat.n)) {
+        printError("BITP_encryptA: can not allocate ouput");
 
         return 1;
     }
-    return encrypt(out, message, ctx);
+    return BITP_encrypt(out, message, ctx);
 }
 
-int encrypt(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx) {
+int BITP_encrypt(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx) {
     int rc = 0;
     Vector_GF2 e;
     Vector_GF2 tmp;
@@ -272,7 +272,7 @@ int encrypt(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx)
 
 #ifdef DEBUG_ENCRYPT
     printDebug("plaintext:");
-    printGf2Vec(message);
+    BITP_printGf2Vec(message);
 #endif
     // expand the public key matrix g_m
     // gettimeofday(&tv, NULL);
@@ -283,19 +283,19 @@ int encrypt(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx)
 
     // printError("%d", ctx->pub_key.g_mat.k);
     // printError("%d", ctx->priv_key.h_mat.n);
-    // printGf2Vec(&cca2SafePT);
+    // BITP_printGf2Vec(&cca2SafePT);
     // calculate cca2 safe plaintext * g_m = z'
     // gettimeofday(&tv, NULL);
     // FU
-    // rc += gf2VecMulMatA(out, message, &G);
-    rc += gf2VecMulMatA(&tmp, message, &(ctx->pub_key.g_mat));
-    gf2VecConcat(out, &tmp, message);
+    // rc += BITP_gf2VecMulMatA(out, message, &G);
+    rc += BITP_gf2VecMulMatA(&tmp, message, &(ctx->pub_key.g_mat));
+    BITP_gf2VecConcat(out, &tmp, message);
     // gettimeofday(&tv_end, NULL);
     // fprintf(stderr, "mul %0.6f\n", (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000)));
 
 #ifdef DEBUG_ENCRYPT
     printDebug("encoded plaintext:");
-    printGf2Vec(out);
+    BITP_printGf2Vec(out);
 #endif
     // generate random error vector e
     // 
@@ -307,24 +307,24 @@ int encrypt(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx)
     // fprintf(stderr, "init rand %0.6f\n", (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000)));
 #ifdef DEBUG_ENCRYPT
     printDebug("error vector:");
-    printGf2Vec(&e);
+    BITP_printGf2Vec(&e);
 #endif
     // z' XOR e 
-    // printGf2VecOnes(&e)
+    // BITP_printGf2VecOnes(&e)
     // gettimeofday(&tv, NULL);
-    rc += gf2VecXor(out, &e);
+    rc += BITP_gf2VecXor(out, &e);
     // gettimeofday(&tv_end, NULL);
     // fprintf(stderr, "xor %0.6f\n", (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000)));
 
 #ifdef DEBUG_ENCRYPT
     printDebug("cipher text:");
-    printGf2Vec(out);
+    BITP_printGf2Vec(out);
     printDebug("###### ENCRYPT DONE ######\n");
 #endif
     // FU
-    // freeMatGF2(&G, 0);
-    freeVecGF2(&e, 0);
-    freeVecGF2(&tmp, 0);
+    // BITP_freeMatGF2(&G, 0);
+    BITP_freeVecGF2(&e, 0);
+    BITP_freeVecGF2(&tmp, 0);
 
     return rc;
 }
@@ -334,11 +334,11 @@ void findPolynomialsAB(const Polynomial_GF2_16x *tau, const Polynomial_GF2_16x *
     int end_deg = mod->deg / 2;
 
     gf2xPolyExtEuclidA(a, b, &tmp, tau, mod, end_deg, a_data);
-    freePoly(&tmp, 0);
+    BITP_freePoly(&tmp, 0);
 }
 
 int decodeA(Vector_GF2 *encoded, Vector_GF2 *decoded, const McEliece_Ctx *ctx) {
-    if (mallocVectorGF2(decoded, ctx->a_data.ord)) {
+    if (BITP_mallocVectorGF2(decoded, ctx->a_data.ord)) {
         printError("decodeA:");
 
         return 1;
@@ -354,109 +354,109 @@ int decode(Vector_GF2 *encoded, Vector_GF2 *decoded, const McEliece_Ctx *ctx) {
     GF2_16x tmp_eval;
 
     // it allocated inv_perm inside
-    permGetInvA(&inv_perm, &(ctx->priv_key.permutation));
+    BITP_permGetInvA(&inv_perm, &(ctx->priv_key.permutation));
 
 #ifdef DEBUG_DECODE
     printDebug("###### DEBUG_DECODE - BEGIN ######");
     printDebug("inverse permutation:");
-    printPerm(&inv_perm);
+    BITP_printPerm(&inv_perm);
 
     printDebug("before:");
-    printGf2Vec(encoded);
+    BITP_printGf2Vec(encoded);
 #endif
     // permute code word
-    gf2VecPermute(encoded, &inv_perm);
+    BITP_gf2VecPermute(encoded, &inv_perm);
 
 #ifdef DEBUG_DECODE
     printDebug("after:");
-    printGf2Vec(encoded);
+    BITP_printGf2Vec(encoded);
 #endif
     gf2xMatDetermineSyndromeA(&syndrome, encoded, &(ctx->priv_key.h_mat), &(ctx->a_data));
 
 #ifdef DEBUG_DECODE
     printDebug("Syndrome");
-    printGf2xPoly(&syndrome, &(ctx->a_data));
+    BITP_printGf2xPoly(&syndrome, &(ctx->a_data));
 #endif
-    gf2xPolyInvA(&inv_syndrome, &syndrome, &(ctx->priv_key.g), &(ctx->a_data));
+    BITP_gf2xPolyInvA(&inv_syndrome, &syndrome, &(ctx->priv_key.g), &(ctx->a_data));
     inv_syndrome.coef[1] = inv_syndrome.coef[1] ^ ONE;
 
     // get square root
-    mallocPoly(&tau, ctx->priv_key.g.deg);
-    gf2xPolyRoot(&tau, &inv_syndrome, &(ctx->priv_key.g), &(ctx->a_data));
+    BITP_mallocPoly(&tau, ctx->priv_key.g.deg);
+    BITP_gf2xPolyRoot(&tau, &inv_syndrome, &(ctx->priv_key.g), &(ctx->a_data));
 
 #ifdef DEBUG_DECODE
     printDebug("inv_syndrome:");
-    printGf2xPoly(&inv_syndrome, &(ctx->a_data));
+    BITP_printGf2xPoly(&inv_syndrome, &(ctx->a_data));
     printDebug("tau:");
-    printGf2xPoly(&tau, &(ctx->a_data));
+    BITP_printGf2xPoly(&tau, &(ctx->a_data));
 
     gf2xPolyNull(&inv_syndrome);
-    gf2xPolyMul(&inv_syndrome, &tau, &tau, &(ctx->a_data));
+    BITP_gf2xPolyMul(&inv_syndrome, &tau, &tau, &(ctx->a_data));
     gf2xPolyMod(&syndrome, &inv_syndrome, &(ctx->priv_key.g), &(ctx->a_data));
 
     printDebug("tau^2 mod g:");
-    printGf2xPoly(&syndrome, &(ctx->a_data));
+    BITP_printGf2xPoly(&syndrome, &(ctx->a_data));
 #endif
     /**************** FROM NOW WE ARE NOT USING MODULUS g for a, b ********************/
     findPolynomialsAB(&tau, &(ctx->priv_key.g), &a, &b, &(ctx->a_data));
 
 #ifdef DEBUG_DECODE
-    mallocPoly(&tmp2, 2 * ctx->priv_key.g.deg);
-    mallocPoly(&tmp, 2 * ctx->priv_key.g.deg);
+    BITP_mallocPoly(&tmp2, 2 * ctx->priv_key.g.deg);
+    BITP_mallocPoly(&tmp, 2 * ctx->priv_key.g.deg);
     // b * tau == a mod g
-    gf2xPolyMul(&tmp, &tau, &b, &(ctx->a_data));
+    BITP_gf2xPolyMul(&tmp, &tau, &b, &(ctx->a_data));
     gf2xPolyMod(&tmp2, &tmp, &(ctx->priv_key.g), &(ctx->a_data));
     
     printDebug("b * tau == a mod g:");
-    printGf2xPoly(&tmp2, &(ctx->a_data));
+    BITP_printGf2xPoly(&tmp2, &(ctx->a_data));
 
-    freePoly(&tmp2, 0);
-    freePoly(&tmp, 0);
+    BITP_freePoly(&tmp2, 0);
+    BITP_freePoly(&tmp, 0);
 #endif    
-    mallocPoly(&tmp2, 2 * ctx->priv_key.g.deg);
-    mallocPoly(&tmp, 2 * ctx->priv_key.g.deg);
+    BITP_mallocPoly(&tmp2, 2 * ctx->priv_key.g.deg);
+    BITP_mallocPoly(&tmp, 2 * ctx->priv_key.g.deg);
 
     // a^2, b^2
-    gf2xPolyMul(&tmp, &a, &a, &(ctx->a_data));
-    gf2xPolyMul(&tmp2, &b, &b, &(ctx->a_data));
+    BITP_gf2xPolyMul(&tmp, &a, &a, &(ctx->a_data));
+    BITP_gf2xPolyMul(&tmp2, &b, &b, &(ctx->a_data));
 
 #ifdef DEBUG_DECODE
     printDebug("a:");
-    printGf2xPoly(&a, &(ctx->a_data));
+    BITP_printGf2xPoly(&a, &(ctx->a_data));
     printDebug("b:");
-    printGf2xPoly(&b, &(ctx->a_data));
+    BITP_printGf2xPoly(&b, &(ctx->a_data));
 #endif
     // copy a^2, b^2 to a, b
-    gf2xPolyCopy(&a, &tmp);
-    gf2xPolyCopy(&b, &tmp2);
+    BITP_gf2xPolyCopy(&a, &tmp);
+    BITP_gf2xPolyCopy(&b, &tmp2);
 
 #ifdef DEBUG_DECODE
     printDebug("a^2:");
-    printGf2xPoly(&a, &(ctx->a_data));
+    BITP_printGf2xPoly(&a, &(ctx->a_data));
     printDebug("b^2:");
-    printGf2xPoly(&b, &(ctx->a_data));
+    BITP_printGf2xPoly(&b, &(ctx->a_data));
 #endif
     // b^2 * x
-    gf2xPolyShl(&b, 1);
+    BITP_gf2xPolyShl(&b, 1);
 
 #ifdef DEBUG_DECODE
     printDebug("x * b^2:");
-    printGf2xPoly(&b, &(ctx->a_data));    
+    BITP_printGf2xPoly(&b, &(ctx->a_data));    
 #endif
-    mallocPoly(&sigma, ctx->priv_key.g.deg);
+    BITP_mallocPoly(&sigma, ctx->priv_key.g.deg);
     
     // calculate sigma = a^2 + x * b^2
     gf2xPolyAdd(&sigma, &a, &b);
 
 #ifdef DEBUG_DECODE
     printDebug("sigma");
-    printGf2xPoly(&sigma, &(ctx->a_data));
+    BITP_printGf2xPoly(&sigma, &(ctx->a_data));
 #endif
     // check if there is enough space
     if (decoded->len < ctx->a_data.ord) {
-        freeVecGF2(decoded, 0);
+        BITP_freeVecGF2(decoded, 0);
 
-        mallocVectorGF2(decoded, ctx->a_data.ord);
+        BITP_mallocVectorGF2(decoded, ctx->a_data.ord);
     }
     else {
         gf2VecNull(decoded);
@@ -470,17 +470,17 @@ int decode(Vector_GF2 *encoded, Vector_GF2 *decoded, const McEliece_Ctx *ctx) {
         }
     }
     // permute decoded vector
-    gf2VecPermute(decoded, &(ctx->priv_key.permutation));
+    BITP_gf2VecPermute(decoded, &(ctx->priv_key.permutation));
 
-    freePerm(&inv_perm, 0);
-    freePoly(&syndrome, 0);
-    freePoly(&tau, 0);
-    freePoly(&inv_syndrome, 0);
-    freePoly(&tmp, 0);
-    freePoly(&tmp2, 0);
-    freePoly(&sigma, 0);
-    freePoly(&a, 0);
-    freePoly(&b, 0);
+    BITP_freePerm(&inv_perm, 0);
+    BITP_freePoly(&syndrome, 0);
+    BITP_freePoly(&tau, 0);
+    BITP_freePoly(&inv_syndrome, 0);
+    BITP_freePoly(&tmp, 0);
+    BITP_freePoly(&tmp2, 0);
+    BITP_freePoly(&sigma, 0);
+    BITP_freePoly(&a, 0);
+    BITP_freePoly(&b, 0);
 
 #ifdef DEBUG_DECODE
     printDebug("###### DEBUG_DECODE - END ######");
@@ -493,8 +493,8 @@ int decrypt(Vector_GF2 *message, Vector_GF2 *cipher, const McEliece_Ctx *ctx) {
     int rc = decryptA(message, cipher, ctx);
 
     // if (!rc) {
-    //     gf2VecCopy(message, &tmp);
-    //     freeVecGF2(&tmp, 0);
+    //     BITP_gf2VecCopy(message, &tmp);
+    //     BITP_freeVecGF2(&tmp, 0);
     // }
     return rc;
 }
@@ -504,28 +504,28 @@ int decryptA(Vector_GF2 *message, Vector_GF2 *cipher, const McEliece_Ctx *ctx) {
     Vector_GF2 temp, decoded, temp_2;
     // Matrix_GF2 mm, mmm;
 
-    mallocVectorGF2(&temp, cipher->len);
-    gf2VecCopy(&temp, cipher);
-    mallocVectorGF2(&temp_2, cipher->len);
-    gf2VecCopy(&temp_2, cipher);
+    BITP_mallocVectorGF2(&temp, cipher->len);
+    BITP_gf2VecCopy(&temp, cipher);
+    BITP_mallocVectorGF2(&temp_2, cipher->len);
+    BITP_gf2VecCopy(&temp_2, cipher);
 
     decodeA(&temp, &decoded, ctx);
 
 #ifdef DEBUG_DECRYPT
     printDebug("decoded error:");
-    printGf2Vec(&decoded);
+    BITP_printGf2Vec(&decoded);
 #endif
-    gf2VecXor(&temp_2, &decoded);
+    BITP_gf2VecXor(&temp_2, &decoded);
     // printDebug("Ecoded message:");
-    // printGf2Vec(&temp_2);
-    gf2VecCropA(message, &temp_2, temp_2.len - ctx->pub_key.g_mat.k, ctx->pub_key.g_mat.k);
-    // printGf2Vec(message);
+    // BITP_printGf2Vec(&temp_2);
+    BITP_gf2VecCropA(message, &temp_2, temp_2.len - ctx->pub_key.g_mat.k, ctx->pub_key.g_mat.k);
+    // BITP_printGf2Vec(message);
 
-    // gf2xMatConvertToGf2MatA(&mm, &ctx->priv_key.h_mat, ctx->priv_key.g.deg);
-    // gf2MatTranspA(&mmm, &mm);
-    // gf2VecMulMatA(message, &temp_2, &mmm);
-    // printGf2Vec(message);
-    freeVecGF2(&temp, 0);
+    // BITP_gf2xMatConvertToGf2MatA(&mm, &ctx->priv_key.h_mat, ctx->priv_key.g.deg);
+    // BITP_gf2MatTranspA(&mmm, &mm);
+    // BITP_gf2VecMulMatA(message, &temp_2, &mmm);
+    // BITP_printGf2Vec(message);
+    BITP_freeVecGF2(&temp, 0);
 
 #ifdef DEBUG_DECRYPT
     printDebug("###### DECRYPT DONE ######");
@@ -544,57 +544,57 @@ int decrypt2(Vector_GF2 *cipher, Vector_GF2 *plain, const McEliece_Ctx *ctx) {
     // FU
     // gf2MatAppendIdenityA(&G, &(ctx->pub_key.g_mat));
     // initRandVector(&error, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k, ctx->pub_key.t - 1);
-    // mallocVectorGF2(&error, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k);
+    // BITP_mallocVectorGF2(&error, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k);
     initRandVector(&error, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k, ctx->pub_key.t);
 
     l = (cipher->len - ctx->priv_key.h_mat.n) / 2;
-    mallocVectorGF2(&z1, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k);
-    mallocVectorGF2(&z2, l);
-    mallocVectorGF2(&z3, l);
-    // mallocVectorGF2(&decoded, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k);
+    BITP_mallocVectorGF2(&z1, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k);
+    BITP_mallocVectorGF2(&z2, l);
+    BITP_mallocVectorGF2(&z3, l);
+    // BITP_mallocVectorGF2(&decoded, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k);
 
-    printGf2xPoly(&(ctx->priv_key.g), &(ctx->a_data));
+    BITP_printGf2xPoly(&(ctx->priv_key.g), &(ctx->a_data));
     // TODO: split cipher text to z1, z2, z3
     
     initRandVector(&plain_text, ctx->pub_key.g_mat.k, 0);
-    // printGf2Mat(&(G));
-    // mallocVectorGF2(&plain_text, G.k);
+    // BITP_printGf2Mat(&(G));
+    // BITP_mallocVectorGF2(&plain_text, G.k);
     // gf2VecSetBit(&plain_text, 0, 1);
     
     // fprintf(stderr, "plain:\n");
-    // printGf2Vec(&plain_text);
+    // BITP_printGf2Vec(&plain_text);
     // fprintf(stderr, "z1:\n");
 
-    // mallocVectorGF2(&plain_text, G.k);
+    // BITP_mallocVectorGF2(&plain_text, G.k);
     // FU
-    // gf2VecMulMat(&z1, &plain_text, &G);
-    gf2VecMulMat(&z1, &plain_text, &(ctx->pub_key.g_mat));
-    printGf2Vec(&z1);
+    // BITP_gf2VecMulMat(&z1, &plain_text, &G);
+    BITP_gf2VecMulMat(&z1, &plain_text, &(ctx->pub_key.g_mat));
+    BITP_printGf2Vec(&z1);
 
-    gf2VecXor(&z1, &error); // len kvoli testom
+    BITP_gf2VecXor(&z1, &error); // len kvoli testom
     
     // fprintf(stderr, "z1 XOR error:\n");
-    // printGf2Vec(&z1);
+    // BITP_printGf2Vec(&z1);
 
-    // printGf2Vec(cipher);
+    // BITP_printGf2Vec(cipher);
     // decodeA(&z1, &decoded, ctx);
     // Vector_GF2 temp;
 
-    mallocVectorGF2(&temp, cipher->len);
-    gf2VecCopy(&temp, cipher);
+    BITP_mallocVectorGF2(&temp, cipher->len);
+    BITP_gf2VecCopy(&temp, cipher);
     decodeA(&temp, &decoded, ctx);
     // fprintf(stderr, "error:\n");
-    // printGf2Vec(&error);
+    // BITP_printGf2Vec(&error);
 
     // fprintf(stderr, "decoded error\n");
-    // printGf2Vec(&decoded);
+    // BITP_printGf2Vec(&decoded);
 
-    printGf2VecOnes(&error);
-    printGf2VecOnes(&decoded);
+    BITP_printGf2VecOnes(&error);
+    BITP_printGf2VecOnes(&decoded);
 
 #ifdef TEST_DET_EQ_CODE
-    if (gf2VecCmp(&error, &decoded)) {
-        freeMcElieceCtx(ctx);
+    if (BITP_gf2VecCmp(&error, &decoded)) {
+        BITP_freeMcElieceCtx(ctx);
 
         if (__test_was_eq_code) {
             exit(2);
@@ -603,15 +603,15 @@ int decrypt2(Vector_GF2 *cipher, Vector_GF2 *plain, const McEliece_Ctx *ctx) {
     }
 #endif
     
-    freeVecGF2(&decoded, 0);
-    freeVecGF2(&plain_text, 0);
-    freeVecGF2(&z1, 0);
-    freeVecGF2(&z2, 0);
-    freeVecGF2(&z3, 0);
+    BITP_freeVecGF2(&decoded, 0);
+    BITP_freeVecGF2(&plain_text, 0);
+    BITP_freeVecGF2(&z1, 0);
+    BITP_freeVecGF2(&z2, 0);
+    BITP_freeVecGF2(&z3, 0);
 
-    freeVecGF2(&error, 0);
+    BITP_freeVecGF2(&error, 0);
     // FU
-    // freeMatGF2(&G, 0);
+    // BITP_freeMatGF2(&G, 0);
 
     return 0;
 }
@@ -621,8 +621,8 @@ int decryptCCA2KobaraImai(Vector_GF2 *message, const Vector_GF2 *cipher, const M
     int rc = decryptCCA2KobaraImaiA(&tmp, cipher, ctx);
 
     if (!rc) {
-        gf2VecCopy(message, &tmp);
-        freeVecGF2(&tmp, 0);
+        BITP_gf2VecCopy(message, &tmp);
+        BITP_freeVecGF2(&tmp, 0);
     }
     return rc;
 }
@@ -645,28 +645,28 @@ int decryptCCA2KobaraImaiA(Vector_GF2 *message, const Vector_GF2 *cipher, const 
 
 #ifdef DEBUG_DECRYPT
     printDebug("cipher text:");
-    printGf2Vec(cipher);
+    BITP_printGf2Vec(cipher);
 #endif
-    rc = gf2VecCropA(&z1, cipher, 0, (0x1 << (ctx->a_data.mod_deg)) -1);
-    rc = gf2VecCropA(&z1_, cipher, 0, (0x1 << (ctx->a_data.mod_deg)) -1);
-    rc = gf2VecCropA(&z2, cipher, (0x1 << (ctx->a_data.mod_deg)) -1, message_len);
-    rc = gf2VecCropA(&z3, cipher, (0x1 << (ctx->a_data.mod_deg)) -1 + message_len, message_len);
+    rc = BITP_gf2VecCropA(&z1, cipher, 0, (0x1 << (ctx->a_data.mod_deg)) -1);
+    rc = BITP_gf2VecCropA(&z1_, cipher, 0, (0x1 << (ctx->a_data.mod_deg)) -1);
+    rc = BITP_gf2VecCropA(&z2, cipher, (0x1 << (ctx->a_data.mod_deg)) -1, message_len);
+    rc = BITP_gf2VecCropA(&z3, cipher, (0x1 << (ctx->a_data.mod_deg)) -1 + message_len, message_len);
 
 #ifdef DEBUG_DECRYPT
     printDebug("z1:");
-    printGf2Vec(&z1);
+    BITP_printGf2Vec(&z1);
     printDebug("z2:");
-    printGf2Vec(&z2);
+    BITP_printGf2Vec(&z2);
     printDebug("z3:");
-    printGf2Vec(&z3);
+    BITP_printGf2Vec(&z3);
 #endif
     decodeA(&z1_, &decoded, ctx);
 
 #ifdef DEBUG_DECRYPT
     printDebug("decoded error:");
-    printGf2Vec(&decoded);
+    BITP_printGf2Vec(&decoded);
 #endif
-    rc = gf2VecXor(&z1, &decoded);
+    rc = BITP_gf2VecXor(&z1, &decoded);
     // m: m*G = z1 ===> z1 = m
 
     /*Split m ′ to ( r , h , m ′′ ).
@@ -678,23 +678,23 @@ int decryptCCA2KobaraImaiA(Vector_GF2 *message, const Vector_GF2 *cipher, const 
     return m
     16: end if
     17: return “Error”*/
-    rc = gf2VecCropA(&r, &z1, n, k - message_len);
-    rc = gf2VecCropA(&h, &z1, n + k - message_len, message_len);
+    rc = BITP_gf2VecCropA(&r, &z1, n, k - message_len);
+    rc = BITP_gf2VecCropA(&h, &z1, n + k - message_len, message_len);
 
-    rc = gf2VecHashA(&hash_r, &r, message_len);
-    rc = gf2VecXor(&z2, &hash_r);
+    rc = BITP_gf2VecHashA(&hash_r, &r, message_len);
+    rc = BITP_gf2VecXor(&z2, &hash_r);
 
     // Determine check value h′ = hash (m || hash (e) ⊕ z3 )
-    rc = gf2VecHashA(&hash_e, &decoded, message_len);
-    rc = gf2VecXor(&hash_e, &z3);
-    rc = gf2VecConcatA(&temp, &z2, &hash_e);
-    rc = gf2VecHashA(&hh, &temp, message_len);
+    rc = BITP_gf2VecHashA(&hash_e, &decoded, message_len);
+    rc = BITP_gf2VecXor(&hash_e, &z3);
+    rc = BITP_gf2VecConcatA(&temp, &z2, &hash_e);
+    rc = BITP_gf2VecHashA(&hh, &temp, message_len);
 
 #ifdef DEBUG_DECRYPT
     printDebug("plaintext with padding:");
-    printGf2Vec(&z2);
+    BITP_printGf2Vec(&z2);
 #endif
-    if (gf2VecCmp(&h, &hh)) {
+    if (BITP_gf2VecCmp(&h, &hh)) {
         printError("check value not correct");
 
         rc = 1;
@@ -705,19 +705,19 @@ int decryptCCA2KobaraImaiA(Vector_GF2 *message, const Vector_GF2 *cipher, const 
 
     #ifdef DEBUG_DECRYPT
         printDebug("plaintext w/o padding:");
-        printGf2Vec(message);
+        BITP_printGf2Vec(message);
     #endif
     }
-    freeVecGF2(&z1, 0);
-    freeVecGF2(&z2, 0);
-    freeVecGF2(&z3, 0);
-    freeVecGF2(&decoded, 0);
-    freeVecGF2(&r, 0);
-    freeVecGF2(&h, 0);
-    freeVecGF2(&hash_r, 0);
-    freeVecGF2(&hash_e, 0);
-    freeVecGF2(&hh, 0);
-    freeVecGF2(&temp, 0);
+    BITP_freeVecGF2(&z1, 0);
+    BITP_freeVecGF2(&z2, 0);
+    BITP_freeVecGF2(&z3, 0);
+    BITP_freeVecGF2(&decoded, 0);
+    BITP_freeVecGF2(&r, 0);
+    BITP_freeVecGF2(&h, 0);
+    BITP_freeVecGF2(&hash_r, 0);
+    BITP_freeVecGF2(&hash_e, 0);
+    BITP_freeVecGF2(&hh, 0);
+    BITP_freeVecGF2(&temp, 0);
 
 #ifdef DEBUG_DECRYPT
     printDebug("###### DECRYPT DONE ######");
@@ -725,11 +725,11 @@ int decryptCCA2KobaraImaiA(Vector_GF2 *message, const Vector_GF2 *cipher, const 
     return rc;
 }
 
-void gf2xPolyGenGoppaA(Polynomial_GF2_16x *p, int t, const Arithmetic_Data *a_data) {
+void BITP_gf2xPolyGenGoppaA(Polynomial_GF2_16x *p, int t, const Arithmetic_Data *a_data) {
 #if defined(DEBUG_L) || defined(WARNING_L)
     int i = 1;
 #endif
-    mallocPoly(p, t);
+    BITP_mallocPoly(p, t);
 
     while(1) {
         gf2xPolyGenRandom(p, t, a_data);

@@ -76,15 +76,15 @@ GF2_16x gf2xPowerModT(GF2_16x a, int e, const Arithmetic_Data *a_data) {
 }
 
 /*** PZ: old version
-int gf2xMatrixMulA(Matrix_GF2_16x *x, const Matrix_GF2_16x *a, const Matrix_GF2_16x *b, const Arithmetic_Data *a_data) {
+int BITP_gf2xMatrixMulA(Matrix_GF2_16x *x, const Matrix_GF2_16x *a, const Matrix_GF2_16x *b, const Arithmetic_Data *a_data) {
     uint32_t i, j, k;
     GF2_16x tmp;
 
     if (a->n != b->k)
         return -1;
 
-    if (mallocMatrix(x, a->k, b->n) != 0) {
-        printError("gf2xMatrixMulA: allocation error");
+    if (BITP_mallocMatrix(x, a->k, b->n) != 0) {
+        printError("BITP_gf2xMatrixMulA: allocation error");
 
         return -2;
     }
@@ -103,15 +103,15 @@ int gf2xMatrixMulA(Matrix_GF2_16x *x, const Matrix_GF2_16x *a, const Matrix_GF2_
 */
 
 /*** PZ: speedup critical instructions ***/
-int gf2xMatrixMulA(Matrix_GF2_16x *x, const Matrix_GF2_16x *a, const Matrix_GF2_16x *b, const Arithmetic_Data *a_data) {
+int BITP_gf2xMatrixMulA(Matrix_GF2_16x *x, const Matrix_GF2_16x *a, const Matrix_GF2_16x *b, const Arithmetic_Data *a_data) {
     uint32_t i, j, k;
     int loga; 
 
     if (a->n != b->k)
         return -1;
 
-    if (mallocMatrix(x, a->k, b->n) != 0) {
-        printError("gf2xMatrixMulA: allocation error");
+    if (BITP_mallocMatrix(x, a->k, b->n) != 0) {
+        printError("BITP_gf2xMatrixMulA: allocation error");
 
         return -2;
     }
@@ -139,19 +139,19 @@ int gf2xMatrixMulA(Matrix_GF2_16x *x, const Matrix_GF2_16x *a, const Matrix_GF2_
 }
 
 
-int gf2VecMulMatA(Vector_GF2 *out, const Vector_GF2 *v, const Matrix_GF2 *b) {
-    if (mallocVectorGF2(out, b->n)) {
+int BITP_gf2VecMulMatA(Vector_GF2 *out, const Vector_GF2 *v, const Matrix_GF2 *b) {
+    if (BITP_mallocVectorGF2(out, b->n)) {
         return -2;
     }
-    return gf2VecMulMat(out, v, b);
+    return BITP_gf2VecMulMat(out, v, b);
 }
 
-int gf2VecMulMat(Vector_GF2 *out, const Vector_GF2 *v, const Matrix_GF2 *b) {
+int BITP_gf2VecMulMat(Vector_GF2 *out, const Vector_GF2 *v, const Matrix_GF2 *b) {
     int i, j;
 
     if ((v->len != b->k) || (out->len != b->n)) {
-        printError("gf2VecMulMat: wrong vector and matrix dimension v->len = %d, b->k = %d", v->len, b->k);
-        printError("gf2VecMulMat: wrong vector and matrix dimension out->len = %d, b->n = %d", out->len, b->n);
+        printError("BITP_gf2VecMulMat: wrong vector and matrix dimension v->len = %d, b->k = %d", v->len, b->k);
+        printError("BITP_gf2VecMulMat: wrong vector and matrix dimension out->len = %d, b->n = %d", out->len, b->n);
 
         return -1;
     }
@@ -177,11 +177,11 @@ void gf2MatXorRows(Matrix_GF2 *mat, int i, int j) {
     }
 }
 
-int gf2VecXor(Vector_GF2 *out, const Vector_GF2 *in) {
+int BITP_gf2VecXor(Vector_GF2 *out, const Vector_GF2 *in) {
     int i;
 
     if (out->elements_in_row != in->elements_in_row) {
-        printError("gf2VecXor: length error %d != %d", out->elements_in_row, in->elements_in_row);
+        printError("BITP_gf2VecXor: length error %d != %d", out->elements_in_row, in->elements_in_row);
 
         return -1;
     }
@@ -198,8 +198,8 @@ void gf2xPolyAdd(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Pol
     out_deg = a->deg > b->deg ? a->deg : b->deg;
 
     if (out->max_deg < out_deg) {
-        freePoly(out, 0);
-        mallocPoly(out, out_deg);
+        BITP_freePoly(out, 0);
+        BITP_mallocPoly(out, out_deg);
     }
     else {
         gf2xPolyNull(out);
@@ -212,10 +212,10 @@ void gf2xPolyAdd(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Pol
             out->coef[i] ^= b->coef[i];
         }
     }
-    out->deg = gf2xPolyGetDeg(out);
+    out->deg = BITP_gf2xPolyGetDeg(out);
 }
 
-void gf2xPolyDiv(Polynomial_GF2_16x *q, Polynomial_GF2_16x *r, const Polynomial_GF2_16x *a, const Polynomial_GF2_16x *b, const Arithmetic_Data *a_data) {
+void BITP_gf2xPolyDiv(Polynomial_GF2_16x *q, Polynomial_GF2_16x *r, const Polynomial_GF2_16x *a, const Polynomial_GF2_16x *b, const Arithmetic_Data *a_data) {
     // a:b = q+r
     Polynomial_GF2_16x tmp;
     GF2_16x leader;
@@ -225,15 +225,15 @@ void gf2xPolyDiv(Polynomial_GF2_16x *q, Polynomial_GF2_16x *r, const Polynomial_
     int i;
     int max_deg_q;
 
-    mallocPoly(&dividend, a->max_deg);
-    gf2xPolyCopy(&dividend, a);
+    BITP_mallocPoly(&dividend, a->max_deg);
+    BITP_gf2xPolyCopy(&dividend, a);
     
     max_deg_q = a->deg - b->deg;
 
     // check size of outputs
     if (q->max_deg < max_deg_q) {
-        freePoly(q, 0);
-        mallocPoly(q, max_deg_q);
+        BITP_freePoly(q, 0);
+        BITP_mallocPoly(q, max_deg_q);
     }
     else {
         // here was mordor #2 - forgotten to null outputs :/
@@ -241,17 +241,17 @@ void gf2xPolyDiv(Polynomial_GF2_16x *q, Polynomial_GF2_16x *r, const Polynomial_
         gf2xPolyNull(q);
     }
     if (r->max_deg < (b->max_deg - 1)) {
-        freePoly(r, 0);
-        mallocPoly(r, b->max_deg - 1);
+        BITP_freePoly(r, 0);
+        BITP_mallocPoly(r, b->max_deg - 1);
     }
     else {
         gf2xPolyNull(r);
     }
-    mallocPoly(&tmp, a->max_deg);
+    BITP_mallocPoly(&tmp, a->max_deg);
 
     for (i = a->deg; i >= 0; i--) {
         if (dividend.deg < divider->deg) {
-            gf2xPolyCopy(r, &dividend);
+            BITP_gf2xPolyCopy(r, &dividend);
             break;
         }
         gf2xPolyNull(&tmp);
@@ -260,17 +260,17 @@ void gf2xPolyDiv(Polynomial_GF2_16x *q, Polynomial_GF2_16x *r, const Polynomial_
         q->coef[exponent] = leader;
 
         if(q->deg == -1) {
-            q->deg = gf2xPolyGetDeg(q);            
+            q->deg = BITP_gf2xPolyGetDeg(q);            
         }
-        gf2xPolyMul(&tmp, divider, q, a_data);
+        BITP_gf2xPolyMul(&tmp, divider, q, a_data);
 
         gf2xPolyAdd(&dividend, a, &tmp);
     }
-    freePoly(&dividend, 0);
-    freePoly(&tmp, 0);
+    BITP_freePoly(&dividend, 0);
+    BITP_freePoly(&tmp, 0);
 }
 
-void gf2xPolyMul(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Polynomial_GF2_16x *b, const Arithmetic_Data *a_data) {
+void BITP_gf2xPolyMul(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Polynomial_GF2_16x *b, const Arithmetic_Data *a_data) {
     int i;
     int j;
     int max_deg = a->deg + b->deg;
@@ -278,8 +278,8 @@ void gf2xPolyMul(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Pol
     // MAYBE HERE WAS #### mordor #### - it does
     // if there is not enough space, resize it
     if (out->max_deg < max_deg) {
-        freePoly(out, 0);
-        mallocPoly(out, max_deg);
+        BITP_freePoly(out, 0);
+        BITP_mallocPoly(out, max_deg);
     }
     else {
         gf2xPolyNull(out);
@@ -290,50 +290,50 @@ void gf2xPolyMul(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Pol
             out->coef[i+j] ^= gf2xMulModT(a->coef[i], b->coef[j], a_data);
         }
     }
-    out->deg = gf2xPolyGetDeg(out);
+    out->deg = BITP_gf2xPolyGetDeg(out);
 }
 
-void gf2xPolyShr(Polynomial_GF2_16x *a, int n) {
+void BITP_gf2xPolyShr(Polynomial_GF2_16x *a, int n) {
     Polynomial_GF2_16x tmp;
 
     // if there is nothing to shift, return
     if (a->deg == -1 || n <= 0) {
         return;
     }
-    mallocPoly(&tmp, a->deg);
-    gf2xPolyCopy(&tmp, a);
+    BITP_mallocPoly(&tmp, a->deg);
+    BITP_gf2xPolyCopy(&tmp, a);
     gf2xPolyNull(a);
 
     if (n < tmp.deg + 1) {
         memcpy((void *)(a->coef), (void *)(tmp.coef + n), (tmp.deg + 1 - n) * sizeof(GF2_16x));
 
-        a->deg = gf2xPolyGetDeg(a);
+        a->deg = BITP_gf2xPolyGetDeg(a);
     }
-    freePoly(&tmp, 0);
+    BITP_freePoly(&tmp, 0);
 }
 
-void gf2xPolyShl(Polynomial_GF2_16x *a, int n) {
+void BITP_gf2xPolyShl(Polynomial_GF2_16x *a, int n) {
     Polynomial_GF2_16x tmp;
 
     // if there is nothing to shift, return
     if (a->deg == -1 || n <= 0) {
         return;
     }
-    mallocPoly(&tmp, a->deg);
-    gf2xPolyCopy(&tmp, a);
+    BITP_mallocPoly(&tmp, a->deg);
+    BITP_gf2xPolyCopy(&tmp, a);
 
     if (a->max_deg < a->deg + n) {
-        freePoly(a, 0);
+        BITP_freePoly(a, 0);
 
-        mallocPoly(a, a->deg + n);
+        BITP_mallocPoly(a, a->deg + n);
     }
     else {
         gf2xPolyNull(a);
     }
     memcpy((void *)(a->coef + n), (void *)tmp.coef, (tmp.deg + 1) * sizeof(GF2_16x));
-    a->deg = gf2xPolyGetDeg(a);
+    a->deg = BITP_gf2xPolyGetDeg(a);
 
-    freePoly(&tmp, 0);
+    BITP_freePoly(&tmp, 0);
 }
 
 void gf2xPolyPower(Polynomial_GF2_16x *a, int e, const Arithmetic_Data *a_data) {
@@ -354,30 +354,30 @@ void gf2xPolyPower(Polynomial_GF2_16x *a, int e, const Arithmetic_Data *a_data) 
         return;
     }
     else {
-        mallocPoly(&tmp, a->deg * e);
-        mallocPoly(&tmp_2, a->deg * e);
+        BITP_mallocPoly(&tmp, a->deg * e);
+        BITP_mallocPoly(&tmp_2, a->deg * e);
 
-        gf2xPolyCopy(&tmp, a);
+        BITP_gf2xPolyCopy(&tmp, a);
 
         for (i = 1; i < e; i++) {
-            gf2xPolyCopy(&tmp_2, &tmp);
+            BITP_gf2xPolyCopy(&tmp_2, &tmp);
 
-            gf2xPolyMul(&tmp, &tmp_2, a, a_data);
+            BITP_gf2xPolyMul(&tmp, &tmp_2, a, a_data);
         }
-        gf2xPolyCopy(a, &tmp);
+        BITP_gf2xPolyCopy(a, &tmp);
 
-        freePoly(&tmp, 0);
-        freePoly(&tmp_2, 0);
+        BITP_freePoly(&tmp, 0);
+        BITP_freePoly(&tmp_2, 0);
     }
 }
 
-void gf2xPolyMulEl(Polynomial_GF2_16x *a, GF2_16x el, const Arithmetic_Data *a_data) {
+void BITP_gf2xPolyMulEl(Polynomial_GF2_16x *a, GF2_16x el, const Arithmetic_Data *a_data) {
     int i;
 
     for (i = a->deg; i >= 0; i--) {
         a->coef[i] = gf2xMulModT(a->coef[i], el, a_data);
     }
-    a->deg = gf2xPolyGetDeg(a);
+    a->deg = BITP_gf2xPolyGetDeg(a);
 }
 
 void gf2xPolyMod(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Polynomial_GF2_16x *mod, const Arithmetic_Data *a_data) {
@@ -389,55 +389,55 @@ void gf2xPolyMod(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Pol
         return;
     }
     if (out->max_deg < a->deg) {
-        freePoly(out, 0);
+        BITP_freePoly(out, 0);
 
-        mallocPoly(out, a->deg);
+        BITP_mallocPoly(out, a->deg);
     }
     else {
         gf2xPolyNull(out);
     }
     // if there is nothing to do
     if (a->deg < mod->deg) {
-        gf2xPolyCopy(out, a);
+        BITP_gf2xPolyCopy(out, a);
 
         return;
     }
     // prepare tmp variables
-    mallocPoly(&tmp_mod, a->deg);
-    mallocPoly(&tmp_out, a->deg);
-    gf2xPolyCopy(&tmp_out, a);
+    BITP_mallocPoly(&tmp_mod, a->deg);
+    BITP_mallocPoly(&tmp_out, a->deg);
+    BITP_gf2xPolyCopy(&tmp_out, a);
 
     for (i = a->deg; i >= mod->deg; i--) {
-        gf2xPolyCopy(&tmp_mod, mod);
+        BITP_gf2xPolyCopy(&tmp_mod, mod);
 
         lead = gf2xGetPseudoInv(gf2xPolyLeadCoef(mod), tmp_out.coef[i], a_data);
         
-        gf2xPolyMulEl(&tmp_mod, lead, a_data);
-        gf2xPolyShl(&tmp_mod, tmp_out.deg - mod->deg);
+        BITP_gf2xPolyMulEl(&tmp_mod, lead, a_data);
+        BITP_gf2xPolyShl(&tmp_mod, tmp_out.deg - mod->deg);
         gf2xPolyAdd(out, &tmp_out, &tmp_mod);
 
         if (i > mod->deg) {
-            gf2xPolyCopy(&tmp_out, out);
+            BITP_gf2xPolyCopy(&tmp_out, out);
         }
     }
-    freePoly(&tmp_mod, 0);
-    freePoly(&tmp_out, 0);
+    BITP_freePoly(&tmp_mod, 0);
+    BITP_freePoly(&tmp_out, 0);
 }
 
-void gf2xMatRootA(Matrix_GF2_16x *out, const Polynomial_GF2_16x *mod, const Arithmetic_Data *a_data) {
+void BITP_gf2xMatRootA(Matrix_GF2_16x *out, const Polynomial_GF2_16x *mod, const Arithmetic_Data *a_data) {
     int i, j;
     Polynomial_GF2_16x row, tmp;
     Matrix_GF2_16x bigMat;//, test;//, test_out; // matrix (S | I)
 
     // create square matrix
-    mallocMatrix(&bigMat, mod->deg, mod->deg * 2);
-    mallocMatrix(out, mod->deg, mod->deg);
-    // mallocMatrix(&test, mod->deg, mod->deg);
-    gf2xMatNull(out);
-    gf2xMatNull(&bigMat);
-    mallocPoly(&tmp, 0);
+    BITP_mallocMatrix(&bigMat, mod->deg, mod->deg * 2);
+    BITP_mallocMatrix(out, mod->deg, mod->deg);
+    // BITP_mallocMatrix(&test, mod->deg, mod->deg);
+    BITP_gf2xMatNull(out);
+    BITP_gf2xMatNull(&bigMat);
+    BITP_mallocPoly(&tmp, 0);
     
-    mallocPoly(&row, (2 * out->k));
+    BITP_mallocPoly(&row, (2 * out->k));
 
     for (i = 0; i < out->k; i++) {
         gf2xPolyNull(&row);
@@ -446,9 +446,9 @@ void gf2xMatRootA(Matrix_GF2_16x *out, const Polynomial_GF2_16x *mod, const Arit
         // compute line
         gf2xPolyMod(&tmp, &row, mod, a_data);
         // copy elements from polynomial into matrix 
-        gf2xMatInsertPoly(out, &tmp, i);
+        BITP_gf2xMatInsertPoly(out, &tmp, i);
     }
-    freePoly(&row, 0);
+    BITP_freePoly(&row, 0);
 
     for (i = 0; i < out->k; i++) {
         for (j = 0; j < out->k; j++) {
@@ -457,7 +457,7 @@ void gf2xMatRootA(Matrix_GF2_16x *out, const Polynomial_GF2_16x *mod, const Arit
         bigMat.elements[i][out->n + i] = 1;
     }
 
-    gf2xMatGEM(&bigMat, a_data);
+    BITP_gf2xMatGEM(&bigMat, a_data);
 
     for (i = 0; i < out->k; i++) {
         for (j = 0; j < out->k; j++) {
@@ -465,12 +465,12 @@ void gf2xMatRootA(Matrix_GF2_16x *out, const Polynomial_GF2_16x *mod, const Arit
             out->elements[i][j] = gf2xRoot(bigMat.elements[i][out->k + j], a_data);
         }
     }
-    // gf2xMatrixMulA(&test_out, &test, out, a_data);
-    // printGf2xMat(&test_out);
-    freeMat(&bigMat, 0);
+    // BITP_gf2xMatrixMulA(&test_out, &test, out, a_data);
+    // BITP_printGf2xMat(&test_out);
+    BITP_freeMat(&bigMat, 0);
 }
 
-void gf2xVecMulMat(Vector_GF2_16x *out, const Vector_GF2_16x *x, const Matrix_GF2_16x *mat, const Arithmetic_Data *a_data) {
+void BITP_gf2xVecMulMat(Vector_GF2_16x *out, const Vector_GF2_16x *x, const Matrix_GF2_16x *mat, const Arithmetic_Data *a_data) {
     int i, j;
     GF2_16x element;
     
@@ -499,31 +499,31 @@ GF2_16x gf2xRoot(GF2_16x element, const Arithmetic_Data *a_data) {
     return sqr;
 }
 
-void gf2xPolyRoot(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *poly, const Polynomial_GF2_16x *mod, const Arithmetic_Data *a_data) {
+void BITP_gf2xPolyRoot(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *poly, const Polynomial_GF2_16x *mod, const Arithmetic_Data *a_data) {
     Vector_GF2_16x tmp, tmp_out;
     Matrix_GF2_16x squareMat;
     int i;
 
-    mallocVectorGF2_16x(&tmp_out, mod->deg);
+    BITP_mallocVectorGF2_16x(&tmp_out, mod->deg);
 
     if (out->deg < mod->deg) {
-        freePoly(out, 0);
-        mallocPoly(out, mod->deg);
+        BITP_freePoly(out, 0);
+        BITP_mallocPoly(out, mod->deg);
     }
-    gf2xPolyToVecA(&tmp, poly, mod->deg);
-    gf2xMatRootA(&squareMat, mod, a_data);
+    BITP_gf2xPolyToVecA(&tmp, poly, mod->deg);
+    BITP_gf2xMatRootA(&squareMat, mod, a_data);
 
-    // printGf2xMat(&squareMat);
+    // BITP_printGf2xMat(&squareMat);
 
     for (i = 0; i < tmp.len; i++) {
         tmp.elements[i] = gf2xRoot(tmp.elements[i], a_data);
     }
 
-    gf2xVecMulMat(&tmp_out, &tmp, &squareMat, a_data);
+    BITP_gf2xVecMulMat(&tmp_out, &tmp, &squareMat, a_data);
     gf2xPolyNull(out);
-    gf2xVecToPoly(out, &tmp_out);
+    BITP_gf2xVecToPoly(out, &tmp_out);
 
-    freeMat(&squareMat, 0);
-    freeVectorGF2_16x(&tmp, 0);
-    freeVectorGF2_16x(&tmp_out, 0);
+    BITP_freeMat(&squareMat, 0);
+    BITP_freeVectorGF2_16x(&tmp, 0);
+    BITP_freeVectorGF2_16x(&tmp_out, 0);
 }

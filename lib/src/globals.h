@@ -28,7 +28,6 @@
 #include "types.h"
 
 #define ONE 1
-#define debug 0
 
 /************** DEBUG RULES *****************/
 

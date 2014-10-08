@@ -104,7 +104,7 @@
  * @param row[in] row index
  */
  /// Copy Matrix GF2 row to Vector GF2.
-#define gf2MatCopyRowToVec(v_pointer, m_pointer, row) memcpy((void *) ((v_pointer)->elements), (void *) ((m_pointer)->elements[row]), (v_pointer)->element_bit_size / 8 * (v_pointer)->elements_in_row)
+#define BITP_gf2MatCopyRowToVec(v_pointer, m_pointer, row) memcpy((void *) ((v_pointer)->elements), (void *) ((m_pointer)->elements[row]), (v_pointer)->element_bit_size / 8 * (v_pointer)->elements_in_row)
 
 /**
  * Set Polynomial values to 0.
@@ -131,7 +131,7 @@
 /// * Get leading coefitient of Polynomal over GF2x.
 #define gf2xPolyLeadCoef(poly_gf2_16x_p) ((poly_gf2_16x_p)->deg > -1 ? (poly_gf2_16x_p)->coef[(poly_gf2_16x_p)->deg] : 0)
 
-int gf2MatCopy(Matrix_GF2 *out, const Matrix_GF2 *in);
+int BITP_gf2MatCopy(Matrix_GF2 *out, const Matrix_GF2 *in);
 
 /**
  * Copy Polynomial.
@@ -139,7 +139,7 @@ int gf2MatCopy(Matrix_GF2 *out, const Matrix_GF2 *in);
  * @param src[in] pointer to GF2_16x polynomial	
  */
  /// Copy Polynomial.
-void gf2xPolyCopy(Polynomial_GF2_16x *dest, const Polynomial_GF2_16x *src);
+void BITP_gf2xPolyCopy(Polynomial_GF2_16x *dest, const Polynomial_GF2_16x *src);
 
 /**
  * Copy VectorGF2.
@@ -147,7 +147,7 @@ void gf2xPolyCopy(Polynomial_GF2_16x *dest, const Polynomial_GF2_16x *src);
  * @param src[in] pointer to VectorGF2	
  */
  /// Copy VectorGF2.
-void gf2VecCopy(Vector_GF2 *dest, const Vector_GF2 *src);
+void BITP_gf2VecCopy(Vector_GF2 *dest, const Vector_GF2 *src);
 
 /**
 * Get degree of polynomial over GF2.
@@ -155,7 +155,7 @@ void gf2VecCopy(Vector_GF2 *dest, const Vector_GF2 *src);
 * @return degree of pol or -1 if it is pol = 0
 */
 /// Get degree of polynomial over GF2
-int gf2xGetDeg(GF2_64x pol);
+int BITP_gf2xGetDeg(GF2_64x pol);
 
 /**
 * Get degree of polynomial over GF2x.
@@ -163,7 +163,7 @@ int gf2xGetDeg(GF2_64x pol);
 * @return degree of pol or -1 if it is pol = 0
 */
 /// Get degree of polynomial over GF2x
-int gf2xPolyGetDeg(Polynomial_GF2_16x *poly);
+int BITP_gf2xPolyGetDeg(Polynomial_GF2_16x *poly);
 
 /**
  * Permute matrix GF2^m with permutation.
@@ -171,7 +171,7 @@ int gf2xPolyGetDeg(Polynomial_GF2_16x *poly);
  * @param permutation permutation vector
  * @return on succes 0, on size error -1, on allocation error -2
  */
-int gf2xMatPermute(Matrix_GF2_16x *out, const Matrix_GF2_16x *m, const Permutation_Vector *permutation);
+int BITP_gf2xMatPermute(Matrix_GF2_16x *out, const Matrix_GF2_16x *m, const Permutation_Vector *permutation);
 
 /**
  * Permute matrix GF2 with permutation.
@@ -179,7 +179,7 @@ int gf2xMatPermute(Matrix_GF2_16x *out, const Matrix_GF2_16x *m, const Permutati
  * @param permutation permutation vector
  * @return on succes 0, on size error -1, on allocation error -2
  */
-int gf2MatPermute(Matrix_GF2 *m, const Permutation_Vector *permutation);
+int BITP_gf2MatPermute(Matrix_GF2 *m, const Permutation_Vector *permutation);
 
 /**
  * Permute vector GF2 with permutation.
@@ -187,7 +187,7 @@ int gf2MatPermute(Matrix_GF2 *m, const Permutation_Vector *permutation);
  * @param permutation permutation vector
  * @return on succes 0, on size error -1, on allocation error -2
  */
-int gf2VecPermute(Vector_GF2 *vec, const Permutation_Vector *permutation);
+int BITP_gf2VecPermute(Vector_GF2 *vec, const Permutation_Vector *permutation);
 
 /**
  * Get masked bit from exact row of Matrix GF2
@@ -207,37 +207,37 @@ GF2 gf2MatGetMaskedBit(const Matrix_GF2 *m, uint32_t row, uint32_t bit);
 GF2 gf2VecGetMaskedBit(const Vector_GF2 *vec, uint32_t bit);
 
 /**
- * Generate random permutation, with structure allocation of given size.  After work you have to free memory using call freePerm.
+ * Generate random permutation, with structure allocation of given size.  After work you have to free memory using call BITP_freePerm.
  * @param permutation pointer to structure Permutation_Vector 
  * @param size size of permutation vector
  * @return on succes 0, else error
  */
-int permGenA(Permutation_Vector* permutation, uint32_t size);
+int BITP_permGenA(Permutation_Vector* permutation, uint32_t size);
 
 /**
- * Converts matrix GF2m to matrix GF2. Allocates memory for GF2 matrix.  After work you have to free memory using call freeMatGF2.
+ * Converts matrix GF2m to matrix GF2. Allocates memory for GF2 matrix.  After work you have to free memory using call BITP_freeMatGF2.
  * @param m matrix GF2m
  * @param deg degree of elements from GF2m
  * @param out output matrix GF2
  * @return on succes 0, else error
  */
-int gf2xMatConvertToGf2MatA(Matrix_GF2 *out, const Matrix_GF2_16x *m, int deg);
+int BITP_gf2xMatConvertToGf2MatA(Matrix_GF2 *out, const Matrix_GF2_16x *m, int deg);
 
 /**
- * Get inverse permutation to permutation. It allocates new permutation elements using malloc. After work you have to free memory using call freePerm.
+ * Get inverse permutation to permutation. It allocates new permutation elements using malloc. After work you have to free memory using call BITP_freePerm.
  * @param  out inverted permutation
  * @param  in  permutation
  * @return     on succes 0, else error
  */
-int permGetInvA(Permutation_Vector *out, const Permutation_Vector *in);
+int BITP_permGetInvA(Permutation_Vector *out, const Permutation_Vector *in);
 
 /**
- * Transpose GF2 Matrix. After work you have to free memory using call freeMatGF2.
+ * Transpose GF2 Matrix. After work you have to free memory using call BITP_freeMatGF2.
  * @param  out transposed GF2 matrix
  * @param  in  matrix to transpose
  * @return     on success 0, else error
  */
-int gf2MatTranspA(Matrix_GF2 *out, const Matrix_GF2 *in);
+int BITP_gf2MatTranspA(Matrix_GF2 *out, const Matrix_GF2 *in);
 
 /**
  * Swaps GF2 elements.
@@ -288,10 +288,10 @@ Permutation_Vector* gf2MatMakeSystematicA(Matrix_GF2 *inout);
  * @param  permutation
  * @return 0 success, -1 when size of vectors is not the same, -2 on memory allocation error 
  */
-int permPermute(Permutation_Vector *to_permute, const Permutation_Vector *permutation);
+int BITP_permPermute(Permutation_Vector *to_permute, const Permutation_Vector *permutation);
 
 /**
- * Append identity matrix, so out matrix should be (M | I). After work should be called freeMatGF2.
+ * Append identity matrix, so out matrix should be (M | I). After work should be called BITP_freeMatGF2.
  * @param  out oupput matrix of size k x (n + k), will be allocated
  * @param  in  input matrix of size k x n
  * @return     0 - succes, else error
@@ -303,21 +303,21 @@ int gf2MatAppendIdenityA(Matrix_GF2 *out, const Matrix_GF2 *in);
  * Concats two vectors it allocates ouptu inside.
  * @param  vec1 first vector
  * @param  vec2 second vector
- * @param  out 	output vector - concat of vec1 and vec2, it allocates vector inside function, should be freed after use freeVecGF2()
+ * @param  out 	output vector - concat of vec1 and vec2, it allocates vector inside function, should be freed after use BITP_freeVecGF2()
  * @return    0 - succes, else error
  */
 /// Concats two vectors it allocates ouptu inside.
-int gf2VecConcatA(Vector_GF2 *out, const Vector_GF2 *vec1, const Vector_GF2 *vec2);
+int BITP_gf2VecConcatA(Vector_GF2 *out, const Vector_GF2 *vec1, const Vector_GF2 *vec2);
 
 /**
  * Concats two vectors without allocation ouput.
  * @param  vec1 first vector
  * @param  vec2 second vector
- * @param  out 	output vector - concat of vec1 and vec2, it allocates vector inside function, should be freed after use freeVecGF2()
+ * @param  out 	output vector - concat of vec1 and vec2, it allocates vector inside function, should be freed after use BITP_freeVecGF2()
  * @return    0 - succes, else error
  */
 /// Concats two vectors without allocation ouput.
-int gf2VecConcat(Vector_GF2 *out, const Vector_GF2 *vec1, const Vector_GF2 *vec2);
+int BITP_gf2VecConcat(Vector_GF2 *out, const Vector_GF2 *vec1, const Vector_GF2 *vec2);
 
 /**
  * Crop the vector
@@ -327,20 +327,20 @@ int gf2VecConcat(Vector_GF2 *out, const Vector_GF2 *vec1, const Vector_GF2 *vec2
  * @param  length count of bits of cropped vector
  * @return    0 - succes, else error
  */
-int gf2VecCropA(Vector_GF2 *out, const Vector_GF2 *in, const int start, const int length);
+int BITP_gf2VecCropA(Vector_GF2 *out, const Vector_GF2 *in, const int start, const int length);
 
 /**
- * Crop matrix GF2 from left.  After work you have to free memory using call freeMatGF2.
+ * Crop matrix GF2 from left.  After work you have to free memory using call BITP_freeMatGF2.
  * @param in input matrix GF2
  * @param out croped output matrix GF2 
  * @param width width of cropped matrix
  * @return on succes 0, on higher or equal width as actual width of in matrix -1, on allocation of new matrix error -2
  */
 /// Crop matrix GF2 from left.
-int gf2MatCropA(Matrix_GF2 *out, const Matrix_GF2 *in, uint16_t width);
+int BITP_gf2MatCropA(Matrix_GF2 *out, const Matrix_GF2 *in, uint16_t width);
 
 /**
- * Get matrix GF2 row as vector gf2. You can set alloc param, to allocate it dynamically inside function, or use allocated vector yet. When set alloc, after work call freeVecGF2
+ * Get matrix GF2 row as vector gf2. You can set alloc param, to allocate it dynamically inside function, or use allocated vector yet. When set alloc, after work call BITP_freeVecGF2
  * @param  out   vector
  * @param  in    matrix
  * @param  row   row index
@@ -370,7 +370,7 @@ uint32_t getRandValue(int from, int to);
 
 /**
  * Extended euclidian to find greatest common divisor and Bézout coefficients s, t, where gcd(a, b) = d = a*s + b*t.
- * You can specify degegree, when will it ends, deg(d) > end_deg. Polynomials d, s, t will be allocated inside function. After work should be freed using freePoly().
+ * You can specify degegree, when will it ends, deg(d) > end_deg. Polynomials d, s, t will be allocated inside function. After work should be freed using BITP_freePoly().
  * @param  d[out] greatest common divisor
  * @param  s[out] Bézout coefficients
  * @param  t[out] Bézout coefficients
@@ -389,7 +389,7 @@ int gf2xPolyExtEuclidA(Polynomial_GF2_16x *d, Polynomial_GF2_16x *s, Polynomial_
  * @param  p2 [description]
  * @return    0 if different, 1 otherwise.
  */
-int gf2xPolyCmp(const Polynomial_GF2_16x *p1, const Polynomial_GF2_16x *p2);
+int BITP_gf2xPolyCmp(const Polynomial_GF2_16x *p1, const Polynomial_GF2_16x *p2);
 
 /**
  * Function tests if polynomial is irreducible or not.
@@ -399,14 +399,14 @@ int gf2xPolyCmp(const Polynomial_GF2_16x *p1, const Polynomial_GF2_16x *p2);
  */
 int gf2xPolyIrredTest(const Polynomial_GF2_16x *p, const Arithmetic_Data *a_data);
 /**
- * Get inverse polynomial over GF2_16x. It is using Extended Euclidean alg. Polynomial out will be allocated inside function. After work should be freed using freePoly().
+ * Get inverse polynomial over GF2_16x. It is using Extended Euclidean alg. Polynomial out will be allocated inside function. After work should be freed using BITP_freePoly().
  * @param a[in]    input polynomial
  * @param mod[in]  modulus polynomial
  * @param out[out] output polynomial
  * @param a_data[in] arithmetic data structure
  */
 /// Get inverse polynomial over GF2_16x.
-void gf2xPolyInvA(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Polynomial_GF2_16x *mod, const Arithmetic_Data *a_data);
+void BITP_gf2xPolyInvA(Polynomial_GF2_16x *out, const Polynomial_GF2_16x *a, const Polynomial_GF2_16x *mod, const Arithmetic_Data *a_data);
 
 /**
  * Make from polynomial monic polynomial. It means that it will be multiplicated with (leading coef)^-1. It will change source polynomial.
@@ -422,7 +422,7 @@ GF2_16x gf2xPolyMakeMonic(Polynomial_GF2_16x *a, const Arithmetic_Data *a_data);
  * @param  n [description]
  * @return   [description]
  */
-int isPrime(int n);
+int BITP_isPrime(int n);
 
 /**
  * Hash function with output digest length of 512bits
@@ -430,9 +430,9 @@ int isPrime(int n);
  * @param  out 	output hashed vector of 512 bits
  * @return        	0 - success, else error
  */
-int gf2VecHashA(Vector_GF2 *out, const Vector_GF2 *in, int len);
+int BITP_gf2VecHashA(Vector_GF2 *out, const Vector_GF2 *in, int len);
 
-void gf2xMatNull(Matrix_GF2_16x *mat);
+void BITP_gf2xMatNull(Matrix_GF2_16x *mat);
 
 /**
  * Insert coefitients from poly into matrix mat to i-th row
@@ -440,21 +440,21 @@ void gf2xMatNull(Matrix_GF2_16x *mat);
  * @param mat  [description]
  * @param i    [description]
  */
-void gf2xMatInsertPoly(Matrix_GF2_16x *mat, const Polynomial_GF2_16x *poly, int i);
+void BITP_gf2xMatInsertPoly(Matrix_GF2_16x *mat, const Polynomial_GF2_16x *poly, int i);
 
 /**
- * save poly coefitients to vector, it allocates vec inside function. After use use freeVectorGF2_16x
+ * save poly coefitients to vector, it allocates vec inside function. After use use BITP_freeVectorGF2_16x
  * @param poly [description]
  * @param vec  [description]
  */
-void gf2xPolyToVecA(Vector_GF2_16x *vec, const Polynomial_GF2_16x *poly, int len);
+void BITP_gf2xPolyToVecA(Vector_GF2_16x *vec, const Polynomial_GF2_16x *poly, int len);
 
 /**
  * GEM applied on matrix with coefitients from GF2^m
  * @param mat    [description]
  * @param a_data [description]
  */
-void gf2xMatGEM(Matrix_GF2_16x *mat, const Arithmetic_Data *a_data);
+void BITP_gf2xMatGEM(Matrix_GF2_16x *mat, const Arithmetic_Data *a_data);
 
 /**
  * Swap
@@ -512,17 +512,17 @@ void gf2xMatXorRows(Matrix_GF2_16x *mat, int index, int j, const Arithmetic_Data
  * @param element [description]
  * @param a_data  [description]
  */
-void gf2xVecMulEl(Vector_GF2_16x *vec, GF2_16x element, const Arithmetic_Data *a_data);
+void BITP_gf2xVecMulEl(Vector_GF2_16x *vec, GF2_16x element, const Arithmetic_Data *a_data);
 
-void gf2xVecToPoly(Polynomial_GF2_16x *poly, const Vector_GF2_16x *vec);
+void BITP_gf2xVecToPoly(Polynomial_GF2_16x *poly, const Vector_GF2_16x *vec);
 
 void gf2xMatDetermineSyndromeA(Polynomial_GF2_16x *syndrome, const Vector_GF2 *z, const Matrix_GF2_16x *H, const Arithmetic_Data *a_data);
 
-void gf2xMatClearCol(Matrix_GF2_16x *mat, int index, const Arithmetic_Data *a_data);
+void BITP_gf2xMatClearCol(Matrix_GF2_16x *mat, int index, const Arithmetic_Data *a_data);
 
 int permIsValid(const Permutation_Vector *p);
 
-int gf2VecCmp(const Vector_GF2 *v1, const Vector_GF2 *v2);
+int BITP_gf2VecCmp(const Vector_GF2 *v1, const Vector_GF2 *v2);
 
 /**
  * Generate monic polynomial of degree t and with non-zero coefficient a_0
