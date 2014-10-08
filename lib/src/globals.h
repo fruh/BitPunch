@@ -27,28 +27,28 @@
 
 #include "types.h"
 
-#define ONE 1
+#define BPU_ONE 1
 
 /************** DEBUG RULES *****************/
 
 // ################### process.h
 // if set it prints debug output in decode adn decodeA function
-// #define DEBUG_DECODE
-// #define DEBUG_ENCRYPT
-// #define DEBUG_DECRYPT
+// #define BPU_DEBUG_DECODE
+// #define BPU_DEBUG_ENCRYPT
+// #define BPU_DEBUG_DECRYPT
 
 // ################### init.h
-// #define DEBUG_MALLOC_VECTOR_GF2
-// #define DEBUG_INIT_MCE_CTX
+// #define BPU_DEBUG_MALLOC_VECTOR_GF2
+// #define BPU_DEBUG_INIT_MCE_CTX
 
 /********************************************/
 
 /*************** TESTS **********************/
 // equivalent code status
-// #define TEST_DET_EQ_CODE
+// #define BPU_TEST_DET_EQ_CODE
 
 /// McEliece context, extern variable
-extern McEliece_Ctx mce_ctx;
+extern BPU_T_McEliece_Ctx mce_ctx;
 extern int __test_was_eq_code;
 
 #endif // GLOBALS_H

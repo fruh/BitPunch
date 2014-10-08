@@ -24,10 +24,10 @@
 
 #include "types.h"
 
-#define GF2_POLY_DEG_5 0x3b
-#define GF2_POLY_DEG_6 0x43
-#define GF2_POLY_DEG_10 0x71d
-#define GF2_POLY_DEG_11 0x805
+#define BPU_GF2_POLY_DEG_5 0x3b
+#define BPU_GF2_POLY_DEG_6 0x43
+#define BPU_GF2_POLY_DEG_10 0x71d
+#define BPU_GF2_POLY_DEG_11 0x805
 
 /**
 * Precalculate logaritmic and exponencial tables and initialize structure Aritmetic_Data
@@ -36,7 +36,7 @@
 * @return number of elements or < 0 means error
 */
 /// Precalculate logaritmic and exponencial tables and initialize structure Aritmetic_Data
-int BITP_initLogExpTable(McEliece_Ctx *mce_ctx, GF2_16x g, GF2_16x mod);
+int BPU_initLogExpTable(BPU_T_McEliece_Ctx *mce_ctx, BPU_T_GF2_16x g, BPU_T_GF2_16x mod);
 
 /**
 * Initialize all control H matricies (X, Y, Z). It uses McEl structure.
@@ -47,7 +47,7 @@ int BITP_initLogExpTable(McEliece_Ctx *mce_ctx, GF2_16x g, GF2_16x mod);
 * @return 0 - on succes, else error
 */
 /// Initialize all control H matricies (X, Y, Z)
-int BITP_initMatH(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly, Arithmetic_Data *a_data);
+int BPU_initMatH(BPU_T_Matrix_GF2_16x *m, BPU_T_Poly_GF2_16x *poly, BPU_T_Arithmetic_Data *a_data);
 
 /**
 * Initialize X matrix of t x t dimensions.
@@ -56,7 +56,7 @@ int BITP_initMatH(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly, Arithmetic_Data *
 * @param[in] poly goppa polynomial over GF2x
 */
 /// Initialize X matrix of t x t dimensions.
-int BITP_initMatX(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly);
+int BPU_initMatX(BPU_T_Matrix_GF2_16x *m, BPU_T_Poly_GF2_16x *poly);
 
 /**
 * Initialize Y matrix of t x n dimensions, n = ord of galois field.
@@ -65,7 +65,7 @@ int BITP_initMatX(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly);
 * @param[in] a_data pointer to Aritmetic_Data structure, used by calculations
 */
 /// Initialize Y matrix of t x n dimensions, where t = deg, n = ord of galois field.
-int BITP_initMatY(Matrix_GF2_16x *m, uint8_t t, Arithmetic_Data *a_data);
+int BPU_initMatY(BPU_T_Matrix_GF2_16x *m, uint8_t t, BPU_T_Arithmetic_Data *a_data);
 
 /**
 * Initialize Z matrix of n x n dimensions, where n = ord of galois field.
@@ -75,25 +75,25 @@ int BITP_initMatY(Matrix_GF2_16x *m, uint8_t t, Arithmetic_Data *a_data);
 * @param[in] a_data pointer to Aritmetic_Data structure, used by calculations
 */
 /// Initialize Z matrix of n x n dimensions, where n is odr of galois field.
-int BITP_initMatZ(Matrix_GF2_16x *m, Polynomial_GF2_16x *poly, Arithmetic_Data *a_data);
+int BPU_initMatZ(BPU_T_Matrix_GF2_16x *m, BPU_T_Poly_GF2_16x *poly, BPU_T_Arithmetic_Data *a_data);
 
 /**
 * Hash input using SHA256 included in OpenSSL library. Output length is SHA256_DIGEST_LENGTH
 * @retrun 0 if success, else -1
 */
 
-//int BITP_gf2VecHashA(Vector_GF2 vec, unsigned char* hashed);
+//int BPU_gf2VecHashA(Vector_GF2 vec, unsigned char* hashed);
 /**
 * Initialize McEliece context. GF, Aritmetics, set degree of Goppa polynomial
 */
 /// Initialize McEliece context.
-int BITP_genKeyPair(McEliece_Ctx *mce_ctx, uint8_t deg);
+int BPU_genKeyPair(BPU_T_McEliece_Ctx *mce_ctx, uint8_t deg);
 
 /**
 * Free allocated memory.
 */
 /// Free allocated memory.
-void BITP_freeMcElieceCtx(McEliece_Ctx *mce_ctx);
+void BPU_freeMcElieceCtx(BPU_T_McEliece_Ctx *mce_ctx);
 
 /**
  * Free dynamically or statically allocated matrix. 
@@ -101,7 +101,7 @@ void BITP_freeMcElieceCtx(McEliece_Ctx *mce_ctx);
  * @param[in] is_dyn boolean param, if 0 do not free mat object self (is statically allocated), just allocated matrix rows, cols, else free also m object
  */
 /// Free dynamically or statically allocated matrix
-void BITP_freeMat(Matrix_GF2_16x *m, int is_dyn);
+void BPU_freeMat(BPU_T_Matrix_GF2_16x *m, int is_dyn);
 
 /**
  * Free dynamiccaly or statically allocated Aritmetic_Data structure.
@@ -109,15 +109,15 @@ void BITP_freeMat(Matrix_GF2_16x *m, int is_dyn);
  * @param is_dyn 0 - staticaly allocated Aritmetic_Data object or 1 when dynamically
  */
 /// Free dynamiccaly or statically allocated Aritmetic_Data structure.
-void BITP_freeArithmeticData(Arithmetic_Data *a, int is_dyn);
+void BPU_freeArithmeticData(BPU_T_Arithmetic_Data *a, int is_dyn);
 
 /**
  * Free dynamically or statically alocated permutation vector.
  * @param p      permutation to free
- * @param is_dyn 0 - staticaly allocated Permutation_Vector object or 1 when dynamically
+ * @param is_dyn 0 - staticaly allocated BPU_T_Perm_Vector object or 1 when dynamically
  */
 /// Free dynamically or statically alocated permutation vector.
-void BITP_freePerm(Permutation_Vector *p, int is_dyn);
+void BPU_freePerm(BPU_T_Perm_Vector *p, int is_dyn);
 
 /**
  * Free dynamically or statically allocated matrix GF2. 
@@ -125,7 +125,7 @@ void BITP_freePerm(Permutation_Vector *p, int is_dyn);
  * @param[in] is_dyn boolean param, if 0 do not free mat object self (is statically allocated), just allocated matrix rows, cols, else free also m object
  */
 /// Free dynamically or statically allocated matrix
-void BITP_freeMatGF2(Matrix_GF2 *m, int is_dyn);
+void BPU_freeMatGF2(BPU_T_Matrix_GF2 *m, int is_dyn);
 
 /**
  * Free dynamically or statically allocated vector GF2. 
@@ -133,50 +133,50 @@ void BITP_freeMatGF2(Matrix_GF2 *m, int is_dyn);
  * @param[in] is_dyn boolean param, if 0 do not free mat object self (is statically allocated), just allocated vector cols, else free also m object
  */
 /// Free dynamically or statically allocated vector
-void BITP_freeVecGF2(Vector_GF2 *v, int is_dyn);
+void BPU_freeVecGF2(BPU_T_Vector_GF2 *v, int is_dyn);
 
 /**
- * Allocate permutation vector elements of size size using malloc.  After work you have to free memory using call BITP_freePerm(p)
+ * Allocate permutation vector elements of size size using malloc.  After work you have to free memory using call BPU_freePerm(p)
  * @param  p    vector to be allocated	
  * @param  size size, permutation len
  * @return      on succes 0 else error
  */
 /// Allocate permutation vector elements of size size.
-int BITP_mallocPerm(Permutation_Vector *p, int size);
+int BPU_mallocPerm(BPU_T_Perm_Vector *p, int size);
 
 /**
- * Allocate memory for matrix. After work you have to free memory using call BITP_freeMat.
+ * Allocate memory for matrix. After work you have to free memory using call BPU_freeMat.
  * @param[out] m matrix to be allocated
  * @param[in] rows rows
  * @param[in] cols cols
  * @return on succes 0, else error
  */
  /// Allocate memory for matrix.
-int BITP_mallocMatrix(Matrix_GF2_16x *m, int rows, int cols);
+int BPU_mallocMatrix(BPU_T_Matrix_GF2_16x *m, int rows, int cols);
 
 /**
- * Allocate memory for matrix GF2. It also nulls new matrix. After work you have to free memory using call BITP_freeMatGF2
+ * Allocate memory for matrix GF2. It also nulls new matrix. After work you have to free memory using call BPU_freeMatGF2
  * @param rows rows
  * @param cols cols
  * @return on succes 0, else error
  */
-int BITP_mallocMatrixGF2(Matrix_GF2 *m, int rows, int cols);
+int BPU_mallocMatrixGF2(BPU_T_Matrix_GF2 *m, int rows, int cols);
 
 /**
- * Allocate memory for vector GF2. It also null vector. After work you have to free memory using call BITP_freeVecGF2.
+ * Allocate memory for vector GF2. It also null vector. After work you have to free memory using call BPU_freeVecGF2.
  * @param len len of vector
  * @return on succes 0, else error
  */
-int BITP_mallocVectorGF2(Vector_GF2 *v, int len) ;
+int BPU_mallocVectorGF2(BPU_T_Vector_GF2 *v, int len) ;
 
 /**
- * Create a binary vector of required length and weight. After work call BITP_freeVecGF2
+ * Create a binary vector of required length and weight. After work call BPU_freeVecGF2
  * @param  out GF2 vector representation (L)
  * @param  l length of vector
  * @param  w weight of vector, if 0 weight is random
  * @return     0 - succes, else error
  */
-int initRandVector(Vector_GF2 *out, int l, int w);
+int initRandVector(BPU_T_Vector_GF2 *out, int l, int w);
 
 /**
  * Malloc memory for polynomial and zero-initialize
@@ -184,17 +184,17 @@ int initRandVector(Vector_GF2 *out, int l, int w);
  * @param  max_deg max degree of polynomial
  * @return
  */
-int BITP_mallocPoly(Polynomial_GF2_16x *p, int16_t max_deg);
+int BPU_mallocPoly(BPU_T_Poly_GF2_16x *p, int16_t max_deg);
 
 /**
  * dealloc memory
  * @param p
  * @param is_dyn
  */
-void BITP_freePoly(Polynomial_GF2_16x *p, int is_dyn);
+void BPU_freePoly(BPU_T_Poly_GF2_16x *p, int is_dyn);
 
-void BITP_mallocVectorGF2_16x(Vector_GF2_16x *vec, int size);
+void BPU_mallocVectorGF2_16x(BPU_T_Vector_GF2_16x *vec, int size);
 
-void BITP_freeVectorGF2_16x(Vector_GF2_16x *vec, int is_dyn);
+void BPU_freeVectorGF2_16x(BPU_T_Vector_GF2_16x *vec, int is_dyn);
 
 #endif // INIT_H

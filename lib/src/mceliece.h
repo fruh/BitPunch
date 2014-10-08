@@ -27,32 +27,32 @@
 
 /**
  * Initialize McEliece context to be able working with it.
- * @param  ctx  pointer to McEliece_Ctx structure, it is a context
+ * @param  ctx  pointer to BPU_T_McEliece_Ctx structure, it is a context
  * @param  t_errors number of errors, i.e. 50
  * @return          0 on succes, else non-zero value
  */
 /// Initialize McEliece context to be able working with it
-int BITP_mceInitCtx(McEliece_Ctx *ctx, uint8_t t_errors);
+int BPU_mceInitCtx(BPU_T_McEliece_Ctx *ctx, uint8_t t_errors);
 
 /**
- * Key generation, first must be initialized context using BITP_mceInitCtx().
+ * Key generation, first must be initialized context using BPU_mceInitCtx().
  * @param  ctx McEliece context
  * @return     0 - success, else error
  */
-/// Key generation, first must be initialized context using BITP_mceInitCtx.
-int BITP_mceGenKeyPair(McEliece_Ctx *ctx);
+/// Key generation, first must be initialized context using BPU_mceInitCtx.
+int BPU_mceGenKeyPair(BPU_T_McEliece_Ctx *ctx);
 
-int BITP_mceSaveKeyPair(const McEliece_Ctx *ctx, unsigned char file_path);
+int BPU_mceSaveKeyPair(const BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
 
-int mceLoadKeyPair(McEliece_Ctx *ctx, unsigned char file_path);
+int BPU_mceLoadKeyPair(BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
 
-int BITP_mceSaveKeyPub(const McEliece_Ctx *ctx, unsigned char file_path);
+int BPU_mceSaveKeyPub(const BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
 
-int mceLoadKeyPub(McEliece_Ctx *ctx, unsigned char file_path);
+int BPU_mceLoadKeyPub(BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
 
-int BITP_mceSaveKeyPriv(const McEliece_Ctx *ctx, unsigned char file_path);
+int BPU_mceSaveKeyPriv(const BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
 
-int mceLoadKeyPriv(McEliece_Ctx *ctx, unsigned char file_path);
+int BPU_mceLoadKeyPriv(BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
 
 /**
  * Encrypt plaintext (pt) and save it to cipher text. All strctures must be allocated before use.
@@ -62,17 +62,17 @@ int mceLoadKeyPriv(McEliece_Ctx *ctx, unsigned char file_path);
  * @return     0 - succes, else error
  */
 /// Encrypt plaintext (pt) and save it to cipher text.
-int BITP_mceEncrypt(Vector_GF2 *ct, const Vector_GF2 *pt, const McEliece_Ctx *ctx);
+int BPU_mceEncrypt(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_McEliece_Ctx *ctx);
 
 /**
- * Encrypt plaintext (pt) and save it to cipher text. Output cipher text is allocated inside, must be freed after use BITP_freeVecGF2().
+ * Encrypt plaintext (pt) and save it to cipher text. Output cipher text is allocated inside, must be freed after use BPU_freeVecGF2().
  * @param  ct  cipher text
  * @param  pt  plain text
  * @param  ctx McEliece context
  * @return     0 - succes, else error
  */
-/// Encrypt plaintext (pt) and save it to cipher text. Output plain text is allocated inside, must be freed after use BITP_freeVecGF2().
-int BITP_mceEncryptA(Vector_GF2 *ct, const Vector_GF2 *pt, const McEliece_Ctx *ctx);
+/// Encrypt plaintext (pt) and save it to cipher text. Output plain text is allocated inside, must be freed after use BPU_freeVecGF2().
+int BPU_mceEncryptA(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Decrypt cipher text (ct) and save it to plain text. All strctures must be allocated before use.
@@ -82,39 +82,39 @@ int BITP_mceEncryptA(Vector_GF2 *ct, const Vector_GF2 *pt, const McEliece_Ctx *c
  * @return     0 - succes, else error
  */
 /// Decrypt cipher text (ct) and save it to plain text.
-int BITP_mceDecrypt(Vector_GF2 *pt, Vector_GF2 *ct, const McEliece_Ctx *ctx);
+int BPU_mceDecrypt(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_McEliece_Ctx *ctx);
 
 /**
- * Decrypt cipher text (ct) and save it to plain text. Output cipher text is allocated inside, must be freed after use BITP_freeVecGF2().
+ * Decrypt cipher text (ct) and save it to plain text. Output cipher text is allocated inside, must be freed after use BPU_freeVecGF2().
  * @param  pt  plain text
  * @param  ct  cipher text
  * @param  ctx McEliece context
  * @return     0 - succes, else error
  */
-/// Decrypt cipher text (ct) and save it to plain text. Output plain text is allocated inside, must be freed after use BITP_freeVecGF2().
-int BITP_mceDecryptA(Vector_GF2 *pt, Vector_GF2 *ct, const McEliece_Ctx *ctx);
+/// Decrypt cipher text (ct) and save it to plain text. Output plain text is allocated inside, must be freed after use BPU_freeVecGF2().
+int BPU_mceDecryptA(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_McEliece_Ctx *ctx);
 
-int BITP_mceMallocPtBlock(Vector_GF2 *pt);
+int BPU_mceMallocPtBlock(BPU_T_Vector_GF2 *pt);
 
-int BITP_mceMallocCtBlock(Vector_GF2 *ct);
+int BPU_mceMallocCtBlock(BPU_T_Vector_GF2 *ct);
 
-int BITP_mceFreePtBlock(Vector_GF2 *pt);
+int BPU_mceFreePtBlock(BPU_T_Vector_GF2 *pt);
 
-int BITP_mceFreeCtBlock(Vector_GF2 *ct);
+int BPU_mceFreeCtBlock(BPU_T_Vector_GF2 *ct);
 
-int mceUpdatePtBlock(Vector_GF2 *pt, unsigned char *data);
+int BPU_mceUpdatePtBlock(BPU_T_Vector_GF2 *pt, unsigned char *data);
 
-int mceUpdateCtBlock(Vector_GF2 *ct, unsigned char *data);
+int BPU_mceUpdateCtBlock(BPU_T_Vector_GF2 *ct, unsigned char *data);
 
-int BITP_mceGetPtBlockSizeBits(McEliece_Ctx *ctx);
+int BPU_mceGetPtBlockSizeBits(BPU_T_McEliece_Ctx *ctx);
 
-int BITP_mceGetCtBlockSizeBits(McEliece_Ctx *ctx);
+int BPU_mceGetCtBlockSizeBits(BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Free McEliece context after use.
- * @param ctx pointer to McEliece_Ctx structure
+ * @param ctx pointer to BPU_T_McEliece_Ctx structure
  */
 /// Free McEliece context after use.
-void BITP_mceFreeCtx(McEliece_Ctx *ctx);
+void BPU_mceFreeCtx(BPU_T_McEliece_Ctx *ctx);
 
 #endif // MCELLIECE_H

@@ -27,46 +27,46 @@
 #include "debugio.h"
 
 #define BYTES_TO_TEST (uint64_t)(1 << 16)
-#define TEST_ROUNDS 300
+#define BPU_TEST_ROUNDS 300
 
-void encLoop(Vector_GF2 *ct, Vector_GF2 *pt, McEliece_Ctx *ctx) {
+void encLoop(Vector_GF2 *ct, Vector_GF2 *pt, BPU_T_McEliece_Ctx *ctx) {
 	uint64_t i = 0;
 	uint64_t end = (BYTES_TO_TEST * 8) / ctx->max_pt_len_bit;
 	
 	for (i = 0; i < end; i++) {
-		BITP_mceEncrypt(ct, pt, ctx);
+		BPU_mceEncrypt(ct, pt, ctx);
 	}
 }
 
-void decLoop(Vector_GF2 *pt, Vector_GF2 *ct, McEliece_Ctx *ctx) {
+void decLoop(Vector_GF2 *pt, Vector_GF2 *ct, BPU_T_McEliece_Ctx *ctx) {
 	uint64_t i = 0;
 	uint64_t end = (BYTES_TO_TEST * 8) / ctx->max_pt_len_bit;
 
 	for (i = 0; i < end; i++) {
-		BITP_mceDecrypt(pt, ct, ctx);
+		BPU_mceDecrypt(pt, ct, ctx);
 	}
 }
 
 double keyGenLoop() {
 	int i;
 	time_t t, te, tr = 0;
-	McEliece_Ctx ctx;
+	BPU_T_McEliece_Ctx ctx;
 
-	for (i = 0; i < TEST_ROUNDS; i++) {
+	for (i = 0; i < BPU_TEST_ROUNDS; i++) {
 		t = time(NULL);
 
-		BITP_mceInitCtx(&ctx, 50);
-		BITP_mceGenKeyPair(&ctx);
-		BITP_freeMcElieceCtx(&ctx);
+		BPU_mceInitCtx(&ctx, 50);
+		BPU_mceGenKeyPair(&ctx);
+		BPU_freeMcElieceCtx(&ctx);
 
 		te = time(NULL) - t;
 		tr += te;
 	}
-	return tr / (double)TEST_ROUNDS;
+	return tr / (double)BPU_TEST_ROUNDS;
 } 
 
 int main(int argc, char **argv) {
-	McEliece_Ctx ctx;
+	BPU_T_McEliece_Ctx ctx;
 	Vector_GF2 ct, pt;
 	// double kt;
 	// time_t t, te;
@@ -80,12 +80,12 @@ int main(int argc, char **argv) {
   
 
 
-  for (i = 0; i < TEST_ROUNDS; i++){
-		BITP_mceInitCtx(&ctx, 50);
+  for (i = 0; i < BPU_TEST_ROUNDS; i++){
+		BPU_mceInitCtx(&ctx, 50);
 
     gettimeofday(&tv, NULL);
 
-    BITP_mceGenKeyPair(&ctx);
+    BPU_mceGenKeyPair(&ctx);
 		gettimeofday(&tv_end, NULL);
     res += (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000));
     // fprintf(stderr, "priv: %lu\n", sizeof(ctx.priv_key));
@@ -96,45 +96,45 @@ int main(int argc, char **argv) {
 
     	
 
-    BITP_mallocVectorGF2(&ct, ctx.priv_key.h_mat.n);
-  	// printError("%d", ctx.priv_key.h_mat.n);
+    BPU_mallocVectorGF2(&ct, ctx.priv_key.h_mat.n);
+  	// BPU_printError("%d", ctx.priv_key.h_mat.n);
     initRandVector(&pt, ctx.pub_key.g_mat.k, 0);
-    // BITP_printGf2Vec(&pt);
+    // BPU_printGf2Vec(&pt);
 		  
     gettimeofday(&tv, NULL);
-    BITP_mceEncrypt(&ct, &pt, &ctx);
+    BPU_mceEncrypt(&ct, &pt, &ctx);
     gettimeofday(&tv_end, NULL);
     res_2 += (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000));
-    // gf2VecNull(&pt);
-    // BITP_printGf2Vec(&ct);
+    // BPU_gf2VecNull(&pt);
+    // BPU_printGf2Vec(&ct);
     gettimeofday(&tv, NULL);
-    BITP_mceDecrypt(&pt, &ct, &ctx);
-    // BITP_printGf2Vec(&pt);
+    BPU_mceDecrypt(&pt, &ct, &ctx);
+    // BPU_printGf2Vec(&pt);
     // decrypt2(&ct, &pt, &ctx);
     gettimeofday(&tv_end, NULL);
     res_3 += (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000));
 
-    BITP_freeVecGF2(&pt, 0);
-    BITP_freeVecGF2(&ct, 0);
-		BITP_freeMcElieceCtx(&ctx);
+    BPU_freeVecGF2(&pt, 0);
+    BPU_freeVecGF2(&ct, 0);
+		BPU_freeMcElieceCtx(&ctx);
   }
-  fprintf(stderr, "%0.6lf\n", res / TEST_ROUNDS);
-  fprintf(stderr, "%0.6lf\n", res_2 / TEST_ROUNDS);
-  fprintf(stderr, "%0.6lf\n", res_3 / TEST_ROUNDS);
+  fprintf(stderr, "%0.6lf\n", res / BPU_TEST_ROUNDS);
+  fprintf(stderr, "%0.6lf\n", res_2 / BPU_TEST_ROUNDS);
+  fprintf(stderr, "%0.6lf\n", res_3 / BPU_TEST_ROUNDS);
 
 	return 0;
 }
 
 int main2(int argc, char **argv) {
-	McEliece_Ctx ctx;
+	BPU_T_McEliece_Ctx ctx;
 	Vector_GF2 ct, pt;
 	double kt;
 	time_t t, te;
 
 	fprintf(stderr, "\n\n\n====== SPEED TEST ======\n");
 	fprintf(stderr, "\nGenerating key pair...\n");
-	BITP_mceInitCtx(&ctx, 50);
-	BITP_mceGenKeyPair(&ctx); 
+	BPU_mceInitCtx(&ctx, 50);
+	BPU_mceGenKeyPair(&ctx); 
 	fprintf(stderr, "Size of plaintext: %li B, (%.2lf KB)\n", BYTES_TO_TEST, BYTES_TO_TEST / (double) (1 << 10));
 	fprintf(stderr, "McEliece parameters: n = %d, m = %d, t = %d\n", ctx.a_data.ord, ctx.pub_key.m, ctx.pub_key.t);
 
@@ -143,9 +143,9 @@ int main2(int argc, char **argv) {
 	fprintf(stderr, "Mean time: %.2lf s/key\n", kt);
 
 	initRandVector(&pt, ctx.max_pt_len_bit - 1, 0);
-	BITP_mallocVectorGF2(&ct, ctx.max_pt_len_bit);
+	BPU_mallocVectorGF2(&ct, ctx.max_pt_len_bit);
 
-	fprintf(stderr, "\nEncryption test: BITP_encrypting n-times %d bit plaintext message\n", ctx.max_pt_len_bit);
+	fprintf(stderr, "\nEncryption test: BPU_encrypting n-times %d bit plaintext message\n", ctx.max_pt_len_bit);
 	t = time(NULL);
 	
 	encLoop(&ct, &pt, &ctx);
@@ -159,9 +159,9 @@ int main2(int argc, char **argv) {
 	te = time(NULL) - t;
 	fprintf(stderr, "Time elapsed %li seconds, speed %.2lf KB/s\n", time(NULL) - t, (BYTES_TO_TEST / (double) (1 << 10)) / (double)te);
 
-	BITP_freeVecGF2(&pt, 0);
-	BITP_freeVecGF2(&ct, 0);
-	BITP_freeMcElieceCtx(&ctx);
+	BPU_freeVecGF2(&pt, 0);
+	BPU_freeVecGF2(&ct, 0);
+	BPU_freeMcElieceCtx(&ctx);
 
 	return 0;
 }

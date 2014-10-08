@@ -24,74 +24,74 @@
 #include "init.h"
 #include "process.h"
 
-int BITP_mceInitCtx(McEliece_Ctx *ctx, uint8_t t_errors) {
-	int rc = 0;
+int BPU_mceInitCtx(BPU_T_McEliece_Ctx *ctx, uint8_t t_errors) {
+  int rc = 0;
 
-	ctx->pub_key.t = t_errors;
+  ctx->pub_key.t = t_errors;
 
-	switch(t_errors) {
-		case 5:
-			rc = BITP_initLogExpTable(ctx, (GF2_16x)2, (GF2_16x) GF2_POLY_DEG_5);
+  switch(t_errors) {
+    case 5:
+      rc = BPU_initLogExpTable(ctx, (BPU_T_GF2_16x)2, (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_5);
 
-			break;
-		case 6:
-			rc = BITP_initLogExpTable(ctx, (GF2_16x)2, (GF2_16x) GF2_POLY_DEG_6);
-			
-			break;
-		case 7:
-			rc = BITP_initLogExpTable(ctx, (GF2_16x)2, (GF2_16x) GF2_POLY_DEG_6);
-			
-			break;
-		case 50:
-			rc = BITP_initLogExpTable(ctx, (GF2_16x)2, (GF2_16x) GF2_POLY_DEG_11);
-			
-			break;
-		default:
-			printError("Not supported, only t error: 5, 6, 7, 50");
+      break;
+    case 6:
+      rc = BPU_initLogExpTable(ctx, (BPU_T_GF2_16x)2, (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_6);
+      
+      break;
+    case 7:
+      rc = BPU_initLogExpTable(ctx, (BPU_T_GF2_16x)2, (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_6);
+      
+      break;
+    case 50:
+      rc = BPU_initLogExpTable(ctx, (BPU_T_GF2_16x)2, (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_11);
+      
+      break;
+    default:
+      BPU_printError("Not supported, only t error: 5, 6, 7, 50");
 
-			rc = 1;
-			break;
-	}
-	if (!rc) {
-		ctx->max_pt_len_bit = (ctx->a_data.mod_deg <= 5) ? 1 << (ctx->a_data.mod_deg - 3) : 1 << (ctx->a_data.mod_deg - 2);
-		// ctx->max_pt_len = (ctx->max_pt_len_bit >> 3) + (ctx->max_pt_len_bit % 8) ? 1 : 0;
+      rc = 1;
+      break;
+  }
+  if (!rc) {
+    ctx->max_pt_len_bit = (ctx->a_data.mod_deg <= 5) ? 1 << (ctx->a_data.mod_deg - 3) : 1 << (ctx->a_data.mod_deg - 2);
+    // ctx->max_pt_len = (ctx->max_pt_len_bit >> 3) + (ctx->max_pt_len_bit % 8) ? 1 : 0;
 
-		ctx->max_ct_len_bit = ctx->a_data.ord + 2 * ctx->max_pt_len_bit;
-		// ctx->max_pt_len = (ctx->max_ct_len_bit >> 3) + (ctx->max_ct_len_bit % 8) ? 1 : 0;
-	}
-	return rc;
+    ctx->max_ct_len_bit = ctx->a_data.ord + 2 * ctx->max_pt_len_bit;
+    // ctx->max_pt_len = (ctx->max_ct_len_bit >> 3) + (ctx->max_ct_len_bit % 8) ? 1 : 0;
+  }
+  return rc;
 }
 
-int BITP_mceEncrypt(Vector_GF2 *ct, const Vector_GF2 *pt, const McEliece_Ctx *ctx) {
-	return BITP_encrypt(ct, pt, ctx);
-	// return BITP_encryptCCA2KobaraImai(ct, pt, ctx);
+int BPU_mceEncrypt(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_McEliece_Ctx *ctx) {
+  return BPU_encrypt(ct, pt, ctx);
+  // return BPU_encryptCCA2KobaraImai(ct, pt, ctx);
 }
 
-int BITP_mceEncryptA(Vector_GF2 *ct, const Vector_GF2 *pt, const McEliece_Ctx *ctx) {
-	return BITP_encryptA(ct, pt, ctx);
+int BPU_mceEncryptA(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_McEliece_Ctx *ctx) {
+  return BPU_encryptA(ct, pt, ctx);
 }
 
-int BITP_mceDecrypt(Vector_GF2 *pt, Vector_GF2 *ct, const McEliece_Ctx *ctx) {
-	return decrypt(pt, ct, ctx);
-	// return decryptCCA2KobaraImai(pt, ct, ctx);
+int BPU_mceDecrypt(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_McEliece_Ctx *ctx) {
+  return decrypt(pt, ct, ctx);
+  // return decryptCCA2KobaraImai(pt, ct, ctx);
 }
 
-int BITP_mceDecryptA(Vector_GF2 *pt, Vector_GF2 *ct, const McEliece_Ctx *ctx) {
-	return decryptA(pt, ct, ctx);
+int BPU_mceDecryptA(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_McEliece_Ctx *ctx) {
+  return decryptA(pt, ct, ctx);
 }
 
-int BITP_mceGenKeyPair(McEliece_Ctx *ctx) {
-	return BITP_genKeyPair(ctx, ctx->pub_key.t);
+int BPU_mceGenKeyPair(BPU_T_McEliece_Ctx *ctx) {
+  return BPU_genKeyPair(ctx, ctx->pub_key.t);
 }
 
-void BITP_mceFreeCtx(McEliece_Ctx *ctx) {
-	BITP_freeMcElieceCtx(ctx);
+void BPU_mceFreeCtx(BPU_T_McEliece_Ctx *ctx) {
+  BPU_freeMcElieceCtx(ctx);
 }
 
-int BITP_mceGetPtBlockSizeBits(McEliece_Ctx *ctx) {
-	return ctx->max_pt_len_bit;
+int BPU_mceGetPtBlockSizeBits(BPU_T_McEliece_Ctx *ctx) {
+  return ctx->max_pt_len_bit;
 }
 
-int BITP_mceGetCtBlockSizeBits(McEliece_Ctx *ctx) {
-	return ctx->max_ct_len_bit;
+int BPU_mceGetCtBlockSizeBits(BPU_T_McEliece_Ctx *ctx) {
+  return ctx->max_ct_len_bit;
 }

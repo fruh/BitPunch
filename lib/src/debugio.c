@@ -21,197 +21,197 @@
 */
 #include "debugio.h"
 
-void BITP_printBinary(uint64_t in, int len) {
-    if (len > 0) {
-        BITP_printBinary(in >> 1, len - 1);
+void BPU_printBinary(uint64_t in, int len) {
+  if (len > 0) {
+    BPU_printBinary(in >> 1, len - 1);
 
-        fprintf(stderr, "%d", (int) (in & (0x1ul)));
+    fprintf(stderr, "%d", (int) (in & (0x1ul)));
+  }
+}
+
+void BPU_printBinaryLn(uint64_t in, int len) {
+  BPU_printBinary(in, len);
+  fprintf(stderr, "\n");
+}
+
+void BPU_printBinary64(uint64_t in) {
+  BPU_printBinary(in, 64);
+}
+
+void BPU_printBinary64Ln(uint64_t in) {
+  BPU_printBinaryLn(in, 64);
+}
+
+void BPU_printBinaryLe(uint64_t in, int len) {
+  if (len > 0) {
+    fprintf(stderr, "%d", (int) (in & (0x1ul)));
+
+    BPU_printBinaryLe(in >> 1, len - 1);
+  }
+}
+
+void BPU_printBinaryLnLe(uint64_t in, int len) {
+  BPU_printBinaryLe(in, len);
+  fprintf(stderr, "\n");
+}
+
+void BPU_printBinary64Le(uint64_t in) {
+  BPU_printBinaryLe(in, 64);
+}
+
+void BPU_printBinary64LnLe(uint64_t in) {
+  BPU_printBinaryLnLe(in, 64);
+}
+
+void BPU_printGf2xMat(const BPU_T_Matrix_GF2_16x* in) {
+  uint32_t i;
+  uint32_t j;
+  fprintf(stderr, "Matrix size: %dx%d\n", in->k, in->n);
+
+  for(i = 0; i < in->k; i++) {
+    fprintf(stderr, "%3d: ",i);
+    for(j = 0; j < in->n; j++) {
+      fprintf(stderr, "%x ", in->elements[i][j]);//BPU_printBinary(in->elements[i][j], 4);
     }
-}
-
-void BITP_printBinaryLn(uint64_t in, int len) {
-	BITP_printBinary(in, len);
-	fprintf(stderr, "\n");
-}
-
-void BITP_printBinary64(uint64_t in) {
-	BITP_printBinary(in, 64);
-}
-
-void BITP_BIT_printBinary64Ln(uint64_t in) {
-	BITP_printBinaryLn(in, 64);
-}
-
-void BITP_printBinaryLe(uint64_t in, int len) {
-    if (len > 0) {
-        fprintf(stderr, "%d", (int) (in & (0x1ul)));
-
-        BITP_printBinaryLe(in >> 1, len - 1);
-    }
-}
-
-void BITP_BIT_printBinaryLnLe(uint64_t in, int len) {
-    BITP_printBinaryLe(in, len);
     fprintf(stderr, "\n");
+  }
 }
 
-void BITP_BIT_printBinary64Le(uint64_t in) {
-    BITP_printBinaryLe(in, 64);
-}
+void BPU_printGf2Mat(const BPU_T_Matrix_GF2* m) {
+  int i, j, bits_to_print;
 
-void BITP_BIT_BIT_printBinary64LnLe(uint64_t in) {
-    BITP_BIT_printBinaryLnLe(in, 64);
-}
+  fprintf(stderr, "Matrix size: %dx%d\n", m->k, m->n);
 
-void BITP_printGf2xMat(const Matrix_GF2_16x* in) {
-	uint32_t i;
-	uint32_t j;
-    fprintf(stderr, "Matrix size: %dx%d\n", in->k, in->n);
+  for (i = 0; i < m->k; i++) {
+    fprintf(stderr, "%4d: ",i);
 
-	for(i = 0; i < in->k; i++) {
-        fprintf(stderr, "%3d: ",i);
-		for(j = 0; j < in->n; j++) {
-			fprintf(stderr, "%x ", in->elements[i][j]);//BITP_printBinary(in->elements[i][j], 4);
-		}
-		fprintf(stderr, "\n");
-	}
-}
-
-void BITP_printGf2Mat(const Matrix_GF2* m) {
-	int i, j, bits_to_print;
-
-    fprintf(stderr, "Matrix size: %dx%d\n", m->k, m->n);
-
-    for (i = 0; i < m->k; i++) {
-        fprintf(stderr, "%4d: ",i);
-
-        for (j = 0; j <= m->elements_in_row - 1; j++) {
-            if (j == m->elements_in_row-1) {
-                if (m->n%(m->element_bit_size) != 0) {
-                    bits_to_print = m->n % m->element_bit_size;
-                }
-                else {
-                    bits_to_print = m->element_bit_size;
-                }
-            }
-            else {
-                bits_to_print = m->element_bit_size;
-            }
-            BITP_printBinaryLe(m->elements[i][j], bits_to_print);
-            // fprintf(stderr, " "); // medzera medzi elementami
-        }
-        fprintf(stderr, "\n");
-    }
-}
-
-void BITP_printGf2Vec(const Vector_GF2* v) {
-    int j, bits_to_print;
-
-    fprintf(stderr, "Vec (%4d): ", v->len);
-    for (j = 0; j <= v->elements_in_row - 1; j++) {
-        if (j == v->elements_in_row-1) {
-            if (v->len % (v->element_bit_size) != 0) {
-                bits_to_print = v->len % v->element_bit_size;
-            }
-            else {
-                bits_to_print = v->element_bit_size;
-            }
+    for (j = 0; j <= m->elements_in_row - 1; j++) {
+      if (j == m->elements_in_row-1) {
+        if (m->n%(m->element_bit_size) != 0) {
+          bits_to_print = m->n % m->element_bit_size;
         }
         else {
-            bits_to_print = v->element_bit_size;
+          bits_to_print = m->element_bit_size;
         }
-        BITP_printBinaryLe(v->elements[j], bits_to_print);
-        fprintf(stderr, " "); // medzera medzi elementami
+      }
+      else {
+        bits_to_print = m->element_bit_size;
+      }
+      BPU_printBinaryLe(m->elements[i][j], bits_to_print);
+      // fprintf(stderr, " "); // medzera medzi elementami
     }
     fprintf(stderr, "\n");
+  }
 }
 
-void BITP_printGf2VecBe(const Vector_GF2* v) {
-    int j, bits_to_print;
+void BPU_printGf2Vec(const BPU_T_Vector_GF2* v) {
+  int j, bits_to_print;
 
-    fprintf(stderr, "Vec (%4d): ", v->len);
-    for (j = 0; j <= v->elements_in_row - 1; j++) {
-        if (j == v->elements_in_row-1) {
-            if (v->len % (v->element_bit_size) != 0) {
-                bits_to_print = v->len % v->element_bit_size;
-            }
-            else {
-                bits_to_print = v->element_bit_size;
-            }
-        }
-        else {
-            bits_to_print = v->element_bit_size;
-        }
-        BITP_printBinaryLn(v->elements[j], bits_to_print);
-        fprintf(stderr, " "); // medzera medzi elementami
+  fprintf(stderr, "Vec (%4d): ", v->len);
+  for (j = 0; j <= v->elements_in_row - 1; j++) {
+    if (j == v->elements_in_row-1) {
+      if (v->len % (v->element_bit_size) != 0) {
+        bits_to_print = v->len % v->element_bit_size;
+      }
+      else {
+        bits_to_print = v->element_bit_size;
+      }
     }
-    fprintf(stderr, "\n");
+    else {
+      bits_to_print = v->element_bit_size;
+    }
+    BPU_printBinaryLe(v->elements[j], bits_to_print);
+    fprintf(stderr, " "); // medzera medzi elementami
+  }
+  fprintf(stderr, "\n");
 }
 
-void BITP_printPerm(const Permutation_Vector *permutation) {
-    int i;
+void BPU_printGf2VecBe(const BPU_T_Vector_GF2* v) {
+  int j, bits_to_print;
 
-    fprintf(stderr, "Perm (%4d): ", permutation->size);
-    for (i = 0; i < permutation->size; i++) {
-        fprintf(stderr, "%i ",permutation->elements[i]);
+  fprintf(stderr, "Vec (%4d): ", v->len);
+  for (j = 0; j <= v->elements_in_row - 1; j++) {
+    if (j == v->elements_in_row-1) {
+      if (v->len % (v->element_bit_size) != 0) {
+        bits_to_print = v->len % v->element_bit_size;
+      }
+      else {
+        bits_to_print = v->element_bit_size;
+      }
     }
-    fprintf(stderr, "\n");
+    else {
+      bits_to_print = v->element_bit_size;
+    }
+    BPU_printBinaryLn(v->elements[j], bits_to_print);
+    fprintf(stderr, " "); // medzera medzi elementami
+  }
+  fprintf(stderr, "\n");
 }
 
-void BITP_printGf2xPoly(const Polynomial_GF2_16x *p, const Arithmetic_Data *a_data) {
-    int i;
-    
-    fprintf(stderr, "Poly (deg = %d): ", p->deg);
+void BPU_printPerm(const BPU_T_Perm_Vector *permutation) {
+  int i;
 
-    if (p->deg == -1) {
-        fprintf(stderr, "0\n");
-
-        return;
-    }
-    for (i = p->deg; i >= 0; i--) {
-        if(p->coef[i] == 0)
-            continue;
-        if (i != p->deg) {
-            fprintf(stderr, "+ ");
-        }
-        fprintf(stderr, "alpha^(%d).x^%d ", a_data->log_table[p->coef[i]], i);
-    }
-    fprintf(stderr, "\n");
+  fprintf(stderr, "Perm (%4d): ", permutation->size);
+  for (i = 0; i < permutation->size; i++) {
+    fprintf(stderr, "%i ",permutation->elements[i]);
+  }
+  fprintf(stderr, "\n");
 }
 
-void BITP_printGf2xVec(const Vector_GF2_16x *v) {
-    int i;
-    for(i = 0; i < v->len; i++) {
-        fprintf(stderr, "%x ", v->elements[i]);
+void BPU_printGf2xPoly(const BPU_T_Poly_GF2_16x *p, const BPU_T_Arithmetic_Data *a_data) {
+  int i;
+  
+  fprintf(stderr, "Poly (deg = %d): ", p->deg);
+
+  if (p->deg == -1) {
+    fprintf(stderr, "0\n");
+
+    return;
+  }
+  for (i = p->deg; i >= 0; i--) {
+    if(p->coef[i] == 0)
+      continue;
+    if (i != p->deg) {
+      fprintf(stderr, "+ ");
     }
-    fprintf(stderr, "\n");
+    fprintf(stderr, "alpha^(%d).x^%d ", a_data->log_table[p->coef[i]], i);
+  }
+  fprintf(stderr, "\n");
 }
 
-void BITP_printMceCtx(const McEliece_Ctx *mce_ctx) {
-    fprintf(stderr, "Galois field:\n");
-    fprintf(stderr, "\tOrd: %d\n", mce_ctx->a_data.ord);
-    fprintf(stderr, "\tMod: 0x%X\n", mce_ctx->a_data.mod);
-    fprintf(stderr, "2^m: 2^%d\n", mce_ctx->a_data.mod_deg);
-
-    fprintf(stderr, "Goppa polynomial:\n");
-    fprintf(stderr, "\t");
-    BITP_printGf2xPoly(&mce_ctx->priv_key.g, &mce_ctx->a_data);
-    fprintf(stderr, "\tdegre: %d\n", mce_ctx->pub_key.t);
-
-    fprintf(stderr, "Public key:\n");
-    fprintf(stderr, "\tG matrix size: %dx%d\n", mce_ctx->pub_key.g_mat.k, mce_ctx->pub_key.g_mat.n);
-
-    fprintf(stderr, "Private key:\n");
-    fprintf(stderr, "\tH matrix size: %dx%d\n", mce_ctx->priv_key.h_mat.k, mce_ctx->priv_key.h_mat.n);
+void BPU_printGf2xVec(const BPU_T_Vector_GF2_16x *v) {
+  int i;
+  for(i = 0; i < v->len; i++) {
+    fprintf(stderr, "%x ", v->elements[i]);
+  }
+  fprintf(stderr, "\n");
 }
 
-void BITP_printGf2VecOnes(const Vector_GF2 *vec) {
-    int i;
-    for (i = 0; i < vec->len; ++i)
-    {
-        if (gf2VecGetBit(vec, i)) {
-            fprintf(stderr, "%d ", i);
-        }
+void BPU_printMceCtx(const BPU_T_McEliece_Ctx *mce_ctx) {
+  fprintf(stderr, "Galois field:\n");
+  fprintf(stderr, "\tOrd: %d\n", mce_ctx->a_data.ord);
+  fprintf(stderr, "\tMod: 0x%X\n", mce_ctx->a_data.mod);
+  fprintf(stderr, "2^m: 2^%d\n", mce_ctx->a_data.mod_deg);
+
+  fprintf(stderr, "Goppa polynomial:\n");
+  fprintf(stderr, "\t");
+  BPU_printGf2xPoly(&mce_ctx->priv_key.g, &mce_ctx->a_data);
+  fprintf(stderr, "\tdegre: %d\n", mce_ctx->pub_key.t);
+
+  fprintf(stderr, "Public key:\n");
+  fprintf(stderr, "\tG matrix size: %dx%d\n", mce_ctx->pub_key.g_mat.k, mce_ctx->pub_key.g_mat.n);
+
+  fprintf(stderr, "Private key:\n");
+  fprintf(stderr, "\tH matrix size: %dx%d\n", mce_ctx->priv_key.h_mat.k, mce_ctx->priv_key.h_mat.n);
+}
+
+void BPU_printGf2VecOnes(const BPU_T_Vector_GF2 *vec) {
+  int i;
+  for (i = 0; i < vec->len; ++i)
+  {
+    if (BPU_gf2VecGetBit(vec, i)) {
+      fprintf(stderr, "%d ", i);
     }
-    fprintf(stderr, "\n");
+  }
+  fprintf(stderr, "\n");
 }

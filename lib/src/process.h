@@ -25,14 +25,14 @@
 #include "types.h"
 
 /**
- * Makes CCA2 safe plaintext. out = r1 || BITP_gf2VecHashA(m || r2) NEED TO IMPLEMENT HASH FUNCTION!!!!
+ * Makes CCA2 safe plaintext. out = r1 || BPU_gf2VecHashA(m || r2) NEED TO IMPLEMENT HASH FUNCTION!!!!
  * @param  r1 random (k-l)-bit vector r1
  * @param  r2 random (l)-bit vector r2
  * @param  in (l)-bit vector - plaintext
  * @param  out CCA2 safe plaintext
  * @return     0 - succes, else error
  */
-int BITP_makeCCA2safePT(Vector_GF2 *r1, Vector_GF2 *r2, Vector_GF2 *in, Vector_GF2 *out);
+int BPU_makeCCA2safePT(BPU_T_Vector_GF2 *r1, BPU_T_Vector_GF2 *r2, BPU_T_Vector_GF2 *in, BPU_T_Vector_GF2 *out);
 
 /**
  * Add padding to message. Padding begins with 1. I t allocates ouput inside, so must be freed after use.
@@ -42,7 +42,7 @@ int BITP_makeCCA2safePT(Vector_GF2 *r1, Vector_GF2 *r2, Vector_GF2 *in, Vector_G
  * @return                0 on succes else, non-zero value
  */
 /// Add padding to message.
-int addPaddingA(Vector_GF2 *padded_message, const Vector_GF2 *message, const uint16_t padding_len);
+int addPaddingA(BPU_T_Vector_GF2 *padded_message, const BPU_T_Vector_GF2 *message, const uint16_t padding_len);
 
 /**
  * Delete padding from message. Padding begins with 1. I t allocates ouput inside, so must be freed after use.
@@ -51,7 +51,7 @@ int addPaddingA(Vector_GF2 *padded_message, const Vector_GF2 *message, const uin
  * @return                0 on succes else, non-zero value
  */
 /// Delete padding from message.
-int delPaddingA(Vector_GF2 *message, const Vector_GF2 *padded_message);
+int delPaddingA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *padded_message);
 
 /**
  * Encrypt plaintext with CCA2 safe Kobara-Imai method. NEED TO IMPLEMENT HASH FUNCTION!!!!
@@ -60,7 +60,7 @@ int delPaddingA(Vector_GF2 *message, const Vector_GF2 *padded_message);
  * @param  ctx  McEliece context
  * @return     0 - succes, else error
  */
-int BITP_encryptCCA2KobaraImai(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx);
+int BPU_encryptCCA2KobaraImai(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *message, const BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Encrypt plaintext with CCA2 safe Kobara-Imai method. NEED TO IMPLEMENT HASH FUNCTION!!!!
@@ -69,7 +69,7 @@ int BITP_encryptCCA2KobaraImai(Vector_GF2 *out, const Vector_GF2 *message, const
  * @param  ctx  McEliece context
  * @return     0 - succes, else error
  */
-int BITP_BIT_encryptCCA2KobaraImaiA(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx);
+int BPU_encryptCCA2KobaraImaiA(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *message, const BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Encrypt plaintext with CCA2 safe Kobara-Imai method. NEED TO IMPLEMENT HASH FUNCTION!!!!
@@ -78,7 +78,7 @@ int BITP_BIT_encryptCCA2KobaraImaiA(Vector_GF2 *out, const Vector_GF2 *message, 
  * @param  ctx 	McEliece context
  * @return     0 - succes, else error
  */
-int BITP_encrypt(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx);
+int BPU_encrypt(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *message, const BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Encrypt plaintext with CCA2 safe Kobara-Imai method. NEED TO IMPLEMENT HASH FUNCTION!!!!
@@ -87,7 +87,7 @@ int BITP_encrypt(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx 
  * @param  ctx 	McEliece context
  * @return     0 - succes, else error
  */
-int BITP_encryptA(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx *ctx);
+int BPU_encryptA(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *message, const BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Generate monic irreducible polynopmial of degree t. Polynomial p must be afreed after use.
@@ -95,28 +95,28 @@ int BITP_encryptA(Vector_GF2 *out, const Vector_GF2 *message, const McEliece_Ctx
  * @param t      [description]
  * @param a_data [description]
  */
-void BITP_gf2xPolyGenGoppaA(Polynomial_GF2_16x *p, int t, const Arithmetic_Data *a_data);
+void BPU_gf2xPolyGenGoppaA(BPU_T_Poly_GF2_16x *p, int t, const BPU_T_Arithmetic_Data *a_data);
 
 /**
- * Find polynomials a, b of degree <= (t div 2). We are using GCD to find them, gcd(tau, mod) = a, so: a = tau * b + mod * (some s***s). Out a and b are allocated inside, after use must be preed using BITP_freePoly().
+ * Find polynomials a, b of degree <= (t div 2). We are using GCD to find them, gcd(tau, mod) = a, so: a = tau * b + mod * (some s***s). Out a and b are allocated inside, after use must be preed using BPU_freePoly().
  * @param tau[in]    [description]
  * @param mod[in]    [description]
- * @param a[out]      polynomial is allocated inside, must be then freed using BITP_freePoly()
- * @param b[out]      polynomial is allocated inside, must be then freed using BITP_freePoly()
+ * @param a[out]      polynomial is allocated inside, must be then freed using BPU_freePoly()
+ * @param b[out]      polynomial is allocated inside, must be then freed using BPU_freePoly()
  * @param a_data[in] [description]
  */
 /// Find polynomials a, b of degree <= (t div 2)
-void findPolynomialsAB(const Polynomial_GF2_16x *tau, const Polynomial_GF2_16x *mod, Polynomial_GF2_16x *a, Polynomial_GF2_16x *b, const Arithmetic_Data *a_data);
+void findPolynomialsAB(const BPU_T_Poly_GF2_16x *tau, const BPU_T_Poly_GF2_16x *mod, BPU_T_Poly_GF2_16x *a, BPU_T_Poly_GF2_16x *b, const BPU_T_Arithmetic_Data *a_data);
 
-int decrypt2(Vector_GF2 *cipher, Vector_GF2 *plain, const McEliece_Ctx *ctx);
+int decrypt2(BPU_T_Vector_GF2 *cipher, BPU_T_Vector_GF2 *plain, const BPU_T_McEliece_Ctx *ctx);
 
-int decrypt(Vector_GF2 *message, Vector_GF2 *cipher, const McEliece_Ctx *ctx);
+int decrypt(BPU_T_Vector_GF2 *message, BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx);
 
-int decryptA(Vector_GF2 *message, Vector_GF2 *cipher, const McEliece_Ctx *ctx);
+int decryptA(BPU_T_Vector_GF2 *message, BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx);
 
-int decryptCCA2KobaraImai(Vector_GF2 *message, const Vector_GF2 *cipher, const McEliece_Ctx *ctx);
+int decryptCCA2KobaraImai(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx);
 
-int decryptCCA2KobaraImaiA(Vector_GF2 *message, const Vector_GF2 *cipher, const McEliece_Ctx *ctx);
+int decryptCCA2KobaraImaiA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Decode message. Decoded must be allocated before use, or use function decodeA
@@ -126,7 +126,7 @@ int decryptCCA2KobaraImaiA(Vector_GF2 *message, const Vector_GF2 *cipher, const 
  * 
  * @return still 0
  */
-int decode(Vector_GF2 *encoded, Vector_GF2 *decoded, const McEliece_Ctx *ctx);
+int decode(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Decode message. Decoded is allocated inside function, use freeVectorGF2() afer use.
@@ -136,6 +136,6 @@ int decode(Vector_GF2 *encoded, Vector_GF2 *decoded, const McEliece_Ctx *ctx);
  * 
  * @return succes - 0, else non-zero
  */
-int decodeA(Vector_GF2 *encoded, Vector_GF2 *decoded, const McEliece_Ctx *ctx);
+int decodeA(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_McEliece_Ctx *ctx);
 
 #endif // PROCESS_H

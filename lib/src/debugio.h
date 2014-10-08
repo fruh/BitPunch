@@ -29,42 +29,42 @@
 
 
 #ifndef _WIN32
-	#include <inttypes.h>
+  #include <inttypes.h>
 
-    /// print macro for 64bit data types
-	#define PRINT_U_64 PRIu64
+  /// print macro for 64bit data types
+  #define BPU_PRINT_U_64 PRIu64
 #else
-	#define PRINT_U_64 "I64u"
+  #define BPU_PRINT_U_64 "I64u"
 #endif
 
 #include "types.h"
 #include "operations.h"
 
 #if defined(DEBUG_L) || defined(WARNING_L) || defined(ERROR_L)
-    #include <stdlib.h>
-    #include <errno.h>
+  #include <stdlib.h>
+  #include <errno.h>
 
-    /// print error message with filename, line
-    #define printError(fmt, ...) fprintf(stderr, "ERROR::%s::%d: "fmt"\n", __FILE__, __LINE__, ##__VA_ARGS__); if (errno) perror("ERROR TYPE:")
+  /// print error message with filename, line
+  #define BPU_printError(fmt, ...) fprintf(stderr, "ERROR::%s::%d: "fmt"\n", __FILE__, __LINE__, ##__VA_ARGS__); if (errno) perror("ERROR TYPE:")
 #else
-    /// print error message with filename, line
-    #define printError(fmt, ...)
+  /// print error message with filename, line
+  #define BPU_printError(fmt, ...)
 #endif
 
 #if defined(DEBUG_L) || defined(WARNING_L)
-    /// print warning message with filename, line
-    #define printWarning(fmt, ...) fprintf(stderr, "WARNING::%s::%d: "fmt"\n", __FILE__, __LINE__, ##__VA_ARGS__); if (errno) perror("ERROR TYPE:")
+  /// print warning message with filename, line
+  #define BPU_printWarning(fmt, ...) fprintf(stderr, "WARNING::%s::%d: "fmt"\n", __FILE__, __LINE__, ##__VA_ARGS__); if (errno) perror("ERROR TYPE:")
 #else
-    /// print warning message with filename, line
-    #define printWarning(fmt, ...)
+  /// print warning message with filename, line
+  #define BPU_printWarning(fmt, ...)
 #endif
 
 #if defined(DEBUG_L)
-    /// print debug message with filename, line
-    #define printDebug(fmt, ...) fprintf(stderr, "DEBUG::%s::%d: "fmt"\n", __FILE__, __LINE__, ##__VA_ARGS__)
+  /// print debug message with filename, line
+  #define BPU_printDebug(fmt, ...) fprintf(stderr, "DEBUG::%s::%d: "fmt"\n", __FILE__, __LINE__, ##__VA_ARGS__)
 #else
-    /// print debug message with filename, line
-    #define printDebug(fmt, ...)
+  /// print debug message with filename, line
+  #define BPU_printDebug(fmt, ...)
 #endif
 
 /**
@@ -74,7 +74,7 @@
 * @param len print len
 */
 /// Print number as binary string in big endian so msb is first printed.
-void BITP_printBinary(uint64_t in, int len);
+void BPU_printBinary(uint64_t in, int len);
 
 /**
 * Print number as binary string in big endian so msb is first printed. Print also new line at the end.
@@ -83,7 +83,7 @@ void BITP_printBinary(uint64_t in, int len);
 * @param len print len
 */
 /// Print number as binary string in big endian so msb is first printed.
-void BITP_printBinaryLn(uint64_t in, int len);
+void BPU_printBinaryLn(uint64_t in, int len);
 
 /**
 * Print number as binary string in big endian so msb is first printed. Do not print new line at the end.
@@ -92,7 +92,7 @@ void BITP_printBinaryLn(uint64_t in, int len);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in big endian so msb is first printed.
-void BITP_printBinary64(uint64_t in);
+void BPU_printBinary64(uint64_t in);
 
 /**
 * Print number as binary string in big endian so msb is first printed. Print also new line at the end.
@@ -101,7 +101,7 @@ void BITP_printBinary64(uint64_t in);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in big endian so msb is first printed.
-void BITP_BIT_printBinary64Ln(uint64_t in);
+void BPU_printBinary64Ln(uint64_t in);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Do not print new line at the end.
@@ -110,7 +110,7 @@ void BITP_BIT_printBinary64Ln(uint64_t in);
 * @param len print len
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void BITP_printBinaryLe(uint64_t in, int len);
+void BPU_printBinaryLe(uint64_t in, int len);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Print also new line at the end.
@@ -119,7 +119,7 @@ void BITP_printBinaryLe(uint64_t in, int len);
 * @param len print len
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void BITP_BIT_printBinaryLnLe(uint64_t in, int len);
+void BPU_printBinaryLnLe(uint64_t in, int len);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Do not print new line at the end.
@@ -128,7 +128,7 @@ void BITP_BIT_printBinaryLnLe(uint64_t in, int len);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void BITP_BIT_printBinary64Le(uint64_t in);
+void BPU_printBinary64Le(uint64_t in);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Print also new line at the end.
@@ -137,46 +137,45 @@ void BITP_BIT_printBinary64Le(uint64_t in);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void BITP_BIT_BIT_printBinary64LnLe(uint64_t in);
+void BPU_printBinary64LnLe(uint64_t in);
 
 /**
 * Print number as binary string. Print also new line at the end.
 * It will be padded 64 bits.
 * @param in input of max 64 bits
 */
-void BITP_printGf2xMat(const Matrix_GF2_16x *in);
+void BPU_printGf2xMat(const BPU_T_Matrix_GF2_16x *in);
 
 /**
 * Print matrix GF2 with new lines.
 * @param m matrix
 */
-void BITP_printGf2Mat(const Matrix_GF2 *m);
+void BPU_printGf2Mat(const BPU_T_Matrix_GF2 *m);
 
 /**
 * Print vector GF2 with new line.
 * @param v vector
 */
-void BITP_printGf2Vec(const Vector_GF2 *v);
+void BPU_printGf2Vec(const BPU_T_Vector_GF2 *v);
 
 /**
 * Print permutation.
 * @param permutation permutation
 */
-void BITP_printPerm(const Permutation_Vector *permutation);
+void BPU_printPerm(const BPU_T_Perm_Vector *permutation);
 
+void BPU_printGf2xPoly(const BPU_T_Poly_GF2_16x *p, const BPU_T_Arithmetic_Data *a_data);
 
-void BITP_printGf2xPoly(const Polynomial_GF2_16x *p, const Arithmetic_Data *a_data);
-
-void BITP_printGf2xVec(const Vector_GF2_16x *v);
+void BPU_printGf2xVec(const BPU_T_Vector_GF2_16x *v);
 
 /**
  * Print McEliece context, so print all parameters.
- * @param mce_ctx pointer to McEliece_Ctx structure
+ * @param mce_ctx pointer to BPU_T_McEliece_Ctx structure
  */
-void BITP_printMceCtx(const McEliece_Ctx *mce_ctx);
+void BPU_printMceCtx(const BPU_T_McEliece_Ctx *mce_ctx);
 
-void BITP_printGf2VecBe(const Vector_GF2* v);
+void BPU_printGf2VecBe(const BPU_T_Vector_GF2* v);
 
-void BITP_printGf2VecOnes(const Vector_GF2 *vec);
+void BPU_printGf2VecOnes(const BPU_T_Vector_GF2 *vec);
 
 #endif // DEBUGIO_H

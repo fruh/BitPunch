@@ -24,72 +24,72 @@
 #include <sys/time.h>
 
 int main(int argc, char **argv) {
-  McEliece_Ctx ctx;
-  Vector_GF2 ct, pt_in, pt_out;
+  BPU_T_McEliece_Ctx ctx;
+  BPU_T_Vector_GF2 ct, pt_in, pt_out;
 
   srand(time(NULL));
 
   /***************************************/
   // mce initialisation t = 50, m = 11
   fprintf(stderr, "Initialisation...\n");
-  BITP_mceInitCtx(&ctx, 50);
+  BPU_mceInitCtx(&ctx, 50);
 
   /***************************************/
   fprintf(stderr, "Key generation...\n");
   // key pair generation
-  if (BITP_mceGenKeyPair(&ctx)) {
-    printError("Key generation error");
+  if (BPU_mceGenKeyPair(&ctx)) {
+    BPU_printError("Key generation error");
   }
   /***************************************/
   // prepare plain text, allocate memory and init random plaintext
   if (initRandVector(&pt_in, ctx.pub_key.g_mat.k, 0)) {
-    printError("PT initialisation error");
+    BPU_printError("PT initialisation error");
 
-    BITP_freeMcElieceCtx(&ctx);
+    BPU_freeMcElieceCtx(&ctx);
     return 1;
   }
   // alocate cipher text vector
-  if (BITP_mallocVectorGF2(&ct, ctx.priv_key.h_mat.n)) {
-    printError("CT vector allocation error");
+  if (BPU_mallocVectorGF2(&ct, ctx.priv_key.h_mat.n)) {
+    BPU_printError("CT vector allocation error");
 
-    BITP_freeVecGF2(&pt_in, 0);
-    BITP_freeMcElieceCtx(&ctx);
+    BPU_freeVecGF2(&pt_in, 0);
+    BPU_freeMcElieceCtx(&ctx);
     return 1;
   }
   /***************************************/
   fprintf(stderr, "Encryption...\n");
-  // BITP_encrypt plain text
-  if (BITP_mceEncrypt(&ct, &pt_in, &ctx)) {
-    printError("Encryption error");
+  // BPU_encrypt plain text
+  if (BPU_mceEncrypt(&ct, &pt_in, &ctx)) {
+    BPU_printError("Encryption error");
 
-    BITP_freeVecGF2(&ct, 0);
-    BITP_freeVecGF2(&pt_in, 0);
-    BITP_freeMcElieceCtx(&ctx);
+    BPU_freeVecGF2(&ct, 0);
+    BPU_freeVecGF2(&pt_in, 0);
+    BPU_freeMcElieceCtx(&ctx);
     return 1;
   }
   /***************************************/
   fprintf(stderr, "Decryption...\n");
   // decrypt cipher text
-  if (BITP_mceDecrypt(&pt_out, &ct, &ctx)) {
-    printError("Decryption error");
+  if (BPU_mceDecrypt(&pt_out, &ct, &ctx)) {
+    BPU_printError("Decryption error");
 
-    BITP_freeVecGF2(&ct, 0);
-    BITP_freeVecGF2(&pt_in, 0);
-    BITP_freeMcElieceCtx(&ctx);
+    BPU_freeVecGF2(&ct, 0);
+    BPU_freeVecGF2(&pt_in, 0);
+    BPU_freeMcElieceCtx(&ctx);
     return 1;
   }
   /***************************************/
   // debug output
   fprintf(stderr, "\nCT:\n");
-  BITP_printGf2Vec(&ct);
+  BPU_printGf2Vec(&ct);
   fprintf(stderr, "\nOutput PT:\n");
-  BITP_printGf2Vec(&pt_out);
+  BPU_printGf2Vec(&pt_out);
   fprintf(stderr, "\nInput random PT:\n");
-  BITP_printGf2Vec(&pt_in);
+  BPU_printGf2Vec(&pt_in);
 
   // check for correct decryption
-  if (BITP_gf2VecCmp(&pt_in, &pt_out)) {
-    printError("\nOutput plain text differs from input");
+  if (BPU_gf2VecCmp(&pt_in, &pt_out)) {
+    BPU_printError("\nOutput plain text differs from input");
   }
   else {
     fprintf(stderr, "\nSUCCESS: Input plain text is equal to output plain text.\n");
@@ -97,10 +97,10 @@ int main(int argc, char **argv) {
   // clean up
   /***************************************/
   fprintf(stderr, "\nCleaning up...\n");
-  BITP_freeVecGF2(&pt_in, 0);
-  BITP_freeVecGF2(&pt_out, 0);
-  BITP_freeVecGF2(&ct, 0);
-  BITP_freeMcElieceCtx(&ctx);
+  BPU_freeVecGF2(&pt_in, 0);
+  BPU_freeVecGF2(&pt_out, 0);
+  BPU_freeVecGF2(&ct, 0);
+  BPU_freeMcElieceCtx(&ctx);
 
   return 0;
 }
