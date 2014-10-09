@@ -23,7 +23,9 @@
 #include <string.h>
 #include <math.h>
 #include <time.h>
+// TODO: remove dependency
 #include <openssl/sha.h>
+
 #include "arithmetics.h"
 #include "globals.h"
 #include "debugio.h"
@@ -61,6 +63,7 @@ int BPU_gf2VecHashA(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, int len){
   unsigned char* hashed = (unsigned char*) malloc(DIGEST_LENGTH/8);
   BPU_T_Vector_GF2 hash_vector;
 
+  // TODO: remove dependency
   if(SHA512((unsigned char*)in->elements, in->elements_in_row, hashed) == NULL){
     BPU_printError("hash: SHA512");
     return -1;
