@@ -4,7 +4,7 @@
  Copyright (C) 2014 Andrej Gulyas <andrej.guly[at]gmail.com>
  Copyright (C) 2014 Marek Klein  <kleinmrk[at]gmail.com>
  Copyright (C) 2014 Filip Machovec  <filipmachovec[at]yahoo.com>
- Copyright (C) 2014 Jozef Kudlac Uhrecky <kudalc.jozef[at]gmail.com>
+ Copyright (C) 2014 Jozef Kudlac <jozef[at]kudlac.sk>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ int BPU_makeCCA2safePT(BPU_T_Vector_GF2 *r1, BPU_T_Vector_GF2 *r2, BPU_T_Vector_
   return rc;
 }
 
-int addPaddingA(BPU_T_Vector_GF2 *padded_message, const BPU_T_Vector_GF2 *message, const uint16_t padding_len) {
+int BPU_addPaddingA(BPU_T_Vector_GF2 *padded_message, const BPU_T_Vector_GF2 *message, const uint16_t padding_len) {
   int i;
 
   // malloc space for padded message
@@ -69,7 +69,7 @@ int addPaddingA(BPU_T_Vector_GF2 *padded_message, const BPU_T_Vector_GF2 *messag
   return 0;
 }
 
-int delPaddingA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *padded_message) {
+int BPU_delPaddingA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *padded_message) {
   int i, message_size = 0;
 
   // count the message size
@@ -160,17 +160,17 @@ int BPU_encryptCCA2KobaraImai(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *mes
   BPU_printGf2Vec(message);
 #endif
   // make padding to the correct message size with 1000... added to the end
-  rc += addPaddingA(&padded_message, message, (max_message_len+MINIMAL_PADDING_SIZE) - message->len);
+  rc += BPU_addPaddingA(&padded_message, message, (max_message_len+MINIMAL_PADDING_SIZE) - message->len);
 
 #ifdef BPU_DEBUG_ENCRYPT
   BPU_printDebug("plaintext with padding:");
   BPU_printGf2Vec(&padded_message);
 #endif
   // generate random vector r1 = k-l bits = 986 bits
-  rc += initRandVector(&r1, ctx->pub_key.g_mat.k - padded_message.len, 0);
+  rc += BPU_initRandVector(&r1, ctx->pub_key.g_mat.k - padded_message.len, 0);
 
   // generate random vector r2 = l bits = 512 bits
-  rc += initRandVector(&r2, padded_message.len, 0);
+  rc += BPU_initRandVector(&r2, padded_message.len, 0);
 
   // expand the public key matrix g_m
   // FU
@@ -194,8 +194,8 @@ int BPU_encryptCCA2KobaraImai(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *mes
 #endif
   // generate random error vector e
   // FU
-  rc += initRandVector(&e, G.n, ctx->pub_key.t);
-  // rc += initRandVector(&e, ctx->pub_key.g_mat.n, ctx->pub_key.t);
+  rc += BPU_initRandVector(&e, G.n, ctx->pub_key.t);
+  // rc += BPU_initRandVector(&e, ctx->pub_key.g_mat.n, ctx->pub_key.t);
 
 #ifdef BPU_DEBUG_ENCRYPT
   BPU_printDebug("error vector:");
@@ -301,8 +301,8 @@ int BPU_encrypt(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *message, const BP
   // 
   // gettimeofday(&tv, NULL);
   // FU
-  // rc += initRandVector(&e, G.n, ctx->pub_key.t);
-  rc += initRandVector(&e, ctx->pub_key.g_mat.k + ctx->pub_key.g_mat.n, ctx->pub_key.t);
+  // rc += BPU_initRandVector(&e, G.n, ctx->pub_key.t);
+  rc += BPU_initRandVector(&e, ctx->pub_key.g_mat.k + ctx->pub_key.g_mat.n, ctx->pub_key.t);
   // gettimeofday(&tv_end, NULL);
   // fprintf(stderr, "init rand %0.6f\n", (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000)));
 #ifdef BPU_DEBUG_ENCRYPT
@@ -329,7 +329,7 @@ int BPU_encrypt(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *message, const BP
   return rc;
 }
 
-void findPolynomialsAB(const BPU_T_Poly_GF2_16x *tau, const BPU_T_Poly_GF2_16x *mod, BPU_T_Poly_GF2_16x *a, BPU_T_Poly_GF2_16x *b, const BPU_T_Arithmetic_Data *a_data) {
+void BPU_findPolynomialsAB(const BPU_T_Poly_GF2_16x *tau, const BPU_T_Poly_GF2_16x *mod, BPU_T_Poly_GF2_16x *a, BPU_T_Poly_GF2_16x *b, const BPU_T_Arithmetic_Data *a_data) {
   BPU_T_Poly_GF2_16x tmp;
   int end_deg = mod->deg / 2;
 
@@ -337,16 +337,16 @@ void findPolynomialsAB(const BPU_T_Poly_GF2_16x *tau, const BPU_T_Poly_GF2_16x *
   BPU_freePoly(&tmp, 0);
 }
 
-int decodeA(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_McEliece_Ctx *ctx) {
+int BPU_decodeA(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_McEliece_Ctx *ctx) {
   if (BPU_mallocVectorGF2(decoded, ctx->a_data.ord)) {
     BPU_printError("decodeA:");
 
     return 1;
   }
-  return decode(encoded, decoded, ctx);
+  return BPU_decode(encoded, decoded, ctx);
 }
 
-int decode(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_McEliece_Ctx *ctx) {
+int BPU_decode(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_McEliece_Ctx *ctx) {
   BPU_T_Perm_Vector inv_perm;
   BPU_T_Poly_GF2_16x syndrome, tau, a, b, sigma, inv_syndrome, tmp, tmp2;
   // Vector_GF2 error;
@@ -398,7 +398,7 @@ int decode(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_McE
   BPU_printGf2xPoly(&syndrome, &(ctx->a_data));
 #endif
   /**************** FROM NOW WE ARE NOT USING MODULUS g for a, b ********************/
-  findPolynomialsAB(&tau, &(ctx->priv_key.g), &a, &b, &(ctx->a_data));
+  BPU_findPolynomialsAB(&tau, &(ctx->priv_key.g), &a, &b, &(ctx->a_data));
 
 #ifdef BPU_DEBUG_DECODE
   BPU_mallocPoly(&tmp2, 2 * ctx->priv_key.g.deg);
@@ -488,9 +488,9 @@ int decode(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_McE
   return 0;
 }
 
-int decrypt(BPU_T_Vector_GF2 *message, BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx) {
+int BPU_decrypt(BPU_T_Vector_GF2 *message, BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx) {
   // Vector_GF2 tmp;
-  int rc = decryptA(message, cipher, ctx);
+  int rc = BPU_decryptA(message, cipher, ctx);
 
   // if (!rc) {
   //     BPU_gf2VecCopy(message, &tmp);
@@ -499,7 +499,7 @@ int decrypt(BPU_T_Vector_GF2 *message, BPU_T_Vector_GF2 *cipher, const BPU_T_McE
   return rc;
 }
 
-int decryptA(BPU_T_Vector_GF2 *message, BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx) {
+int BPU_decryptA(BPU_T_Vector_GF2 *message, BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx) {
   int rc = 0;
   BPU_T_Vector_GF2 temp, decoded, temp_2;
   // Matrix_GF2 mm, mmm;
@@ -509,7 +509,7 @@ int decryptA(BPU_T_Vector_GF2 *message, BPU_T_Vector_GF2 *cipher, const BPU_T_Mc
   BPU_mallocVectorGF2(&temp_2, cipher->len);
   BPU_gf2VecCopy(&temp_2, cipher);
 
-  decodeA(&temp, &decoded, ctx);
+  BPU_decodeA(&temp, &decoded, ctx);
 
 #ifdef BPU_DEBUG_DECRYPT
   BPU_printDebug("decoded error:");
@@ -533,7 +533,7 @@ int decryptA(BPU_T_Vector_GF2 *message, BPU_T_Vector_GF2 *cipher, const BPU_T_Mc
   return rc;
 }
 
-int decrypt2(BPU_T_Vector_GF2 *cipher, BPU_T_Vector_GF2 *plain, const BPU_T_McEliece_Ctx *ctx) {
+int BPU_decrypt2(BPU_T_Vector_GF2 *cipher, BPU_T_Vector_GF2 *plain, const BPU_T_McEliece_Ctx *ctx) {
   BPU_T_Vector_GF2 z1, z2, z3, decoded, temp;
   BPU_T_Vector_GF2 error;   // len kvoli testom
   BPU_T_Vector_GF2 plain_text;   // len kvoli testom
@@ -543,9 +543,9 @@ int decrypt2(BPU_T_Vector_GF2 *cipher, BPU_T_Vector_GF2 *plain, const BPU_T_McEl
 
   // FU
   // BPU_gf2MatAppendIdenityA(&G, &(ctx->pub_key.g_mat));
-  // initRandVector(&error, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k, ctx->pub_key.t - 1);
+  // BPU_initRandVector(&error, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k, ctx->pub_key.t - 1);
   // BPU_mallocVectorGF2(&error, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k);
-  initRandVector(&error, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k, ctx->pub_key.t);
+  BPU_initRandVector(&error, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k, ctx->pub_key.t);
 
   l = (cipher->len - ctx->priv_key.h_mat.n) / 2;
   BPU_mallocVectorGF2(&z1, ctx->pub_key.g_mat.n + ctx->pub_key.g_mat.k);
@@ -556,7 +556,7 @@ int decrypt2(BPU_T_Vector_GF2 *cipher, BPU_T_Vector_GF2 *plain, const BPU_T_McEl
   BPU_printGf2xPoly(&(ctx->priv_key.g), &(ctx->a_data));
   // TODO: split cipher text to z1, z2, z3
   
-  initRandVector(&plain_text, ctx->pub_key.g_mat.k, 0);
+  BPU_initRandVector(&plain_text, ctx->pub_key.g_mat.k, 0);
   // BPU_printGf2Mat(&(G));
   // BPU_mallocVectorGF2(&plain_text, G.k);
   // BPU_gf2VecSetBit(&plain_text, 0, 1);
@@ -577,12 +577,12 @@ int decrypt2(BPU_T_Vector_GF2 *cipher, BPU_T_Vector_GF2 *plain, const BPU_T_McEl
   // BPU_printGf2Vec(&z1);
 
   // BPU_printGf2Vec(cipher);
-  // decodeA(&z1, &decoded, ctx);
+  // BPU_decodeA(&z1, &decoded, ctx);
   // Vector_GF2 temp;
 
   BPU_mallocVectorGF2(&temp, cipher->len);
   BPU_gf2VecCopy(&temp, cipher);
-  decodeA(&temp, &decoded, ctx);
+  BPU_decodeA(&temp, &decoded, ctx);
   // fprintf(stderr, "error:\n");
   // BPU_printGf2Vec(&error);
 
@@ -616,9 +616,9 @@ int decrypt2(BPU_T_Vector_GF2 *cipher, BPU_T_Vector_GF2 *plain, const BPU_T_McEl
   return 0;
 }
 
-int decryptCCA2KobaraImai(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx) {
+int BPU_decryptCCA2KobaraImai(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx) {
   BPU_T_Vector_GF2 tmp;
-  int rc = decryptCCA2KobaraImaiA(&tmp, cipher, ctx);
+  int rc = BPU_decryptCCA2KobaraImaiA(&tmp, cipher, ctx);
 
   if (!rc) {
     BPU_gf2VecCopy(message, &tmp);
@@ -627,7 +627,7 @@ int decryptCCA2KobaraImai(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *cip
   return rc;
 }
 
-int decryptCCA2KobaraImaiA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx) {
+int BPU_decryptCCA2KobaraImaiA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx) {
   uint16_t message_len;
   int rc = 0;
   BPU_T_Vector_GF2 z1, z1_, z2, z3, decoded, r, h, hash_r, hash_e, hh, temp;
@@ -660,7 +660,7 @@ int decryptCCA2KobaraImaiA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *ci
   BPU_printDebug("z3:");
   BPU_printGf2Vec(&z3);
 #endif
-  decodeA(&z1_, &decoded, ctx);
+  BPU_decodeA(&z1_, &decoded, ctx);
 
 #ifdef BPU_DEBUG_DECRYPT
   BPU_printDebug("decoded error:");
@@ -701,7 +701,7 @@ int decryptCCA2KobaraImaiA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *ci
   }
   else {
     // delete padding
-    rc = delPaddingA(message, &z2);
+    rc = BPU_delPaddingA(message, &z2);
 
   #ifdef BPU_DEBUG_DECRYPT
     BPU_printDebug("plaintext w/o padding:");

@@ -4,7 +4,7 @@
  Copyright (C) 2014 Andrej Gulyas <andrej.guly[at]gmail.com>
  Copyright (C) 2014 Marek Klein  <kleinmrk[at]gmail.com>
  Copyright (C) 2014 Filip Machovec  <filipmachovec[at]yahoo.com>
- Copyright (C) 2014 Jozef Kudlac Uhrecky <kudalc.jozef[at]gmail.com>
+ Copyright (C) 2014 Jozef Kudlac <jozef[at]kudlac.sk>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -32,27 +32,27 @@
  * @return          0 on succes, else non-zero value
  */
 /// Initialize McEliece context to be able working with it
-int BPU_mceInitCtx(BPU_T_McEliece_Ctx *ctx, uint8_t t_errors);
+int BPU_mecsInitCtx(BPU_T_McEliece_Ctx *ctx, uint8_t t_errors);
 
 /**
- * Key generation, first must be initialized context using BPU_mceInitCtx().
+ * Key generation, first must be initialized context using BPU_mecsInitCtx().
  * @param  ctx McEliece context
  * @return     0 - success, else error
  */
-/// Key generation, first must be initialized context using BPU_mceInitCtx.
-int BPU_mceGenKeyPair(BPU_T_McEliece_Ctx *ctx);
+/// Key generation, first must be initialized context using BPU_mecsInitCtx.
+int BPU_mecsGenKeyPair(BPU_T_McEliece_Ctx *ctx);
 
-int BPU_mceSaveKeyPair(const BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
+int BPU_mecsSaveKeyPair(const BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
 
-int BPU_mceLoadKeyPair(BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
+int BPU_mecsLoadKeyPair(BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
 
-int BPU_mceSaveKeyPub(const BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
+int BPU_mecsSaveKeyPub(const BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
 
-int BPU_mceLoadKeyPub(BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
+int BPU_mecsLoadKeyPub(BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
 
-int BPU_mceSaveKeyPriv(const BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
+int BPU_mecsSaveKeyPriv(const BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
 
-int BPU_mceLoadKeyPriv(BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
+int BPU_mecsLoadKeyPriv(BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
 
 /**
  * Encrypt plaintext (pt) and save it to cipher text. All strctures must be allocated before use.
@@ -62,7 +62,7 @@ int BPU_mceLoadKeyPriv(BPU_T_McEliece_Ctx *ctx, unsigned char file_path);
  * @return     0 - succes, else error
  */
 /// Encrypt plaintext (pt) and save it to cipher text.
-int BPU_mceEncrypt(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_McEliece_Ctx *ctx);
+int BPU_mecsEncrypt(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Encrypt plaintext (pt) and save it to cipher text. Output cipher text is allocated inside, must be freed after use BPU_freeVecGF2().
@@ -72,7 +72,7 @@ int BPU_mceEncrypt(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T
  * @return     0 - succes, else error
  */
 /// Encrypt plaintext (pt) and save it to cipher text. Output plain text is allocated inside, must be freed after use BPU_freeVecGF2().
-int BPU_mceEncryptA(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_McEliece_Ctx *ctx);
+int BPU_mecsEncryptA(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Decrypt cipher text (ct) and save it to plain text. All strctures must be allocated before use.
@@ -82,7 +82,7 @@ int BPU_mceEncryptA(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_
  * @return     0 - succes, else error
  */
 /// Decrypt cipher text (ct) and save it to plain text.
-int BPU_mceDecrypt(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_McEliece_Ctx *ctx);
+int BPU_mecsDecrypt(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Decrypt cipher text (ct) and save it to plain text. Output cipher text is allocated inside, must be freed after use BPU_freeVecGF2().
@@ -92,29 +92,29 @@ int BPU_mceDecrypt(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_McEli
  * @return     0 - succes, else error
  */
 /// Decrypt cipher text (ct) and save it to plain text. Output plain text is allocated inside, must be freed after use BPU_freeVecGF2().
-int BPU_mceDecryptA(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_McEliece_Ctx *ctx);
+int BPU_mecsDecryptA(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_McEliece_Ctx *ctx);
 
-int BPU_mceMallocPtBlock(BPU_T_Vector_GF2 *pt);
+int BPU_mecsMallocPtBlock(BPU_T_Vector_GF2 *pt);
 
-int BPU_mceMallocCtBlock(BPU_T_Vector_GF2 *ct);
+int BPU_mecsMallocCtBlock(BPU_T_Vector_GF2 *ct);
 
-int BPU_mceFreePtBlock(BPU_T_Vector_GF2 *pt);
+int BPU_mecsFreePtBlock(BPU_T_Vector_GF2 *pt);
 
-int BPU_mceFreeCtBlock(BPU_T_Vector_GF2 *ct);
+int BPU_mecsFreeCtBlock(BPU_T_Vector_GF2 *ct);
 
-int BPU_mceUpdatePtBlock(BPU_T_Vector_GF2 *pt, unsigned char *data);
+int BPU_mecsUpdatePtBlock(BPU_T_Vector_GF2 *pt, unsigned char *data);
 
-int BPU_mceUpdateCtBlock(BPU_T_Vector_GF2 *ct, unsigned char *data);
+int BPU_mecsUpdateCtBlock(BPU_T_Vector_GF2 *ct, unsigned char *data);
 
-int BPU_mceGetPtBlockSizeBits(BPU_T_McEliece_Ctx *ctx);
+int BPU_mecsGetPtBlockSizeBits(BPU_T_McEliece_Ctx *ctx);
 
-int BPU_mceGetCtBlockSizeBits(BPU_T_McEliece_Ctx *ctx);
+int BPU_mecsGetCtBlockSizeBits(BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Free McEliece context after use.
  * @param ctx pointer to BPU_T_McEliece_Ctx structure
  */
 /// Free McEliece context after use.
-void BPU_mceFreeCtx(BPU_T_McEliece_Ctx *ctx);
+void BPU_mecsFreeCtx(BPU_T_McEliece_Ctx *ctx);
 
 #endif // MCELLIECE_H

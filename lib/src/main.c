@@ -32,17 +32,17 @@ int main(int argc, char **argv) {
   /***************************************/
   // mce initialisation t = 50, m = 11
   fprintf(stderr, "Initialisation...\n");
-  BPU_mceInitCtx(&ctx, 50);
+  BPU_mecsInitCtx(&ctx, 50);
 
   /***************************************/
   fprintf(stderr, "Key generation...\n");
   // key pair generation
-  if (BPU_mceGenKeyPair(&ctx)) {
+  if (BPU_mecsGenKeyPair(&ctx)) {
     BPU_printError("Key generation error");
   }
   /***************************************/
   // prepare plain text, allocate memory and init random plaintext
-  if (initRandVector(&pt_in, ctx.pub_key.g_mat.k, 0)) {
+  if (BPU_initRandVector(&pt_in, ctx.pub_key.g_mat.k, 0)) {
     BPU_printError("PT initialisation error");
 
     BPU_freeMcElieceCtx(&ctx);
@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
   /***************************************/
   fprintf(stderr, "Encryption...\n");
   // BPU_encrypt plain text
-  if (BPU_mceEncrypt(&ct, &pt_in, &ctx)) {
+  if (BPU_mecsEncrypt(&ct, &pt_in, &ctx)) {
     BPU_printError("Encryption error");
 
     BPU_freeVecGF2(&ct, 0);
@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
   /***************************************/
   fprintf(stderr, "Decryption...\n");
   // decrypt cipher text
-  if (BPU_mceDecrypt(&pt_out, &ct, &ctx)) {
+  if (BPU_mecsDecrypt(&pt_out, &ct, &ctx)) {
     BPU_printError("Decryption error");
 
     BPU_freeVecGF2(&ct, 0);

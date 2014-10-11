@@ -4,7 +4,7 @@
  Copyright (C) 2014 Andrej Gulyas <andrej.guly[at]gmail.com>
  Copyright (C) 2014 Marek Klein  <kleinmrk[at]gmail.com>
  Copyright (C) 2014 Filip Machovec  <filipmachovec[at]yahoo.com>
- Copyright (C) 2014 Jozef Kudlac Uhrecky <kudalc.jozef[at]gmail.com>
+ Copyright (C) 2014 Jozef Kudlac <jozef[at]kudlac.sk>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ int BPU_makeCCA2safePT(BPU_T_Vector_GF2 *r1, BPU_T_Vector_GF2 *r2, BPU_T_Vector_
  * @return                0 on succes else, non-zero value
  */
 /// Add padding to message.
-int addPaddingA(BPU_T_Vector_GF2 *padded_message, const BPU_T_Vector_GF2 *message, const uint16_t padding_len);
+int BPU_addPaddingA(BPU_T_Vector_GF2 *padded_message, const BPU_T_Vector_GF2 *message, const uint16_t padding_len);
 
 /**
  * Delete padding from message. Padding begins with 1. I t allocates ouput inside, so must be freed after use.
@@ -51,7 +51,7 @@ int addPaddingA(BPU_T_Vector_GF2 *padded_message, const BPU_T_Vector_GF2 *messag
  * @return                0 on succes else, non-zero value
  */
 /// Delete padding from message.
-int delPaddingA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *padded_message);
+int BPU_delPaddingA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *padded_message);
 
 /**
  * Encrypt plaintext with CCA2 safe Kobara-Imai method. NEED TO IMPLEMENT HASH FUNCTION!!!!
@@ -106,17 +106,17 @@ void BPU_gf2xPolyGenGoppaA(BPU_T_Poly_GF2_16x *p, int t, const BPU_T_Arithmetic_
  * @param a_data[in] [description]
  */
 /// Find polynomials a, b of degree <= (t div 2)
-void findPolynomialsAB(const BPU_T_Poly_GF2_16x *tau, const BPU_T_Poly_GF2_16x *mod, BPU_T_Poly_GF2_16x *a, BPU_T_Poly_GF2_16x *b, const BPU_T_Arithmetic_Data *a_data);
+void BPU_findPolynomialsAB(const BPU_T_Poly_GF2_16x *tau, const BPU_T_Poly_GF2_16x *mod, BPU_T_Poly_GF2_16x *a, BPU_T_Poly_GF2_16x *b, const BPU_T_Arithmetic_Data *a_data);
 
-int decrypt2(BPU_T_Vector_GF2 *cipher, BPU_T_Vector_GF2 *plain, const BPU_T_McEliece_Ctx *ctx);
+int BPU_decrypt2(BPU_T_Vector_GF2 *cipher, BPU_T_Vector_GF2 *plain, const BPU_T_McEliece_Ctx *ctx);
 
-int decrypt(BPU_T_Vector_GF2 *message, BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx);
+int BPU_decrypt(BPU_T_Vector_GF2 *message, BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx);
 
-int decryptA(BPU_T_Vector_GF2 *message, BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx);
+int BPU_decryptA(BPU_T_Vector_GF2 *message, BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx);
 
-int decryptCCA2KobaraImai(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx);
+int BPU_decryptCCA2KobaraImai(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx);
 
-int decryptCCA2KobaraImaiA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx);
+int BPU_decryptCCA2KobaraImaiA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *cipher, const BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Decode message. Decoded must be allocated before use, or use function decodeA
@@ -126,7 +126,7 @@ int decryptCCA2KobaraImaiA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *ci
  * 
  * @return still 0
  */
-int decode(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_McEliece_Ctx *ctx);
+int BPU_decode(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_McEliece_Ctx *ctx);
 
 /**
  * Decode message. Decoded is allocated inside function, use freeVectorGF2() afer use.
@@ -136,6 +136,6 @@ int decode(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_McE
  * 
  * @return succes - 0, else non-zero
  */
-int decodeA(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_McEliece_Ctx *ctx);
+int BPU_decodeA(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_McEliece_Ctx *ctx);
 
 #endif // PROCESS_H

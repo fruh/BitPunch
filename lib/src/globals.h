@@ -4,7 +4,7 @@
  Copyright (C) 2014 Andrej Gulyas <andrej.guly[at]gmail.com>
  Copyright (C) 2014 Marek Klein  <kleinmrk[at]gmail.com>
  Copyright (C) 2014 Filip Machovec  <filipmachovec[at]yahoo.com>
- Copyright (C) 2014 Jozef Kudlac Uhrecky <kudalc.jozef[at]gmail.com>
+ Copyright (C) 2014 Jozef Kudlac <jozef[at]kudlac.sk>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

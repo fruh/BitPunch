@@ -4,7 +4,7 @@
  Copyright (C) 2014 Andrej Gulyas <andrej.guly[at]gmail.com>
  Copyright (C) 2014 Marek Klein  <kleinmrk[at]gmail.com>
  Copyright (C) 2014 Filip Machovec  <filipmachovec[at]yahoo.com>
- Copyright (C) 2014 Jozef Kudlac Uhrecky <kudalc.jozef[at]gmail.com>
+ Copyright (C) 2014 Jozef Kudlac <jozef[at]kudlac.sk>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -176,7 +176,7 @@ int BPU_mallocVectorGF2(BPU_T_Vector_GF2 *v, int len) ;
  * @param  w weight of vector, if 0 weight is random
  * @return     0 - succes, else error
  */
-int initRandVector(BPU_T_Vector_GF2 *out, int l, int w);
+int BPU_initRandVector(BPU_T_Vector_GF2 *out, int l, int w);
 
 /**
  * Malloc memory for polynomial and zero-initialize

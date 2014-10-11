@@ -4,7 +4,7 @@
  Copyright (C) 2014 Andrej Gulyas <andrej.guly[at]gmail.com>
  Copyright (C) 2014 Marek Klein  <kleinmrk[at]gmail.com>
  Copyright (C) 2014 Filip Machovec  <filipmachovec[at]yahoo.com>
- Copyright (C) 2014 Jozef Kudlac Uhrecky <kudalc.jozef[at]gmail.com>
+ Copyright (C) 2014 Jozef Kudlac <jozef[at]kudlac.sk>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 #include "init.h"
 #include "process.h"
 
-int BPU_mceInitCtx(BPU_T_McEliece_Ctx *ctx, uint8_t t_errors) {
+int BPU_mecsInitCtx(BPU_T_McEliece_Ctx *ctx, uint8_t t_errors) {
   int rc = 0;
 
   ctx->pub_key.t = t_errors;
@@ -62,36 +62,36 @@ int BPU_mceInitCtx(BPU_T_McEliece_Ctx *ctx, uint8_t t_errors) {
   return rc;
 }
 
-int BPU_mceEncrypt(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_McEliece_Ctx *ctx) {
+int BPU_mecsEncrypt(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_McEliece_Ctx *ctx) {
   return BPU_encrypt(ct, pt, ctx);
   // return BPU_encryptCCA2KobaraImai(ct, pt, ctx);
 }
 
-int BPU_mceEncryptA(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_McEliece_Ctx *ctx) {
+int BPU_mecsEncryptA(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_McEliece_Ctx *ctx) {
   return BPU_encryptA(ct, pt, ctx);
 }
 
-int BPU_mceDecrypt(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_McEliece_Ctx *ctx) {
-  return decrypt(pt, ct, ctx);
-  // return decryptCCA2KobaraImai(pt, ct, ctx);
+int BPU_mecsDecrypt(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_McEliece_Ctx *ctx) {
+  return BPU_decrypt(pt, ct, ctx);
+  // return BPU_decryptCCA2KobaraImai(pt, ct, ctx);
 }
 
-int BPU_mceDecryptA(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_McEliece_Ctx *ctx) {
-  return decryptA(pt, ct, ctx);
+int BPU_mecsDecryptA(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_McEliece_Ctx *ctx) {
+  return BPU_decryptA(pt, ct, ctx);
 }
 
-int BPU_mceGenKeyPair(BPU_T_McEliece_Ctx *ctx) {
+int BPU_mecsGenKeyPair(BPU_T_McEliece_Ctx *ctx) {
   return BPU_genKeyPair(ctx, ctx->pub_key.t);
 }
 
-void BPU_mceFreeCtx(BPU_T_McEliece_Ctx *ctx) {
+void BPU_mecsFreeCtx(BPU_T_McEliece_Ctx *ctx) {
   BPU_freeMcElieceCtx(ctx);
 }
 
-int BPU_mceGetPtBlockSizeBits(BPU_T_McEliece_Ctx *ctx) {
+int BPU_mecsGetPtBlockSizeBits(BPU_T_McEliece_Ctx *ctx) {
   return ctx->max_pt_len_bit;
 }
 
-int BPU_mceGetCtBlockSizeBits(BPU_T_McEliece_Ctx *ctx) {
+int BPU_mecsGetCtBlockSizeBits(BPU_T_McEliece_Ctx *ctx) {
   return ctx->max_ct_len_bit;
 }

@@ -4,7 +4,7 @@
  Copyright (C) 2014 Andrej Gulyas <andrej.guly[at]gmail.com>
  Copyright (C) 2014 Marek Klein  <kleinmrk[at]gmail.com>
  Copyright (C) 2014 Filip Machovec  <filipmachovec[at]yahoo.com>
- Copyright (C) 2014 Jozef Kudlac Uhrecky <kudalc.jozef[at]gmail.com>
+ Copyright (C) 2014 Jozef Kudlac <jozef[at]kudlac.sk>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ void encLoop(Vector_GF2 *ct, Vector_GF2 *pt, BPU_T_McEliece_Ctx *ctx) {
 	uint64_t end = (BYTES_TO_TEST * 8) / ctx->max_pt_len_bit;
 	
 	for (i = 0; i < end; i++) {
-		BPU_mceEncrypt(ct, pt, ctx);
+		BPU_mecsEncrypt(ct, pt, ctx);
 	}
 }
 
@@ -43,7 +43,7 @@ void decLoop(Vector_GF2 *pt, Vector_GF2 *ct, BPU_T_McEliece_Ctx *ctx) {
 	uint64_t end = (BYTES_TO_TEST * 8) / ctx->max_pt_len_bit;
 
 	for (i = 0; i < end; i++) {
-		BPU_mceDecrypt(pt, ct, ctx);
+		BPU_mecsDecrypt(pt, ct, ctx);
 	}
 }
 
@@ -55,8 +55,8 @@ double keyGenLoop() {
 	for (i = 0; i < BPU_TEST_ROUNDS; i++) {
 		t = time(NULL);
 
-		BPU_mceInitCtx(&ctx, 50);
-		BPU_mceGenKeyPair(&ctx);
+		BPU_mecsInitCtx(&ctx, 50);
+		BPU_mecsGenKeyPair(&ctx);
 		BPU_freeMcElieceCtx(&ctx);
 
 		te = time(NULL) - t;
@@ -81,11 +81,11 @@ int main(int argc, char **argv) {
 
 
   for (i = 0; i < BPU_TEST_ROUNDS; i++){
-		BPU_mceInitCtx(&ctx, 50);
+		BPU_mecsInitCtx(&ctx, 50);
 
     gettimeofday(&tv, NULL);
 
-    BPU_mceGenKeyPair(&ctx);
+    BPU_mecsGenKeyPair(&ctx);
 		gettimeofday(&tv_end, NULL);
     res += (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000));
     // fprintf(stderr, "priv: %lu\n", sizeof(ctx.priv_key));
@@ -98,19 +98,19 @@ int main(int argc, char **argv) {
 
     BPU_mallocVectorGF2(&ct, ctx.priv_key.h_mat.n);
   	// BPU_printError("%d", ctx.priv_key.h_mat.n);
-    initRandVector(&pt, ctx.pub_key.g_mat.k, 0);
+    BPU_initRandVector(&pt, ctx.pub_key.g_mat.k, 0);
     // BPU_printGf2Vec(&pt);
 		  
     gettimeofday(&tv, NULL);
-    BPU_mceEncrypt(&ct, &pt, &ctx);
+    BPU_mecsEncrypt(&ct, &pt, &ctx);
     gettimeofday(&tv_end, NULL);
     res_2 += (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000));
     // BPU_gf2VecNull(&pt);
     // BPU_printGf2Vec(&ct);
     gettimeofday(&tv, NULL);
-    BPU_mceDecrypt(&pt, &ct, &ctx);
+    BPU_mecsDecrypt(&pt, &ct, &ctx);
     // BPU_printGf2Vec(&pt);
-    // decrypt2(&ct, &pt, &ctx);
+    // BPU_decrypt2(&ct, &pt, &ctx);
     gettimeofday(&tv_end, NULL);
     res_3 += (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000));
 
@@ -133,8 +133,8 @@ int main2(int argc, char **argv) {
 
 	fprintf(stderr, "\n\n\n====== SPEED TEST ======\n");
 	fprintf(stderr, "\nGenerating key pair...\n");
-	BPU_mceInitCtx(&ctx, 50);
-	BPU_mceGenKeyPair(&ctx); 
+	BPU_mecsInitCtx(&ctx, 50);
+	BPU_mecsGenKeyPair(&ctx); 
 	fprintf(stderr, "Size of plaintext: %li B, (%.2lf KB)\n", BYTES_TO_TEST, BYTES_TO_TEST / (double) (1 << 10));
 	fprintf(stderr, "McEliece parameters: n = %d, m = %d, t = %d\n", ctx.a_data.ord, ctx.pub_key.m, ctx.pub_key.t);
 
@@ -142,7 +142,7 @@ int main2(int argc, char **argv) {
 	kt = keyGenLoop();
 	fprintf(stderr, "Mean time: %.2lf s/key\n", kt);
 
-	initRandVector(&pt, ctx.max_pt_len_bit - 1, 0);
+	BPU_initRandVector(&pt, ctx.max_pt_len_bit - 1, 0);
 	BPU_mallocVectorGF2(&ct, ctx.max_pt_len_bit);
 
 	fprintf(stderr, "\nEncryption test: BPU_encrypting n-times %d bit plaintext message\n", ctx.max_pt_len_bit);
