@@ -8,7 +8,7 @@ Project is now only in *development version*.
 ### External dependencies:
   - there is now only dependency to openssl library, it uses hash function
   - library name: `libssl-dev`
-  - see [lib/src/operations.c:27](lib/src/operations.c#L27) and [lib/src/operations.c:66](lib/src/operations.c#L66)
+  - see [lib/src/operations.c:28](lib/src/operations.c#L28) and [lib/src/operations.c:67](lib/src/operations.c#L67)
     - `#include <openssl/sha.h>`
     - `SHA512()`
 
