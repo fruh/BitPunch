@@ -15,5 +15,6 @@ var files =
     [ "process.c", "process_8c.html", "process_8c" ],
     [ "process.h", "process_8h.html", "process_8h" ],
     [ "test-speed.c", "test-speed_8c.html", "test-speed_8c" ],
-    [ "types.h", "types_8h.html", "types_8h" ]
+    [ "types.h", "types_8h.html", "types_8h" ],
+    [ "version.h", "version_8h.html", null ]
 ];

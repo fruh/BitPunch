@@ -7,13 +7,14 @@
 
 var indexSectionsWithContent =
 {
-  0: "_abcdefghiklmnopst",
+  0: "_abcdefghiklmnopstv",
   1: "_b",
-  2: "adgimopt",
+  2: "adgimoptv",
   3: "bdefkm",
   4: "_acdeghklmnopst",
   5: "b",
-  6: "b"
+  6: "b",
+  7: "b"
 };
 
 var indexSectionNames =
@@ -24,7 +25,8 @@ var indexSectionNames =
   3: "functions",
   4: "variables",
   5: "typedefs",
-  6: "defines"
+  6: "defines",
+  7: "pages"
 };
 
 function convertToId(search)

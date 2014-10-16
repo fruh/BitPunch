@@ -185,5 +185,6 @@ var searchData=
   ['bpu_5ft_5fvector_5fgf2',['BPU_T_Vector_GF2',['../types_8h.html#a9b053a1987f0bfa2b8037b5c803e0414',1,'types.h']]],
   ['bpu_5ft_5fvector_5fgf2_5f16x',['BPU_T_Vector_GF2_16x',['../types_8h.html#a82ee6e1096ad20d83b3e36a568807f5c',1,'types.h']]],
   ['bpu_5ftest_5frounds',['BPU_TEST_ROUNDS',['../test-speed_8c.html#a5be80058f49a10b62ff94d56b72fa4f9',1,'test-speed.c']]],
-  ['bytes_5fto_5ftest',['BYTES_TO_TEST',['../test-speed_8c.html#af960c569581d10dd2eed55c592846d2b',1,'test-speed.c']]]
+  ['bytes_5fto_5ftest',['BYTES_TO_TEST',['../test-speed_8c.html#af960c569581d10dd2eed55c592846d2b',1,'test-speed.c']]],
+  ['bitpunch_20mceliece',['BitPunch McEliece',['../index.html',1,'']]]
 ];

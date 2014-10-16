@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McElliece BitPunch: Main Page</title>
+<title>McEliece BitPunch: BitPunch McEliece</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,8 +28,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="bitpunch-black-small.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">McElliece BitPunch
+   <div id="projectname">McEliece BitPunch
    </div>
   </td>
  </tr>
@@ -84,7 +85,7 @@ $(document).ready(function(){initNavTree('index.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -95,15 +96,113 @@ $(document).ready(function(){initNavTree('index.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">McElliece BitPunch Documentation</div>  </div>
+<div class="title">BitPunch McEliece </div>  </div>
 </div><!--header-->
 <div class="contents">
-</div><!-- contents -->
+<div class="textblock"><h1><a class="anchor" id="Introduction"></a>
+Introduction</h1>
+<p>Goal of BitPunch project is to make a standalone McEliece implementation. Current version is only develompent version, it is not suitable to use in real-life implementation. Our implementation of MECS uses Goppa codes.</p>
+<p>I know, there is a lot of BUGS now. If you have any questions, ideas create new issue or contact me:</p>
+<ul>
+<li>xuhreckyf [ you know what to put here ] stuba.sk</li>
+</ul>
+<h1><a class="anchor" id="Structure"></a>
+Structure</h1>
+<p>Structure of BitPunch will be changed in short period.</p>
+<h2><a class="anchor" id="Convention"></a>
+Convention</h2>
+<p>Current version: 0.1.0</p>
+<ul>
+<li>function name format: BPU_thisFunctionMakesMeDead</li>
+<li>data types name format: BPU_T_This_Data_Type_Rocks</li>
+<li>variable name format: four_your_information</li>
+<li>all data types has prefix BPU_T_*</li>
+<li>all functions, macros has prefix BPU_*<ul>
+<li>there is also specific prefix for functions, which are working with kind of data:<ul>
+<li>BPU_gf2Vec*</li>
+<li>BPU_gf2xVec*</li>
+<li>BPU_gf2xPoly*</li>
+<li>BPU_gf2Matrix*</li>
+<li>BPU_gf2xMatrix*</li>
+<li>BPU_perm*</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>functions, which are allocating memory for output has suffix *A</li>
+</ul>
+<h2><a class="anchor" id="Files"></a>
+Files</h2>
+<ul>
+<li><a class="el" href="arithmetics_8h.html">lib/src/arithmetics.h</a><ul>
+<li>here are some arithmetic function over GF2, GF2x like polynomial multiplication mod f(x), matrix mul ...</li>
+</ul>
+</li>
+<li><a class="el" href="debugio_8h.html">lib/src/debugio.h</a><ul>
+<li>print functions</li>
+</ul>
+</li>
+<li><a class="el" href="globals_8h.html">lib/src/globals.h</a><ul>
+<li>global var used mainly for testing puprose</li>
+</ul>
+</li>
+<li><a class="el" href="init_8h.html">lib/src/init.h</a><ul>
+<li>init functions for structure allocation</li>
+</ul>
+</li>
+<li><a class="el" href="mceliece_8h.html">lib/src/mceliece.h</a><ul>
+<li>mecs API, se example <a class="el" href="main_8c.html">lib/src/main.c</a></li>
+</ul>
+</li>
+<li><a class="el" href="operations_8h.html">lib/src/operations.h</a><ul>
+<li>here are some operations with matrices, vectors like conversion from GF2 to GF2x, concat, append or polynomial inversion, extended euclidean over GF2x polynomials...</li>
+</ul>
+</li>
+<li><a class="el" href="process_8h.html">lib/src/process.h</a><ul>
+<li>here is encoding, decoding, encryption, decryption ...</li>
+</ul>
+</li>
+<li><a class="el" href="types_8h.html">lib/src/types.h</a><ul>
+<li>datatypes used in our implementation, vectors, matrices, GF2 ...</li>
+</ul>
+</li>
+<li><a class="el" href="version_8h.html">lib/src/version.h</a><ul>
+<li>only version info file</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="Build"></a>
+Build</h1>
+<p>For build details see</p>
+<ul>
+<li>lib/makefile help.</li>
+</ul>
+<h1><a class="anchor" id="Changes"></a>
+Changes</h1>
+<p>File structure will be changed to:</p>
+<ul>
+<li>lib/src/bitpunch<ul>
+<li>crypto<ul>
+<li>crypto functions, so MECS implementation</li>
+</ul>
+</li>
+<li>math<ul>
+<li>all of 'math magic' used in BitPunch</li>
+</ul>
+</li>
+<li>asn1<ul>
+<li>asn1 compatibilty for keys storage ... </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Oct 16 2014 21:33:08 for McElliece BitPunch by
+    <li class="footer">Generated on Thu Oct 16 2014 23:54:12 for McEliece BitPunch by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
