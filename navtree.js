@@ -1,6 +1,15 @@
 var NAVTREE =
 [
-  [ "McElliece BitPunch", "index.html", [
+  [ "McEliece BitPunch", "index.html", [
+    [ "BitPunch McEliece", "index.html", [
+      [ "Introduction", "index.html#Introduction", null ],
+      [ "Structure", "index.html#Structure", [
+        [ "Convention", "index.html#Convention", null ],
+        [ "Files", "index.html#Files", null ]
+      ] ],
+      [ "Build", "index.html#Build", null ],
+      [ "Changes", "index.html#Changes", null ]
+    ] ],
     [ "Data Structures", null, [
       [ "Data Structures", "annotated.html", "annotated" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -25,7 +34,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"operations_8c.html#af0bea5c8b4030883559f6afab21b6205"
+"operations_8c.html#ab81dc359222c5e629c2c471f4e2a987a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
