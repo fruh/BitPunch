@@ -5,6 +5,9 @@ Goal of project is to create standalone McEliece implemetation in C language.
 
 Project is now only in *development version*.
 
+### Documentation
+  - clone repo and see doc/ or visit http://fruh.github.io/BitPunch
+
 ### External dependencies:
   - there is now only dependency to openssl library, it uses hash function
   - library name: `libssl-dev`
