@@ -1,0 +1,7 @@
+v0.1.0
+  - Initial version - of BitPunch project
+  - contains implementation of MECS using Goppa code
+  - Patterson's alg. for decoding
+  - dependencies on OpenSSL (sha)
+  - CCA2 Kobara-Imai scheme
+  - some math function over gf2, gf2x, gf2xpoly like ext. eclidean, gen. of irreducible goppa poly...
