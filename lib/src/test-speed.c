@@ -19,12 +19,11 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "mceliece.h"
+#include <bitpunch/bitpunch.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <sys/time.h>
-#include "debugio.h"
 
 #define BYTES_TO_TEST (uint64_t)(1 << 16)
 #define BPU_TEST_ROUNDS 300

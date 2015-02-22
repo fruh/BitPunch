@@ -1,0 +1,66 @@
+/**
+This file is part of PROGRAM
+Copyright (C) 2014 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+#include "mathctx.h"
+#include "gf2x.h"
+
+#include <bitpunch/debugio.h>
+#include <stdlib.h>
+
+int BPU_mathInitCtx(BPU_T_Math_Ctx *math_ctx, const BPU_T_GF2_16x g, const BPU_T_GF2_16x mod) {
+	BPU_T_GF2_16x b = 1;
+	int i = 0;
+
+	// get group ord, number of elements
+	BPU_T_GF2_16x ord = ((1 << BPU_gf2xGetDeg(mod)) - 1);
+
+	// alocate memory for tables
+	math_ctx->mod = mod;
+	math_ctx->mod_deg = BPU_gf2xGetDeg(mod);
+	math_ctx->log_table = (BPU_T_GF2_16x*) malloc(sizeof(BPU_T_GF2_16x) * (ord + 1));
+	math_ctx->exp_table = (BPU_T_GF2_16x*) malloc(sizeof(BPU_T_GF2_16x) * (ord + 1));
+
+	// set ord
+	math_ctx->ord = ord;
+
+	do {
+		math_ctx->exp_table[i] = b;
+		math_ctx->log_table[b] = i;    
+
+		b = BPU_gf2xMulMod(b, g, mod);
+		i++;
+	} while (b != 1);
+
+	math_ctx->exp_table[ord] = 0;
+	math_ctx->log_table[0] = ord;
+
+	if (i != ord) {
+		BPU_printError("element 0x%x is not generator", g);
+
+		return 1;
+	}
+	return 0;
+}
+
+void BPU_mathFreeCtx(BPU_T_Math_Ctx *a, int is_dyn) {
+	free(a->exp_table);
+	free(a->log_table);
+
+	if (is_dyn) {
+		free(a);
+	}
+}

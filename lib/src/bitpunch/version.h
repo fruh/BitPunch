@@ -30,7 +30,7 @@
   Structure of BitPunch will be changed in short period.
 
   \subsection Convention
-  Current version: 0.1.0
+  Current version: 0.0.1
     - function name format: BPU_thisFunctionMakesMeDead
     - data types name format: BPU_T_This_Data_Type_Rocks
     - variable name format: four_your_information

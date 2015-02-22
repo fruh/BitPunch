@@ -11,6 +11,13 @@ Thumbs.db
 
 # object files
 *.o
+*.gch
+
+# QtCreator files
+*.c.*
+*.h.*
+*.pro.user
+*.pri
 
 # vim generated files
 *.swp

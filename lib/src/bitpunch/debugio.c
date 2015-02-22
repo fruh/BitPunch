@@ -19,36 +19,4 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/**
-* Here are defined extern (global) variables, structures etc.
-*/
-#ifndef GLOBALS_H
-#define GLOBALS_H
-
-#include "types.h"
-
-#define BPU_ONE 1
-
-/************** DEBUG RULES *****************/
-
-// ################### process.h
-// if set it prints debug output in decode adn decodeA function
-// #define BPU_DEBUG_DECODE
-// #define BPU_DEBUG_ENCRYPT
-// #define BPU_DEBUG_DECRYPT
-
-// ################### init.h
-// #define BPU_DEBUG_MALLOC_VECTOR_GF2
-// #define BPU_DEBUG_INIT_MCE_CTX
-
-/********************************************/
-
-/*************** TESTS **********************/
-// equivalent code status
-// #define BPU_TEST_DET_EQ_CODE
-
-/// McEliece context, extern variable
-extern BPU_T_McEliece_Ctx mce_ctx;
-extern int __test_was_eq_code;
-
-#endif // GLOBALS_H
+#include "debugio.h"

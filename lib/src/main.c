@@ -1,6 +1,6 @@
 /*
  This file is part of BitPunch
- Copyright (C) 2014 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+ Copyright (C) 2014-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -16,8 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
  
-#include "mceliece.h"
-#include "debugio.h"
+#include <bitpunch/bitpunch.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,83 +24,83 @@
 #include <sys/time.h>
 
 int main(int argc, char **argv) {
-  BPU_T_McEliece_Ctx ctx;
-  BPU_T_Vector_GF2 ct, pt_in, pt_out;
+	BPU_T_Mecs_Ctx ctx;
+	BPU_T_Vector_GF2 ct, pt_in, pt_out;
 
-  srand(time(NULL));
+	srand(time(NULL));
 
-  /***************************************/
-  // mce initialisation t = 50, m = 11
-  fprintf(stderr, "Initialisation...\n");
-  BPU_mecsInitCtx(&ctx, 50);
+	/***************************************/
+	// mce initialisation t = 50, m = 11
+	fprintf(stderr, "Initialisation...\n");
+	BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
 
-  /***************************************/
-  fprintf(stderr, "Key generation...\n");
-  // key pair generation
-  if (BPU_mecsGenKeyPair(&ctx)) {
-    BPU_printError("Key generation error");
-  }
-  /***************************************/
-  // prepare plain text, allocate memory and init random plaintext
-  if (BPU_initRandVector(&pt_in, ctx.pub_key.g_mat.k, 0)) {
-    BPU_printError("PT initialisation error");
+	/***************************************/
+	fprintf(stderr, "Key generation...\n");
+	// key pair generation
+	if (BPU_mecsGenKeyPair(&ctx)) {
+		BPU_printError("Key generation error");
+	}
+	/***************************************/
+	// prepare plain text, allocate memory and init random plaintext
+	if (BPU_initRandVector(&pt_in, ctx.code_ctx->msg_len, 0)) {
+		BPU_printError("PT initialisation error");
 
-    BPU_freeMcElieceCtx(&ctx);
-    return 1;
-  }
-  // alocate cipher text vector
-  if (BPU_mallocVectorGF2(&ct, ctx.priv_key.h_mat.n)) {
-    BPU_printError("CT vector allocation error");
+		BPU_mecsFreeCtx(&ctx);
+		return 1;
+	}
+	// alocate cipher text vector
+	if (BPU_mallocVectorGF2(&ct, ctx.code_ctx->code_len)) {
+		BPU_printError("CT vector allocation error");
 
-    BPU_freeVecGF2(&pt_in, 0);
-    BPU_freeMcElieceCtx(&ctx);
-    return 1;
-  }
-  /***************************************/
-  fprintf(stderr, "Encryption...\n");
-  // BPU_encrypt plain text
-  if (BPU_mecsEncrypt(&ct, &pt_in, &ctx)) {
-    BPU_printError("Encryption error");
+		BPU_freeVecGF2(&pt_in, 0);
+		BPU_mecsFreeCtx(&ctx);
+		return 1;
+	}
+	/***************************************/
+	fprintf(stderr, "Encryption...\n");
+	// BPU_encrypt plain text
+	if (BPU_mecsEncrypt(&ct, &pt_in, &ctx)) {
+		BPU_printError("Encryption error");
 
-    BPU_freeVecGF2(&ct, 0);
-    BPU_freeVecGF2(&pt_in, 0);
-    BPU_freeMcElieceCtx(&ctx);
-    return 1;
-  }
-  /***************************************/
-  fprintf(stderr, "Decryption...\n");
-  // decrypt cipher text
-  if (BPU_mecsDecrypt(&pt_out, &ct, &ctx)) {
-    BPU_printError("Decryption error");
+		BPU_freeVecGF2(&ct, 0);
+		BPU_freeVecGF2(&pt_in, 0);
+		BPU_mecsFreeCtx(&ctx);
+		return 1;
+	}
+	/***************************************/
+	fprintf(stderr, "Decryption...\n");
+	// decrypt cipher text
+	if (BPU_mecsDecrypt(&pt_out, &ct, &ctx)) {
+		BPU_printError("Decryption error");
 
-    BPU_freeVecGF2(&ct, 0);
-    BPU_freeVecGF2(&pt_in, 0);
-    BPU_freeMcElieceCtx(&ctx);
-    return 1;
-  }
-  /***************************************/
-  // debug output
-  fprintf(stderr, "\nCT:\n");
-  BPU_printGf2Vec(&ct);
-  fprintf(stderr, "\nOutput PT:\n");
-  BPU_printGf2Vec(&pt_out);
-  fprintf(stderr, "\nInput random PT:\n");
-  BPU_printGf2Vec(&pt_in);
+		BPU_freeVecGF2(&ct, 0);
+		BPU_freeVecGF2(&pt_in, 0);
+		BPU_mecsFreeCtx(&ctx);
+		return 1;
+	}
+	/***************************************/
+	// debug output
+	fprintf(stderr, "\nCT:\n");
+	BPU_printGf2Vec(&ct);
+	fprintf(stderr, "\nOutput PT:\n");
+	BPU_printGf2Vec(&pt_out);
+	fprintf(stderr, "\nInput random PT:\n");
+	BPU_printGf2Vec(&pt_in);
 
-  // check for correct decryption
-  if (BPU_gf2VecCmp(&pt_in, &pt_out)) {
-    BPU_printError("\nOutput plain text differs from input");
-  }
-  else {
-    fprintf(stderr, "\nSUCCESS: Input plain text is equal to output plain text.\n");
-  }
-  // clean up
-  /***************************************/
-  fprintf(stderr, "\nCleaning up...\n");
-  BPU_freeVecGF2(&pt_in, 0);
-  BPU_freeVecGF2(&pt_out, 0);
-  BPU_freeVecGF2(&ct, 0);
-  BPU_freeMcElieceCtx(&ctx);
+	// check for correct decryption
+	if (BPU_gf2VecCmp(&pt_in, &pt_out)) {
+		BPU_printError("\nOutput plain text differs from input");
+	}
+	else {
+		fprintf(stderr, "\nSUCCESS: Input plain text is equal to output plain text.\n");
+	}
+	// clean up
+	/***************************************/
+	fprintf(stderr, "\nCleaning up...\n");
+	BPU_freeVecGF2(&pt_in, 0);
+	BPU_freeVecGF2(&pt_out, 0);
+	BPU_freeVecGF2(&ct, 0);
+	BPU_mecsFreeCtx(&ctx);
 
-  return 0;
+	return 0;
 }
