@@ -92,12 +92,12 @@ int main(int argc, char **argv) {
 	}
 	/***************************************/
 	// debug output
-	fprintf(stderr, "\nCT:\n");
-	BPU_printGf2Vec(&ct);
-	fprintf(stderr, "\nOutput PT:\n");
-	BPU_printGf2Vec(&pt_out);
-	fprintf(stderr, "\nInput random PT:\n");
-	BPU_printGf2Vec(&pt_in);
+	// fprintf(stderr, "\nCT:\n");
+	// BPU_printGf2Vec(&ct);
+	// fprintf(stderr, "\nOutput PT:\n");
+	// BPU_printGf2Vec(&pt_out);
+	// fprintf(stderr, "\nInput random PT:\n");
+	// BPU_printGf2Vec(&pt_in);
 
 	// check for correct decryption
 	if (BPU_gf2VecCmp(&pt_in, &pt_out)) {

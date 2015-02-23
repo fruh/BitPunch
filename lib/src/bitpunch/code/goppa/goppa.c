@@ -312,34 +312,48 @@ int BPU_goppaInitMatZ(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_M
 
 
 int BPU_goppaInitMatH(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_Math_Ctx *math_ctx) {
-	int rc = 0;
-	BPU_T_GF2_16x_Matrix tmp_mat, x_m, y_m, z_m;
+	// int rc = 0;
+// 	BPU_T_GF2_16x_Matrix tmp_mat, x_m, y_m, z_m;
 	
-	rc += BPU_goppaInitMatX(&(x_m), poly);
+// 	rc += BPU_goppaInitMatX(&(x_m), poly);
 
-#ifdef DEBUG_INIT_MAT_H
-	BPU_printDebug("Matrix X:");
-	BPU_printGf2xMat(&(x_m));
-#endif
-	rc += BPU_goppaInitMatY(&(y_m), poly->deg, math_ctx);
+// #ifdef DEBUG_INIT_MAT_H
+// 	BPU_printDebug("Matrix X:");
+// 	BPU_printGf2xMat(&(x_m));
+// #endif
+	// rc += BPU_goppaInitMatY(&(y_m), poly->deg, math_ctx);
 
-#ifdef DEBUG_INIT_MAT_H
-	BPU_printDebug("Matrix Y:");
-	BPU_printGf2xMat(&(y_m));
-#endif
-	rc += BPU_goppaInitMatZ(&(z_m), poly, math_ctx);
+// #ifdef DEBUG_INIT_MAT_H
+// 	BPU_printDebug("Matrix Y:");
+// 	BPU_printGf2xMat(&(y_m));
+// #endif
+// 	rc += BPU_goppaInitMatZ(&(z_m), poly, math_ctx);
 
-#ifdef DEBUG_INIT_MAT_H
-	BPU_printDebug("Matrix Z:");
-	BPU_printGf2xMat(&(z_m));
-#endif
-	rc += BPU_gf2xMatrixMulA(&tmp_mat, &(x_m), &(y_m), math_ctx);
-	rc += BPU_gf2xMatrixMulA(m, &tmp_mat, &(z_m),math_ctx);
+// #ifdef DEBUG_INIT_MAT_H
+// 	BPU_printDebug("Matrix Z:");
+// 	BPU_printGf2xMat(&(z_m));
+// #endif
+// 	rc += BPU_gf2xMatrixMulA(&tmp_mat, &(x_m), &(y_m), math_ctx);
+// 	rc += BPU_gf2xMatrixMulA(m, &tmp_mat, &(z_m),math_ctx);
 
-	BPU_gf2xMatFree(&tmp_mat, 0);
-	BPU_gf2xMatFree(&x_m, 0);
-	BPU_gf2xMatFree(&y_m, 0);
-	BPU_gf2xMatFree(&z_m, 0);
+// 	BPU_gf2xMatFree(&tmp_mat, 0);
+// 	BPU_gf2xMatFree(&x_m, 0);
+// 	BPU_gf2xMatFree(&y_m, 0);
+// 	BPU_gf2xMatFree(&z_m, 0);
+	int k, rc = 0, row, column, e;
+  BPU_T_GF2_16x element, divider;
+  rc = BPU_gf2xMatMalloc(m, poly->deg, math_ctx->ord);
+  for(column = 0; column < m->n; column++) {
+    divider = BPU_gf2xPowerModT(BPU_gf2xPolyEval(poly, math_ctx->exp_table[column], math_ctx), -1, math_ctx);
+    for(row = 0; row < m->k; row++) {
+      element = 0;
+      for(k = poly->deg - row, e = 0; k <= poly->deg; k++, e++) {
+        element ^= BPU_gf2xMulMod(poly->coef[k], BPU_gf2xPowerModT (math_ctx->exp_table[column], e, math_ctx), math_ctx->mod);
+      }
+      m->elements[row][column] = BPU_gf2xMulMod(element, divider, math_ctx->mod);
+    }
+  }
+  return rc;
 	
 	return rc;
 }
