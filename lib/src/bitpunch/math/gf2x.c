@@ -183,18 +183,6 @@ int BPU_gf2xMatrixMulA(BPU_T_GF2_16x_Matrix *x, const BPU_T_GF2_16x_Matrix *a, c
 	return 0;
 }
 
-
-int BPU_gf2VecMulMatA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *v, const BPU_T_GF2_Matrix *b) {
-	if (BPU_gf2VecMalloc(out, b->n)) {
-		return -2;
-	}
-	return BPU_gf2VecMulMat(out, v, b);
-}
-
-
-
-
-
 void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b) {
 	int16_t out_deg;
 	int i = 0;
@@ -394,7 +382,6 @@ void BPU_gf2xPolyMod(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
 	}
 	if (out->max_deg < a->deg) {
 		BPU_gf2xPolyFree(out, 0);
-
 		BPU_gf2xPolyMalloc(out, a->deg);
 	}
 	else {
@@ -452,6 +439,7 @@ void BPU_gf2xMatRootA(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Poly *mod, 
 		// copy elements from polynomial into matrix 
 		BPU_gf2xMatInsertPoly(out, &tmp, i);
 	}
+	BPU_gf2xPolyFree(&tmp, 0);
 	BPU_gf2xPolyFree(&row, 0);
 
 	for (i = 0; i < out->k; i++) {
@@ -821,8 +809,6 @@ void BPU_gf2xPolyCopy(BPU_T_GF2_16x_Poly *dest, const BPU_T_GF2_16x_Poly *src) {
 	dest->deg = src->deg;
 }
 
-
-
 void BPU_gf2xPolyInvA(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx) {
 	BPU_T_GF2_16x_Poly d, t;
 	
@@ -984,12 +970,10 @@ void BPU_gf2xPolyGenRandom(BPU_T_GF2_16x_Poly *p, int t, const BPU_T_Math_Ctx *m
 	p->deg = t;
 }
 
-void BPU_gf2xPolyGenGoppaA(BPU_T_GF2_16x_Poly *p, int t, const BPU_T_Math_Ctx *math_ctx) {
+void BPU_gf2xPolyGenGoppa(BPU_T_GF2_16x_Poly *p, int t, const BPU_T_Math_Ctx *math_ctx) {
 #if defined(DEBUG_L) || defined(WARNING_L)
 	int i = 1;
 #endif
-	BPU_gf2xPolyMalloc(p, t);
-
 	while(1) {
 		BPU_gf2xPolyGenRandom(p, t, math_ctx);
 		

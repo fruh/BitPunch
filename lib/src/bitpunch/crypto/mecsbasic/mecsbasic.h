@@ -29,17 +29,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
 
-/**
- * Encrypt plaintext.
- * @param  out    cyphertext, will be allocated inside function
- * @param  message  plaintext
- * @param  ctx  McEliece context
- * @return     0 - succes, else error
- */
-int BPU_mecsBasicEncryptA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
-
 int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
-
-int BPU_mecsBasicDecryptA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
 
 #endif // MECSBASIC_H

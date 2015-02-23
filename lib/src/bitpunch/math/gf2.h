@@ -223,12 +223,12 @@ BPU_T_GF2 BPU_gf2MatGetMaskedBit(const BPU_T_GF2_Matrix *m, uint32_t row, uint32
 BPU_T_GF2 BPU_gf2VecGetMaskedBit(const BPU_T_GF2_Vector *vec, uint32_t bit);
 
 /**
- * Transpose GF2 Matrix. After work you have to free memory using call BPU_freeMatGF2.
+ * Transpose GF2 Matrix.
  * @param  out transposed GF2 matrix
  * @param  in  matrix to transpose
  * @return     on success 0, else error
  */
-int BPU_gf2MatTranspA(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in);
+int BPU_gf2MatTransp(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in);
 
 /**
  * Swaps GF2 elements.
@@ -271,26 +271,7 @@ int BPU_gf2MatFindCol(const BPU_T_GF2_Matrix *mat, int i, int start_index);
  * @return       on success pointer to BPU_T_Perm_Vector
  */
 /// It brings Matrix GF2 into the systematic form -> with I on the left side.
-BPU_T_Perm_Vector* BPU_gf2MatMakeSystematicA(BPU_T_GF2_Matrix *inout);
-
-/**
- * Append identity matrix, so out matrix should be (M | I). After work should be called BPU_freeMatGF2.
- * @param  out oupput matrix of size k x (n + k), will be allocated
- * @param  in  input matrix of size k x n
- * @return     0 - succes, else error
- */
-/// Append identity matrix, so out matrix should be (M | I).
-int BPU_gf2MatAppendIdenityA(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in);
-
-/**
- * Concats two vectors it allocates ouptu inside.
- * @param  vec1 first vector
- * @param  vec2 second vector
- * @param  out  output vector - concat of vec1 and vec2, it allocates vector inside function, should be freed after use BPU_freeVecGF2()
- * @return    0 - succes, else error
- */
-/// Concats two vectors it allocates ouptu inside.
-int BPU_gf2VecConcatA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *vec1, const BPU_T_GF2_Vector *vec2);
+BPU_T_Perm_Vector* BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix *inout);
 
 /**
  * Concats two vectors without allocation ouput.
@@ -310,17 +291,17 @@ int BPU_gf2VecConcat(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *vec1, const 
  * @param  length count of bits of cropped vector
  * @return    0 - succes, else error
  */
-int BPU_gf2VecCropA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const int start, const int length);
+int BPU_gf2VecCrop(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const int start, const int length);
 
 /**
- * Crop matrix GF2 from left.  After work you have to free memory using call BPU_freeMatGF2.
+ * Crop matrix GF2 from left.
  * @param in input matrix GF2
  * @param out croped output matrix GF2 
  * @param width width of cropped matrix
  * @return on succes 0, on higher or equal width as actual width of in matrix -1, on allocation of new matrix error -2
  */
 /// Crop matrix GF2 from left.
-int BPU_gf2MatCropA(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in, uint16_t width);
+int BPU_gf2MatCrop(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in, uint16_t width);
 
 /**
  * Get matrix GF2 row as vector gf2. You can set alloc param, to allocate it dynamically inside function, or use allocated vector yet. When set alloc, after work call BPU_freeVecGF2
@@ -359,16 +340,6 @@ void BPU_gf2MatXorRows(BPU_T_GF2_Matrix *mat, int i, int j);
  */
 /// Xor two Vectors GF2 and store result in first vector.
 int BPU_gf2VecXor(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in);
-
-/**
-* Vector and matrix multiplication over GF2.
-* x = v * b, vector is in 'line' format like [010111010001]. It selects i-th row from matrix b and xor it together, when vector v has at i-th column 1.  After work you have to free memory using call BPU_freeMat
-* @param[out] x vector GF2, it is matrix k = 1, n = length of vec, new vector (matrix)
-* @param[in] v vector GF2, it is matrix k = 1, n = length of vec
-* @param[in] b matrix GF2
-* @return on succes 0, on size error -1, on allocation error -2
-*/
-int BPU_gf2VecMulMatA(BPU_T_GF2_Vector *x, const BPU_T_GF2_Vector *v, const BPU_T_GF2_Matrix *b);
 
 /**
  * Create a binary vector of required length and weight. After work call BPU_freeVecGF2

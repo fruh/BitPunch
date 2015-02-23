@@ -393,11 +393,11 @@ void BPU_gf2xMatClearCol(BPU_T_GF2_16x_Matrix *mat, int index, const BPU_T_Math_
 void BPU_gf2xPolyGenRandom(BPU_T_GF2_16x_Poly *p, int t, const BPU_T_Math_Ctx *math_ctx);
 
 /**
- * Generate monic irreducible polynopmial of degree t. Polynomial p must be afreed after use.
+ * Generate monic irreducible polynopmial of degree t.
  * @param p      [description]
  * @param t      [description]
  * @param math_ctx [description]
  */
-void BPU_gf2xPolyGenGoppaA(BPU_T_GF2_16x_Poly *p, int t, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xPolyGenGoppa(BPU_T_GF2_16x_Poly *p, int t, const BPU_T_Math_Ctx *math_ctx);
 
 #endif // BPU_GF2X_H

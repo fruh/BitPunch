@@ -1,0 +1,6 @@
+#!/bon/bash
+Memory peak:
+	valgrind --tool=massif PROGRAM
+Memory leaks:
+	valgrind --leack-check=yes PROGRAM
+

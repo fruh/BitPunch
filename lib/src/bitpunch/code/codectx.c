@@ -102,8 +102,8 @@ void BPU_codeFreeCtx(BPU_T_Code_Ctx *ctx) {
 		free(ctx->code_spec.goppa);
 		break;
 	default:
-		free(ctx->math_ctx);
-
 		BPU_printError("Code type not supported: %d", ctx->type);
 	}
+	BPU_mathFreeCtx(ctx->math_ctx, 0);
+	free(ctx->math_ctx);
 }

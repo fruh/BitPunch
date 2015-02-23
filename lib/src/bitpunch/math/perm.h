@@ -39,12 +39,12 @@ void BPU_printPerm(const BPU_T_Perm_Vector *permutation);
 int BPU_permGenA(BPU_T_Perm_Vector* permutation, uint32_t size);
 
 /**
- * Get inverse permutation to permutation. It allocates new permutation elements using malloc. After work you have to free memory using call BPU_freePerm.
- * @param  out inverted permutation
+ * Get inverse permutation to permutation.
+ * @param  out inverted permutation must be allocated
  * @param  in  permutation
  * @return     on succes 0, else error
  */
-int BPU_permGetInvA(BPU_T_Perm_Vector *out, const BPU_T_Perm_Vector *in);
+int BPU_permGetInv(BPU_T_Perm_Vector *out, const BPU_T_Perm_Vector *in);
 
 /**
  * Compose permutations.

@@ -40,16 +40,6 @@ int BPU_goppaEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const str
 int BPU_goppaDecode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
 
 /**
- * Decode message. Decoded is allocated inside function, use freeVectorGF2() afer use.
- * @param encoded[in] encoded message
- * @param decoded[out] decoded message, allocated inside
- * @param ctx[out] McEliece context
- *
- * @return succes - 0, else non-zero
- */
-int BPU_goppaDecodeA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
-
-/**
  * Get error vector. Decoded must be allocated before use, or use function decodeA
  * @param encoded[in] encoded message
  * @param decoded[out] decoded message, allocated inside
@@ -57,17 +47,7 @@ int BPU_goppaDecodeA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const st
  *
  * @return still 0
  */
-int BPU_goppaGetError(BPU_T_GF2_Vector *encoded, BPU_T_GF2_Vector *decoded, const BPU_T_Code_Ctx *ctx);
-
-/**
- * Get error vector. Decoded is allocated inside function, use freeVectorGF2() afer use.
- * @param encoded[in] encoded message
- * @param decoded[out] decoded message, allocated inside
- * @param ctx[out] McEliece context
- *
- * @return succes - 0, else non-zero
- */
-int BPU_goppaGetErrorA(BPU_T_GF2_Vector *encoded, BPU_T_GF2_Vector *decoded, const BPU_T_Code_Ctx *ctx);
+int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, const BPU_T_Code_Ctx *ctx);
 
 void BPU_goppaDetSyndromeA(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_GF2_16x_Matrix *H);
 
@@ -80,7 +60,7 @@ void BPU_goppaDetSyndromeA(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector 
  * @param math_ctx[in] [description]
  */
 /// Find polynomials a, b of degree <= (t div 2)
-void BPU_goppaFindPolyAB(const BPU_T_GF2_16x_Poly *tau, const BPU_T_GF2_16x_Poly *mod, BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU_T_Math_Ctx *math_ctx);
+void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU_T_GF2_16x_Poly *tau, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
 
 /**
 * Initialize all control H matricies (X, Y, Z). It uses McEl structure.

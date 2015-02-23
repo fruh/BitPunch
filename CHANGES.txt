@@ -1,7 +1,12 @@
+v0.0.2
+	- module organization: crypto, math, code, prng
+	- convention unified see doc
+	- new context managment: mecs, code and math context
+
 v0.0.1
-  - Initial version - of BitPunch project
-  - contains implementation of MECS using Goppa code
-  - Patterson's alg. for decoding
-  - dependencies on OpenSSL (sha)
-  - CCA2 Kobara-Imai scheme
-  - some math function over gf2, gf2x, gf2xpoly like ext. eclidean, gen. of irreducible goppa poly...
+	- Initial version - of BitPunch project
+	- contains implementation of MECS using Goppa code
+	- Patterson's alg. for decoding
+	- dependencies on OpenSSL (sha)
+	- CCA2 Kobara-Imai scheme
+	- some math function over gf2, gf2x, gf2xpoly like ext. eclidean, gen. of irreducible goppa poly...

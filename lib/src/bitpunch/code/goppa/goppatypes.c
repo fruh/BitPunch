@@ -18,9 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "goppatypes.h"
 #include <stdlib.h>
 
+#include <bitpunch/math/gf2types.h>
+#include <bitpunch/math/gf2xtypes.h>
+#include <bitpunch/math/permtypes.h>
+
 void BPU_goppaFreeSpec(BPU_T_Goppa_Spec *spec) {
+	BPU_gf2xPolyFree(spec->g, 0);
 	free(spec->g);
+	BPU_gf2MatFree(spec->g_mat, 0);
 	free(spec->g_mat);
+	BPU_gf2xMatFree(spec->h_mat, 0);
 	free(spec->h_mat);
+	BPU_permFree(spec->permutation, 0);
 	free(spec->permutation);
 }

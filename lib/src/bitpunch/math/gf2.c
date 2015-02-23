@@ -282,11 +282,11 @@ BPU_T_GF2 BPU_gf2VecGetMaskedBit(const BPU_T_GF2_Vector *vec, uint32_t bit) {
 	return vec->elements[segment] & ((uint64_t)1 << bit_in_segment);
 }
 
-int BPU_gf2MatTranspA(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in) {
+int BPU_gf2MatTransp(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in) {
 	int i, j;
 
-	if (BPU_gf2MatMalloc(out, in->n, in->k)) {
-		BPU_printError("BPU_gf2MatTranspA allocation error");
+	if (out->k != in->n || out->n != in->k) {
+		BPU_printError("Wrong matrix dimenzion");
 
 		return -1;
 	}
@@ -335,7 +335,7 @@ int BPU_gf2MatFindCol(const BPU_T_GF2_Matrix *mat, int i, int start_index) {
 	return -1;
 }
 
-BPU_T_Perm_Vector* BPU_gf2MatMakeSystematicA(BPU_T_GF2_Matrix *inout) {
+BPU_T_Perm_Vector* BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix *inout) {
 	int act_position = 0;
 	int i;
 	int row, col;
@@ -393,26 +393,6 @@ BPU_T_Perm_Vector* BPU_gf2MatMakeSystematicA(BPU_T_GF2_Matrix *inout) {
 	BPU_permFree(&perm, 0);
 	return permOut;
 }
-int BPU_gf2MatAppendIdenityA(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in) {
-	int i, j;
-
-	if (BPU_gf2MatMalloc(out, in->k, in->n + in->k)) {
-		BPU_printError("gf2MatAppendIdenityA: allocation error");
-
-		return -1;
-	}
-	// first copy old rows
-	for (i = 0; i < in->k; i++) {
-		memcpy((void *) out->elements[i], (void *)in->elements[i], in->elements_in_row * (in->element_bit_size / 8));
-	} // row loop
-	// now append identity matrix
-	for (i = 0; i < out->k; i++) {
-			for (j = in->n; j < out->n; j++) {
-				BPU_gf2MatSetBit(out, i, j, i == (j - in->n) ? 1 : 0);
-		} // col loop
-	} // row loop
-	return 0;
-}
 
 int BPU_gf2VecConcat(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *vec1, const BPU_T_GF2_Vector *vec2) {
 	int len = vec1->len + vec2->len;
@@ -437,76 +417,36 @@ int BPU_gf2VecConcat(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *vec1, const 
 	return 0;
 }
 
-int BPU_gf2VecConcatA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *vec1, const BPU_T_GF2_Vector *vec2) {
-	int len = vec1->len + vec2->len;
-
-	if (BPU_gf2VecMalloc(out, len)) {
-		BPU_printError("BPU_gf2VecConcat: allocation error");
-
-		return -1;
-	}
-	return BPU_gf2VecConcat(out, vec1, vec2);
-}
-
-int BPU_gf2VecCropA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const int start, const int length) {
+int BPU_gf2VecCrop(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const int start, const int length) {
+	int i;
+	int counter = 0;
 
 	//input test
 	if (start < 0 || (length+start) > in->len) {
 		BPU_printError("cropVector: bad params");
 		return -1;
 	}
-
-	//malloc output vector
-	if (BPU_gf2VecMalloc(out, length)) {
-		BPU_printError("cropVector: allocation error");
+	if (out->len < length) {
+		BPU_printError("cropVector: out vector is smaller then needed");
 		return -1;
 	}
-
-	int i;
-
-	//calc the shifts
-	/*int crop_start = (start % in->element_bit_size);
-	int crop_len = (length % in->element_bit_size);
-	int shift1 = in->element_bit_size - crop_start - crop_len;
-	int shift2 = in->element_bit_size - crop_len;
-	int shift3 = in->element_bit_size - crop_start;
- 
-	//start elements   
-	int start_element = start / in->element_bit_size;*/
-
-	//element loop
-	/*for(i = 0; i < out->elements_in_row; i++) {
-		//crop from only one element
-		if (((start / in->element_bit_size) == ((start + length) / in->element_bit_size)) || (i == out->elements_in_row-1 && crop_start == 0)) {
-			printf("first way: \n");
-			out->elements[i] = (in->elements[i+start_element] << shift1) >> shift2;
-		}
-		//concat of elements
-		else { 
-			printf("second way: \n");
-			out->elements[i] = (in->elements[i-start_element] >> crop_start) ^ ((in->elements[i+start_element+1]) << shift1 >> (shift1 - shift3));
-		}
-	}*/
-	int counter = 0;
 	for (i = start; i < start+length; i++) {
 		BPU_gf2VecSetBit(out, counter, BPU_gf2VecGetBit(in, i));
 		counter++;
 	}
-
 	return 0;
 }
 
-int BPU_gf2MatCropA(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in, uint16_t width) {
+int BPU_gf2MatCrop(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in, uint16_t width) {
 	int i, j, startElement;
 	uint8_t cropBits;
 
+	if (out->k != in->k || out->n != width) {
+		BPU_printError("wrong matrix dimenzion.");
+		return -3;
+	}
 	// if is new width lower than old width of matrix
 	if (in->n >= width) {
-		// allocate memory for new matrix
-		if (BPU_gf2MatMalloc(out, in->k, width)!= 0) {
-			return -2;
-		}
-
 		startElement = (in->n - width) / in->element_bit_size;
 		cropBits = (in->n - width) % in->element_bit_size;
 
@@ -555,7 +495,6 @@ void BPU_gf2VecCopy(BPU_T_GF2_Vector *dest, const BPU_T_GF2_Vector *src) {
 	// if there is not enough space resize
 	if (dest->elements_in_row < src->elements_in_row) {
 		BPU_gf2VecFree(dest, 0);
-
 		BPU_gf2VecMalloc(dest, src->elements_in_row * src->element_bit_size * sizeof(BPU_T_GF2));
 	}
 	else {

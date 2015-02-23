@@ -65,12 +65,11 @@ int BPU_permGenA(BPU_T_Perm_Vector* permutation, uint32_t size) {
 	return 0;
 }
 
-int BPU_permGetInvA(BPU_T_Perm_Vector *out, const BPU_T_Perm_Vector *in) {
+int BPU_permGetInv(BPU_T_Perm_Vector *out, const BPU_T_Perm_Vector *in) {
 	int i;
 
-	// allocate memory
-	if (BPU_permMalloc(out, in->size)) {
-		BPU_printError("inverted permutation malloc error");
+	if (out->size != in->size) {
+		BPU_printError("permutation size error");
 
 		return -1;
 	}

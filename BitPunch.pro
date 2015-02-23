@@ -41,6 +41,7 @@ SOURCES += \
     lib/src/bitpunch/code/goppa/goppa.c \
     lib/src/bitpunch/crypto/mecsbasic/mecsbasic.c \
     lib/src/bitpunch/crypto/padding/padding.c \
+	lib/src/main.c \
     lib/src/bitpunch/code/goppa/goppatypes.c
 
 #include(deployment.pri)

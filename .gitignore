@@ -19,6 +19,9 @@ Thumbs.db
 *.pro.user
 *.pri
 
+# sublime
+*.sublime-*
+
 # vim generated files
 *.swp
 
