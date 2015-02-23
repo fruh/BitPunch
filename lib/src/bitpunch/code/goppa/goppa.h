@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/math/gf2.h>
 #include <bitpunch/math/gf2x.h>
 
-int BPU_goppaEncode(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const struct _BPU_T_Code_Ctx *ctx);
+int BPU_goppaEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
 
 /**
  * Decode message. Decoded must be allocated before use, or use function decodeA
@@ -37,7 +37,7 @@ int BPU_goppaEncode(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const str
  *
  * @return still 0
  */
-int BPU_goppaDecode(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const struct _BPU_T_Code_Ctx *ctx);
+int BPU_goppaDecode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
 
 /**
  * Decode message. Decoded is allocated inside function, use freeVectorGF2() afer use.
@@ -47,7 +47,7 @@ int BPU_goppaDecode(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const str
  *
  * @return succes - 0, else non-zero
  */
-int BPU_goppaDecodeA(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const struct _BPU_T_Code_Ctx *ctx);
+int BPU_goppaDecodeA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
 
 /**
  * Get error vector. Decoded must be allocated before use, or use function decodeA
@@ -57,7 +57,7 @@ int BPU_goppaDecodeA(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const st
  *
  * @return still 0
  */
-int BPU_goppaGetError(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_Code_Ctx *ctx);
+int BPU_goppaGetError(BPU_T_GF2_Vector *encoded, BPU_T_GF2_Vector *decoded, const BPU_T_Code_Ctx *ctx);
 
 /**
  * Get error vector. Decoded is allocated inside function, use freeVectorGF2() afer use.
@@ -67,9 +67,9 @@ int BPU_goppaGetError(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, cons
  *
  * @return succes - 0, else non-zero
  */
-int BPU_goppaGetErrorA(BPU_T_Vector_GF2 *encoded, BPU_T_Vector_GF2 *decoded, const BPU_T_Code_Ctx *ctx);
+int BPU_goppaGetErrorA(BPU_T_GF2_Vector *encoded, BPU_T_GF2_Vector *decoded, const BPU_T_Code_Ctx *ctx);
 
-void BPU_gf2xMatDetermineSyndromeA(BPU_T_Poly_GF2_16x *syndrome, const BPU_T_Vector_GF2 *z, const BPU_T_Matrix_GF2_16x *H, const BPU_T_Math_Ctx *math_ctx);
+void BPU_goppaDetSyndromeA(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_GF2_16x_Matrix *H);
 
 /**
  * Find polynomials a, b of degree <= (t div 2). We are using GCD to find them, gcd(tau, mod) = a, so: a = tau * b + mod * (some s***s). Out a and b are allocated inside, after use must be freed using BPU_freePoly().
@@ -80,7 +80,7 @@ void BPU_gf2xMatDetermineSyndromeA(BPU_T_Poly_GF2_16x *syndrome, const BPU_T_Vec
  * @param math_ctx[in] [description]
  */
 /// Find polynomials a, b of degree <= (t div 2)
-void BPU_findPolynomialsAB(const BPU_T_Poly_GF2_16x *tau, const BPU_T_Poly_GF2_16x *mod, BPU_T_Poly_GF2_16x *a, BPU_T_Poly_GF2_16x *b, const BPU_T_Math_Ctx *math_ctx);
+void BPU_goppaFindPolyAB(const BPU_T_GF2_16x_Poly *tau, const BPU_T_GF2_16x_Poly *mod, BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU_T_Math_Ctx *math_ctx);
 
 /**
 * Initialize all control H matricies (X, Y, Z). It uses McEl structure.
@@ -91,7 +91,7 @@ void BPU_findPolynomialsAB(const BPU_T_Poly_GF2_16x *tau, const BPU_T_Poly_GF2_1
 * @return 0 - on succes, else error
 */
 /// Initialize all control H matricies (X, Y, Z)
-int BPU_goppaInitMatH(BPU_T_Matrix_GF2_16x *m, BPU_T_Poly_GF2_16x *poly, BPU_T_Math_Ctx *math_ctx);
+int BPU_goppaInitMatH(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_Math_Ctx *math_ctx);
 
 /**
 * Initialize X matrix of t x t dimensions.
@@ -100,7 +100,7 @@ int BPU_goppaInitMatH(BPU_T_Matrix_GF2_16x *m, BPU_T_Poly_GF2_16x *poly, BPU_T_M
 * @param[in] poly goppa polynomial over GF2x
 */
 /// Initialize X matrix of t x t dimensions.
-int BPU_goppaInitMatX(BPU_T_Matrix_GF2_16x *m, BPU_T_Poly_GF2_16x *poly);
+int BPU_goppaInitMatX(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly);
 
 /**
 * Initialize Y matrix of t x n dimensions, n = ord of galois field.
@@ -109,7 +109,7 @@ int BPU_goppaInitMatX(BPU_T_Matrix_GF2_16x *m, BPU_T_Poly_GF2_16x *poly);
 * @param[in] math_ctx pointer to Aritmetic_Data structure, used by calculations
 */
 /// Initialize Y matrix of t x n dimensions, where t = deg, n = ord of galois field.
-int BPU_goppaInitMatY(BPU_T_Matrix_GF2_16x *m, uint8_t t, BPU_T_Math_Ctx *math_ctx);
+int BPU_goppaInitMatY(BPU_T_GF2_16x_Matrix *m, uint8_t t, BPU_T_Math_Ctx *math_ctx);
 
 /**
 * Initialize Z matrix of n x n dimensions, where n = ord of galois field.
@@ -119,7 +119,7 @@ int BPU_goppaInitMatY(BPU_T_Matrix_GF2_16x *m, uint8_t t, BPU_T_Math_Ctx *math_c
 * @param[in] math_ctx pointer to Aritmetic_Data structure, used by calculations
 */
 /// Initialize Z matrix of n x n dimensions, where n is odr of galois field.
-int BPU_goppaInitMatZ(BPU_T_Matrix_GF2_16x *m, BPU_T_Poly_GF2_16x *poly, BPU_T_Math_Ctx *math_ctx);
+int BPU_goppaInitMatZ(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_Math_Ctx *math_ctx);
 
 int BPU_goppaGenCode(BPU_T_Code_Ctx *ctx);
 

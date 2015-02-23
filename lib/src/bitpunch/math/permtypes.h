@@ -1,6 +1,6 @@
 /**
-This file is part of PROGRAM
-Copyright (C) 2014 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+This file is part of BitPunch
+Copyright (C) 2014-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ typedef struct _BPU_T_Perm_Vector {
  * @param is_dyn 0 - staticaly allocated BPU_T_Perm_Vector object or 1 when dynamically
  */
 /// Free dynamically or statically alocated permutation vector.
-void BPU_freePerm(BPU_T_Perm_Vector *p, int is_dyn);
+void BPU_permFree(BPU_T_Perm_Vector *p, int is_dyn);
 
 /**
  * Allocate permutation vector elements of size size using malloc.  After work you have to free memory using call BPU_freePerm(p)
@@ -45,6 +45,6 @@ void BPU_freePerm(BPU_T_Perm_Vector *p, int is_dyn);
  * @return      on succes 0 else error
  */
 /// Allocate permutation vector elements of size size.
-int BPU_mallocPerm(BPU_T_Perm_Vector *p, int size);
+int BPU_permMalloc(BPU_T_Perm_Vector *p, int size);
 
 #endif // BPU_PERMTYPES_H

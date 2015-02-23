@@ -1,5 +1,5 @@
 /**
-This file is part of PROGRAM
+This file is part of BitPunch
 Copyright (C) 2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 
 This program is free software: you can redistribute it and/or modify
@@ -22,21 +22,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/code/codectx.h>
 
 /// Possible types of MECS
-typedef enum _BPU_EN_Mecs_Types {
+typedef enum _BPU_T_EN_Mecs_Types {
 	BPU_EN_MECS_BASIC_GOPPA ///< basic mecs, without any conversion
-}BPU_EN_Mecs_Types;
+}BPU_T_EN_Mecs_Types;
 
 typedef struct _BPU_T_Mecs_Ctx {
-	BPU_EN_Mecs_Types type;
-	int (* _encrypt)(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const struct _BPU_T_Mecs_Ctx *ctx);
-	int (* _decrypt)(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const struct _BPU_T_Mecs_Ctx *ctx);
+	BPU_T_EN_Mecs_Types type;
+	int (* _encrypt)(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Mecs_Ctx *ctx);
+	int (* _decrypt)(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Mecs_Ctx *ctx);
 	int (* _genKeyPair)(struct _BPU_T_Code_Ctx *ctx);
 
 	BPU_T_Code_Ctx *code_ctx;
 }BPU_T_Mecs_Ctx;
 
 /// Initialize (register) mecs functions for encryption, decryption and key gen based on type.
-int BPU_mecsInitCtx(BPU_T_Mecs_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_EN_Mecs_Types type);
+int BPU_mecsInitCtx(BPU_T_Mecs_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Mecs_Types type);
 
 int BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx);
 

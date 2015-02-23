@@ -1,5 +1,5 @@
 /**
-This file is part of PROGRAM
+This file is part of BitPunch
 Copyright (C) 2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 
 This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // addiotional codes
 #include <bitpunch/code/goppa/goppa.h>
 
-int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_EN_Code_Types type) {
+int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Code_Types type) {
 	int tmp;
 	ctx->type = type;
 

@@ -1,5 +1,5 @@
 /**
-This file is part of PROGRAM
+This file is part of BitPunch
 Copyright (C) 2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 
 This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/crypto/mecsbasic/mecsbasic.h>
 #include <bitpunch/code/goppa/goppa.h>
 
-int BPU_mecsInitCtx(BPU_T_Mecs_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_EN_Mecs_Types type) {
+int BPU_mecsInitCtx(BPU_T_Mecs_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Mecs_Types type) {
 	ctx->type = type;
 
 	ctx->code_ctx = (BPU_T_Code_Ctx *) calloc(1, sizeof(BPU_T_Code_Ctx));

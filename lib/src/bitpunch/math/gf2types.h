@@ -1,6 +1,6 @@
 /**
-This file is part of PROGRAM
-Copyright (C) 2014 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+This file is part of BitPunch
+Copyright (C) 2014-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -29,24 +29,24 @@ typedef uint32_t BPU_T_GF2;
  * Row vector GF2 representation.
  * Every element is one bit.
  */
-typedef struct _BPU_T_Vector_GF2 {
+typedef struct _BPU_T_GF2_Vector {
 	BPU_T_GF2 *elements; ///< all element of matrix
 	uint8_t element_bit_size; ///< element size, is sizeof(BPU_T_GF2) i.e. 64 bits
 	uint8_t elements_in_row; ///< number of elements in one row
 	uint32_t len; ///< cols
-}BPU_T_Vector_GF2;
+}BPU_T_GF2_Vector;
 
 /**
 * Matrix representation over GF2.
 * Every element is one bit.
 */
-typedef struct _BPU_T_Matrix_GF2 {
+typedef struct _BPU_T_GF2_Matrix {
 	BPU_T_GF2 **elements; ///< all element of matrix
 	uint8_t element_bit_size; ///< element size, is sizeof(BPU_T_GF2) i.e. 64 bits
 	uint8_t elements_in_row; ///< number of elements in one row
 	uint32_t k; ///< rows
 	uint32_t n; ///< cols
-}BPU_T_Matrix_GF2;
+}BPU_T_GF2_Matrix;
 
 /**
  * Null GF2 matrix row.
@@ -69,7 +69,7 @@ typedef struct _BPU_T_Matrix_GF2 {
  * @param[in] is_dyn boolean param, if 0 do not free mat object self (is statically allocated), just allocated matrix rows, cols, else free also m object
  */
 /// Free dynamically or statically allocated matrix
-void BPU_freeMatGF2(BPU_T_Matrix_GF2 *m, int is_dyn);
+void BPU_gf2MatFree(BPU_T_GF2_Matrix *m, int is_dyn);
 
 /**
  * Free dynamically or statically allocated vector GF2. 
@@ -77,7 +77,7 @@ void BPU_freeMatGF2(BPU_T_Matrix_GF2 *m, int is_dyn);
  * @param[in] is_dyn boolean param, if 0 do not free mat object self (is statically allocated), just allocated vector cols, else free also m object
  */
 /// Free dynamically or statically allocated vector
-void BPU_freeVecGF2(BPU_T_Vector_GF2 *v, int is_dyn);
+void BPU_gf2VecFree(BPU_T_GF2_Vector *v, int is_dyn);
 
 /**
  * Allocate memory for matrix GF2. It also nulls new matrix. After work you have to free memory using call BPU_freeMatGF2
@@ -85,13 +85,13 @@ void BPU_freeVecGF2(BPU_T_Vector_GF2 *v, int is_dyn);
  * @param cols cols
  * @return on succes 0, else error
  */
-int BPU_mallocMatrixGF2(BPU_T_Matrix_GF2 *m, int rows, int cols);
+int BPU_gf2MatMalloc(BPU_T_GF2_Matrix *m, int rows, int cols);
 
 /**
  * Allocate memory for vector GF2. It also null vector. After work you have to free memory using call BPU_freeVecGF2.
  * @param len len of vector
  * @return on succes 0, else error
  */
-int BPU_mallocVectorGF2(BPU_T_Vector_GF2 *v, int len);
+int BPU_gf2VecMalloc(BPU_T_GF2_Vector *v, int len);
 
 #endif // BPUT_GF2TYPES_H

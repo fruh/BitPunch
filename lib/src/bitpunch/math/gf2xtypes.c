@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <string.h>
 
-int BPU_gf2xMatMalloc(BPU_T_Matrix_GF2_16x *m, int rows, int cols) {
+int BPU_gf2xMatMalloc(BPU_T_GF2_16x_Matrix *m, int rows, int cols) {
 	int i;
 	// rows
 	m->k = rows;
@@ -47,14 +47,14 @@ int BPU_gf2xMatMalloc(BPU_T_Matrix_GF2_16x *m, int rows, int cols) {
 	return 0;
 }
 
-void BPU_gf2xVecMalloc(BPU_T_Vector_GF2_16x *vec, int size) {
+void BPU_gf2xVecMalloc(BPU_T_GF2_16x_Vector *vec, int size) {
 	vec->len = size;
 	vec->elements = (BPU_T_GF2_16x*)malloc(sizeof(BPU_T_GF2_16x) * size);
 
 	memset((void *)(vec->elements), 0, sizeof(BPU_T_GF2_16x) * size);
 }
 
-void BPU_gf2xVecFree(BPU_T_Vector_GF2_16x *vec, int is_dyn) {
+void BPU_gf2xVecFree(BPU_T_GF2_16x_Vector *vec, int is_dyn) {
 	free(vec->elements);
 
 	if (is_dyn) {
@@ -62,7 +62,7 @@ void BPU_gf2xVecFree(BPU_T_Vector_GF2_16x *vec, int is_dyn) {
 	}
 }
 
-void BPU_gf2xMatFree(BPU_T_Matrix_GF2_16x *m, int is_dyn) {
+void BPU_gf2xMatFree(BPU_T_GF2_16x_Matrix *m, int is_dyn) {
 	int i;
 
 	// first free cols
@@ -77,7 +77,7 @@ void BPU_gf2xMatFree(BPU_T_Matrix_GF2_16x *m, int is_dyn) {
 	}
 }
 
-void BPU_polyFree(BPU_T_Poly_GF2_16x *p, int is_dyn) {
+void BPU_gf2xPolyFree(BPU_T_GF2_16x_Poly *p, int is_dyn) {
 	free(p->coef);
 
 	if (is_dyn) {
@@ -88,7 +88,7 @@ void BPU_polyFree(BPU_T_Poly_GF2_16x *p, int is_dyn) {
 	}
 }
 
-int BPU_polyMalloc(BPU_T_Poly_GF2_16x *p, int16_t max_deg) {
+int BPU_gf2xPolyMalloc(BPU_T_GF2_16x_Poly *p, int16_t max_deg) {
 	// allocate memory
 	p->deg = -1;
 	p->max_deg = max_deg;
@@ -108,7 +108,7 @@ int BPU_polyMalloc(BPU_T_Poly_GF2_16x *p, int16_t max_deg) {
 	return 0;
 }
 
-void BPU_gf2xMatNull(BPU_T_Matrix_GF2_16x *mat) {
+void BPU_gf2xMatNull(BPU_T_GF2_16x_Matrix *mat) {
 	int i, j;
 	for (i = 0; i < mat->k; i++) {
 		for (j = 0; j < mat->n; j++) {

@@ -1,6 +1,6 @@
 /**
  This file is part of BitPunch
- Copyright (C) 2014 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+ Copyright (C) 2014-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
  Copyright (C) 2014 Andrej Gulyas <andrej.guly[what here]gmail.com>
  Copyright (C) 2014 Marek Klein  <kleinmrk[what here]gmail.com>
  Copyright (C) 2014 Filip Machovec  <filipmachovec[what here]yahoo.com>

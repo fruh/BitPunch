@@ -1,5 +1,5 @@
 /**
-This file is part of PROGRAM
+This file is part of BitPunch
 Copyright (C) 2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 
 This program is free software: you can redistribute it and/or modify
@@ -22,9 +22,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/math/permtypes.h>
 
 typedef struct _BPU_T_Goppa_Spec {
-	BPU_T_Matrix_GF2 *g_mat; ///< Generator matrix
-	BPU_T_Matrix_GF2_16x *h_mat; ///< Control matrix H
-	BPU_T_Poly_GF2_16x *g; ///< gen. polynomial
+	BPU_T_GF2_Matrix *g_mat; ///< Generator matrix
+	BPU_T_GF2_16x_Matrix *h_mat; ///< Control matrix H
+	BPU_T_GF2_16x_Poly *g; ///< gen. polynomial
 	BPU_T_Perm_Vector *permutation; ///< permutation "matrix"
 }BPU_T_Goppa_Spec;
 

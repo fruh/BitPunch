@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 #include <stdlib.h>
 
-void BPU_freePerm(BPU_T_Perm_Vector *p, int is_dyn) {
+void BPU_permFree(BPU_T_Perm_Vector *p, int is_dyn) {
 	free(p->elements);
 
 	if (is_dyn) {
@@ -32,7 +32,7 @@ void BPU_freePerm(BPU_T_Perm_Vector *p, int is_dyn) {
 	}
 }
 
-int BPU_mallocPerm(BPU_T_Perm_Vector *p, int size) {
+int BPU_permMalloc(BPU_T_Perm_Vector *p, int size) {
 	// allocate memory
 	int i;
 	p->size = size;

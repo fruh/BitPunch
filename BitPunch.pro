@@ -1,3 +1,20 @@
+#/*
+# This file is part of BitPunch
+# Copyright (C) 2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#*/
 TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
@@ -16,19 +33,6 @@ SOURCES += \
     lib/src/bitpunch/math/perm.c \
     lib/src/bitpunch/math/permtypes.c \
     lib/src/bitpunch/debugio.c \
-    lib/src/tmp/arithmetics.c \
-    lib/src/tmp/debugio.c \
-    lib/src/tmp/init.c \
-    lib/src/tmp/main.c \
-    lib/src/tmp/mceliece.c \
-    lib/src/tmp/operations.c \
-    lib/src/tmp/process.c \
-    lib/src/arithmetics.c \
-    lib/src/init.c \
-    lib/src/main.c \
-    lib/src/operations.c \
-    lib/src/process.c \
-    lib/src/test-speed.c \
     lib/src/bitpunch/code/codectx.c \
     lib/src/bitpunch/crypto/mecsctx.c \
     lib/src/bitpunch/prng/prng.c \
@@ -55,23 +59,6 @@ HEADERS += \
     lib/src/bitpunch/math/perm.h \
     lib/src/bitpunch/math/permtypes.h \
     lib/src/bitpunch/debugio.h \
-    lib/src/tmp/arithmetics.h \
-    lib/src/tmp/debugio.h \
-    lib/src/tmp/globals.h \
-    lib/src/tmp/init.h \
-    lib/src/tmp/mceliece.h \
-    lib/src/tmp/operations.h \
-    lib/src/tmp/process.h \
-    lib/src/tmp/types.h \
-    lib/src/arithmetics.h \
-    lib/src/debugio.h \
-    lib/src/globals.h \
-    lib/src/init.h \
-    lib/src/mceliece.h \
-    lib/src/operations.h \
-    lib/src/process.h \
-    lib/src/types.h \
-    lib/src/version.h \
     lib/src/bitpunch/crypto/mecsctx.h \
     lib/src/bitpunch/code/goppatypes.h \
     lib/src/bitpunch/prng/prng.h \

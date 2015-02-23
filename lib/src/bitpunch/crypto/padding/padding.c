@@ -23,11 +23,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <bitpunch/math/gf2.h>
 
-int BPU_addPaddingA(BPU_T_Vector_GF2 *padded_message, const BPU_T_Vector_GF2 *message, const uint16_t padding_len) {
+int BPU_paddingAddA(BPU_T_GF2_Vector *padded_message, const BPU_T_GF2_Vector *message, const uint16_t padding_len) {
 	int i;
 
 	// malloc space for padded message
-	if (BPU_mallocVectorGF2(padded_message, message->len + padding_len) != 0) {
+	if (BPU_gf2VecMalloc(padded_message, message->len + padding_len) != 0) {
 		BPU_printError("addPaddingA: BPU_mallocVectorGF2");
 		return -1;
 	}
@@ -42,7 +42,7 @@ int BPU_addPaddingA(BPU_T_Vector_GF2 *padded_message, const BPU_T_Vector_GF2 *me
 	return 0;
 }
 
-int BPU_delPaddingA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *padded_message) {
+int BPU_paddingDelA(BPU_T_GF2_Vector *message, const BPU_T_GF2_Vector *padded_message) {
 	int i, message_size = 0;
 
 	// count the message size
@@ -64,7 +64,7 @@ int BPU_delPaddingA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *padded_me
 	}
 
 	// malloc space for padded message
-	if (BPU_mallocVectorGF2(message, message_size) != 0) {
+	if (BPU_gf2VecMalloc(message, message_size) != 0) {
 		BPU_printError("del_padding: BPU_mallocVectorGF2");
 		return -1;
 	}

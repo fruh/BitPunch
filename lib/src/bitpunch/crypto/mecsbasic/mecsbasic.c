@@ -1,5 +1,5 @@
 /**
-This file is part of PROGRAM
+This file is part of BitPunch
 Copyright (C) 2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 
 This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/math/gf2.h>
 #include <bitpunch/debugio.h>
 
-int BPU_mecsBasicEncryptA(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const BPU_T_Mecs_Ctx *ctx) {
-	if (BPU_mallocVectorGF2(out, ctx->code_ctx->code_len)) {
+int BPU_mecsBasicEncryptA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx) {
+	if (BPU_gf2VecMalloc(out, ctx->code_ctx->code_len)) {
 		BPU_printError("BPU_encryptA: can not allocate ouput");
 
 		return 1;
@@ -29,9 +29,9 @@ int BPU_mecsBasicEncryptA(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, con
 	return BPU_mecsBasicEncrypt(out, in, ctx);
 }
 
-int BPU_mecsBasicEncrypt(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const BPU_T_Mecs_Ctx *ctx) {
+int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx) {
 	int rc;
-	BPU_T_Vector_GF2 e;
+	BPU_T_GF2_Vector e;
 	BPU_gf2VecNull(out);
 
 	// test the size of message and g_m
@@ -54,7 +54,7 @@ int BPU_mecsBasicEncrypt(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, cons
 	BPU_printGf2Vec(out);
 #endif
 	// generate random error vector e
-	rc = BPU_initRandVector(&e, ctx->code_ctx->code_len, ctx->code_ctx->t);
+	rc = BPU_gf2VecRand(&e, ctx->code_ctx->code_len, ctx->code_ctx->t);
 	if (rc) {
 		BPU_printError("BPU_mecsBasicEncrypt: can not init rand vector");
 		return rc;
@@ -74,12 +74,12 @@ int BPU_mecsBasicEncrypt(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, cons
 	BPU_printGf2Vec(out);
 	BPU_printDebug("###### ENCRYPT DBPU_ONE ######\n");
 #endif
-	BPU_freeVecGF2(&e, 0);
+	BPU_gf2VecFree(&e, 0);
 
 	return rc;
 }
 
-int BPU_mecsBasicDecrypt(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const BPU_T_Mecs_Ctx *ctx) {
+int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx) {
 	// Vector_GF2 tmp;
 	int rc = BPU_mecsBasicDecryptA(out, in, ctx);
 
@@ -90,21 +90,21 @@ int BPU_mecsBasicDecrypt(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, cons
 	return rc;
 }
 
-int BPU_mecsBasicDecryptA(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const BPU_T_Mecs_Ctx *ctx) {
+int BPU_mecsBasicDecryptA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx) {
 	int rc = 0;
-	BPU_T_Vector_GF2 temp;
+	BPU_T_GF2_Vector temp;
 
-	BPU_mallocVectorGF2(&temp, in->len);
+	BPU_gf2VecMalloc(&temp, in->len);
 	BPU_gf2VecCopy(&temp, in);
 
-	BPU_mallocVectorGF2(out, ctx->code_ctx->msg_len);
+	BPU_gf2VecMalloc(out, ctx->code_ctx->msg_len);
 	ctx->code_ctx->_decode(out, &temp, ctx->code_ctx);
 
 #ifdef BPU_DEBUG_DECRYPT
 	BPU_printDebug("decoded error:");
 	BPU_printGf2Vec(&decoded);
 #endif
-	BPU_freeVecGF2(&temp, 0);
+	BPU_gf2VecFree(&temp, 0);
 
 #ifdef BPU_DEBUG_DECRYPT
 	BPU_printDebug("###### DECRYPT DBPU_ONE ######");

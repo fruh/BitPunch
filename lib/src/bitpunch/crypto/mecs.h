@@ -1,6 +1,6 @@
 /**
 This file is part of BitPunch
-Copyright (C) 2013-2014 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+Copyright (C) 2013-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 Copyright (C) 2013-2014 Andrej Gulyas <andrej.guly[what here]gmail.com>
 Copyright (C) 2013-2014 Marek Klein  <kleinmrk[what here]gmail.com>
 Copyright (C) 2013-2014 Filip Machovec  <filipmachovec[what here]yahoo.com>
@@ -45,7 +45,7 @@ int BPU_mecsGenKeyPair(BPU_T_Mecs_Ctx *ctx);
  * @return     0 - succes, else error
  */
 /// Encrypt plaintext (pt) and save it to cipher text.
-int BPU_mecsEncrypt(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_Mecs_Ctx *ctx);
+int BPU_mecsEncrypt(BPU_T_GF2_Vector *ct, const BPU_T_GF2_Vector *pt, const BPU_T_Mecs_Ctx *ctx);
 
 
 /**
@@ -56,6 +56,6 @@ int BPU_mecsEncrypt(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_
  * @return     0 - succes, else error
  */
 /// Decrypt cipher text (ct) and save it to plain text.
-int BPU_mecsDecrypt(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_Mecs_Ctx *ctx);
+int BPU_mecsDecrypt(BPU_T_GF2_Vector *pt, BPU_T_GF2_Vector *ct, const BPU_T_Mecs_Ctx *ctx);
 
 #endif // BPU_MECS_H

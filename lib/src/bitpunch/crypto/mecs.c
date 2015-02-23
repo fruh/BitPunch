@@ -1,6 +1,6 @@
 /**
 This file is part of BitPunch
-Copyright (C) 2013-2014 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+Copyright (C) 2013-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 Copyright (C) 2013-2014 Andrej Gulyas <andrej.guly[what here]gmail.com>
 Copyright (C) 2013-2014 Marek Klein  <kleinmrk[what here]gmail.com>
 Copyright (C) 2013-2014 Filip Machovec  <filipmachovec[what here]yahoo.com>
@@ -22,29 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "mecs.h"
 #include "mecsctx.h"
 
-//void BPU_printMceCtx(const BPU_T_McEliece_Ctx *mce_ctx) {
-//	fprintf(stderr, "Galois field:\n");
-//	fprintf(stderr, "\tOrd: %d\n", mce_ctx->math_ctx->ord);
-//	fprintf(stderr, "\tMod: 0x%X\n", mce_ctx->math_ctx->mod);
-//	fprintf(stderr, "2^m: 2^%d\n", mce_ctx->math_ctx->mod_deg);
-
-//	fprintf(stderr, "Goppa polynomial:\n");
-//	fprintf(stderr, "\t");
-//	BPU_printGf2xPoly(&mce_ctx->priv_key->g, mce_ctx->math_ctx);
-//	fprintf(stderr, "\tdegre: %d\n", mce_ctx->pub_key->t);
-
-//	fprintf(stderr, "Public key:\n");
-//	fprintf(stderr, "\tG matrix size: %dx%d\n", mce_ctx->pub_key->g_mat.k, mce_ctx->pub_key->g_mat.n);
-
-//	fprintf(stderr, "Private key:\n");
-//	fprintf(stderr, "\tH matrix size: %dx%d\n", mce_ctx->priv_key->h_mat.k, mce_ctx->priv_key->h_mat.n);
-//}
-
-int BPU_mecsEncrypt(BPU_T_Vector_GF2 *ct, const BPU_T_Vector_GF2 *pt, const BPU_T_Mecs_Ctx *ctx) {
+int BPU_mecsEncrypt(BPU_T_GF2_Vector *ct, const BPU_T_GF2_Vector *pt, const BPU_T_Mecs_Ctx *ctx) {
 	return ctx->_encrypt(ct, pt, ctx);
 }
 
-int BPU_mecsDecrypt(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, const BPU_T_Mecs_Ctx *ctx) {
+int BPU_mecsDecrypt(BPU_T_GF2_Vector *pt, BPU_T_GF2_Vector *ct, const BPU_T_Mecs_Ctx *ctx) {
 	return ctx->_decrypt(pt, ct, ctx);
 }
 

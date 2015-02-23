@@ -41,7 +41,7 @@ int BPU_permGenA(BPU_T_Perm_Vector* permutation, uint32_t size) {
 	int i, j, tested;
 	uint32_t rand_value;
 
-	if (BPU_mallocPerm(permutation, size)) {
+	if (BPU_permMalloc(permutation, size)) {
 		return -1;
 	}
 	// // TEST: NSA
@@ -69,7 +69,7 @@ int BPU_permGetInvA(BPU_T_Perm_Vector *out, const BPU_T_Perm_Vector *in) {
 	int i;
 
 	// allocate memory
-	if (BPU_mallocPerm(out, in->size)) {
+	if (BPU_permMalloc(out, in->size)) {
 		BPU_printError("inverted permutation malloc error");
 
 		return -1;
@@ -90,7 +90,7 @@ int BPU_permPermute(BPU_T_Perm_Vector *to_permute, const BPU_T_Perm_Vector *perm
 		return -1;
 
 	// allocate new permutation
-	if (BPU_mallocPerm(&new_permutation, to_permute->size) != 0)
+	if (BPU_permMalloc(&new_permutation, to_permute->size) != 0)
 		return -2;
 
 	// copy the permutation
@@ -103,7 +103,7 @@ int BPU_permPermute(BPU_T_Perm_Vector *to_permute, const BPU_T_Perm_Vector *perm
 		to_permute->elements[i] = new_permutation.elements[permutation->elements[i]];
 	}
 
-	BPU_freePerm(&new_permutation, 0);
+	BPU_permFree(&new_permutation, 0);
 
 	return 0;
 }

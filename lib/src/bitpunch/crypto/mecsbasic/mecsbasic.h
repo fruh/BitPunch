@@ -1,5 +1,5 @@
 /**
-This file is part of PROGRAM
+This file is part of BitPunch
 Copyright (C) 2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 
 This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * @param  ctx  McEliece context
  * @return     0 - succes, else error
  */
-int BPU_mecsBasicEncrypt(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const BPU_T_Mecs_Ctx *ctx);
+int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
 
 /**
  * Encrypt plaintext.
@@ -36,10 +36,10 @@ int BPU_mecsBasicEncrypt(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, cons
  * @param  ctx  McEliece context
  * @return     0 - succes, else error
  */
-int BPU_mecsBasicEncryptA(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const BPU_T_Mecs_Ctx *ctx);
+int BPU_mecsBasicEncryptA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
 
-int BPU_mecsBasicDecrypt(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const BPU_T_Mecs_Ctx *ctx);
+int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
 
-int BPU_mecsBasicDecryptA(BPU_T_Vector_GF2 *out, const BPU_T_Vector_GF2 *in, const BPU_T_Mecs_Ctx *ctx);
+int BPU_mecsBasicDecryptA(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
 
 #endif // MECSBASIC_H

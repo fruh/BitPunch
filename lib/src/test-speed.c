@@ -1,6 +1,6 @@
 /**
  This file is part of BitPunch
- Copyright (C) 2014 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+ Copyright (C) 2014-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
  Copyright (C) 2014 Andrej Gulyas <andrej.guly[what here]gmail.com>
  Copyright (C) 2014 Marek Klein  <kleinmrk[what here]gmail.com>
  Copyright (C) 2014 Filip Machovec  <filipmachovec[what here]yahoo.com>
@@ -95,9 +95,9 @@ int main(int argc, char **argv) {
 
     	
 
-    BPU_mallocVectorGF2(&ct, ctx.priv_key.h_mat.n);
+	BPU_gf2VecMalloc(&ct, ctx.priv_key.h_mat.n);
   	// BPU_printError("%d", ctx.priv_key.h_mat.n);
-    BPU_initRandVector(&pt, ctx.pub_key.g_mat.k, 0);
+	BPU_gf2VecRand(&pt, ctx.pub_key.g_mat.k, 0);
     // BPU_printGf2Vec(&pt);
 		  
     gettimeofday(&tv, NULL);
@@ -113,8 +113,8 @@ int main(int argc, char **argv) {
     gettimeofday(&tv_end, NULL);
     res_3 += (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000));
 
-    BPU_freeVecGF2(&pt, 0);
-    BPU_freeVecGF2(&ct, 0);
+	BPU_gf2VecFree(&pt, 0);
+	BPU_gf2VecFree(&ct, 0);
 		BPU_freeMcElieceCtx(&ctx);
   }
   fprintf(stderr, "%0.6lf\n", res / BPU_TEST_ROUNDS);
@@ -141,8 +141,8 @@ int main2(int argc, char **argv) {
 	kt = keyGenLoop();
 	fprintf(stderr, "Mean time: %.2lf s/key\n", kt);
 
-	BPU_initRandVector(&pt, ctx.max_pt_len_bit - 1, 0);
-	BPU_mallocVectorGF2(&ct, ctx.max_pt_len_bit);
+	BPU_gf2VecRand(&pt, ctx.max_pt_len_bit - 1, 0);
+	BPU_gf2VecMalloc(&ct, ctx.max_pt_len_bit);
 
 	fprintf(stderr, "\nEncryption test: BPU_encrypting n-times %d bit plaintext message\n", ctx.max_pt_len_bit);
 	t = time(NULL);
@@ -158,8 +158,8 @@ int main2(int argc, char **argv) {
 	te = time(NULL) - t;
 	fprintf(stderr, "Time elapsed %li seconds, speed %.2lf KB/s\n", time(NULL) - t, (BYTES_TO_TEST / (double) (1 << 10)) / (double)te);
 
-	BPU_freeVecGF2(&pt, 0);
-	BPU_freeVecGF2(&ct, 0);
+	BPU_gf2VecFree(&pt, 0);
+	BPU_gf2VecFree(&ct, 0);
 	BPU_freeMcElieceCtx(&ctx);
 
 	return 0;

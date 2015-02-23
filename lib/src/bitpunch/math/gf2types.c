@@ -1,6 +1,6 @@
 /**
 This file is part of BitPunch
-Copyright (C) 2013-2014 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+Copyright (C) 2013-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 Copyright (C) 2013-2014 Andrej Gulyas <andrej.guly[what here]gmail.com>
 Copyright (C) 2013-2014 Marek Klein  <kleinmrk[what here]gmail.com>
 Copyright (C) 2013-2014 Filip Machovec  <filipmachovec[what here]yahoo.com>
@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 
 
-void BPU_freeMatGF2(BPU_T_Matrix_GF2 *m, int is_dyn) {
+void BPU_gf2MatFree(BPU_T_GF2_Matrix *m, int is_dyn) {
 	int i;
 	
 	// first free cols
@@ -41,7 +41,7 @@ void BPU_freeMatGF2(BPU_T_Matrix_GF2 *m, int is_dyn) {
 	}
 }
 
-void BPU_freeVecGF2(BPU_T_Vector_GF2 *v, int is_dyn) {  
+void BPU_gf2VecFree(BPU_T_GF2_Vector *v, int is_dyn) {
 	// then free rows
 	free(v->elements);
 	
@@ -50,7 +50,7 @@ void BPU_freeVecGF2(BPU_T_Vector_GF2 *v, int is_dyn) {
 	}
 }
 
-int BPU_mallocMatrixGF2(BPU_T_Matrix_GF2 *m, int rows, int cols) {
+int BPU_gf2MatMalloc(BPU_T_GF2_Matrix *m, int rows, int cols) {
 	int i;
 
 	// element size
@@ -89,7 +89,7 @@ int BPU_mallocMatrixGF2(BPU_T_Matrix_GF2 *m, int rows, int cols) {
 	return 0;
 }
 
-int BPU_mallocVectorGF2(BPU_T_Vector_GF2 *v, int len) {
+int BPU_gf2VecMalloc(BPU_T_GF2_Vector *v, int len) {
 	// element size in bits
 	v->element_bit_size = sizeof(BPU_T_GF2) * 8;
 

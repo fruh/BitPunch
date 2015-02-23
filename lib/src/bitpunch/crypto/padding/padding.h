@@ -32,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * @return                0 on succes else, non-zero value
  */
 /// Add padding to message.
-int BPU_addPaddingA(BPU_T_Vector_GF2 *padded_message, const BPU_T_Vector_GF2 *message, const uint16_t padding_len);
+int BPU_padAddA(BPU_T_GF2_Vector *padded_message, const BPU_T_GF2_Vector *message, const uint16_t padding_len);
 
 /**
  * Delete padding from message. Padding begins with 1. I t allocates ouput inside, so must be freed after use.
@@ -41,6 +41,6 @@ int BPU_addPaddingA(BPU_T_Vector_GF2 *padded_message, const BPU_T_Vector_GF2 *me
  * @return                0 on succes else, non-zero value
  */
 /// Delete padding from message.
-int BPU_delPaddingA(BPU_T_Vector_GF2 *message, const BPU_T_Vector_GF2 *padded_message);
+int BPU_padDelA(BPU_T_GF2_Vector *message, const BPU_T_GF2_Vector *padded_message);
 
 #endif // PADDING_H

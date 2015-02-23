@@ -25,7 +25,7 @@
 
 int main(int argc, char **argv) {
 	BPU_T_Mecs_Ctx ctx;
-	BPU_T_Vector_GF2 ct, pt_in, pt_out;
+	BPU_T_GF2_Vector ct, pt_in, pt_out;
 
 	srand(time(NULL));
 
@@ -42,17 +42,17 @@ int main(int argc, char **argv) {
 	}
 	/***************************************/
 	// prepare plain text, allocate memory and init random plaintext
-	if (BPU_initRandVector(&pt_in, ctx.code_ctx->msg_len, 0)) {
+	if (BPU_gf2VecRand(&pt_in, ctx.code_ctx->msg_len, 0)) {
 		BPU_printError("PT initialisation error");
 
 		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
 	// alocate cipher text vector
-	if (BPU_mallocVectorGF2(&ct, ctx.code_ctx->code_len)) {
+	if (BPU_gf2VecMalloc(&ct, ctx.code_ctx->code_len)) {
 		BPU_printError("CT vector allocation error");
 
-		BPU_freeVecGF2(&pt_in, 0);
+		BPU_gf2VecFree(&pt_in, 0);
 		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
@@ -62,8 +62,8 @@ int main(int argc, char **argv) {
 	if (BPU_mecsEncrypt(&ct, &pt_in, &ctx)) {
 		BPU_printError("Encryption error");
 
-		BPU_freeVecGF2(&ct, 0);
-		BPU_freeVecGF2(&pt_in, 0);
+		BPU_gf2VecFree(&ct, 0);
+		BPU_gf2VecFree(&pt_in, 0);
 		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
@@ -73,8 +73,8 @@ int main(int argc, char **argv) {
 	if (BPU_mecsDecrypt(&pt_out, &ct, &ctx)) {
 		BPU_printError("Decryption error");
 
-		BPU_freeVecGF2(&ct, 0);
-		BPU_freeVecGF2(&pt_in, 0);
+		BPU_gf2VecFree(&ct, 0);
+		BPU_gf2VecFree(&pt_in, 0);
 		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
@@ -97,9 +97,9 @@ int main(int argc, char **argv) {
 	// clean up
 	/***************************************/
 	fprintf(stderr, "\nCleaning up...\n");
-	BPU_freeVecGF2(&pt_in, 0);
-	BPU_freeVecGF2(&pt_out, 0);
-	BPU_freeVecGF2(&ct, 0);
+	BPU_gf2VecFree(&pt_in, 0);
+	BPU_gf2VecFree(&pt_out, 0);
+	BPU_gf2VecFree(&ct, 0);
 	BPU_mecsFreeCtx(&ctx);
 
 	return 0;
