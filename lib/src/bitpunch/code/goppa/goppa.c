@@ -341,20 +341,18 @@ int BPU_goppaInitMatH(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_M
 // 	BPU_gf2xMatFree(&y_m, 0);
 // 	BPU_gf2xMatFree(&z_m, 0);
 	int k, rc = 0, row, column, e;
-  BPU_T_GF2_16x element, divider;
-  rc = BPU_gf2xMatMalloc(m, poly->deg, math_ctx->ord);
-  for(column = 0; column < m->n; column++) {
-    divider = BPU_gf2xPowerModT(BPU_gf2xPolyEval(poly, math_ctx->exp_table[column], math_ctx), -1, math_ctx);
-    for(row = 0; row < m->k; row++) {
-      element = 0;
-      for(k = poly->deg - row, e = 0; k <= poly->deg; k++, e++) {
-        element ^= BPU_gf2xMulMod(poly->coef[k], BPU_gf2xPowerModT (math_ctx->exp_table[column], e, math_ctx), math_ctx->mod);
-      }
-      m->elements[row][column] = BPU_gf2xMulMod(element, divider, math_ctx->mod);
-    }
-  }
-  return rc;
-	
+	BPU_T_GF2_16x element, divider;
+	rc = BPU_gf2xMatMalloc(m, poly->deg, math_ctx->ord);
+	for(column = 0; column < m->n; column++) {
+		divider = BPU_gf2xPowerModT(BPU_gf2xPolyEval(poly, math_ctx->exp_table[column], math_ctx), -1, math_ctx);
+		for(row = 0; row < m->k; row++) {
+			element = 0;
+			for(k = poly->deg - row, e = 0; k <= poly->deg; k++, e++) {
+				element ^= BPU_gf2xMulMod(poly->coef[k], BPU_gf2xPowerModT (math_ctx->exp_table[column], e, math_ctx), math_ctx->mod);
+			}
+			m->elements[row][column] = BPU_gf2xMulMod(element, divider, math_ctx->mod);
+		}
+	}
 	return rc;
 }
 
