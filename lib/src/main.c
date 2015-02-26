@@ -34,6 +34,7 @@ int main(int argc, char **argv) {
 	fprintf(stderr, "Initialisation...\n");
 //	BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
 	if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA)) {
+	// if (BPU_mecsInitCtx(&ctx, 5, 5, BPU_EN_MECS_BASIC_GOPPA)) {
 		return 1;
 	}
 
@@ -79,6 +80,7 @@ int main(int argc, char **argv) {
 		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
+	exit(0);
 	/***************************************/
 	fprintf(stderr, "Decryption...\n");
 	// decrypt cipher text

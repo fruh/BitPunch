@@ -34,6 +34,7 @@ int BPU_goppaEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const str
 	BPU_gf2VecNull(out);
 
 	// test the size of message and g_m
+	fprintf(stderr, "%d\n", in->len);
 	if (in->len != ctx->code_spec.goppa->g_mat->k) {
 		BPU_printError("message length have to be of length %d", ctx->code_spec.goppa->g_mat->k);
 
@@ -41,6 +42,37 @@ int BPU_goppaEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const str
 	}
 	BPU_gf2VecMalloc(&tmp, ctx->code_spec.goppa->g_mat->n);
 	rc += BPU_gf2VecMulMat(&tmp, in, ctx->code_spec.goppa->g_mat);
+	rc += BPU_gf2VecConcat(out, &tmp, in);
+	BPU_gf2VecFree(&tmp, 0);
+
+	return rc;
+}
+
+int BPU_goppaEncodeM(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx) {
+	int rc = 0;
+	int i, j;
+	u_int8_t mat_bit = 0, vec_bit = 0, out_bit = 0;
+	BPU_T_GF2_Vector tmp;
+
+	BPU_gf2VecNull(out);
+
+	// test the size of message and g_m
+	if (in->len != ctx->code_spec.goppa->g_mat->n) {
+		BPU_printError("message length have to be of length %d", ctx->code_spec.goppa->g_mat->n);
+
+		return -1;
+	}
+	BPU_gf2VecMalloc(&tmp, ctx->code_spec.goppa->g_mat->k);
+	for (j = 0; j < ctx->code_spec.goppa->g_mat->k; j++) {
+			out_bit = 0;
+		for (i = 0; i < ctx->code_spec.goppa->g_mat->n; i++) {
+			vec_bit = BPU_gf2VecGetBit(in, i);
+			mat_bit = BPU_gf2MatGetBit(ctx->code_spec.goppa->g_mat, j, i);
+			out_bit ^= vec_bit & mat_bit;
+		}
+		BPU_gf2VecSetBit(&tmp, j, out_bit);
+	}
+
 	rc += BPU_gf2VecConcat(out, &tmp, in);
 	BPU_gf2VecFree(&tmp, 0);
 
@@ -312,9 +344,10 @@ int BPU_goppaInitMatZ(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_M
 
 
 int BPU_goppaInitMatH(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_Math_Ctx *math_ctx) {
-	int k, rc = 0, row, column, e;
+	int k, row, column, e;
 	BPU_T_GF2_16x element, divider;
-	rc = BPU_gf2xMatMalloc(m, poly->deg, math_ctx->ord);
+	if (BPU_gf2xMatMalloc(m, poly->deg, math_ctx->ord) != 0)
+		return -1;
 	for(column = 0; column < m->n; column++) {
 		divider = BPU_gf2xPowerModT(BPU_gf2xPolyEval(poly, math_ctx->exp_table[column], math_ctx), -1, math_ctx);
 		for(row = 0; row < m->k; row++) {
@@ -325,86 +358,92 @@ int BPU_goppaInitMatH(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_M
 			m->elements[row][column] = BPU_gf2xMulMod(element, divider, math_ctx->mod);
 		}
 	}
-	return rc;
+	return 0;
+}
+
+int BPU_goppaInitMatH2(BPU_T_GF2_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_Math_Ctx *math_ctx) {
+	int bit, bit_in_element = -1, act_element = 0;
+	int element_bit_size = math_ctx->mod_deg;
+	int k, row, column, e;
+	BPU_T_GF2_16x element, divider;
+	if (BPU_gf2MatMalloc(m, poly->deg * element_bit_size, math_ctx->ord) != 0)
+		return -1;
+
+	// for(perm_iter = 0; perm_iter < m->n; perm_iter++) {
+	for(column = 0; column < m->n; column++) {
+
+		// column = permutation[perm_iter];
+		divider = BPU_gf2xPowerModT(BPU_gf2xPolyEval(poly, math_ctx->exp_table[column], math_ctx), -1, math_ctx);
+		if ((column - act_element * m->element_bit_size) >= m->element_bit_size) { // next elemenet, first bit
+			act_element++;
+			bit_in_element = 0;
+		}
+		else // same element, next bit
+			bit_in_element++;
+		for(row = 0; row < poly->deg; row++) {
+			element = 0;
+			for(k = poly->deg - row, e = 0; k <= poly->deg; k++, e++) {
+				element ^= BPU_gf2xMulMod(poly->coef[k], BPU_gf2xPowerModT (math_ctx->exp_table[column], e, math_ctx), math_ctx->mod);
+			}
+			// m->elements[row][column] = BPU_gf2xMulMod(element, divider, math_ctx->mod);
+			element = BPU_gf2xMulMod(element, divider, math_ctx->mod);
+			for (bit = 0; bit < element_bit_size; bit++) { // bit loop through element of matrix
+				m->elements[row*element_bit_size + bit][act_element] ^= (uint64_t)BPU_getBit(element, bit) << (bit_in_element); // get bit from element and shift it
+			}
+		}
+	}
+	return 0;
 }
 
 int BPU_goppaGenCode(BPU_T_Code_Ctx *ctx) {
 	int rc = 0;
-	BPU_T_GF2_Matrix temp, temp2;
-	BPU_T_Perm_Vector *permutation = NULL; // needed for equivalent codes
-	BPU_T_GF2_16x_Matrix perm_matrix;
+	int permutation = -1; // needed for equivalent codes
 
 	ctx->code_spec.goppa->g = (BPU_T_GF2_16x_Poly *) calloc(1, sizeof(BPU_T_GF2_16x_Poly));
 	BPU_gf2xPolyMalloc(ctx->code_spec.goppa->g, ctx->t);
 	BPU_gf2xPolyGenGoppa(ctx->code_spec.goppa->g, ctx->t, ctx->math_ctx);
-
-	ctx->code_spec.goppa->h_mat = (BPU_T_GF2_16x_Matrix *) calloc(1, sizeof(BPU_T_GF2_16x_Matrix));
-	rc = BPU_goppaInitMatH(ctx->code_spec.goppa->h_mat, ctx->code_spec.goppa->g, ctx->math_ctx);
-
+	ctx->code_spec.goppa->g_mat = (BPU_T_GF2_Matrix *) calloc(1, sizeof(BPU_T_GF2_Matrix));
+	ctx->code_spec.goppa->h_mat = (BPU_T_GF2_16x_Matrix*) calloc(1, sizeof(BPU_T_GF2_16x_Matrix));
+	// BPU_goppaInitMatH(ctx->code_spec.goppa->h_mat, ctx->code_spec.goppa->g, ctx->math_ctx);
 #ifdef BPU_DEBUG_INIT_MCE_CTX
 	BPU_printDebug("Matrix H:");
 	BPU_printGf2xMat(mce_ctx->code_ctx->h_mat);
 #endif
 	ctx->code_spec.goppa->permutation = (BPU_T_Perm_Vector *) calloc(1, sizeof(BPU_T_Perm_Vector));
-	while (permutation == NULL) {
-		// BPU_permGenA(&(mce_ctx->priv_key->permutation), mce_ctx->code_ctx->h_mat->n);
-		BPU_permGenA(ctx->code_spec.goppa->permutation, ctx->code_spec.goppa->h_mat->n);
-
+	while (permutation == -1) {
+		BPU_permGenA(ctx->code_spec.goppa->permutation, ctx->math_ctx->ord);
 	#ifdef BPU_DEBUG_INIT_MCE_CTX
 		BPU_printDebug("Permutation:");
 		BPU_printPerm(&mce_ctx->priv_key.permutation);
 		printf("\n");
 	#endif
-		BPU_gf2xMatMalloc(&perm_matrix, ctx->code_spec.goppa->h_mat->k, ctx->code_spec.goppa->h_mat->n);
-		rc = BPU_gf2xMatPermute(&perm_matrix, ctx->code_spec.goppa->h_mat, ctx->code_spec.goppa->permutation);
 
 	#ifdef BPU_DEBUG_INIT_MCE_CTX
 		BPU_printDebug("Permuted Matrix H:");
 		BPU_printGf2xMat(&(mce_ctx->priv_key->h_mat));
 	#endif
-		rc = BPU_gf2xMatConvertToGf2MatA(&temp, &perm_matrix, ctx->math_ctx->mod_deg);
-		BPU_gf2xMatFree(&perm_matrix, 0);
 
 	#ifdef BPU_DEBUG_INIT_MCE_CTX
 		BPU_printDebug("Converted matrix H2:");
-		BPU_printGf2Mat(&temp);
 	#endif
-		permutation = BPU_gf2MatMakeSystematic(&temp);
+		rc = BPU_goppaInitMatH2(ctx->code_spec.goppa->g_mat, ctx->code_spec.goppa->g, ctx->math_ctx);
+		BPU_gf2MatPermute(ctx->code_spec.goppa->g_mat, ctx->code_spec.goppa->permutation);
+		permutation = BPU_gf2MatMakeSystematic(ctx->code_spec.goppa->g_mat);
 
-		if (permutation == NULL) {
+		if (permutation == -1) {
 			BPU_permFree(ctx->code_spec.goppa->permutation, 0);
-			BPU_gf2MatFree(&temp, 0);
+			BPU_gf2MatFree(ctx->code_spec.goppa->g_mat, 0);
 		}
 	}
-	BPU_permPermute(ctx->code_spec.goppa->permutation, permutation);
 
-#ifdef BPU_DEBUG_INIT_MCE_CTX
-	BPU_printDebug("Permutation (systematic form):");
-	BPU_printPerm(permutation);
-	BPU_printDebug("Matrix H2 in systematic form:");
-	BPU_printGf2Mat(&temp);
-#endif
-	BPU_permFree(permutation, 1);
-
-	BPU_gf2MatMalloc(&temp2, temp.k, (temp.n - temp.k));
-	rc = BPU_gf2MatCrop(&temp2, &temp, (temp.n - temp.k));
+	rc = BPU_gf2MatCropMemory(ctx->code_spec.goppa->g_mat, (ctx->code_spec.goppa->g_mat->n - ctx->code_spec.goppa->g_mat->k));
 	
 	if (rc != 0) {
-		BPU_printGf2Mat(&temp);
+		BPU_printGf2Mat(ctx->code_spec.goppa->g_mat);
 		BPU_printError("BPU_genKeyPair: can not crop matrix");
 
 		return -1;
 	}
-	BPU_gf2MatFree(&temp, 0);
-
-#ifdef BPU_DEBUG_INIT_MCE_CTX
-	BPU_printDebug("Croped Matrix H2:");
-	BPU_printGf2Mat(&temp2);
-#endif
-	ctx->code_spec.goppa->g_mat = (BPU_T_GF2_Matrix *) calloc(1, sizeof(BPU_T_GF2_Matrix));
-	BPU_gf2MatMalloc(ctx->code_spec.goppa->g_mat, temp2.n, temp2.k);
-	rc = BPU_gf2MatTransp(ctx->code_spec.goppa->g_mat, &temp2);
-	BPU_gf2MatFree(&temp2, 0);
 
 #ifdef BPU_DEBUG_INIT_MCE_CTX
 	BPU_printDebug("Transposed croped Matrix H2:");

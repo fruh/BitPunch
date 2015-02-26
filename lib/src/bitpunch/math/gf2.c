@@ -205,48 +205,48 @@ int BPU_gf2MatCopy(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in) {
 	return 0;
 }
 
-int BPU_gf2MatPermute(BPU_T_GF2_Matrix *m, const BPU_T_Perm_Vector *permutation) {
-	int i, j, act_element, shift;
-	BPU_T_GF2_Matrix new_matrix;
+// int BPU_gf2MatPermute(BPU_T_GF2_Matrix *m, const BPU_T_Perm_Vector *permutation) {
+// 	int i, j, act_element, shift;
+// 	BPU_T_GF2_Matrix new_matrix;
 
-	// check if the size is correct
-	if (m->n != permutation->size)
-		return -1;
+// 	// check if the size is correct
+// 	if (m->n != permutation->size)
+// 		return -1;
 
-	// allocate new matrix
-	if (BPU_gf2MatMalloc(&new_matrix, m->k ,m->n) != 0)
-		return -2;
+// 	// allocate new matrix
+// 	if (BPU_gf2MatMalloc(&new_matrix, m->k ,m->n) != 0)
+// 		return -2;
 
-	// copy the matrix
-	BPU_gf2MatCopy(&new_matrix, m);
+// 	// copy the matrix
+// 	BPU_gf2MatCopy(&new_matrix, m);
 
-	// erase the matrix
-	for (i = 0; i < m->k; i++) {
-		for (j = 0; j < m->elements_in_row; j++) {
-			m->elements[i][j] = 0;
-		}
-	}
+// 	// erase the matrix
+// 	for (i = 0; i < m->k; i++) {
+// 		for (j = 0; j < m->elements_in_row; j++) {
+// 			m->elements[i][j] = 0;
+// 		}
+// 	}
 
-	// permute
-	act_element = 0;
-	for (j = 0; j < m->n; j++) { // column loop
-		if (j >= m->element_bit_size + act_element * m->element_bit_size)
-			act_element++;
-		for (i = 0; i < m->k; i++) { // row loop
-			if ((int)(permutation->elements[j]-j) >= 0) {
-				shift = (permutation->elements[j]-j) % new_matrix.element_bit_size;
-				m->elements[i][act_element] ^= BPU_gf2MatGetMaskedBit(&new_matrix, (uint64_t)i, (uint64_t)permutation->elements[j]) >> (shift); // permute the columns
-			}
-			else {
-				shift = (j-permutation->elements[j]) % new_matrix.element_bit_size;
-				m->elements[i][act_element] ^= BPU_gf2MatGetMaskedBit(&new_matrix, (uint64_t)i, (uint64_t)permutation->elements[j]) << (shift); // permute the columns
-			}
-		}
-	}
-	BPU_gf2MatFree(&new_matrix, 0);
+// 	// permute
+// 	act_element = 0;
+// 	for (j = 0; j < m->n; j++) { // column loop
+// 		if (j >= m->element_bit_size + act_element * m->element_bit_size)
+// 			act_element++;
+// 		for (i = 0; i < m->k; i++) { // row loop
+// 			if ((int)(permutation->elements[j]-j) >= 0) {
+// 				shift = (permutation->elements[j]-j) % new_matrix.element_bit_size;
+// 				m->elements[i][act_element] ^= BPU_gf2MatGetMaskedBit(&new_matrix, (uint64_t)i, (uint64_t)permutation->elements[j]) >> (shift); // permute the columns
+// 			}
+// 			else {
+// 				shift = (j-permutation->elements[j]) % new_matrix.element_bit_size;
+// 				m->elements[i][act_element] ^= BPU_gf2MatGetMaskedBit(&new_matrix, (uint64_t)i, (uint64_t)permutation->elements[j]) << (shift); // permute the columns
+// 			}
+// 		}
+// 	}
+// 	BPU_gf2MatFree(&new_matrix, 0);
 
-	return 0;
-}
+// 	return 0;
+// }
 
 int BPU_gf2VecPermute(BPU_T_GF2_Vector *vec, const BPU_T_Perm_Vector *permutation) {
 	int i;
@@ -335,21 +335,11 @@ int BPU_gf2MatFindCol(const BPU_T_GF2_Matrix *mat, int i, int start_index) {
 	return -1;
 }
 
-BPU_T_Perm_Vector* BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix *inout) {
+int BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix *inout) {
 	int act_position = 0;
 	int i;
-	int row, col;
-	BPU_T_Perm_Vector perm;
-	BPU_T_Perm_Vector *permOut;
-	permOut = (BPU_T_Perm_Vector*) malloc (sizeof(BPU_T_Perm_Vector));
+	int row;
 
-	BPU_permMalloc(&perm, inout->n);
-	BPU_permMalloc(permOut, inout->n);
-
-	for (i = 0; i < perm.size; i++) {
-		perm.elements[i] = i;
-		permOut->elements[i] = i;
-	}
 #ifdef BPU_TEST_DET_EQ_CODE
 	__test_was_eq_code = 0;
 #endif
@@ -362,24 +352,8 @@ BPU_T_Perm_Vector* BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix *inout) {
 			#ifdef BPU_TEST_DET_EQ_CODE
 				__test_was_eq_code = 1;
 			#endif
-				BPU_permFree(permOut, 1);
-				BPU_permFree(&perm, 0);
 
-				return NULL;
-
-			row = act_position;
-			col = BPU_gf2MatFindCol(inout, act_position, act_position);
-			if (col == -1) {
-				BPU_printError("unable to create systematic form");
-				
-				exit(-1);
-			}
-			BPU_gf2Swap(&(perm.elements[act_position]), &(perm.elements[col])); 
-			// printf("swap col: %d\t%d\n", act_position, col);
-			BPU_permPermute(permOut, &perm);
-			// BPU_printPerm(permOut);
-			BPU_gf2MatPermute(inout, &perm);
-			BPU_gf2Swap(&(perm.elements[act_position]), &(perm.elements[col])); // reset temporary permutation
+			return -1;
 		}
 		BPU_gf2MatSwapRows(inout, act_position, row);
 
@@ -390,8 +364,7 @@ BPU_T_Perm_Vector* BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix *inout) {
 			}
 		}
 	}
-	BPU_permFree(&perm, 0);
-	return permOut;
+	return 0;
 }
 
 int BPU_gf2VecConcat(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *vec1, const BPU_T_GF2_Vector *vec2) {
@@ -564,4 +537,62 @@ void BPU_gf2MatXorRows(BPU_T_GF2_Matrix *mat, int i, int j) {
 	for (k = 0; k < mat->elements_in_row; k++) {
 		mat->elements[i][k] ^= mat->elements[j][k];
 	}
+}
+
+int BPU_gf2MatPermute(BPU_T_GF2_Matrix *inout, BPU_T_Perm_Vector *permutation) {
+	int i, j;
+	int bit = 0;
+	BPU_T_GF2_Vector *vector;
+	int length;
+	vector = (BPU_T_GF2_Vector *) malloc(sizeof(BPU_T_GF2_Vector));
+	if (inout->n != permutation->size) {
+		BPU_printError("BPU_gf2MatPermute: permutation size not correct m->n = %d, p->size = %d", inout->n, permutation->size);
+
+		return -1;
+	}
+	length = inout->elements_in_row * (inout->element_bit_size / 8);
+
+	BPU_gf2VecMalloc(vector, permutation->size);
+
+	for (i = 0; i < inout->k; i++) {
+		memcpy((vector->elements), inout->elements[i], length);
+		for (j = 0; j < permutation->size; j++) {
+			bit = BPU_gf2VecGetBit(vector, permutation->elements[j]);
+			BPU_gf2MatSetBit(inout, i, j, bit);
+		}
+	}
+	BPU_gf2VecFree(vector, 1);
+	return 0;
+}
+
+int BPU_gf2MatCropMemory(BPU_T_GF2_Matrix *m, uint16_t width) {
+	BPU_T_GF2_Vector *row, *cropped_row;
+	int length, i, new_length;
+
+	length = m->elements_in_row * (m->element_bit_size / 8);
+	row = (BPU_T_GF2_Vector*) malloc(sizeof(BPU_T_GF2_Vector));
+	cropped_row = (BPU_T_GF2_Vector*) malloc(sizeof(BPU_T_GF2_Vector));
+	BPU_gf2VecMalloc(row, m->n);
+	BPU_gf2VecMalloc(cropped_row, width);
+	new_length = cropped_row->elements_in_row * (m->element_bit_size / 8);
+	// BPU_printGf2Mat(m);
+	for (i = 0; i < m->k; i++) {
+		memcpy(row->elements, m->elements[i], length);
+		BPU_gf2VecCrop(cropped_row, row, m->k, width);
+		// BPU_printGf2Vec(cropped_row);
+		free(m->elements[i]);
+		m->elements[i] = (BPU_T_GF2*) malloc(new_length);
+		memcpy(m->elements[i], cropped_row->elements, new_length);
+	}
+	m->n = cropped_row->len;
+	// fprintf(stderr, "%d\n", new_length);
+
+	// for i = 0; i < m->k
+		// take row vector m[i], copy to GF2vec
+		// free m[i]
+		// crop GF2vec
+		// malloc new size for row vector m[i]
+		// copy values from cropped GF2vec to row vector m[i]
+	// BPU_printGf2Mat(m);
+	return 0;
 }

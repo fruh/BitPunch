@@ -32,7 +32,7 @@ CC = gcc $(INCLUDE_PATH)
 
 # compiler flags
 #CFLAGS = -Wall -DERROR_L -pg -fprofile-arcs
-CFLAGS = -Wall -DERROR_L -O2
+CFLAGS = -Wall -DERROR_L -g
 #-fstack-protector-all
 
 # curent working directory

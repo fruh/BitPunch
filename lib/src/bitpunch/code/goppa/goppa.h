@@ -63,14 +63,14 @@ void BPU_goppaDetSyndromeA(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector 
 void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU_T_GF2_16x_Poly *tau, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
 
 /**
-* Initialize all control H matricies (X, Y, Z). It uses McEl structure.
+* Initialize all control matrix H. It uses McEl structure.
 * @param[out] m poiter to Matrix_H structure
 * @param[in] deg degree of goppa polynomial, number of errors
 * @param[in] poly goppa polynomial over GF2x
 * @param[in] math_ctx pointer to Aritmetic_Data structure, used by calculations
 * @return 0 - on succes, else error
 */
-/// Initialize all control H matricies (X, Y, Z)
+/// Initialize control matrix H
 int BPU_goppaInitMatH(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_Math_Ctx *math_ctx);
 
 /**
@@ -103,4 +103,7 @@ int BPU_goppaInitMatZ(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_M
 
 int BPU_goppaGenCode(BPU_T_Code_Ctx *ctx);
 
+int BPU_goppaInitMatH2(BPU_T_GF2_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_Math_Ctx *math_ctx);
+
+int BPU_goppaEncodeM(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
 #endif // BPU_GOPPA_H

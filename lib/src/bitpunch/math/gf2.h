@@ -195,7 +195,7 @@ int BPU_gf2MatCopy(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in);
  * @param permutation permutation vector
  * @return on succes 0, on size error -1, on allocation error -2
  */
-int BPU_gf2MatPermute(BPU_T_GF2_Matrix *m, const BPU_T_Perm_Vector *permutation);
+int BPU_gf2MatPermute(BPU_T_GF2_Matrix *m, BPU_T_Perm_Vector *permutation);
 
 /**
  * Permute vector GF2 with permutation.
@@ -271,7 +271,7 @@ int BPU_gf2MatFindCol(const BPU_T_GF2_Matrix *mat, int i, int start_index);
  * @return       on success pointer to BPU_T_Perm_Vector
  */
 /// It brings Matrix GF2 into the systematic form -> with I on the left side.
-BPU_T_Perm_Vector* BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix *inout);
+int BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix *inout);
 
 /**
  * Concats two vectors without allocation ouput.
@@ -360,4 +360,5 @@ int BPU_gf2VecRand(BPU_T_GF2_Vector *out, int l, int w);
 */
 int BPU_gf2VecMulMat(BPU_T_GF2_Vector *x, const BPU_T_GF2_Vector *v, const BPU_T_GF2_Matrix *b);
 
+int BPU_gf2MatCropMemory(BPU_T_GF2_Matrix *m, uint16_t width);
 #endif // BPU_GF2_H
