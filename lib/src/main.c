@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
 		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
-	exit(0);
+	// exit(0);
 	/***************************************/
 	fprintf(stderr, "Decryption...\n");
 	// decrypt cipher text

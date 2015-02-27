@@ -130,7 +130,10 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	BPU_printGf2Vec(encoded);
 #endif
 	// Beginning of patterson
-	BPU_goppaDetSyndromeA(&syndrome, &enc_permuted, ctx->code_spec.goppa->h_mat);
+	BPU_goppaDetSyndromeM(&syndrome, &enc_permuted, ctx->code_spec.goppa->g, ctx->math_ctx);
+	// BPU_printGf2xPoly(&syndrome, ctx->math_ctx);
+	// BPU_goppaDetSyndromeA(&syndrome, &enc_permuted, ctx->code_spec.goppa->h_mat);
+	// BPU_printGf2xPoly(&syndrome, ctx->math_ctx);
 	BPU_gf2VecFree(&enc_permuted, 0);
 
 #ifdef BPU_DEBUG_DECODE
@@ -258,6 +261,42 @@ void BPU_goppaDetSyndromeA(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector 
 			}
 		}
 	}
+	syndrome->deg = BPU_gf2xPolyGetDeg(syndrome);
+}
+
+void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_GF2_16x_Poly *poly, const BPU_T_Math_Ctx *math_ctx) {
+	int k, row, column, e;
+	int i, j;
+	BPU_T_GF2_16x element, divider;
+
+	BPU_gf2xPolyMalloc(syndrome, poly->deg - 1);
+	BPU_gf2xPolyNull(syndrome);
+	
+	for(column = 0; column < z->len; column++) {
+		divider = BPU_gf2xPowerModT(BPU_gf2xPolyEval(poly, math_ctx->exp_table[column], math_ctx), -1, math_ctx);
+		if (BPU_gf2VecGetBit(z, column)) {
+			for(row = 0; row < poly->deg; row++) {
+				element = 0;
+				for(k = poly->deg - row, e = 0; k <= poly->deg; k++, e++) {
+					element ^= BPU_gf2xMulMod(poly->coef[k], BPU_gf2xPowerModT (math_ctx->exp_table[column], e, math_ctx), math_ctx->mod);
+				}
+				element = BPU_gf2xMulMod(element, divider, math_ctx->mod);
+				syndrome->coef[syndrome->max_deg - row] ^= element;
+			}
+		}
+	}
+
+
+	
+
+
+	// for (i = 0; i < z->len; i++) {
+	// 	if (BPU_gf2VecGetBit(z, i)) {
+	// 		for (j = 0; j < H->k; j++) {
+	// 			syndrome->coef[syndrome->max_deg - j] ^= H->elements[j][i];
+	// 		}
+	// 	}
+	// }
 	syndrome->deg = BPU_gf2xPolyGetDeg(syndrome);  
 }
 

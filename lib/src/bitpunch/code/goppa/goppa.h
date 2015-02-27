@@ -106,4 +106,6 @@ int BPU_goppaGenCode(BPU_T_Code_Ctx *ctx);
 int BPU_goppaInitMatH2(BPU_T_GF2_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_Math_Ctx *math_ctx);
 
 int BPU_goppaEncodeM(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
+
+void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_GF2_16x_Poly *poly, const BPU_T_Math_Ctx *math_ctx);
 #endif // BPU_GOPPA_H
