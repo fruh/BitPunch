@@ -496,7 +496,7 @@ void BPU_gf2xPolyRoot(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *poly, c
 	BPU_T_GF2_16x_Matrix squareMat;
 	int i;
 
-	BPU_gf2xVecMallowec(&tmp_out, mod->deg);
+	BPU_gf2xVecMalloc(&tmp_out, mod->deg);
 
 	if (out->deg < mod->deg) {
 		BPU_gf2xPolyFree(out, 0);
