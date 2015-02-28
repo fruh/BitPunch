@@ -42,7 +42,8 @@ SOURCES += \
     lib/src/bitpunch/crypto/mecsbasic/mecsbasic.c \
     lib/src/bitpunch/crypto/padding/padding.c \
 	lib/src/main.c \
-    lib/src/bitpunch/code/goppa/goppatypes.c
+    lib/src/bitpunch/code/goppa/goppatypes.c \
+    lib/src/test-speed.c
 
 #include(deployment.pri)
 #qtcAddDeployment()
