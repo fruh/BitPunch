@@ -38,7 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * @param len print len
 */
 /// Print number as binary string in big endian so msb is first printed.
-void BPU_printBinaryMsb(uint64_t in, int len);
+void BPU_printBinaryMsb(uint32_t in, int len);
 
 /**
 * Print number as binary string in big endian so msb is first printed. Print also new line at the end.
@@ -47,7 +47,7 @@ void BPU_printBinaryMsb(uint64_t in, int len);
 * @param len print len
 */
 /// Print number as binary string in big endian so msb is first printed.
-void BPU_printBinaryMsbLn(uint64_t in, int len);
+void BPU_printBinaryMsbLn(uint32_t in, int len);
 
 /**
 * Print number as binary string in big endian so msb is first printed. Do not print new line at the end.
@@ -56,7 +56,7 @@ void BPU_printBinaryMsbLn(uint64_t in, int len);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in big endian so msb is first printed.
-void BPU_printBinaryMsb64(uint64_t in);
+void BPU_printBinaryMsb32(uint32_t in);
 
 /**
 * Print number as binary string in big endian so msb is first printed. Print also new line at the end.
@@ -65,7 +65,7 @@ void BPU_printBinaryMsb64(uint64_t in);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in big endian so msb is first printed.
-void BPU_printBinaryMsb64Ln(uint64_t in);
+void BPU_printBinaryMsb32Ln(uint32_t in);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Do not print new line at the end.
@@ -74,7 +74,7 @@ void BPU_printBinaryMsb64Ln(uint64_t in);
 * @param len print len
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void BPU_printBinaryLsb(uint64_t in, int len);
+void BPU_printBinaryLsb(uint32_t in, int len);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Print also new line at the end.
@@ -83,7 +83,7 @@ void BPU_printBinaryLsb(uint64_t in, int len);
 * @param len print len
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void BPU_printBinaryLsbLn(uint64_t in, int len);
+void BPU_printBinaryLsbLn(uint32_t in, int len);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Do not print new line at the end.
@@ -92,7 +92,7 @@ void BPU_printBinaryLsbLn(uint64_t in, int len);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void BPU_printBinaryLsb64(uint64_t in);
+void BPU_printBinaryLsb32(uint32_t in);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Print also new line at the end.
@@ -101,7 +101,7 @@ void BPU_printBinaryLsb64(uint64_t in);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void BPU_printBinary64LsbLn(uint64_t in);
+void BPU_printBinary32LsbLn(uint32_t in);
 
 /**
 * Print matrix GF2 with new lines.
@@ -120,7 +120,6 @@ void BPU_printGf2VecMsb(const BPU_T_GF2_Vector* v);
 void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec);
 /* ------------------------------------ Print functions ------------------------------------ */
 
-
 /**
  * Check if is set bit at n-th index makro.
  * @param w bit word to check
@@ -128,7 +127,7 @@ void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec);
  * @return 1 - is set, else zero
  */
  /// Check if is set bit at n-th index.
-#define BPU_getBit(w, n) ((int)((((uint64_t)w) >> (n)) & 1ul))
+#define BPU_getBit(w, n) ((int)((((uint32_t)w) >> (n)) & 1u))
 
 /**
  * Check if is set bit at s, t position in matrix.
@@ -161,7 +160,7 @@ void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec);
 												} \
 												else { \
 													/* this is like: 00101111 ^ 00000100 = 00101011 */\
-													(m_pointer)->elements[s][(t) / (m_pointer)->element_bit_size] &= ((BPU_T_GF2) (0xFFFFFFFFFFFFFFFFul)) ^ (((BPU_T_GF2) 1) << ((t) % (m_pointer)->element_bit_size));\
+													(m_pointer)->elements[s][(t) / (m_pointer)->element_bit_size] &= ((BPU_T_GF2) (0xFFFFFFFFu)) ^ (((BPU_T_GF2) 1) << ((t) % (m_pointer)->element_bit_size));\
 												}
 
 /**
@@ -175,7 +174,7 @@ void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec);
 												} \
 												else { \
 													/* this is like: 00101111 ^ 00000100 = 00101011 */\
-													(v_pointer)->elements[(i) / (v_pointer)->element_bit_size] &= ((BPU_T_GF2) (0xFFFFFFFFFFFFFFFFul)) ^ (((BPU_T_GF2) 1) << ((i) % (v_pointer)->element_bit_size));\
+													(v_pointer)->elements[(i) / (v_pointer)->element_bit_size] &= ((BPU_T_GF2) (0xFFFFFFFFu)) ^ (((BPU_T_GF2) 1) << ((i) % (v_pointer)->element_bit_size));\
 												}
 
 /**
@@ -195,7 +194,7 @@ int BPU_gf2MatCopy(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in);
  * @param permutation permutation vector
  * @return on succes 0, on size error -1, on allocation error -2
  */
-int BPU_gf2MatPermute(BPU_T_GF2_Matrix *m, const BPU_T_Perm_Vector *permutation);
+int BPU_gf2MatPermute(BPU_T_GF2_Matrix *m, BPU_T_Perm_Vector *permutation);
 
 /**
  * Permute vector GF2 with permutation.
@@ -271,7 +270,7 @@ int BPU_gf2MatFindCol(const BPU_T_GF2_Matrix *mat, int i, int start_index);
  * @return       on success pointer to BPU_T_Perm_Vector
  */
 /// It brings Matrix GF2 into the systematic form -> with I on the left side.
-BPU_T_Perm_Vector* BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix *inout);
+int BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix *inout);
 
 /**
  * Concats two vectors without allocation ouput.
@@ -360,4 +359,7 @@ int BPU_gf2VecRand(BPU_T_GF2_Vector *out, int l, int w);
 */
 int BPU_gf2VecMulMat(BPU_T_GF2_Vector *x, const BPU_T_GF2_Vector *v, const BPU_T_GF2_Matrix *b);
 
+int BPU_gf2MatCropMemory(BPU_T_GF2_Matrix *m, uint16_t width);
+
+uint8_t BPU_getParity(BPU_T_GF2 dword);
 #endif // BPU_GF2_H

@@ -34,6 +34,7 @@ int main(int argc, char **argv) {
 	fprintf(stderr, "Initialisation...\n");
 //	BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
 	if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA)) {
+	// if (BPU_mecsInitCtx(&ctx, 5, 5, BPU_EN_MECS_BASIC_GOPPA)) {
 		return 1;
 	}
 
@@ -79,6 +80,7 @@ int main(int argc, char **argv) {
 		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
+	// exit(0);
 	/***************************************/
 	fprintf(stderr, "Decryption...\n");
 	// decrypt cipher text
@@ -91,13 +93,6 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 	/***************************************/
-	// debug output
-	// fprintf(stderr, "\nCT:\n");
-	// BPU_printGf2Vec(&ct);
-	// fprintf(stderr, "\nOutput PT:\n");
-	// BPU_printGf2Vec(&pt_out);
-	// fprintf(stderr, "\nInput random PT:\n");
-	// BPU_printGf2Vec(&pt_in);
 
 	// check for correct decryption
 	if (BPU_gf2VecCmp(&pt_in, &pt_out)) {

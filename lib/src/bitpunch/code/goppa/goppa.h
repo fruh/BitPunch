@@ -62,45 +62,12 @@ void BPU_goppaDetSyndromeA(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector 
 /// Find polynomials a, b of degree <= (t div 2)
 void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU_T_GF2_16x_Poly *tau, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
 
-/**
-* Initialize all control H matricies (X, Y, Z). It uses McEl structure.
-* @param[out] m poiter to Matrix_H structure
-* @param[in] deg degree of goppa polynomial, number of errors
-* @param[in] poly goppa polynomial over GF2x
-* @param[in] math_ctx pointer to Aritmetic_Data structure, used by calculations
-* @return 0 - on succes, else error
-*/
-/// Initialize all control H matricies (X, Y, Z)
-int BPU_goppaInitMatH(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_Math_Ctx *math_ctx);
-
-/**
-* Initialize X matrix of t x t dimensions.
-* @param[out] m pointer to matrix which should be initialized
-* @param[in] t degree of goppa polynomial, number of errors
-* @param[in] poly goppa polynomial over GF2x
-*/
-/// Initialize X matrix of t x t dimensions.
-int BPU_goppaInitMatX(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly);
-
-/**
-* Initialize Y matrix of t x n dimensions, n = ord of galois field.
-* @param[out] m pointer to matrix which should be initialized
-* @param[in] t degree of goppa polynomial, number of errors
-* @param[in] math_ctx pointer to Aritmetic_Data structure, used by calculations
-*/
-/// Initialize Y matrix of t x n dimensions, where t = deg, n = ord of galois field.
-int BPU_goppaInitMatY(BPU_T_GF2_16x_Matrix *m, uint8_t t, BPU_T_Math_Ctx *math_ctx);
-
-/**
-* Initialize Z matrix of n x n dimensions, where n = ord of galois field.
-* @param[out] m pointer to Matrix_H structure
-* @param[in] deg degree of goppa polynomial, number of errors
-* @param[in] poly goppa polynomial over GF2x
-* @param[in] math_ctx pointer to Aritmetic_Data structure, used by calculations
-*/
-/// Initialize Z matrix of n x n dimensions, where n is odr of galois field.
-int BPU_goppaInitMatZ(BPU_T_GF2_16x_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_Math_Ctx *math_ctx);
-
 int BPU_goppaGenCode(BPU_T_Code_Ctx *ctx);
 
+// TODO: :)
+int BPU_goppaInitMatH2(BPU_T_GF2_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_Math_Ctx *math_ctx);
+
+int BPU_goppaEncodeM(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
+
+void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_GF2_16x_Poly *poly, const BPU_T_Math_Ctx *math_ctx);
 #endif // BPU_GOPPA_H

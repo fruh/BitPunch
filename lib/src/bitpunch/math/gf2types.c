@@ -79,12 +79,7 @@ int BPU_gf2MatMalloc(BPU_T_GF2_Matrix *m, int rows, int cols) {
 
 	// allocate cols
 	for (i = 0; i < m->k; i++) {
-		m->elements[i] = (BPU_T_GF2*) malloc(sizeof(BPU_T_GF2) * m->elements_in_row);
-	}
-
-	// fill matrix with zeros
-	for (i = 0; i < m->k; i++) {
-		BPU_gf2MatNullRow(m, i);
+		m->elements[i] = (BPU_T_GF2*) calloc(1, sizeof(BPU_T_GF2) * m->elements_in_row);
 	}
 	return 0;
 }
@@ -105,18 +100,12 @@ int BPU_gf2VecMalloc(BPU_T_GF2_Vector *v, int len) {
 	v->elements_in_row = len / v->element_bit_size + modul;
 
 	// allocate elemtens
-	v->elements = (BPU_T_GF2*) malloc(sizeof(BPU_T_GF2) * v->elements_in_row);
+	v->elements = (BPU_T_GF2*) calloc(1, sizeof(BPU_T_GF2) * v->elements_in_row);
 
-#ifdef BPU_DEBUG_MALLOC_VECTOR_GF2
-	BPU_printDebug("vector len: %d, element_bit_size: %d, elements_in_row: %d", v->len, v->element_bit_size, v->elements_in_row);
-#endif
 	if (!v->elements) {
 		BPU_printError("BPU_mallocVectorGF2: can not allocate memory for vector of len %d", len);
 		
 		return 1;
 	}
-	// null vector
-	BPU_gf2VecNull(v);
-
 	return 0;
 }

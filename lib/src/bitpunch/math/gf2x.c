@@ -120,33 +120,6 @@ BPU_T_GF2_16x BPU_gf2xPowerModT(BPU_T_GF2_16x a, int e, const BPU_T_Math_Ctx *ma
 	return math_ctx->exp_table[e];
 }
 
-/*** PZ: old version
-int BPU_gf2xMatrixMulA(BPU_T_Matrix_GF2_16x *x, const BPU_T_Matrix_GF2_16x *a, const BPU_T_Matrix_GF2_16x *b, const BPU_T_Math_Ctx *math_ctx) {
-	uint32_t i, j, k;
-	GF2_16x tmp;
-
-	if (a->n != b->k)
-		return -1;
-
-	if (BPU_mallocMatrix(x, a->k, b->n) != 0) {
-		BPU_printError("BPU_gf2xMatrixMulA: allocation error");
-
-		return -2;
-	}
-			
-	for (i = 0; i < a->k; i++) {
-		for (j = 0; j < b->n; j++) {
-			tmp = 0;
-			for (k = 0; k < a->n; k++) {
-				tmp ^= BPU_gf2xMulModT(a->elements[i][k], b->elements[k][j], math_ctx);
-			}
-			x->elements[i][j] = tmp;
-		}
-	}
-	return 0;
-}
-*/
-
 /*** PZ: speedup critical instructions ***/
 int BPU_gf2xMatrixMulA(BPU_T_GF2_16x_Matrix *x, const BPU_T_GF2_16x_Matrix *a, const BPU_T_GF2_16x_Matrix *b, const BPU_T_Math_Ctx *math_ctx) {
 	uint32_t i, j, k;
@@ -166,18 +139,17 @@ int BPU_gf2xMatrixMulA(BPU_T_GF2_16x_Matrix *x, const BPU_T_GF2_16x_Matrix *a, c
 			x->elements[i][j] = 0;
 		}
 	}
-
 			
 	for (i = 0; i < a->k; i++) {
 		for (k = 0; k < a->n; k++) {
-		if (a->elements[i][k] == 0)
-			continue;
-		loga = math_ctx->log_table[a->elements[i][k]];
-		for (j = 0; j < b->n; j++) {
-			if (b->elements[k][j] == 0)
-				 continue;
-			x->elements[i][j] ^= math_ctx->exp_table[(loga + math_ctx->log_table[b->elements[k][j]]) % math_ctx->ord];
-		}
+			if (a->elements[i][k] == 0)
+				continue;
+			loga = math_ctx->log_table[a->elements[i][k]];
+			for (j = 0; j < b->n; j++) {
+				if (b->elements[k][j] == 0)
+					 continue;
+				x->elements[i][j] ^= math_ctx->exp_table[(loga + math_ctx->log_table[b->elements[k][j]]) % math_ctx->ord];
+			}
 		}
 	}
 	return 0;
@@ -228,8 +200,6 @@ void BPU_gf2xPolyDiv(BPU_T_GF2_16x_Poly *q, BPU_T_GF2_16x_Poly *r, const BPU_T_G
 		BPU_gf2xPolyMalloc(q, max_deg_q);
 	}
 	else {
-		// here was mordor #2 - forgotten to null outputs :/
-		// null outputs
 		BPU_gf2xPolyNull(q);
 	}
 	if (r->max_deg < (b->max_deg - 1)) {
@@ -267,8 +237,6 @@ void BPU_gf2xPolyMul(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
 	int j;
 	int max_deg = a->deg + b->deg;
 	
-	// MAYBE HERE WAS #### mordor #### - it does
-	// if there is not enough space, resize it
 	if (out->max_deg < max_deg) {
 		BPU_gf2xPolyFree(out, 0);
 		BPU_gf2xPolyMalloc(out, max_deg);
@@ -423,7 +391,6 @@ void BPU_gf2xMatRootA(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Poly *mod, 
 	// create square matrix
 	BPU_gf2xMatMalloc(&bigMat, mod->deg, mod->deg * 2);
 	BPU_gf2xMatMalloc(out, mod->deg, mod->deg);
-	// BPU_mallocMatrix(&test, mod->deg, mod->deg);
 	BPU_gf2xMatNull(out);
 	BPU_gf2xMatNull(&bigMat);
 	BPU_gf2xPolyMalloc(&tmp, 0);
@@ -453,12 +420,9 @@ void BPU_gf2xMatRootA(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Poly *mod, 
 
 	for (i = 0; i < out->k; i++) {
 		for (j = 0; j < out->k; j++) {
-			// test.elements[i][j] = out->elements[i][j];
 			out->elements[i][j] = BPU_gf2xRoot(bigMat.elements[i][out->k + j], math_ctx);
 		}
 	}
-	// BPU_gf2xMatrixMulA(&test_out, &test, out, math_ctx);
-	// BPU_printGf2xMat(&test_out);
 	BPU_gf2xMatFree(&bigMat, 0);
 }
 
@@ -505,8 +469,6 @@ void BPU_gf2xPolyRoot(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *poly, c
 	BPU_gf2xPolyToVecA(&tmp, poly, mod->deg);
 	BPU_gf2xMatRootA(&squareMat, mod, math_ctx);
 
-	// BPU_printGf2xMat(&squareMat);
-
 	for (i = 0; i < tmp.len; i++) {
 		tmp.elements[i] = BPU_gf2xRoot(tmp.elements[i], math_ctx);
 	}
@@ -521,7 +483,7 @@ void BPU_gf2xPolyRoot(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *poly, c
 }
 
 int BPU_gf2xGetDeg(BPU_T_GF2_32x poly) {
-	int i = 63;
+	int i = 31;
 
 	while (i >= 0) {
 		if (BPU_getBit(poly, i)) {
@@ -580,7 +542,7 @@ int BPU_gf2xMatConvertToGf2MatA(BPU_T_GF2_Matrix *out, const BPU_T_GF2_16x_Matri
 			bit_in_element++;
 		for (i = 0; i < m->k; i++) { // row loop
 			for (bit = 0; bit < element_bit_size; bit++) { // bit loop through element of matrix
-				out->elements[i*element_bit_size + bit][act_element] ^= (uint64_t)BPU_getBit(m->elements[i][j], bit) << (bit_in_element); // get bit from element and shift it
+				out->elements[i*element_bit_size + bit][act_element] ^= BPU_getBit(m->elements[i][j], bit) << (bit_in_element); // get bit from element and shift it
 			}
 		}
 	}
@@ -712,8 +674,7 @@ int BPU_gf2xPolyIrredTest(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *mat
 	// test if some alpha is root
 	for (i = 0; i < math_ctx->ord; i++) {
 		if (BPU_gf2xPolyEval(p, math_ctx->exp_table[i], math_ctx) == 0) {
-			is_irred = 0;
-			return is_irred;
+			return 0;
 		}
 	}
 	BPU_gf2xPolyMalloc(&out, 0);
@@ -752,9 +713,7 @@ int BPU_gf2xPolyIrredTest(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *mat
 		BPU_gf2xPolyFree(&gcd, 0);
 		BPU_gf2xPolyFree(&s, 0);
 		BPU_gf2xPolyFree(&t, 0);
-
-		is_irred = 0;
-		return is_irred;
+		return 0;
 	}
 
 	for (j = 2; j <= p->deg; j++) {

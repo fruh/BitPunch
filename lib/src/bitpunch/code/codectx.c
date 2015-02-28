@@ -43,7 +43,7 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, con
 	}
 	switch (type) {
 	case BPU_EN_CODE_GOPPA:
-		ctx->_encode = BPU_goppaEncode;
+		ctx->_encode = BPU_goppaEncodeM;
 		ctx->_decode = BPU_goppaDecode;
 		ctx->code_len = ctx->math_ctx->ord; // ord
 		ctx->msg_len = ctx->math_ctx->ord - m*t; // n - m*t
