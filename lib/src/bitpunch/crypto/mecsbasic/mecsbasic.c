@@ -31,40 +31,27 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, cons
 
 		return -1;
 	}
-#ifdef BPU_DEBUG_ENCRYPT
-	BPU_printDebug("plaintext:");
-	BPU_printGf2Vec(message);
-#endif
+
 	rc = ctx->code_ctx->_encode(out, in, ctx->code_ctx);
 	if (rc) {
 		BPU_printError("BPU_mecsBasicEncrypt: can not encode");
 		return rc;
 	}
-#ifdef BPU_DEBUG_ENCRYPT
-	BPU_printDebug("encoded plaintext:");
-	BPU_printGf2Vec(out);
-#endif
+
 	// generate random error vector e
 	rc = BPU_gf2VecRand(&e, ctx->code_ctx->code_len, ctx->code_ctx->t);
 	if (rc) {
 		BPU_printError("BPU_mecsBasicEncrypt: can not init rand vector");
 		return rc;
 	}
-#ifdef BPU_DEBUG_ENCRYPT
-	BPU_printDebug("error vector:");
-	BPU_printGf2Vec(&e);
-#endif
+
 	// z' XOR e
 	rc = BPU_gf2VecXor(out, &e);
 	if (rc) {
 		BPU_printError("BPU_mecsBasicEncrypt: can not add error vector");
 		return rc;
 	}
-#ifdef BPU_DEBUG_ENCRYPT
-	BPU_printDebug("cipher text:");
-	BPU_printGf2Vec(out);
-	BPU_printDebug("###### ENCRYPT DBPU_ONE ######\n");
-#endif
+
 	BPU_gf2VecFree(&e, 0);
 
 	return rc;
@@ -79,14 +66,9 @@ int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, cons
 
 	ctx->code_ctx->_decode(out, &temp, ctx->code_ctx);
 
-#ifdef BPU_DEBUG_DECRYPT
-	BPU_printDebug("decoded error:");
-	BPU_printGf2Vec(&decoded);
-#endif
+
 	BPU_gf2VecFree(&temp, 0);
 
-#ifdef BPU_DEBUG_DECRYPT
-	BPU_printDebug("###### DECRYPT DBPU_ONE ######");
-#endif
+
 	return rc;
 }

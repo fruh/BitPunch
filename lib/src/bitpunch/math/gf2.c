@@ -335,7 +335,7 @@ int BPU_gf2MatFindCol(const BPU_T_GF2_Matrix *mat, int i, int start_index) {
 	return -1;
 }
 
-int BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix *inout) {
+int  BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix *inout) {
 	int act_position = 0;
 	int i;
 	int row;
@@ -595,4 +595,14 @@ int BPU_gf2MatCropMemory(BPU_T_GF2_Matrix *m, uint16_t width) {
 		// copy values from cropped GF2vec to row vector m[i]
 	// BPU_printGf2Mat(m);
 	return 0;
+}
+
+uint8_t BPU_getParity(BPU_T_GF2 dword) {
+	uint32_t tmp = dword;
+	tmp = (tmp >> 16) ^ tmp;
+	tmp = (tmp >> 8 ) ^ tmp;
+	tmp = (tmp >> 4 ) ^ tmp;
+	tmp = (tmp >> 2 ) ^ tmp;
+	tmp = (tmp >> 1 ) ^ tmp;
+	return tmp & 1;
 }

@@ -120,7 +120,6 @@ void BPU_printGf2VecMsb(const BPU_T_GF2_Vector* v);
 void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec);
 /* ------------------------------------ Print functions ------------------------------------ */
 
-
 /**
  * Check if is set bit at n-th index makro.
  * @param w bit word to check
@@ -361,4 +360,6 @@ int BPU_gf2VecRand(BPU_T_GF2_Vector *out, int l, int w);
 int BPU_gf2VecMulMat(BPU_T_GF2_Vector *x, const BPU_T_GF2_Vector *v, const BPU_T_GF2_Matrix *b);
 
 int BPU_gf2MatCropMemory(BPU_T_GF2_Matrix *m, uint16_t width);
+
+uint8_t BPU_getParity(BPU_T_GF2 dword);
 #endif // BPU_GF2_H
