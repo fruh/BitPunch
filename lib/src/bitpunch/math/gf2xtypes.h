@@ -26,9 +26,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 typedef uint16_t BPU_T_GF2_16x;
 
 /**
-* Polynomial representation over GF2, max deg f < 64
+* Polynomial representation over GF2, max deg f < 32
 */
-typedef uint64_t BPU_T_GF2_64x;
+typedef uint32_t BPU_T_GF2_32x;
 
 /**
  * GF2_16x Vector representation

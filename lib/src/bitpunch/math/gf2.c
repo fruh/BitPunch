@@ -235,11 +235,11 @@ int BPU_gf2MatPermute(BPU_T_GF2_Matrix *m, const BPU_T_Perm_Vector *permutation)
 		for (i = 0; i < m->k; i++) { // row loop
 			if ((int)(permutation->elements[j]-j) >= 0) {
 				shift = (permutation->elements[j]-j) % new_matrix.element_bit_size;
-				m->elements[i][act_element] ^= BPU_gf2MatGetMaskedBit(&new_matrix, (uint64_t)i, (uint64_t)permutation->elements[j]) >> (shift); // permute the columns
+				m->elements[i][act_element] ^= BPU_gf2MatGetMaskedBit(&new_matrix, i, permutation->elements[j]) >> (shift); // permute the columns
 			}
 			else {
 				shift = (j-permutation->elements[j]) % new_matrix.element_bit_size;
-				m->elements[i][act_element] ^= BPU_gf2MatGetMaskedBit(&new_matrix, (uint64_t)i, (uint64_t)permutation->elements[j]) << (shift); // permute the columns
+				m->elements[i][act_element] ^= BPU_gf2MatGetMaskedBit(&new_matrix, i, permutation->elements[j]) << (shift); // permute the columns
 			}
 		}
 	}
@@ -269,8 +269,8 @@ BPU_T_GF2 BPU_gf2MatGetMaskedBit(const BPU_T_GF2_Matrix *m, uint32_t row, uint32
 
 	segment = bit / (m->element_bit_size);
 	bit_in_segment = bit % (m->element_bit_size);
-	
-	return m->elements[row][segment] & ((uint64_t)1 << bit_in_segment);
+	// TODO: consider repleacing di literal 1u
+	return m->elements[row][segment] & ((uint32_t)1 << bit_in_segment);
 }
 
 BPU_T_GF2 BPU_gf2VecGetMaskedBit(const BPU_T_GF2_Vector *vec, uint32_t bit) {
@@ -278,8 +278,8 @@ BPU_T_GF2 BPU_gf2VecGetMaskedBit(const BPU_T_GF2_Vector *vec, uint32_t bit) {
 
 	segment = bit / (vec->element_bit_size);
 	bit_in_segment = bit % (vec->element_bit_size);
-	
-	return vec->elements[segment] & ((uint64_t)1 << bit_in_segment);
+	// TODO: consider repleacing di literal 1u
+	return vec->elements[segment] & ((uint32_t)1 << bit_in_segment);
 }
 
 int BPU_gf2MatTransp(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in) {

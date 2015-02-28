@@ -214,7 +214,7 @@ void BPU_gf2xPolyCopy(BPU_T_GF2_16x_Poly *dest, const BPU_T_GF2_16x_Poly *src);
 * @return degree of pol or -1 if it is pol = 0
 */
 /// Get degree of polynomial over GF2
-int BPU_gf2xGetDeg(BPU_T_GF2_64x pol);
+int BPU_gf2xGetDeg(BPU_T_GF2_32x pol);
 
 /**
 * Get degree of polynomial over GF2x.

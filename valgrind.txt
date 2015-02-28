@@ -1,6 +1,10 @@
 #!/bon/bash
 Memory peak:
 	valgrind --tool=massif PROGRAM
+
+Total memory peak:
+	valgrind --tool=massif --pages-as-heap=yes --massif-out-file=massif.out ./BitPunch; echo ""; echo -n "Mem usage: "; cat massif.out | grep mem_heap_B | sed -e 's/mem_heap_B=\(.*\)/\1/' | sort -g | tail -n 1
+
 Memory leaks:
 	valgrind --leack-check=yes PROGRAM
 
