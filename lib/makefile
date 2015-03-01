@@ -53,20 +53,27 @@ SHARED_TARGET = $(DIST_TARGET)/shared
 # test target
 TEST_TARGET = $(DIST_TARGET)/test
 
-SRC_FILES = src/bitpunch/code/*.h src/bitpunch/code/*.c src/bitpunch/code/goppa/*.h src/bitpunch/code/goppa/*.c src/bitpunch/crypto/*.c src/bitpunch/crypto/*.h src/bitpunch/crypto/mecsbasic/*.c src/bitpunch/crypto/mecsbasic/*.h src/bitpunch/*.c src/bitpunch/math/*.c src/bitpunch/math/*.h src/bitpunch/prng/*.h src/bitpunch/prng/*.c  src/main.c
+SRC_FILES = src/bitpunch/code/*.h src/bitpunch/code/*.c src/bitpunch/code/goppa/*.h src/bitpunch/code/goppa/*.c src/bitpunch/crypto/*.c src/bitpunch/crypto/*.h src/bitpunch/crypto/mecsbasic/*.c src/bitpunch/crypto/mecsbasic/*.h src/bitpunch/*.c src/bitpunch/math/*.c src/bitpunch/math/*.h src/bitpunch/prng/*.h src/bitpunch/prng/*.c
 
 ######################################## TARGETS ###############################################
 default: test
 
 test: prepare-dir-test
-	$(CC) $(CFLAGS) $(SRC_FILES) -o $(TEST_TARGET)/BitPunch
+	$(CC) $(CFLAGS) $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
 	@echo ""
 	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
 	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
 	@echo "See source file in: $(CWD)/$(PREFIX_SRC)/main.c"
 
 test-debug: prepare-dir-test
-	$(CC) $(CFLAGS) -ggdb $(SRC_FILES) -o $(TEST_TARGET)/BitPunch
+	$(CC) $(CFLAGS) -ggdb $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+	@echo ""
+	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
+	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
+	@echo "See source file in: $(CWD)/$(PREFIX_SRC)/main.c"
+
+speed-test: prepare-dir-test
+	$(CC) $(CFLAGS) $(SRC_FILES) src/test-speed.c -o $(TEST_TARGET)/BitPunch
 	@echo ""
 	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
 	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
