@@ -1,5 +1,5 @@
 #!/bin/bash
 cd $(dirname $0)/tests
 ./runTest testBuild.sh
-./runTest testMemLeaksWoH.sh
-./runTest testMemLeaksWithH.sh
+./runTest testMemLeaks.sh test-wo-h-debug
+./runTest testMemLeaks.sh test-with-h-debug

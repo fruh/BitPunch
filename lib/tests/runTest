@@ -5,7 +5,7 @@ TMP_FILE=/tmp/runTest.$$
 
 trap "rm -f $TMP_FILE" EXIT
 
-echo "======== BEGIN::$1 ========"
+echo "======== BEGIN::$@ ========"
 bash $@ &> $TMP_FILE
 
 if [ $? == 0 ]; then
@@ -15,4 +15,4 @@ else
 	echo
 	echo FAILED
 fi
-echo "--------   END::$1 --------"
+echo "--------   END::$@ --------"
