@@ -32,7 +32,7 @@ CC = gcc $(INCLUDE_PATH)
 
 # compiler flags
 #CFLAGS = -Wall -DERROR_L -pg -fprofile-arcs
-CFLAGS = -Wall -DERROR_L -O2
+CFLAGS = -Wall -DERROR_L -O3
 #-fstack-protector-all
 
 # curent working directory
@@ -56,24 +56,27 @@ TEST_TARGET = $(DIST_TARGET)/test
 SRC_FILES = src/bitpunch/code/*.h src/bitpunch/code/*.c src/bitpunch/code/goppa/*.h src/bitpunch/code/goppa/*.c src/bitpunch/crypto/*.c src/bitpunch/crypto/*.h src/bitpunch/crypto/mecsbasic/*.c src/bitpunch/crypto/mecsbasic/*.h src/bitpunch/*.c src/bitpunch/math/*.c src/bitpunch/math/*.h src/bitpunch/prng/*.h src/bitpunch/prng/*.c
 
 ######################################## TARGETS ###############################################
-default: test
+default: test-with-h print-info
 
-test: prepare-dir-test
+test-wo-h: prepare-dir-test
 	$(CC) $(CFLAGS) $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
-	@echo ""
-	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
-	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
-	@echo "See source file in: $(CWD)/$(PREFIX_SRC)/main.c"
 
-test-debug: prepare-dir-test
+test-wo-h-debug: prepare-dir-test
 	$(CC) $(CFLAGS) -ggdb $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
-	@echo ""
-	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
-	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
-	@echo "See source file in: $(CWD)/$(PREFIX_SRC)/main.c"
 
-speed-test: prepare-dir-test
+speed-test-wo-h: prepare-dir-test
 	$(CC) $(CFLAGS) $(SRC_FILES) src/test-speed.c -o $(TEST_TARGET)/BitPunch
+
+test-with-h: prepare-dir-test
+	$(CC) $(CFLAGS) -DBPU_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+
+test-with-h-debug: prepare-dir-test
+	$(CC) $(CFLAGS) -ggdb -DBPU_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+
+speed-test-with-h: prepare-dir-test
+	$(CC) $(CFLAGS) -DBPU_GOPPA_WITH_H $(SRC_FILES) src/test-speed.c -o $(TEST_TARGET)/BitPunch
+
+print-info:
 	@echo ""
 	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
 	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
@@ -104,10 +107,8 @@ help:
 	@echo "\tSource file: $(CWD)/$(PREFIX_SRC)/main.c"
 	@echo "\tApplication: $(TEST_TARGET)/BitPunch"
 	@echo ""
-	@echo "It will build files 'libbpumecs.so' or 'libbpurm -vRf /
-	rm: it is dangerous to operate recursively on ‘/’
-	rm: use --no-preserve-root to override this failsafe
-	make: *** [clean-obj] Error 1mecs.a' or for debug 'libbpumecsd.so' or 'libbpumecsd.a', then you can link it to your project."
-	@echo "Output will be in dist/static/ or dist/shared/"
-	@echo ""
-	@echo "You can also build a test run: \n\t'make test-*'\nWhere * can be static, shared, static-debug, shared-debug, output will be in dist/test/ or dist-debug/test/."
+	@echo "It is possible to build library which has H matrix precomputed or not. See targets with '*-wo-h*' or '*-with-h*'"
+#	@echo "It will build files 'libbpumecs.so' or for debug 'libbpumecsd.so' or 'libbpumecsd.a', then you can link it to your project."
+#	@echo "Output will be in dist/static/ or dist/shared/"
+#	@echo ""
+#	@echo "You can also build a test run: \n\t'make test-*'\nWhere * can be static, shared, static-debug, shared-debug, output will be in dist/test/ or dist-debug/test/."

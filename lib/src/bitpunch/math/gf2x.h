@@ -79,6 +79,7 @@ BPU_T_GF2_16x BPU_gf2xMulMod(BPU_T_GF2_16x a, BPU_T_GF2_16x b, BPU_T_GF2_16x mod
 */
 /// Multiplication over Galois field, modulus mod.
 BPU_T_GF2_16x BPU_gf2xMulModT(const BPU_T_GF2_16x a, const BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx);
+//#define BPU_gf2xMulModT(a, b, math_ctx) ((a == 0 || b == 0) ? 0 : math_ctx->exp_table[(math_ctx->log_table[a] + math_ctx->log_table[b]) % math_ctx->ord])
 
 /**
 * E-th power of a. It uses precomputed log and exp tables.
@@ -91,14 +92,14 @@ BPU_T_GF2_16x BPU_gf2xMulModT(const BPU_T_GF2_16x a, const BPU_T_GF2_16x b, cons
 BPU_T_GF2_16x BPU_gf2xPowerModT(BPU_T_GF2_16x a, int e, const BPU_T_Math_Ctx *math_ctx);
 
 /**
- * Matrix multiplication over finite field.  After work you have to free memory using call BPU_freeMat.
+ * Matrix multiplication over finite field..
  * x = a*b
  * @param[out] x matrix GF2^m, new matrix
  * @param[in] a matrix GF2^m
  * @param[in] b matrix GF2^m
  * @return on succes 0, on size error -1, on allocation error -2
  */
-int BPU_gf2xMatrixMulA(BPU_T_GF2_16x_Matrix *x, const BPU_T_GF2_16x_Matrix *a, const BPU_T_GF2_16x_Matrix *b, const BPU_T_Math_Ctx *math_ctx);
+int BPU_gf2xMatrixMul(BPU_T_GF2_16x_Matrix *x, const BPU_T_GF2_16x_Matrix *a, const BPU_T_GF2_16x_Matrix *b, const BPU_T_Math_Ctx *math_ctx);
 
 /**
  * out = x * M over finite field
@@ -186,7 +187,7 @@ void BPU_gf2xPolyMod(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
  * @param out    [description]
  * @param math_ctx [description]
  */
-void BPU_gf2xMatRootA(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xMatRoot(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
 
 /**
  * Function returns sqrt(element)
@@ -233,13 +234,13 @@ int BPU_gf2xPolyGetDeg(BPU_T_GF2_16x_Poly *poly);
 int BPU_gf2xMatPermute(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Matrix *m, const BPU_T_Perm_Vector *permutation);
 
 /**
- * Converts matrix GF2m to matrix GF2. Allocates memory for GF2 matrix.  After work you have to free memory using call BPU_freeMatGF2.
+ * Converts matrix GF2m to matrix GF2.
  * @param m matrix GF2m
  * @param deg degree of elements from GF2m
  * @param out output matrix GF2
  * @return on succes 0, else error
  */
-int BPU_gf2xMatConvertToGf2MatA(BPU_T_GF2_Matrix *out, const BPU_T_GF2_16x_Matrix *m, int deg);
+int BPU_gf2xMatConvertToGf2Mat(BPU_T_GF2_Matrix *out, const BPU_T_GF2_16x_Matrix *m, int deg);
 
 /**
  * Evaluate polynomial over GF2^m with x.
@@ -264,7 +265,7 @@ BPU_T_GF2_16x BPU_gf2xPolyEval(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_1
  * @return  0
  */
 /// Extended Euclidean to find greatest common divisor and Bézout coefficients s, t, where gcd(a, b) = d = a*s + b*t.
-int BPU_gf2xPolyExtEuclidA(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF2_16x_Poly *t, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, int end_deg, const BPU_T_Math_Ctx *math_ctx);
+int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF2_16x_Poly *t, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, int end_deg, const BPU_T_Math_Ctx *math_ctx);
 
 /**
  * Function compares two polynomials
@@ -282,14 +283,14 @@ int BPU_gf2xPolyCmp(const BPU_T_GF2_16x_Poly *p1, const BPU_T_GF2_16x_Poly *p2);
  */
 int BPU_gf2xPolyIrredTest(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *math_ctx);
 /**
- * Get inverse polynomial over GF2_16x. It is using Extended Euclidean alg. Polynomial out will be allocated inside function. After work should be freed using BPU_freePoly().
+ * Get inverse polynomial over GF2_16x. It is using Extended Euclidean alg.
  * @param a[in]    input polynomial
  * @param mod[in]  modulus polynomial
  * @param out[out] output polynomial
  * @param math_ctx[in] arithmetic data structure
  */
 /// Get inverse polynomial over GF2_16x.
-void BPU_gf2xPolyInvA(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xPolyInv(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
 
 /**
  * Make from polynomial monic polynomial. It means that it will be multiplicated with (leading coef)^-1. It will change source polynomial.
@@ -313,7 +314,7 @@ void BPU_gf2xMatInsertPoly(BPU_T_GF2_16x_Matrix *mat, const BPU_T_GF2_16x_Poly *
  * @param poly [description]
  * @param vec  [description]
  */
-void BPU_gf2xPolyToVecA(BPU_T_GF2_16x_Vector *vec, const BPU_T_GF2_16x_Poly *poly, int len);
+void BPU_gf2xPolyToVec(BPU_T_GF2_16x_Vector *vec, const BPU_T_GF2_16x_Poly *poly, int len);
 
 /**
  * GEM applied on matrix with coefitients from GF2^m

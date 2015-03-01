@@ -43,6 +43,9 @@ int BPU_mecsInitCtx(BPU_T_Mecs_Ctx *ctx, const uint16_t m, const uint16_t t, con
 		ctx->_genKeyPair = BPU_goppaGenCode;
 
 		BPU_codeInitCtx(ctx->code_ctx, m, t, BPU_EN_CODE_GOPPA);
+
+		ctx->pt_len = ctx->code_ctx->msg_len;
+		ctx->ct_len = ctx->code_ctx->code_len;
 		break;
 	/* EXAMPLE please DO NOT REMOVE
 	case BPU_EN_MECS_*****:

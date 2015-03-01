@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
 	fprintf(stderr, "Initialisation...\n");
 //	BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
 	if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA)) {
-	// if (BPU_mecsInitCtx(&ctx, 5, 5, BPU_EN_MECS_BASIC_GOPPA)) {
+//	 if (BPU_mecsInitCtx(&ctx, 5, 5, BPU_EN_MECS_BASIC_GOPPA)) {
 		return 1;
 	}
 
@@ -48,14 +48,14 @@ int main(int argc, char **argv) {
 	}
 	/***************************************/
 	// prepare plain text, allocate memory and init random plaintext
-	if (BPU_gf2VecRand(&pt_in, ctx.code_ctx->msg_len, 0)) {
+	if (BPU_gf2VecRand(&pt_in, ctx.pt_len, 0)) {
 		BPU_printError("PT initialisation error");
 
 		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
 	// alocate cipher text vector
-	if (BPU_gf2VecMalloc(&ct, ctx.code_ctx->code_len)) {
+	if (BPU_gf2VecMalloc(&ct, ctx.ct_len)) {
 		BPU_printError("CT vector allocation error");
 
 		BPU_gf2VecFree(&pt_in, 0);
@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 	// prepare plain text, allocate memory and init random plaintext
-	if (BPU_gf2VecRand(&pt_out, ctx.code_ctx->msg_len, 0)) {
+	if (BPU_gf2VecRand(&pt_out, ctx.pt_len, 0)) {
 		BPU_printError("PT out initialisation error");
 
 		BPU_mecsFreeCtx(&ctx);
