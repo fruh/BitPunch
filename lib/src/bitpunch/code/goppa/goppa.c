@@ -27,6 +27,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/math/perm.h>
 #include <bitpunch/debugio.h>
 
+#ifdef TIMING_ATTACK
+#include <time.h>
+#endif
+
 int BPU_goppaEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx) {
 	int rc = 0;
 	BPU_T_GF2_Vector tmp;
@@ -105,7 +109,10 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	int l;
 	BPU_T_GF2_16x tmp_eval;
 	BPU_T_GF2_Vector enc_permuted;
-
+#ifdef ATTACK_ON_ELP
+	time_t start, stop, delta;
+	int number_of_iters = 100, iter;
+#endif
 	// permute code word
 	BPU_gf2VecMalloc(&enc_permuted, encoded->len);
 	BPU_gf2VecCopy(&enc_permuted, encoded);
@@ -162,7 +169,12 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	else {
 		BPU_gf2VecNull(error);
 	}
-	
+
+#ifdef ATTACK_ON_ELP
+	delta = 0;
+	for (iter = 0; iter < number_of_iters; iter++) {
+	start = clock();
+#endif
 	for (l = 0; l < ctx->math_ctx->ord; l++) {
 		tmp_eval = BPU_gf2xPolyEval(&sigma, ctx->math_ctx->exp_table[l], ctx->math_ctx);
 
@@ -170,6 +182,12 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 			BPU_gf2VecSetBit(error, l, 1);
 		}
 	}
+#ifdef ATTACK_ON_ELP
+	stop = clock();
+	delta += stop - start;
+	}
+	fprintf(stdout, "%f\n", delta/(float)number_of_iters );
+#endif
 	// permute error vector
 	BPU_gf2VecPermute(error, ctx->code_spec.goppa->permutation);
 	BPU_gf2xPolyFree(&sigma, 0);
@@ -203,8 +221,29 @@ void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU
 	BPU_T_GF2_16x_Poly tmp;
 	int end_deg = mod->deg / 2;
 
+#if defined(ATTACK_ON_PATTERSON) || defined(ATTACK_ON_PERMUTATION)
+	time_t start, stop, delta;
+	int iter, number_of_iters = 100;
+	delta = 0;
+	for (iter = 0; iter < number_of_iters; iter++) {
+	start = clock();
+#endif
 	BPU_gf2xPolyExtEuclidA(a, b, &tmp, tau, mod, end_deg, math_ctx);
 	BPU_gf2xPolyFree(&tmp, 0);
+#if defined(ATTACK_ON_PATTERSON) || defined(ATTACK_ON_PERMUTATION)
+	stop = clock();
+	delta += stop - start;
+	}
+#endif
+#if defined(ATTACK_ON_PERMUTATION)
+	fprintf(stdout, "%d %f\n", b->coef[1], delta / (float) number_of_iters);
+#endif
+#if defined(ATTACK_ON_PATTERSON)
+	fprintf(stdout, "%f\n", delta / (float) number_of_iters);
+#endif
+#if defined(ATTACK_ON_INVERSION)
+	fprintf(stdout, "%d\n", b->coef[1]);
+#endif
 }
 
 int BPU_goppaInitMatH2(BPU_T_GF2_Matrix *m, BPU_T_GF2_16x_Poly *poly, BPU_T_Math_Ctx *math_ctx) {

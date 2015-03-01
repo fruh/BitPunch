@@ -27,7 +27,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "gf2x.h"
 #include "int.h"
 #include "mathctx.h"
-
+#ifdef ATTACK_ON_INVERSION
+#include <time.h>
+#endif
 /* ==================================== Print functions ==================================== */
 void BPU_printGf2xMat(const BPU_T_GF2_16x_Matrix* in) {
 	uint32_t i;
@@ -770,7 +772,13 @@ void BPU_gf2xPolyCopy(BPU_T_GF2_16x_Poly *dest, const BPU_T_GF2_16x_Poly *src) {
 
 void BPU_gf2xPolyInvA(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx) {
 	BPU_T_GF2_16x_Poly d, t;
-	
+#if defined(ATTACK_ON_INVERSION)
+	int iter, number_of_iters = 100;
+	time_t start, stop, delta;
+	delta = 0;
+	for(iter = 0; iter < number_of_iters; iter++) {
+		start = clock();
+#endif
 	BPU_gf2xPolyExtEuclidA(&d, out, &t, a, mod, 0, math_ctx);
 
 	if (d.deg != 0 || d.coef[0] != 1) {
@@ -781,6 +789,12 @@ void BPU_gf2xPolyInvA(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, cons
 	}
 	BPU_gf2xPolyFree(&d, 0);
 	BPU_gf2xPolyFree(&t, 0);
+#if defined(ATTACK_ON_INVERSION)
+		stop = clock();
+		delta += stop - start;
+	}
+	fprintf(stdout, "%f ", delta / (float)number_of_iters);
+#endif
 }
 
 BPU_T_GF2_16x BPU_gf2xPolyMakeMonic(BPU_T_GF2_16x_Poly *a, const BPU_T_Math_Ctx *math_ctx) {
