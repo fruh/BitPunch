@@ -33,6 +33,8 @@ typedef struct _BPU_T_Mecs_Ctx {
 	int (* _genKeyPair)(struct _BPU_T_Code_Ctx *ctx);
 
 	BPU_T_Code_Ctx *code_ctx;
+	uint16_t pt_len; ///< PT len in bits
+	uint16_t ct_len; ///< CT len in bits
 }BPU_T_Mecs_Ctx;
 
 /// Initialize (register) mecs functions for encryption, decryption and key gen based on type.

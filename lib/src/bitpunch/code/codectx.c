@@ -35,12 +35,20 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, con
 
 		return BPU_EC_MALLOC_ERROR;
 	}
+	ctx->code_spec = calloc(1, sizeof(BPU_T_UN_Code_Spec));
+	if (!ctx->code_spec) {
+		BPU_printError("Can not malloc BPU_T_UN_Code_Spec");
+		free(ctx->math_ctx);
+
+		return BPU_EC_MALLOC_ERROR;
+	}
 	tmp = BPU_codeInitMathCtx(ctx->math_ctx, m, t);
 	if (tmp) {
 		BPU_printError("Code math context initialization ERROR.");
 
 		return tmp;
 	}
+
 	switch (type) {
 	case BPU_EN_CODE_GOPPA:
 		ctx->_encode = BPU_goppaEncodeM;
@@ -48,9 +56,9 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, con
 		ctx->code_len = ctx->math_ctx->ord; // ord
 		ctx->msg_len = ctx->math_ctx->ord - m*t; // n - m*t
 		ctx->t = t;
-		ctx->code_spec.goppa = (BPU_T_Goppa_Spec *) calloc(1, sizeof(BPU_T_Goppa_Spec));
+		ctx->code_spec->goppa = (BPU_T_Goppa_Spec *) calloc(1, sizeof(BPU_T_Goppa_Spec));
 
-		if (!ctx->code_spec.goppa) {
+		if (!ctx->code_spec->goppa) {
 			BPU_printError("Can not malloc BPU_T_Goppa_Spec");
 
 			return BPU_EC_MALLOC_ERROR;
@@ -60,7 +68,7 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, con
 	case BPU_EN_CODE_*****:
 		ctx->_encode = FUNC_FROM_YOUR_FILE;
 		ctx->_decode = FUNC_FROM_YOUR_FILE;
-		ctx->code_spec.YOURS = ALLOC OR NULL;
+		ctx->code_spec->YOURS = ALLOC OR NULL;
 		break;
 		*/
 	default:
@@ -98,12 +106,13 @@ int BPU_codeInitMathCtx(BPU_T_Math_Ctx *ctx, const uint16_t m, const uint16_t t)
 void BPU_codeFreeCtx(BPU_T_Code_Ctx *ctx) {
 	switch (ctx->type) {
 	case BPU_EN_CODE_GOPPA:
-		BPU_goppaFreeSpec(ctx->code_spec.goppa);
-		free(ctx->code_spec.goppa);
+		BPU_goppaFreeSpec(ctx->code_spec->goppa);
+		free(ctx->code_spec->goppa);
 		break;
 	default:
 		BPU_printError("Code type not supported: %d", ctx->type);
 	}
 	BPU_mathFreeCtx(ctx->math_ctx, 0);
 	free(ctx->math_ctx);
+	free(ctx->code_spec);
 }
