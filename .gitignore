@@ -8,6 +8,7 @@
 ehthumbs.db
 Thumbs.db
 ~*
+massif.*
 
 # object files
 *.o
@@ -18,6 +19,13 @@ Thumbs.db
 *.h.*
 *.pro.user
 *.pri
+*.config
+*.creator
+*.files
+*.includes
+*.pro
+*.config
+*.creator
 
 # sublime
 *.sublime-*
