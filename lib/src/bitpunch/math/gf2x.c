@@ -97,6 +97,8 @@ BPU_T_GF2_16x BPU_gf2xMulMod(BPU_T_GF2_16x a, BPU_T_GF2_16x b, BPU_T_GF2_16x mod
 	return tmp;
 }
 
+
+
 BPU_T_GF2_16x BPU_gf2xMulModT(const BPU_T_GF2_16x a, const BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx) {
 	if (a == 0 || b == 0) {
 		return 0;

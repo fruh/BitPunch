@@ -79,6 +79,7 @@ BPU_T_GF2_16x BPU_gf2xMulMod(BPU_T_GF2_16x a, BPU_T_GF2_16x b, BPU_T_GF2_16x mod
 */
 /// Multiplication over Galois field, modulus mod.
 BPU_T_GF2_16x BPU_gf2xMulModT(const BPU_T_GF2_16x a, const BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx);
+//#define BPU_gf2xMulModT(a, b, math_ctx) ((a == 0 || b == 0) ? 0 : math_ctx->exp_table[(math_ctx->log_table[a] + math_ctx->log_table[b]) % math_ctx->ord])
 
 /**
 * E-th power of a. It uses precomputed log and exp tables.

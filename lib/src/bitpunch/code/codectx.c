@@ -35,7 +35,7 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, con
 
 		return BPU_EC_MALLOC_ERROR;
 	}
-	ctx->code_spec = calloc(1, sizeof(BPU_T_UN_Code_Spec));
+	ctx->code_spec = (BPU_T_UN_Code_Spec *) calloc(1, sizeof(BPU_T_UN_Code_Spec));
 	if (!ctx->code_spec) {
 		BPU_printError("Can not malloc BPU_T_UN_Code_Spec");
 		free(ctx->math_ctx);

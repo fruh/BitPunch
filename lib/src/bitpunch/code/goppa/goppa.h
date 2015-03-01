@@ -63,9 +63,10 @@ void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU
 int BPU_goppaGenCode(BPU_T_Code_Ctx *ctx);
 
 // TODO: :)
-int BPU_goppaInitMatG2(BPU_T_GF2_Matrix *m, const BPU_T_GF2_16x_Poly *poly, const BPU_T_Math_Ctx *math_ctx);
+int BPU_goppaInitMatH2(BPU_T_GF2_Matrix *h2, BPU_T_GF2_16x_Matrix *hx, const BPU_T_GF2_16x_Poly *poly, const BPU_T_Math_Ctx *math_ctx);
 
 int BPU_goppaEncodeM(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
 
-void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_GF2_16x_Poly *poly, const BPU_T_Math_Ctx *math_ctx);
+void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_Code_Ctx *ctx);
+
 #endif // BPU_GOPPA_H

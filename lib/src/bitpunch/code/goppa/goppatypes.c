@@ -27,8 +27,10 @@ void BPU_goppaFreeSpec(BPU_T_Goppa_Spec *spec) {
 	free(spec->g);
 	BPU_gf2MatFree(spec->g_mat, 0);
 	free(spec->g_mat);
+#ifdef BPU_GOPPA_WITH_H
 	BPU_gf2xMatFree(spec->h_mat, 0);
 	free(spec->h_mat);
+#endif
 	BPU_permFree(spec->permutation, 0);
 	free(spec->permutation);
 }
