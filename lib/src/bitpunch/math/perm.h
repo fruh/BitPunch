@@ -31,12 +31,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 void BPU_printPerm(const BPU_T_Perm_Vector *permutation);
 
 /**
- * Generate random permutation, with structure allocation of given size.  After work you have to free memory using call BPU_freePerm.
+ * Generate random permutation.
  * @param permutation pointer to structure BPU_T_Perm_Vector 
  * @param size size of permutation vector
  * @return on succes 0, else error
  */
-int BPU_permGenA(BPU_T_Perm_Vector* permutation, uint32_t size);
+int BPU_permRandomize(BPU_T_Perm_Vector* permutation);
 
 /**
  * Get inverse permutation to permutation.

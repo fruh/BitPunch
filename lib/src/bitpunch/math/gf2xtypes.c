@@ -41,17 +41,14 @@ int BPU_gf2xMatMalloc(BPU_T_GF2_16x_Matrix *m, int rows, int cols) {
 	}
 	// allocate cols
 	for (i = 0; i < m->k; i++) {
-		m->elements[i] = (BPU_T_GF2_16x*) malloc(sizeof(BPU_T_GF2_16x) * m->n);
+		m->elements[i] = (BPU_T_GF2_16x*) calloc(1, sizeof(BPU_T_GF2_16x) * m->n);
 	}
-
 	return 0;
 }
 
 void BPU_gf2xVecMalloc(BPU_T_GF2_16x_Vector *vec, int size) {
 	vec->len = size;
-	vec->elements = (BPU_T_GF2_16x*)malloc(sizeof(BPU_T_GF2_16x) * size);
-
-	memset((void *)(vec->elements), 0, sizeof(BPU_T_GF2_16x) * size);
+	vec->elements = (BPU_T_GF2_16x*)calloc(size, sizeof(BPU_T_GF2_16x));
 }
 
 void BPU_gf2xVecFree(BPU_T_GF2_16x_Vector *vec, int is_dyn) {

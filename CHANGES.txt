@@ -2,6 +2,9 @@ v0.0.2
 	- module organization: crypto, math, code, prng
 	- convention unified see doc
 	- new context managment: mecs, code and math context
+	- memory usage reduction (heap peak) from 8 MiB to 178.5 KiB (162.8 KiB with -ggdb) with params m=11 t=50
+	- removed memory leaks
+	- removed functions which are allocating memory inside for output (suffix A)
 
 v0.0.1
 	- Initial version - of BitPunch project
