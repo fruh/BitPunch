@@ -4,6 +4,7 @@ trap "rm -f $TMP_FILE" EXIT
 cd $CWD/..
 make clean || exit 1
 make $1 || exit 1
+cd $CWD/tests
 
 valgrind --leak-check=yes $APP &> $TMP_FILE || rc=$?
 grep 'All heap blocks were freed -- no leaks are possible' $TMP_FILE
