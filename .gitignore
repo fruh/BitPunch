@@ -1,3 +1,5 @@
 tmp
 lib
-
+*.pro
+*.pro.*
+*.sublime*
