@@ -5,6 +5,9 @@ Goal of project is to create standalone McEliece implemetation in C language.
 
 Project is now only in *development version*.
 
+### Version 0.0.2:
+  - see [CHANGES.txt](CHANGES.txt)
+
 ### Documentation
   - clone repo and see doc/ or visit http://fruh.github.io/BitPunch
 
@@ -23,5 +26,6 @@ Project is now only in *development version*.
       - make test-with-debug - with precomputed H
 	
   Default optimization is -O2. To set up more verbosity define -DERRORL, -DWARNING_L or DDEBUG_L, this are using functions like BPU_printError, BPU_printWarning, BPU_printDebug.
+
 ### Example:
   - see [lib/src/main.c](lib/src/main.c) for example of usage keygen, encryption and decryption
