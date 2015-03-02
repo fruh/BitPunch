@@ -23,26 +23,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <bitpunch/math/gf2.h>
 
-int BPU_padAddA(BPU_T_GF2_Vector *padded_message, const BPU_T_GF2_Vector *message, const uint16_t padding_len) {
+int BPU_padAdd(BPU_T_GF2_Vector *padded_message, const BPU_T_GF2_Vector *message, const uint16_t padding_len) {
 	int i;
 
-	// malloc space for padded message
-	if (BPU_gf2VecMalloc(padded_message, message->len + padding_len) != 0) {
-		BPU_printError("addPaddingA: BPU_mallocVectorGF2");
+	if (message->len + padding_len != padded_message->len) {
+		BPU_printError("Wrong message len");
 		return -1;
 	}
-
 	// copy message into padded message
-	for (i = 0; i < message->elements_in_row; i++)
+	for (i = 0; i < message->elements_in_row; i++){
 		padded_message->elements[i] = message->elements[i];
-
+	}
 	// add padding - first padded bit set to 1, rest keep 0
 	BPU_gf2VecSetBit(padded_message, message->len, 1);
 
 	return 0;
 }
 
-int BPU_padDelA(BPU_T_GF2_Vector *message, const BPU_T_GF2_Vector *padded_message) {
+int BPU_padDel(BPU_T_GF2_Vector *message, const BPU_T_GF2_Vector *padded_message) {
 	int i, message_size = 0;
 
 	// count the message size
@@ -62,19 +60,19 @@ int BPU_padDelA(BPU_T_GF2_Vector *message, const BPU_T_GF2_Vector *padded_messag
 			}*/
 		}
 	}
-
-	// malloc space for padded message
-	if (BPU_gf2VecMalloc(message, message_size) != 0) {
-		BPU_printError("del_padding: BPU_mallocVectorGF2");
+	if (message->len < message_size) {
+		BPU_printError("Wrong message size.");
 		return -1;
 	}
+	message->len = message_size;
 
 	// copy n-1 elements of padded message into message
-	for (i = 0; i < message->elements_in_row - 1; i++)
+	for (i = 0; i < padded_message->elements_in_row - 1; i++){
 		message->elements[i] = padded_message->elements[i];
-
-	for (i = (message->elements_in_row - 1) * message->element_bit_size; i < message->len; i++)
+	}
+	// copy the rest of message
+	for (i = (padded_message->elements_in_row - 1) * padded_message->element_bit_size; i < message->len; i++){
 		BPU_gf2VecSetBit(message, i, BPU_gf2VecGetBit(padded_message, i));
-
+	}
 	return 0;
 }

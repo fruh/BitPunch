@@ -1,0 +1,18 @@
+#!/bin/bash
+export CWD=$(dirname $0)
+export APP=$CWD/../dist/test/BitPunch
+TMP_FILE=/tmp/runTest.$$
+
+trap "rm -f $TMP_FILE" EXIT
+
+echo "======== BEGIN::$@ ========"
+bash $@ &> $TMP_FILE
+
+if [ $? == 0 ]; then
+	echo PASSED
+else
+	cat $TMP_FILE
+	echo
+	echo FAILED
+fi
+echo "--------   END::$@ --------"

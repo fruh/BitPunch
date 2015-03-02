@@ -37,18 +37,13 @@ void BPU_printPerm(const BPU_T_Perm_Vector *permutation) {
 	fprintf(stderr, "\n");
 }
 
-int BPU_permGenA(BPU_T_Perm_Vector* permutation, uint32_t size) {
+int BPU_permRandomize(BPU_T_Perm_Vector* permutation) {
 	int i, j, tested;
 	uint32_t rand_value;
 
-	if (BPU_permMalloc(permutation, size)) {
-		return -1;
-	}
-	// // TEST: NSA
-	// return 0;
-	for (i = 0; i < size; i++) {
+	for (i = 0; i < permutation->size; i++) {
 		while (1) {
-			rand_value = BPU_prngGetRand(0,size);
+			rand_value = BPU_prngGetRand(0, permutation->size);
 			tested = 1;
 			for (j = 0; j < i; j++) {
 				if (permutation->elements[j] == rand_value){
@@ -81,27 +76,25 @@ int BPU_permGetInv(BPU_T_Perm_Vector *out, const BPU_T_Perm_Vector *in) {
 
 
 int BPU_permPermute(BPU_T_Perm_Vector *to_permute, const BPU_T_Perm_Vector *permutation) {
-
 	int i;
 	BPU_T_Perm_Vector new_permutation;
+
 	// check if the size is correct
-	if (to_permute->size != permutation->size)
+	if (to_permute->size != permutation->size){
 		return -1;
-
+	}
 	// allocate new permutation
-	if (BPU_permMalloc(&new_permutation, to_permute->size) != 0)
+	if (BPU_permMalloc(&new_permutation, to_permute->size) != 0){
 		return -2;
-
+	}
 	// copy the permutation
 	for (i = 0; i < to_permute->size; i++) {
 		new_permutation.elements[i] = to_permute->elements[i];
 	}
-
 	// permute
 	for (i = 0; i < permutation->size; i++) { // row loop
 		to_permute->elements[i] = new_permutation.elements[permutation->elements[i]];
 	}
-
 	BPU_permFree(&new_permutation, 0);
 
 	return 0;

@@ -533,6 +533,9 @@ int BPU_gf2MatCropMemory(BPU_T_GF2_Matrix *m, uint16_t width) {
 	m->n = cropped_row->len;
 	m->elements_in_row = cropped_row->elements_in_row;
 
+	BPU_gf2VecFree(row, 1);
+	BPU_gf2VecFree(cropped_row, 1);
+
 	return 0;
 }
 

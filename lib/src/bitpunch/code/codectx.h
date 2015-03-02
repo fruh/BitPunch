@@ -33,6 +33,12 @@ typedef enum _BPU_T_EN_Code_Types {
 	// HERE you can add your code type
 }BPU_T_EN_Code_Types;
 
+/// Code specifics union type
+typedef union _BPU_T_UN_Code_Spec{
+	BPU_T_Goppa_Spec *goppa;
+	// HERE you add your code spec structure
+}BPU_T_UN_Code_Spec;
+
 typedef struct _BPU_T_Code_Ctx {
 	BPU_T_EN_Code_Types type;
 	int (* _encode)(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx); ///< This is reference to encode function. It will be set in BPU_codeInitCtx
@@ -42,10 +48,7 @@ typedef struct _BPU_T_Code_Ctx {
 	uint16_t msg_len; ///< Code dimenzion
 	uint8_t t; ///< Error code correction capability
 
-	union {
-		BPU_T_Goppa_Spec *goppa;
-		// HERE you add your code spec structure
-	}code_spec; ///< Code specific structure, like generator matrix, control matrix, gen. poly ...
+	BPU_T_UN_Code_Spec *code_spec; ///< Code specific structure, like generator matrix, control matrix, gen. poly ...
 }BPU_T_Code_Ctx;
 
 /// Initialize (register) code functions encode, decode and code spec structure based on code type.

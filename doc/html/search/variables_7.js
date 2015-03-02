@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['k',['k',['../struct___b_p_u___t___matrix___g_f2.html#add07759efe05f19128ee6ac5cc5633e9',1,'_BPU_T_Matrix_GF2::k()'],['../struct___b_p_u___t___matrix___g_f2__8x.html#aae04ad987a21b789518aaae9825b668c',1,'_BPU_T_Matrix_GF2_8x::k()'],['../struct___b_p_u___t___matrix___g_f2__16x.html#a0a079030ddf01045984049d505b8cf78',1,'_BPU_T_Matrix_GF2_16x::k()']]]
+  ['len',['len',['../struct___b_p_u___t___g_f2___vector.html#a96bbf959016e4411c9e6b9812a8be60a',1,'_BPU_T_GF2_Vector::len()'],['../struct___b_p_u___t___g_f2__16x___vector.html#a5723e60ffd628510c699eddbce90be23',1,'_BPU_T_GF2_16x_Vector::len()']]],
+  ['log_5ftable',['log_table',['../struct___b_p_u___t___math___ctx.html#a39ee876827819dbd13bac4b830e23ea2',1,'_BPU_T_Math_Ctx']]]
 ];
