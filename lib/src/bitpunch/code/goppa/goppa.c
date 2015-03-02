@@ -239,17 +239,24 @@ void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU
 	int iter, number_of_iters = 100;
 	delta = 0;
 	for (iter = 0; iter < number_of_iters; iter++) {
-	start = clock();
+		if (iter != 0) {
+			BPU_gf2xPolyMalloc(a, (tau->deg > mod->deg) ? tau->deg : mod->deg);
+			BPU_gf2xPolyMalloc(b, a->max_deg);
+		}
+		start = clock();
 #endif
-//	BPU_gf2xPolyExtEuclidA(a, b, &tmp, tau, mod, end_deg, math_ctx);
 
 	BPU_gf2xPolyMalloc(&tmp, (tau->deg > mod->deg) ? tau->deg : mod->deg);
 	BPU_gf2xPolyExtEuclid(a, b, &tmp, tau, mod, end_deg, math_ctx);
 
 	BPU_gf2xPolyFree(&tmp, 0);
 #if defined(ATTACK_ON_PATTERSON) || defined(ATTACK_ON_PERMUTATION)
-	stop = clock();
-	delta += stop - start;
+		stop = clock();
+		delta += stop - start;
+		if(iter == number_of_iters - 1)
+			break;
+		BPU_gf2xPolyFree(a, 0);
+		BPU_gf2xPolyFree(b, 0);
 	}
 #endif
 #if defined(ATTACK_ON_PERMUTATION)

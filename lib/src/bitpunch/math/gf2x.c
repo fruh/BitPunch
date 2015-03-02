@@ -782,13 +782,15 @@ void BPU_gf2xPolyCopy(BPU_T_GF2_16x_Poly *dest, const BPU_T_GF2_16x_Poly *src) {
 void BPU_gf2xPolyInv(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx) {
 	BPU_T_GF2_16x_Poly d, t;
 #if defined(ATTACK_ON_INVERSION)
-	int iter, number_of_iters = 100;
+	int iter, number_of_iters = 100, max_deg;
 	time_t start, stop, delta;
+	max_deg = out->max_deg;
 	delta = 0;
 	for(iter = 0; iter < number_of_iters; iter++) {
+		if (iter != 0)
+			BPU_gf2xPolyMalloc(out, max_deg);
 		start = clock();
 #endif
-//	BPU_gf2xPolyExtEuclidA(&d, out, &t, a, mod, 0, math_ctx);
 	
 	BPU_gf2xPolyMalloc(&d, (a->deg > mod->deg) ? a->deg : mod->deg);
 	BPU_gf2xPolyMalloc(&t, d.max_deg);
@@ -803,9 +805,13 @@ void BPU_gf2xPolyInv(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
 	}
 	BPU_gf2xPolyFree(&d, 0);
 	BPU_gf2xPolyFree(&t, 0);
+
 #if defined(ATTACK_ON_INVERSION)
 		stop = clock();
 		delta += stop - start;
+		if (iter == number_of_iters - 1)
+			break;
+		BPU_gf2xPolyFree(out, 0);
 	}
 	fprintf(stdout, "%f ", delta / (float)number_of_iters);
 #endif

@@ -39,7 +39,17 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, cons
 	}
 
 	// generate random error vector e
+#if defined(ATTACK_ON_ELP) && defined(PERFORM_ATTACK)
+	rc = BPU_gf2VecRand(&e, ctx->code_ctx->code_len, ctx->code_ctx->t - 1);
+#elif defined(ATTACK_ON_PATTERSON) && defined(PERFORM_ATTACK)
+	rc = BPU_gf2VecRand(&e, ctx->code_ctx->code_len, ctx->code_ctx->t % 2 ? ctx->code_ctx->t - 2 : ctx->code_ctx->t - 1);
+#elif defined(ATTACK_ON_PERMUTATION) && defined(PERFORM_ATTACK)
+	rc = BPU_gf2VecRand(&e, ctx->code_ctx->code_len, 4);
+#elif defined(ATTACK_ON_INVERSION) && defined(PERFORM_ATTACK)
+	rc = BPU_gf2VecRand(&e, ctx->code_ctx->code_len, 4);
+#else
 	rc = BPU_gf2VecRand(&e, ctx->code_ctx->code_len, ctx->code_ctx->t);
+#endif
 	if (rc) {
 		BPU_printError("BPU_mecsBasicEncrypt: can not init rand vector");
 		return rc;

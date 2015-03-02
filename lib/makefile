@@ -88,6 +88,33 @@ attack-inversion: prepare-dir-test
 	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
 	@echo "See source file in: $(CWD)/$(PREFIX_SRC)/main.c"
 
+attack-elp-perform: prepare-dir-test
+	$(CC) $(CFLAGS) -DPERFORM_ATTACK -DTIMING_ATTACK -DATTACK_ON_ELP $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+	@echo ""
+	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
+	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
+	@echo "See source file in: $(CWD)/$(PREFIX_SRC)/main.c"
+
+attack-patterson-perform: prepare-dir-test
+	$(CC) $(CFLAGS) -DPERFORM_ATTACK -DTIMING_ATTACK -DATTACK_ON_PATTERSON $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+	@echo ""
+	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
+	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
+	@echo "See source file in: $(CWD)/$(PREFIX_SRC)/main.c"
+
+attack-permutation-perform: prepare-dir-test
+	$(CC) $(CFLAGS) -DPERFORM_ATTACK -DTIMING_ATTACK -DATTACK_ON_PERMUTATION $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+	@echo ""
+	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
+	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
+	@echo "See source file in: $(CWD)/$(PREFIX_SRC)/main.c"
+attack-inversion-perform: prepare-dir-test
+	$(CC) $(CFLAGS) -ggdb -DPERFORM_ATTACK -DATTACK_ON_INVERSION $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+	@echo ""
+	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
+	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
+	@echo "See source file in: $(CWD)/$(PREFIX_SRC)/main.c"
+
 test-debug: prepare-dir-test
 test-wo-h-debug: prepare-dir-test
 	$(CC) $(CFLAGS) -ggdb $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
