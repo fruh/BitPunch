@@ -24,6 +24,7 @@
 #include <sys/time.h>
 
 int main(int argc, char **argv) {
+	int rc = 0;
 	BPU_T_Mecs_Ctx ctx;
 	BPU_T_GF2_Vector ct, pt_in, pt_out;
 
@@ -97,6 +98,8 @@ int main(int argc, char **argv) {
 	// check for correct decryption
 	if (BPU_gf2VecCmp(&pt_in, &pt_out)) {
 		BPU_printError("\nOutput plain text differs from input");
+
+		rc = 2;
 	}
 	else {
 		fprintf(stderr, "\nSUCCESS: Input plain text is equal to output plain text.\n");
@@ -109,5 +112,5 @@ int main(int argc, char **argv) {
 	BPU_gf2VecFree(&ct, 0);
 	BPU_mecsFreeCtx(&ctx);
 
-	return 0;
+	return rc;
 }
