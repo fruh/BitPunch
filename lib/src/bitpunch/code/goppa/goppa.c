@@ -241,7 +241,7 @@ void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU
 	for (iter = 0; iter < number_of_iters; iter++) {
 	start = clock();
 #endif
-	BPU_gf2xPolyExtEuclidA(a, b, &tmp, tau, mod, end_deg, math_ctx);
+//	BPU_gf2xPolyExtEuclidA(a, b, &tmp, tau, mod, end_deg, math_ctx);
 
 	BPU_gf2xPolyMalloc(&tmp, (tau->deg > mod->deg) ? tau->deg : mod->deg);
 	BPU_gf2xPolyExtEuclid(a, b, &tmp, tau, mod, end_deg, math_ctx);

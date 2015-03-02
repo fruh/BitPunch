@@ -127,6 +127,7 @@ int iter, number_of_iters = 100;
     BPU_gf2VecFree(&pt_out, 0);
     BPU_gf2VecFree(&ct, 0);
 #if defined(ATTACK_ON_ELP) || defined(ATTACK_ON_PATTERSON) || defined(ATTACK_ON_PERMUTATION) || defined(ATTACK_ON_INVERSION)
+	}
 #endif
 	BPU_mecsFreeCtx(&ctx);
     return 0;
@@ -134,5 +135,5 @@ int iter, number_of_iters = 100;
 
 int main(int argc, char **argv) {
     srand(time(NULL));
-    return baiscTest();
+	return baiscTest();
 }

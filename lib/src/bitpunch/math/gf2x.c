@@ -788,7 +788,7 @@ void BPU_gf2xPolyInv(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
 	for(iter = 0; iter < number_of_iters; iter++) {
 		start = clock();
 #endif
-	BPU_gf2xPolyExtEuclidA(&d, out, &t, a, mod, 0, math_ctx);
+//	BPU_gf2xPolyExtEuclidA(&d, out, &t, a, mod, 0, math_ctx);
 	
 	BPU_gf2xPolyMalloc(&d, (a->deg > mod->deg) ? a->deg : mod->deg);
 	BPU_gf2xPolyMalloc(&t, d.max_deg);
