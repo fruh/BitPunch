@@ -75,8 +75,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="globals.html"><span>All</span></a></li>
       <li><a href="globals_func.html"><span>Functions</span></a></li>
-      <li><a href="globals_vars.html"><span>Variables</span></a></li>
       <li><a href="globals_type.html"><span>Typedefs</span></a></li>
+      <li><a href="globals_enum.html"><span>Enumerations</span></a></li>
+      <li><a href="globals_eval.html"><span>Enumerator</span></a></li>
       <li class="current"><a href="globals_defs.html"><span>Macros</span></a></li>
     </ul>
   </div>
@@ -100,7 +101,7 @@ $(document).ready(function(){initNavTree('globals_defs.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -111,53 +112,62 @@ $(document).ready(function(){initNavTree('globals_defs.html','');});
 
 <div class="contents">
 &#160;<ul>
+<li>BPU_EC_CODE_PARAMS_NOT_SUPPORTED
+: <a class="el" href="errorcodes_8h.html#accd7c80743e87e6bae7f583f770a7396">errorcodes.h</a>
+</li>
+<li>BPU_EC_CODE_TYPE_NOT_SUPPORTED
+: <a class="el" href="errorcodes_8h.html#abb35d28475232f7fba8bd2523ac77b4e">errorcodes.h</a>
+</li>
+<li>BPU_EC_MALLOC_ERROR
+: <a class="el" href="errorcodes_8h.html#aa7e6e1cfdb1c1e1621b5f0d54058b722">errorcodes.h</a>
+</li>
+<li>BPU_EC_MECS_TYPE_NOT_SUPPORTED
+: <a class="el" href="errorcodes_8h.html#af28511d34e9491e610e4def3a934c137">errorcodes.h</a>
+</li>
 <li>BPU_getBit
-: <a class="el" href="operations_8h.html#a3d0c2bd124ced5dcd7069d42566fe829">operations.h</a>
+: <a class="el" href="gf2_8h.html#a3d0c2bd124ced5dcd7069d42566fe829">gf2.h</a>
 </li>
 <li>BPU_GF2_POLY_DEG_10
-: <a class="el" href="init_8h.html#a0d39f30e2b46b7ce9c5c628945af6b55">init.h</a>
+: <a class="el" href="mathctx_8h.html#a0d39f30e2b46b7ce9c5c628945af6b55">mathctx.h</a>
 </li>
 <li>BPU_GF2_POLY_DEG_11
-: <a class="el" href="init_8h.html#a5822a1f90119db50c39b2d073cdf8108">init.h</a>
+: <a class="el" href="mathctx_8h.html#a5822a1f90119db50c39b2d073cdf8108">mathctx.h</a>
 </li>
 <li>BPU_GF2_POLY_DEG_5
-: <a class="el" href="init_8h.html#ac1e50e51a2d8c47dd4693fa7c2f27651">init.h</a>
+: <a class="el" href="mathctx_8h.html#ac1e50e51a2d8c47dd4693fa7c2f27651">mathctx.h</a>
 </li>
 <li>BPU_GF2_POLY_DEG_6
-: <a class="el" href="init_8h.html#a6b2e66bc2e25b03c345fd19a1d3629e3">init.h</a>
+: <a class="el" href="mathctx_8h.html#a6b2e66bc2e25b03c345fd19a1d3629e3">mathctx.h</a>
 </li>
 <li>BPU_gf2MatCopyRowToVec
-: <a class="el" href="operations_8h.html#a6ff9b1b707158890b6880372e53f2c26">operations.h</a>
+: <a class="el" href="gf2_8h.html#a6ff9b1b707158890b6880372e53f2c26">gf2.h</a>
 </li>
 <li>BPU_gf2MatGetBit
-: <a class="el" href="operations_8h.html#a774e26392c63c019015d9eee3a6df181">operations.h</a>
+: <a class="el" href="gf2_8h.html#a774e26392c63c019015d9eee3a6df181">gf2.h</a>
 </li>
 <li>BPU_gf2MatNullRow
-: <a class="el" href="operations_8h.html#af193278e3fbd40d1a8edbd9cf5c4ddd8">operations.h</a>
+: <a class="el" href="gf2types_8h.html#af193278e3fbd40d1a8edbd9cf5c4ddd8">gf2types.h</a>
 </li>
 <li>BPU_gf2MatSetBit
-: <a class="el" href="operations_8h.html#aba4198846f47c96f97eb8cf28bf74fb1">operations.h</a>
+: <a class="el" href="gf2_8h.html#aba4198846f47c96f97eb8cf28bf74fb1">gf2.h</a>
 </li>
 <li>BPU_gf2VecGetBit
-: <a class="el" href="operations_8h.html#aeadad9e1dcf0de262b9fd032368699c0">operations.h</a>
+: <a class="el" href="gf2_8h.html#aeadad9e1dcf0de262b9fd032368699c0">gf2.h</a>
 </li>
 <li>BPU_gf2VecNull
-: <a class="el" href="operations_8h.html#af72514399c7c053555e5d10122005880">operations.h</a>
+: <a class="el" href="gf2types_8h.html#af72514399c7c053555e5d10122005880">gf2types.h</a>
 </li>
 <li>BPU_gf2VecSetBit
-: <a class="el" href="operations_8h.html#aada13957d2778c4592db3c001e7b679e">operations.h</a>
+: <a class="el" href="gf2_8h.html#aada13957d2778c4592db3c001e7b679e">gf2.h</a>
 </li>
 <li>BPU_gf2xInvElement
-: <a class="el" href="operations_8h.html#adbf631ffabf1fb7e90046cd58a23c4e4">operations.h</a>
+: <a class="el" href="gf2x_8h.html#adddebaf10def5a75897d87cdee697ce8">gf2x.h</a>
 </li>
 <li>BPU_gf2xPolyLeadCoef
-: <a class="el" href="operations_8h.html#a333694d0efe2dd8c9198d7f893ac768f">operations.h</a>
+: <a class="el" href="gf2x_8h.html#a333694d0efe2dd8c9198d7f893ac768f">gf2x.h</a>
 </li>
 <li>BPU_gf2xPolyNull
-: <a class="el" href="operations_8h.html#af503048e48bf47700131f88d59068755">operations.h</a>
-</li>
-<li>BPU_ONE
-: <a class="el" href="globals_8h.html#aa1c180d057d40fa869b94cca7b3e090f">globals.h</a>
+: <a class="el" href="gf2xtypes_8h.html#af503048e48bf47700131f88d59068755">gf2xtypes.h</a>
 </li>
 <li>BPU_PRINT_U_64
 : <a class="el" href="debugio_8h.html#ab779dfdaf177578cdc9015c2a1962856">debugio.h</a>
@@ -174,8 +184,8 @@ $(document).ready(function(){initNavTree('globals_defs.html','');});
 <li>BPU_TEST_ROUNDS
 : <a class="el" href="test-speed_8c.html#a5be80058f49a10b62ff94d56b72fa4f9">test-speed.c</a>
 </li>
-<li>BYTES_TO_TEST
-: <a class="el" href="test-speed_8c.html#af960c569581d10dd2eed55c592846d2b">test-speed.c</a>
+<li>OK
+: <a class="el" href="errorcodes_8h.html#aba51915c87d64af47fb1cc59348961c9">errorcodes.h</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -183,7 +193,7 @@ $(document).ready(function(){initNavTree('globals_defs.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Oct 16 2014 23:54:12 for McEliece BitPunch by
+    <li class="footer">Generated on Mon Mar 2 2015 09:10:24 for McEliece BitPunch by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -2,16 +2,18 @@ v0.0.2
 	- module organization: crypto, math, code, prng
 	- convention unified see doc
 	- new context managment: mecs, code and math context
-	- memory usage reduction (heap peak) from 8 MiB to 178.5 KiB (162.8 KiB with -ggdb) with params m=11 t=50
+	- memory usage reduction (heap peak) from 8 MiB to ~170 KiB with params m=11 t=50 w/o H
 	- removed memory leaks
 	- removed functions which are allocating memory inside for output (suffix A)
 	- posibility to build with or w/o using H precomputed matrix by decription
 	- added basic tests
+	- removed Adapted CCA2 Pointcheval's scheme (TEMPORARLY)
+	- no external dependecies
 
 v0.0.1
 	- Initial version - of BitPunch project
 	- contains implementation of MECS using Goppa code
 	- Patterson's alg. for decoding
 	- dependencies on OpenSSL (sha)
-	- CCA2 Kobara-Imai scheme
+	- Adapted CCA2 Pointcheval's scheme
 	- some math function over gf2, gf2x, gf2xpoly like ext. eclidean, gen. of irreducible goppa poly...

@@ -3,12 +3,14 @@ var NAVTREE =
   [ "McEliece BitPunch", "index.html", [
     [ "BitPunch McEliece", "index.html", [
       [ "Introduction", "index.html#Introduction", null ],
+      [ "Changes", "index.html#Changes", null ],
       [ "Structure", "index.html#Structure", [
         [ "Convention", "index.html#Convention", null ],
-        [ "Files", "index.html#Files", null ]
+        [ "Modules", "index.html#Modules", null ],
+        [ "Contexts", "index.html#Contexts", null ],
+        [ "Tests", "index.html#Tests", null ]
       ] ],
-      [ "Build", "index.html#Build", null ],
-      [ "Changes", "index.html#Changes", null ]
+      [ "Build", "index.html#Build", null ]
     ] ],
     [ "Data Structures", null, [
       [ "Data Structures", "annotated.html", "annotated" ],
@@ -23,8 +25,9 @@ var NAVTREE =
       [ "Globals", "globals.html", [
         [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", "globals_func" ],
-        [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
+        [ "Enumerations", "globals_enum.html", null ],
+        [ "Enumerator", "globals_eval.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
@@ -34,7 +37,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"operations_8c.html#ab81dc359222c5e629c2c471f4e2a987a"
+"gf2xtypes_8h.html#a1b07dc68d6cca5a894b44146ef0cb601"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

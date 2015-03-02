@@ -75,8 +75,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="globals.html"><span>All</span></a></li>
       <li><a href="globals_func.html"><span>Functions</span></a></li>
-      <li><a href="globals_vars.html"><span>Variables</span></a></li>
       <li class="current"><a href="globals_type.html"><span>Typedefs</span></a></li>
+      <li><a href="globals_enum.html"><span>Enumerations</span></a></li>
+      <li><a href="globals_eval.html"><span>Enumerator</span></a></li>
       <li><a href="globals_defs.html"><span>Macros</span></a></li>
     </ul>
   </div>
@@ -100,7 +101,7 @@ $(document).ready(function(){initNavTree('globals_type.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -111,53 +112,53 @@ $(document).ready(function(){initNavTree('globals_type.html','');});
 
 <div class="contents">
 &#160;<ul>
-<li>BPU_T_Arithmetic_Data
-: <a class="el" href="types_8h.html#ab9923613f5b33fa1d53bb9c40809772f">types.h</a>
+<li>BPU_T_Code_Ctx
+: <a class="el" href="codectx_8h.html#ae539f87d503554ae81bda3e733fe94a8">codectx.h</a>
+</li>
+<li>BPU_T_EN_Code_Types
+: <a class="el" href="codectx_8h.html#aeb4a544067511a80308b5bc6dc7174c1">codectx.h</a>
+</li>
+<li>BPU_T_EN_Mecs_Types
+: <a class="el" href="mecsctx_8h.html#a46cf236ede287ac0f540379be0d567e2">mecsctx.h</a>
 </li>
 <li>BPU_T_GF2
-: <a class="el" href="types_8h.html#ad2f94c21391fbfa629f3c06344e91b3d">types.h</a>
+: <a class="el" href="gf2types_8h.html#ad2f94c21391fbfa629f3c06344e91b3d">gf2types.h</a>
 </li>
 <li>BPU_T_GF2_16x
-: <a class="el" href="types_8h.html#a00e45ae8665b961417e0da15f85dad9d">types.h</a>
+: <a class="el" href="gf2xtypes_8h.html#a00e45ae8665b961417e0da15f85dad9d">gf2xtypes.h</a>
+</li>
+<li>BPU_T_GF2_16x_Matrix
+: <a class="el" href="gf2xtypes_8h.html#ae8fc04688e3647f0edcac76f77a09289">gf2xtypes.h</a>
+</li>
+<li>BPU_T_GF2_16x_Poly
+: <a class="el" href="gf2xtypes_8h.html#a2a1d2600db4ef96a8c17573fcb8c5ddd">gf2xtypes.h</a>
+</li>
+<li>BPU_T_GF2_16x_Vector
+: <a class="el" href="gf2xtypes_8h.html#afb00f182add0656ab51fd6c26b705e7a">gf2xtypes.h</a>
 </li>
 <li>BPU_T_GF2_32x
-: <a class="el" href="types_8h.html#a957f144f51954a68bf9d5f5fe2abf8ad">types.h</a>
+: <a class="el" href="gf2xtypes_8h.html#a957f144f51954a68bf9d5f5fe2abf8ad">gf2xtypes.h</a>
 </li>
-<li>BPU_T_GF2_64x
-: <a class="el" href="types_8h.html#adcfb1d3558e2d2d436faadceeac012eb">types.h</a>
+<li>BPU_T_GF2_Matrix
+: <a class="el" href="gf2types_8h.html#a1572329998e7b3ef917dd6f8fa1afc9e">gf2types.h</a>
 </li>
-<li>BPU_T_GF2_8x
-: <a class="el" href="types_8h.html#a18acd6e94991f4c711dd44f2b1576c33">types.h</a>
+<li>BPU_T_GF2_Vector
+: <a class="el" href="gf2types_8h.html#a016a734f8833224b1e4e1dba70baa284">gf2types.h</a>
 </li>
-<li>BPU_T_Matrix_GF2
-: <a class="el" href="types_8h.html#afbe2907d9f807b2b18589b29c63d7c73">types.h</a>
+<li>BPU_T_Goppa_Spec
+: <a class="el" href="goppatypes_8h.html#ae45028804accf1e4cf9fa5b1c7676b49">goppatypes.h</a>
 </li>
-<li>BPU_T_Matrix_GF2_16x
-: <a class="el" href="types_8h.html#a1898106194acb410fa8cef4cca7dcfd6">types.h</a>
+<li>BPU_T_Math_Ctx
+: <a class="el" href="mathctx_8h.html#a4aff0ce79400b9ac61eba3cb494316c5">mathctx.h</a>
 </li>
-<li>BPU_T_Matrix_GF2_8x
-: <a class="el" href="types_8h.html#ad8823e5447071f708a1235b786669d28">types.h</a>
-</li>
-<li>BPU_T_McEliece_Ctx
-: <a class="el" href="types_8h.html#af4852e725a411cc03e4f61fc7e334bdd">types.h</a>
-</li>
-<li>BPU_T_McEliece_Priv_Key
-: <a class="el" href="types_8h.html#a071fc64c23c57cf0944c26e0641cf214">types.h</a>
-</li>
-<li>BPU_T_McEliece_Pub_Key
-: <a class="el" href="types_8h.html#affb0fde491081005d4648dc1278d3369">types.h</a>
+<li>BPU_T_Mecs_Ctx
+: <a class="el" href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">mecsctx.h</a>
 </li>
 <li>BPU_T_Perm_Vector
-: <a class="el" href="types_8h.html#acb588e2a5e6a980f6a98479d3ab5999e">types.h</a>
+: <a class="el" href="permtypes_8h.html#acb588e2a5e6a980f6a98479d3ab5999e">permtypes.h</a>
 </li>
-<li>BPU_T_Poly_GF2_16x
-: <a class="el" href="types_8h.html#a08e436c3c3aec995447b8613125c3402">types.h</a>
-</li>
-<li>BPU_T_Vector_GF2
-: <a class="el" href="types_8h.html#a9b053a1987f0bfa2b8037b5c803e0414">types.h</a>
-</li>
-<li>BPU_T_Vector_GF2_16x
-: <a class="el" href="types_8h.html#a82ee6e1096ad20d83b3e36a568807f5c">types.h</a>
+<li>BPU_T_UN_Code_Spec
+: <a class="el" href="codectx_8h.html#a28756ae1b60efa626cd893e0313066dc">codectx.h</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -165,7 +166,7 @@ $(document).ready(function(){initNavTree('globals_type.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Oct 16 2014 23:54:12 for McEliece BitPunch by
+    <li class="footer">Generated on Mon Mar 2 2015 09:10:24 for McEliece BitPunch by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

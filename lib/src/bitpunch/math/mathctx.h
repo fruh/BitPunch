@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /**
 * Representation of aritmetics data.
 */
-typedef struct BPU_T_Math_Ctx {
+typedef struct _BPU_T_Math_Ctx {
 	BPU_T_GF2_16x *exp_table; ///< there are all elements referenced by i, so at i-th index is g^i element, g - generator
   	BPU_T_GF2_16x *log_table; ///< there are all indexes referenced by element, so alpha elemnet (g^i) -> i
   	BPU_T_GF2_16x mod; ///< polynomial modulus
