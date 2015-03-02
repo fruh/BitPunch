@@ -123,7 +123,7 @@ BPU_T_GF2_16x BPU_gf2xPowerModT(BPU_T_GF2_16x a, int e, const BPU_T_Math_Ctx *ma
 }
 
 /*** PZ: speedup critical instructions ***/
-int BPU_gf2xMatrixMul(BPU_T_GF2_16x_Matrix *x, const BPU_T_GF2_16x_Matrix *a, const BPU_T_GF2_16x_Matrix *b, const BPU_T_Math_Ctx *math_ctx) {
+int BPU_gf2xMatMul(BPU_T_GF2_16x_Matrix *x, const BPU_T_GF2_16x_Matrix *a, const BPU_T_GF2_16x_Matrix *b, const BPU_T_Math_Ctx *math_ctx) {
 	uint32_t i, j, k;
 	int loga; 
 

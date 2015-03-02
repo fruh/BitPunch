@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['freeprivatekey',['freePrivateKey',['../init_8c.html#a3dd427ae807f47471a1272cb88af6710',1,'init.c']]],
-  ['freepublickey',['freePublicKey',['../init_8c.html#a8549e309451899669b6d25074d53712f',1,'init.c']]]
+  ['h_5fmat',['h_mat',['../struct___b_p_u___t___goppa___spec.html#a457de3ba6f413950a464da8ba96eb7e7',1,'_BPU_T_Goppa_Spec']]]
 ];
