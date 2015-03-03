@@ -15,9 +15,8 @@ echo "INFO: running valgrind 'valgrind --leak-check=yes $APP'"
 valgrind --leak-check=yes $APP &> $TMP_FILE || rc=$?
 grep 'All heap blocks were freed -- no leaks are possible' $TMP_FILE
 grc=$?
-echo "INFO: valgrind done"
-
 cat $TMP_FILE
+echo "INFO: valgrind done"
 
 if [ $grc -ne 0 -a $rc -eq 0 ]; then 
 	echo "INFO: SUCCESS none memory leaks found"

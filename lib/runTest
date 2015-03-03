@@ -17,7 +17,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # */
-
 import os
 import sys
 from optparse import OptionParser
@@ -93,9 +92,14 @@ def main():
 
   if (options.run_all):
     print("Tests to run (%d): %s\n" % (len(register.TESTS), " ".join(register.TESTS.keys())))
+    result["skipped"] = len(register.TESTS)
 
-    for testname in register.TESTS:
-      runTest(testname, verbose_levels)
+    for t in register.TESTS:
+      if (runTest(t, verbose_levels) == 0):
+        result["passed"] += 1
+      else:
+        result["failed"] += 1
+      result["skipped"] -= 1
   elif (bool(options.run_test) or len(args) > 1):
     if (bool(options.run_test)):
       tmp_tests = options.run_test.split()
