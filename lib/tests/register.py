@@ -31,7 +31,7 @@ TESTS = {
 		"runLevel" : "regular",
 	},
 	"testBuild" : {
-		"suite" : "build",
+		"suite" : "builds",
 		"file" : "testBuild.sh",
 		"args" : "",
 		"runLevel" : "express",
