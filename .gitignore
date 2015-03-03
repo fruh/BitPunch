@@ -13,6 +13,7 @@ massif.*
 # object files
 *.o
 *.gch
+*.pyc
 
 # QtCreator files
 *.c.*
