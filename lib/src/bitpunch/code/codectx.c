@@ -53,16 +53,19 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, con
 	case BPU_EN_CODE_GOPPA:
 		ctx->_encode = BPU_goppaEncodeM;
 		ctx->_decode = BPU_goppaDecode;
-		ctx->code_len = ctx->math_ctx->ord; // ord
-		ctx->msg_len = ctx->math_ctx->ord - m*t; // n - m*t
-		ctx->t = t;
 		ctx->code_spec->goppa = (BPU_T_Goppa_Spec *) calloc(1, sizeof(BPU_T_Goppa_Spec));
-
 		if (!ctx->code_spec->goppa) {
 			BPU_printError("Can not malloc BPU_T_Goppa_Spec");
 
 			return BPU_EC_MALLOC_ERROR;
 		}
+
+		ctx->code_spec->goppa->support_len = ctx->math_ctx->ord + 1;
+//		ctx->code_spec->goppa->support_len = ctx->math_ctx->ord;
+		ctx->code_len = ctx->code_spec->goppa->support_len;
+		ctx->msg_len = ctx->code_spec->goppa->support_len - m*t; // n - m*t
+		ctx->t = t;
+
 		break;
 	/* EXAMPLE please DO NOT REMOVE
 	case BPU_EN_CODE_*****:

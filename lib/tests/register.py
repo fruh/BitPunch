@@ -18,22 +18,22 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # */
 TESTS = {
-  "testMemLeakWithH" : {
-    "suite" : "memory",
-    "file" : "testMemLeaks.sh",
-    "args" : "test-with-h-debug",
-    "runLevel" : "regular",
-  },
-  "testMemLeakWoH" : {
-    "suite" : "memory",
-    "file" : "testMemLeaks.sh",
-    "args" : "test-wo-h-debug",
-    "runLevel" : "regular",
-  },
-  "testBuild" : {
-    "suite" : "express",
-    "file" : "testBuild.sh",
-    "args" : "",
-    "runLevel" : "express",
-  }
+	"testMemLeakWithH" : {
+		"suite" : "memory",
+		"file" : "testMemLeaks.sh",
+		"args" : "test-with-h-debug",
+		"runLevel" : "regular",
+	},
+	"testMemLeakWoH" : {
+		"suite" : "memory",
+		"file" : "testMemLeaks.sh",
+		"args" : "test-wo-h-debug",
+		"runLevel" : "regular",
+	},
+	"testBuild" : {
+		"suite" : "build",
+		"file" : "testBuild.sh",
+		"args" : "",
+		"runLevel" : "express",
+	}
 }

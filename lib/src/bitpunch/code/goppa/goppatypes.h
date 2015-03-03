@@ -26,6 +26,7 @@ typedef struct _BPU_T_Goppa_Spec {
 	BPU_T_GF2_16x_Matrix *h_mat; ///< Control matrix H
 	BPU_T_GF2_16x_Poly *g; ///< gen. polynomial
 	BPU_T_Perm_Vector *permutation; ///< permutation "matrix"
+	uint16_t support_len; ///< number of elements in support
 }BPU_T_Goppa_Spec;
 
 void BPU_goppaFreeSpec(BPU_T_Goppa_Spec *spec);

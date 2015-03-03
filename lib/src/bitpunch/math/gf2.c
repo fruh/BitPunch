@@ -396,13 +396,13 @@ int BPU_gf2MatCrop(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in, uint16_t w
 
 int BPU_gf2MatGetRowAsGf2Vec(BPU_T_GF2_Vector *out, const BPU_T_GF2_Matrix *in, int row, int alloc) {
 	if (!alloc && out->len != in->n) {
-		BPU_printError("gf2MatGetRowAsGf2Vec: dimension is wrong out->len %d != in->n %d", out->len, in->n);
+		BPU_printError("dimension is wrong out->len %d != in->n %d", out->len, in->n);
 
 		return -1;
 	}
 	if (alloc) {
 		if (BPU_gf2VecMalloc(out, in->n)) {
-			BPU_printError("gf2MatGetRowAsGf2Vec: can not allocate vector");
+			BPU_printError("can not allocate vector");
 
 			return -2;
 		}
@@ -460,8 +460,8 @@ int BPU_gf2VecMulMat(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *v, const BPU
 	int i, j;
 
 	if ((v->len != b->k) || (out->len != b->n)) {
-		BPU_printError("BPU_gf2VecMulMat: wrong vector and matrix dimension v->len = %d, b->k = %d", v->len, b->k);
-		BPU_printError("BPU_gf2VecMulMat: wrong vector and matrix dimension out->len = %d, b->n = %d", out->len, b->n);
+		BPU_printError("wrong vector and matrix dimension v->len = %d, b->k = %d", v->len, b->k);
+		BPU_printError("wrong vector and matrix dimension out->len = %d, b->n = %d", out->len, b->n);
 
 		return -1;
 	}
@@ -494,7 +494,7 @@ int BPU_gf2MatPermute(BPU_T_GF2_Matrix *inout, BPU_T_Perm_Vector *permutation) {
 	int length;
 	vector = (BPU_T_GF2_Vector *) malloc(sizeof(BPU_T_GF2_Vector));
 	if (inout->n != permutation->size) {
-		BPU_printError("BPU_gf2MatPermute: permutation size not correct m->n = %d, p->size = %d", inout->n, permutation->size);
+		BPU_printError("permutation size not correct m->n = %d, p->size = %d", inout->n, permutation->size);
 
 		return -1;
 	}
