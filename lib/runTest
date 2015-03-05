@@ -24,7 +24,7 @@ from tests import register
 import subprocess
 import datetime
 
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 
 TESTS_FOLDER = sys.path[0] + os.sep + "tests"
 RUN_LEVEL = {"express" : 0, "regular" : 1, "extreme" : 2}
@@ -33,6 +33,7 @@ VERBOSE_LEVEL = {"ERROR" : 0, "WARNING" : 1, "INFO" : 2, "DEBUG" : 3}
 VERBOSE_LEVEL_NAMES = {"0" : "ERROR", "1" : "WARNING", "2" : "INFO", "3" : "DEBUG"}
 
 def runTest(testname, verbose_levels):
+	error = False
 	test = register.TESTS[testname]
 	print("======== BEGIN::%s ========" % testname)
 	tmp_log = ""
@@ -46,6 +47,8 @@ def runTest(testname, verbose_levels):
 				if (l.startswith(lev)):
 					print(l),
 					break
+			if (l.startswith("ERROR")):
+				error = True
 			l = tp.stdout.readline()
 	except Exception as e:
 		print("ERROR: %s" % str(e))
@@ -53,12 +56,15 @@ def runTest(testname, verbose_levels):
 	tp.wait()
 	rc = tp.poll()
 
-	if (rc == 0):
+	if (rc == 0 and not error):
 		print("PASSED")
 	else:
-		print("*** ERROR LOG ***")
-		print(tmp_log)
-		print("rc = %d" % rc)
+		print("DEBUG: *** BEGIN ERROR LOG ***")
+		print(tmp_log),
+		print("DEBUG: ***   END ERROR LOG ***")
+		print("DEBUG: rc = %d" % rc)
+		if (error):
+			print("ERROR: Found ERROR string at the beggining of line, result FAILED")
 		print("FAILED")
 	print("--------   END::%s --------\n" % testname)
 	return rc
