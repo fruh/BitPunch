@@ -219,9 +219,9 @@ void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector 
 			for(row = 0; row < ctx->code_spec->goppa->g->deg; row++) {
 				element = 0;
 				for(k = ctx->code_spec->goppa->g->deg - row, e = 0; k <= ctx->code_spec->goppa->g->deg; k++, e++) {
-					element ^= BPU_gf2xMulMod(ctx->code_spec->goppa->g->coef[k], BPU_gf2xPowerModT (ctx->math_ctx->exp_table[column], e, ctx->math_ctx), ctx->math_ctx->mod);
+					element ^= BPU_gf2xMulModT(ctx->code_spec->goppa->g->coef[k], BPU_gf2xPowerModT (ctx->math_ctx->exp_table[column], e, ctx->math_ctx), ctx->math_ctx);
 				}
-				element = BPU_gf2xMulMod(element, divider, ctx->math_ctx->mod);
+				element = BPU_gf2xMulModT(element, divider, ctx->math_ctx);
 				syndrome->coef[syndrome->max_deg - row] ^= element;
 			}
 		}
