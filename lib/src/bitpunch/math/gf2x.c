@@ -110,6 +110,9 @@ BPU_T_GF2_16x BPU_gf2xMulModT(const BPU_T_GF2_16x a, const BPU_T_GF2_16x b, cons
 }
 
 BPU_T_GF2_16x BPU_gf2xPowerModT(BPU_T_GF2_16x a, int e, const BPU_T_Math_Ctx *math_ctx) {
+	if (e == 0) {
+		return 1;
+	}
 	if (a == 0) {
 		return 0;
 	}
