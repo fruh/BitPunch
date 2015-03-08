@@ -20,6 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "perm.h"
+#include "int.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -38,24 +39,15 @@ void BPU_printPerm(const BPU_T_Perm_Vector *permutation) {
 }
 
 int BPU_permRandomize(BPU_T_Perm_Vector* permutation) {
-	int i, j, tested;
+	int i;
 	uint32_t rand_value;
 
 	for (i = 0; i < permutation->size; i++) {
-		while (1) {
-			rand_value = BPU_prngGetRand(0, permutation->size);
-			tested = 1;
-			for (j = 0; j < i; j++) {
-				if (permutation->elements[j] == rand_value){
-					tested = 0;
-					break;
-				}
-			}
-			if (tested == 1){
-				permutation->elements[i] = rand_value;
-				break;
-			}
-		}
+		permutation->elements[i] = i;
+	}
+	for (i = 0; i < permutation->size; i++) {
+		rand_value = BPU_prngGetRand(i, permutation->size);
+		BPU_swap(&permutation->elements[i], &permutation->elements[rand_value]);
 	}
 	return 0;
 }
