@@ -15,6 +15,10 @@ massif.*
 *.gch
 *.pyc
 
+# profiling files
+*.gcda
+*.out
+
 # QtCreator files
 *.c.*
 *.h.*

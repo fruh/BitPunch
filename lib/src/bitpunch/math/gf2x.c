@@ -97,15 +97,13 @@ BPU_T_GF2_16x BPU_gf2xMulMod(BPU_T_GF2_16x a, BPU_T_GF2_16x b, BPU_T_GF2_16x mod
 	return tmp;
 }
 
-
-
-BPU_T_GF2_16x BPU_gf2xMulModT(const BPU_T_GF2_16x a, const BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx) {
-	if (a == 0 || b == 0) {
-		return 0;
-	}
-	// look into tables
-	return math_ctx->exp_table[(math_ctx->log_table[a] + math_ctx->log_table[b]) % math_ctx->ord];
-}
+//BPU_T_GF2_16x BPU_gf2xMulModT(const BPU_T_GF2_16x a, const BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx) {
+//	if (a == 0 || b == 0) {
+//		return 0;
+//	}
+//	// look into tables
+//	return math_ctx->exp_table[(math_ctx->log_table[a] + math_ctx->log_table[b]) % math_ctx->ord];
+//}
 
 BPU_T_GF2_16x BPU_gf2xPowerModT(BPU_T_GF2_16x a, int e, const BPU_T_Math_Ctx *math_ctx) {
 	if (e == 0) {
@@ -934,9 +932,7 @@ void BPU_gf2xMatGEM(BPU_T_GF2_16x_Matrix *mat, const BPU_T_Math_Ctx *math_ctx) {
 void BPU_gf2xPolyGenRandom(BPU_T_GF2_16x_Poly *p, int t, const BPU_T_Math_Ctx *math_ctx) {
 	int i;
 	p->coef[t] = 1;
-	do {
-		p->coef[0] = BPU_prngGetRand(1, math_ctx->ord);
-	} while (p->coef[0] == 0);
+	p->coef[0] = BPU_prngGetRand(1, math_ctx->ord);
 	
 	for (i = 1; i < t; i++) {
 		p->coef[i] = BPU_prngGetRand(0, math_ctx->ord);

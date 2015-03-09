@@ -31,7 +31,9 @@ INCLUDE_PATH = -Isrc/
 CC = gcc $(INCLUDE_PATH)
 
 # compiler flags
-#CFLAGS = -Wall -DERROR_L -pg -fprofile-arcs
+CFLAGS_PROF = -Wall -DERROR_L -O3 -pg
+#-fprofile-arcs
+CFLAGS_SPEED = -Wall -DERROR_L -O3
 CFLAGS = -Wall -DERROR_L -O2
 #-fstack-protector-all
 
@@ -65,7 +67,7 @@ test-wo-h-debug: prepare-dir-test
 	$(CC) $(CFLAGS) -ggdb $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
 
 speed-test-wo-h: prepare-dir-test
-	$(CC) $(CFLAGS) $(SRC_FILES) src/test-speed.c -o $(TEST_TARGET)/BitPunch
+	$(CC) $(CFLAGS_SPEED) $(SRC_FILES) src/test-speed.c -o $(TEST_TARGET)/BitPunch
 
 test-with-h: prepare-dir-test
 	$(CC) $(CFLAGS) -DBPU_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
@@ -74,7 +76,23 @@ test-with-h-debug: prepare-dir-test
 	$(CC) $(CFLAGS) -ggdb -DBPU_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
 
 speed-test-with-h: prepare-dir-test
-	$(CC) $(CFLAGS) -DBPU_GOPPA_WITH_H $(SRC_FILES) src/test-speed.c -o $(TEST_TARGET)/BitPunch
+	$(CC) $(CFLAGS_SPEED) -DBPU_GOPPA_WITH_H $(SRC_FILES) src/test-speed.c -o $(TEST_TARGET)/BitPunch
+
+prof-wo-h: prepare-dir-test
+	$(CC) $(CFLAGS_PROF) $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+	@echo ""
+	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
+	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
+	@echo "Then run: gprof $(TEST_TARGET)/BitPunch | less"
+	@echo "\t to see statistics."
+
+prof-with-h: prepare-dir-test
+	$(CC) $(CFLAGS_PROF) -DBPU_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+	@echo ""
+	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
+	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
+	@echo "Then run: gprof $(TEST_TARGET)/BitPunch | less"
+	@echo "\t to see statistics."
 
 print-info:
 	@echo ""
