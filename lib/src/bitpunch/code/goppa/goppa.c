@@ -24,8 +24,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 
 #include <bitpunch/math/gf2.h>
+#include <bitpunch/prng/prng.h>
 #include <bitpunch/math/perm.h>
 #include <bitpunch/debugio.h>
+#include <bitpunch/bitpunch.h>
+
+#ifdef ATTACK_INSIDE
+#include <time.h>
+#endif
 
 int BPU_goppaEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx) {
 	int rc = 0;
@@ -105,6 +111,9 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	int l;
 	BPU_T_GF2_16x tmp_eval;
 	BPU_T_GF2_Vector enc_permuted;
+#ifdef ATTACK_INSIDE
+	unsigned long long int start1, stop1, delta1;
+#endif
 
 	// permute code word
 	BPU_gf2VecMalloc(&enc_permuted, encoded->len);
@@ -166,13 +175,26 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	else {
 		BPU_gf2VecNull(error);
 	}
+
+
+#ifdef ATTACK_INSIDE
+	start1 = rdtsc();
+#endif
+#ifdef COUNTER_MEASURE
+	sigma.deg = ctx->t;
+#endif
 	for (l = 0; l < ctx->code_spec->goppa->support_len; l++) {
 		tmp_eval = BPU_gf2xPolyEval(&sigma, ctx->math_ctx->exp_table[l], ctx->math_ctx);
-
 		if (tmp_eval == 0) {
 			BPU_gf2VecSetBit(error, l, 1);
 		}
 	}
+#ifdef ATTACK_INSIDE
+	stop1 = rdtsc();
+	delta1 = stop1 - start1;
+	fprintf(stdout, "%d\n", delta1);
+#endif
+
 	// permute error vector
 	BPU_gf2VecPermute(error, ctx->code_spec->goppa->permutation);
 	BPU_gf2xPolyFree(&sigma, 0);

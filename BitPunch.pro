@@ -43,7 +43,8 @@ SOURCES += \
     lib/src/bitpunch/crypto/padding/padding.c \
 	lib/src/main.c \
     lib/src/bitpunch/code/goppa/goppatypes.c \
-    lib/src/test-speed.c
+    lib/src/test-speed.c \
+    lib/src/bitpunch/tools.c
 
 #include(deployment.pri)
 #qtcAddDeployment()
@@ -70,7 +71,8 @@ HEADERS += \
     lib/src/bitpunch/crypto/mecsbasic/mecsbasic.h \
     lib/src/bitpunch/crypto/padding/padding.h \
     lib/src/bitpunch/version.h \
-    lib/src/bitpunch/bitpunch.h
+    lib/src/bitpunch/bitpunch.h \
+    lib/src/bitpunch/tools.h
 
 OTHER_FILES += \
     lib/makefile

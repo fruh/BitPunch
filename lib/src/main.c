@@ -16,14 +16,89 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
  
+#define _GNU_SOURCE
+#include <sched.h>
 #include <bitpunch/bitpunch.h>
+#include "bitpunch/tools.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <sys/time.h>
 
+int basicTest();
+int elpMeasurementsBB();
+
 int main(int argc, char **argv) {
+	cpu_set_t mask;
+	CPU_ZERO(&mask);
+	CPU_SET(1, &mask);
+	sched_setaffinity(0, sizeof(cpu_set_t), &mask);
+	return elpMeasurementsBB();
+}
+
+int elpMeasurementsBB() {
+	int test, number_of_tests;
+	BPU_T_Mecs_Ctx ctx;
+	BPU_T_GF2_Vector ct, pt_in, pt_out, error;
+	int i, iter;
+	unsigned long long int start, stop, delta;
+
+	srand(0);
+
+	BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
+	BPU_mecsGenKeyPair(&ctx);
+//	Generate random input vector
+	BPU_gf2VecRand(&pt_in, ctx.pt_len, 0);
+//	Prepare cipher text
+	BPU_gf2VecMalloc(&ct, ctx.ct_len);
+//	Prepare output plain text
+	BPU_gf2VecMalloc(&pt_out, ctx.pt_len);
+//	Encryption
+
+//	TODO: custom encryption - set own error vector
+//	Create error vector
+	BPU_gf2VecRand(&error, ctx.ct_len, ctx.code_ctx->t);
+	ctx.code_ctx->_encode(&ct, &pt_in, ctx.code_ctx);
+	BPU_gf2VecXor(&ct, &error);
+
+
+//	Decryption
+	number_of_tests = 2;
+//	removeErrorBit(&ct, &error, 1);
+	for (test = 0; test < number_of_tests; test++){
+		iter = 300;
+		for (i = 0; i < iter; i++) {
+#ifdef ATTACK_BB
+			start = rdtsc();
+#endif
+			BPU_mecsDecrypt(&pt_out, &ct, &ctx);
+#ifdef ATTACK_BB
+			stop = rdtsc();
+			delta = stop - start;
+			fprintf(stdout, "%d\n", delta);
+#endif
+		}
+//		removeErrorBit(&ct, &error, 1);
+//		addErrorBit(&ct, &error, 1);
+	}
+
+
+
+
+	if (!BPU_gf2VecCmp(&pt_in, &pt_out))
+		fprintf(stderr, "success\n");
+	else
+		fprintf(stderr, "failure\n");
+//	Clean up
+	BPU_gf2VecFree(&pt_in, 0);
+	BPU_gf2VecFree(&pt_out, 0);
+	BPU_gf2VecFree(&ct, 0);
+	BPU_mecsFreeCtx(&ctx);
+	return 0;
+}
+
+int basicTest() {
 	int rc = 0;
 	BPU_T_Mecs_Ctx ctx;
 	BPU_T_GF2_Vector ct, pt_in, pt_out;
@@ -81,7 +156,6 @@ int main(int argc, char **argv) {
 		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
-	// exit(0);
 	/***************************************/
 	fprintf(stderr, "Decryption...\n");
 	// decrypt cipher text

@@ -20,5 +20,4 @@
 
 #include "debugio.h"
 #include <bitpunch/crypto/mecs.h>
-
 #endif // BITPUNCH_H
