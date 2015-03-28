@@ -343,11 +343,10 @@ int BPU_gf2VecXor(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in);
 /**
  * Create a binary vector of required length and weight. After work call BPU_freeVecGF2
  * @param  out GF2 vector representation (L)
- * @param  l length of vector
  * @param  w weight of vector, if 0 weight is random
  * @return     0 - succes, else error
  */
-int BPU_gf2VecRand(BPU_T_GF2_Vector *out, int l, int w);
+int BPU_gf2VecRand(BPU_T_GF2_Vector *out, int w);
 
 /**
 * Vector and matrix multiplication over GF2.

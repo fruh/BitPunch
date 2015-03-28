@@ -47,7 +47,8 @@ int main(int argc, char **argv) {
 		res += (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000));
 
 		BPU_gf2VecMalloc(&ct, ctx.ct_len);
-		BPU_gf2VecRand(&pt, ctx.pt_len, 0);
+		BPU_gf2VecMalloc(&pt, ctx.pt_len);
+		BPU_gf2VecRand(&pt, 0);
 
 		gettimeofday(&tv, NULL);
 		BPU_mecsEncrypt(&ct, &pt, &ctx);

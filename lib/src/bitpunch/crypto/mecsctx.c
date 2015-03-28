@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "mecsctx.h"
 
 #include <stdlib.h>
+
 #include <bitpunch/debugio.h>
 #include <bitpunch/errorcodes.h>
 #include <bitpunch/code/codectx.h>
@@ -26,6 +27,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // additional encryption schemes
 #include <bitpunch/crypto/mecsbasic/mecsbasic.h>
 #include <bitpunch/code/goppa/goppa.h>
+
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+#include <bitpunch/crypto/cca2/mecspointcheval.h>
+#endif
 
 int BPU_mecsInitCtx(BPU_T_Mecs_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Mecs_Types type) {
 	ctx->type = type;
@@ -47,6 +52,19 @@ int BPU_mecsInitCtx(BPU_T_Mecs_Ctx *ctx, const uint16_t m, const uint16_t t, con
 		ctx->pt_len = ctx->code_ctx->msg_len;
 		ctx->ct_len = ctx->code_ctx->code_len;
 		break;
+
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+	case BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA:
+		ctx->_encrypt = BPU_mecsPointchevalCCA2Encrypt;
+		ctx->_decrypt = BPU_mecsPointchevalCCA2Decrypt;
+		ctx->_genKeyPair = BPU_goppaGenCode;
+
+		BPU_codeInitCtx(ctx->code_ctx, m, t, BPU_EN_CODE_GOPPA);
+
+		ctx->pt_len = BPU_HASH_LEN * 8 < ctx->code_ctx->msg_len ? BPU_HASH_LEN * 8 : ctx->code_ctx->msg_len;
+		ctx->ct_len = ctx->code_ctx->code_len + 2 * ctx->ct_len;
+		break;
+#endif
 	/* EXAMPLE please DO NOT REMOVE
 	case BPU_EN_MECS_*****:
 		ctx->_encrypt = FUNC_FROM_YOUR_FILE;
@@ -54,6 +72,9 @@ int BPU_mecsInitCtx(BPU_T_Mecs_Ctx *ctx, const uint16_t m, const uint16_t t, con
 		ctx->_genKeyPair = FUNC_FROM_YOUR_FILE;
 
 		BPU_codeInitCtx(ctx->code_ctx, BPU_EN_CODE_GOPPA);
+
+		ctx->pt_len = PT_LEN;
+		ctx->ct_len = CT_LEN;
 		break;
 		*/
 	default:
@@ -68,6 +89,9 @@ int BPU_mecsInitCtx(BPU_T_Mecs_Ctx *ctx, const uint16_t m, const uint16_t t, con
 int BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx) {
 	switch (ctx->type) {
 	case BPU_EN_MECS_BASIC_GOPPA:
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+	case BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA:
+#endif
 		ctx->_encrypt = NULL;
 		ctx->_decrypt = NULL;
 		ctx->_genKeyPair = NULL;

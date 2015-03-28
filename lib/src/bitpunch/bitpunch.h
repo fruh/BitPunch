@@ -18,6 +18,7 @@
 #ifndef BITPUNCH_H
 #define BITPUNCH_H
 
+#include "config.h"
 #include "debugio.h"
 #include <bitpunch/crypto/mecs.h>
 

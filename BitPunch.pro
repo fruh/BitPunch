@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #*/
+#DEFINES += BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+
 TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
@@ -43,7 +45,12 @@ SOURCES += \
     lib/src/bitpunch/crypto/padding/padding.c \
 	lib/src/main.c \
     lib/src/bitpunch/code/goppa/goppatypes.c \
-    lib/src/test-speed.c
+    lib/src/test-speed.c \
+    lib/src/bitpunch/crypto/hash/polarssl/sha512.c \
+    lib/src/bitpunch/crypto/hash/polarssl/polarssl/sha512.c \
+    lib/src/bitpunch/crypto/hash/sha512.c \
+    lib/src/bitpunch/crypto/hash/polarssl/sha512.c \
+    lib/src/bitpunch/crypto/cca2/mecspointcheval.c
 
 #include(deployment.pri)
 #qtcAddDeployment()
@@ -70,7 +77,11 @@ HEADERS += \
     lib/src/bitpunch/crypto/mecsbasic/mecsbasic.h \
     lib/src/bitpunch/crypto/padding/padding.h \
     lib/src/bitpunch/version.h \
-    lib/src/bitpunch/bitpunch.h
+    lib/src/bitpunch/bitpunch.h \
+    lib/src/bitpunch/crypto/hash/polarssl/polarssl/sha512.h \
+    lib/src/bitpunch/crypto/hash/sha512.h \
+    lib/src/bitpunch/config.h \
+    lib/src/bitpunch/crypto/cca2/mecspointcheval.h
 
 OTHER_FILES += \
     lib/makefile

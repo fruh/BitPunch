@@ -152,29 +152,25 @@ void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec) {
 }
 /* ------------------------------------ Print functions ------------------------------------ */
 
-int BPU_gf2VecRand(BPU_T_GF2_Vector *out, int l, int w) {
+int BPU_gf2VecRand(BPU_T_GF2_Vector *out, int w) {
 	int i, j;
 
-	if (BPU_gf2VecMalloc(out, l)) {
-		BPU_printError("initRandVector: allocation error");
-		return -1;
-	}
-
-	if (w > l) {
-		BPU_printError("initRandVector: weight error w > l");
+	if (w > out->len) {
+		BPU_printError("weight error w > l");
 		return -2;
 	}
-
 	//vector of random weight
 	if(w == 0) {
-		for(i = 0; i < l; i++) {
+		for(i = 0; i < out->len; i++) {
 			BPU_gf2VecSetBit(out, i, BPU_prngGetRand(0, 2));
 		}
 	}
 	//vector of required weight
 	else {
+		BPU_gf2VecNull(out);
+
 		for(i = 0; i < w; i++) {
-			j = BPU_prngGetRand(0, l);
+			j = BPU_prngGetRand(0, out->len);
 
 			if(BPU_gf2VecGetBit(out, j) == 0) {
 				BPU_gf2VecSetBit(out, j, 1);

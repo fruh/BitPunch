@@ -44,11 +44,12 @@ typedef struct _BPU_T_Code_Ctx {
 	int (* _encode)(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx); ///< This is reference to encode function. It will be set in BPU_codeInitCtx
 	int (* _decode)(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx); ///< This is reference to decode function. It will be set in BPU_codeInitCtx
 	BPU_T_Math_Ctx *math_ctx; ///< Math context
+	BPU_T_GF2_Vector *e; ///< Error vector
+	BPU_T_UN_Code_Spec *code_spec; ///< Code specific structure, like generator matrix, control matrix, gen. poly ...
+
 	uint16_t code_len; ///< Code len
 	uint16_t msg_len; ///< Code dimenzion
 	uint8_t t; ///< Error code correction capability
-
-	BPU_T_UN_Code_Spec *code_spec; ///< Code specific structure, like generator matrix, control matrix, gen. poly ...
 }BPU_T_Code_Ctx;
 
 /// Initialize (register) code functions encode, decode and code spec structure based on code type.

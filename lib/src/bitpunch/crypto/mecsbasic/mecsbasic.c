@@ -22,38 +22,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx) {
 	int rc;
-	BPU_T_GF2_Vector e;
+	BPU_T_GF2_Vector *e = ctx->code_ctx->e;
 	BPU_gf2VecNull(out);
 
 	// test the size of message and g_m
 	if (in->len != ctx->code_ctx->msg_len) {
-		BPU_printError("message length have to be of length %d", ctx->code_ctx->msg_len);
+		BPU_printError("message length has to be of length %d", ctx->code_ctx->msg_len);
 
 		return -1;
 	}
 
 	rc = ctx->code_ctx->_encode(out, in, ctx->code_ctx);
 	if (rc) {
-		BPU_printError("BPU_mecsBasicEncrypt: can not encode");
+		BPU_printError("can not encode");
 		return rc;
 	}
 
 	// generate random error vector e
-	rc = BPU_gf2VecRand(&e, ctx->code_ctx->code_len, ctx->code_ctx->t);
+	rc += BPU_gf2VecRand(e, ctx->code_ctx->t);
 	if (rc) {
-		BPU_printError("BPU_mecsBasicEncrypt: can not init rand vector");
+		BPU_printError("can not init rand vector");
 		return rc;
 	}
 
 	// z' XOR e
-	rc = BPU_gf2VecXor(out, &e);
+	rc = BPU_gf2VecXor(out, e);
 	if (rc) {
-		BPU_printError("BPU_mecsBasicEncrypt: can not add error vector");
+		BPU_printError("can not add error vector");
 		return rc;
 	}
-
-	BPU_gf2VecFree(&e, 0);
-
 	return rc;
 }
 
@@ -64,11 +61,9 @@ int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, cons
 	BPU_gf2VecMalloc(&temp, in->len);
 	BPU_gf2VecCopy(&temp, in);
 
-	ctx->code_ctx->_decode(out, &temp, ctx->code_ctx);
-
+	rc = ctx->code_ctx->_decode(out, &temp, ctx->code_ctx);
 
 	BPU_gf2VecFree(&temp, 0);
-
 
 	return rc;
 }

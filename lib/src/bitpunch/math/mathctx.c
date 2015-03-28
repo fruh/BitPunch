@@ -57,9 +57,12 @@ int BPU_mathInitCtx(BPU_T_Math_Ctx *math_ctx, const BPU_T_GF2_16x g, const BPU_T
 }
 
 void BPU_mathFreeCtx(BPU_T_Math_Ctx *a, int is_dyn) {
-	free(a->exp_table);
-	free(a->log_table);
-
+	if (a->exp_table) {
+		free(a->exp_table);
+	}
+	if (a->log_table) {
+		free(a->log_table);
+	}
 	if (is_dyn) {
 		free(a);
 	}

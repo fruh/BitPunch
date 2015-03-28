@@ -23,14 +23,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/math/permtypes.h>
 
 void BPU_goppaFreeSpec(BPU_T_Goppa_Spec *spec) {
-	BPU_gf2xPolyFree(spec->g, 0);
-	free(spec->g);
-	BPU_gf2MatFree(spec->g_mat, 0);
+	if (spec->g) {
+		BPU_gf2xPolyFree(spec->g, 0);
+		free(spec->g);
+	}
+	if (spec->g_mat) {
+		BPU_gf2MatFree(spec->g_mat, 0);
+	}
 	free(spec->g_mat);
 #ifdef BPU_GOPPA_WITH_H
-	BPU_gf2xMatFree(spec->h_mat, 0);
+	if (spec->h_mat) {
+		BPU_gf2xMatFree(spec->h_mat, 0);
+	}
 	free(spec->h_mat);
 #endif
-	BPU_permFree(spec->permutation, 0);
+	if (spec->permutation){
+		BPU_permFree(spec->permutation, 0);
+	}
 	free(spec->permutation);
 }

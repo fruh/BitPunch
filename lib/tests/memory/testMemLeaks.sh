@@ -11,14 +11,14 @@ echo "INFO: building target $1 ..."
 make $1 || exit 1
 cd tests/memory
 
-echo "INFO: running valgrind 'valgrind --leak-check=yes $APP'"
-valgrind --leak-check=yes $APP &> $TMP_FILE || rc=$?
+echo "INFO: running valgrind 'valgrind --leak-check=yes --track-origins=yes $APP'"
+valgrind --leak-check=yes $APP 2> $TMP_FILE || rc=$?
 grep 'All heap blocks were freed -- no leaks are possible' $TMP_FILE
 grc=$?
 cat $TMP_FILE
 echo "INFO: valgrind done"
 
-if [ $grc -ne 0 -a $rc -eq 0 ]; then 
+if [ $grc -eq 0 -a $rc -eq 0 ]; then 
 	echo "INFO: SUCCESS none memory leaks found"
 	exit 0
 else

@@ -59,9 +59,7 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, con
 
 			return BPU_EC_MALLOC_ERROR;
 		}
-
 		ctx->code_spec->goppa->support_len = ctx->math_ctx->ord + 1;
-//		ctx->code_spec->goppa->support_len = ctx->math_ctx->ord;
 		ctx->code_len = ctx->code_spec->goppa->support_len;
 		ctx->msg_len = ctx->code_spec->goppa->support_len - m*t; // n - m*t
 		ctx->t = t;
@@ -79,6 +77,12 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, con
 
 		BPU_printError("Code type not supported: %d", type);
 		return BPU_EC_CODE_TYPE_NOT_SUPPORTED;
+	}
+	ctx->e = (BPU_T_GF2_Vector *) calloc(1, sizeof(BPU_T_GF2_Vector));
+
+	if (!ctx->e || BPU_gf2VecMalloc(ctx->e, ctx->code_len)) {
+		BPU_printError("can not allocate error vector");
+		return 1;
 	}
 	return 0;
 }
@@ -115,6 +119,9 @@ void BPU_codeFreeCtx(BPU_T_Code_Ctx *ctx) {
 	default:
 		BPU_printError("Code type not supported: %d", ctx->type);
 	}
+	BPU_gf2VecFree(ctx->e, 0);
+	free(ctx->e);
+
 	BPU_mathFreeCtx(ctx->math_ctx, 0);
 	free(ctx->math_ctx);
 	free(ctx->code_spec);

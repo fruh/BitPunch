@@ -81,22 +81,22 @@ int BPU_goppaEncodeM(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const st
 
 int BPU_goppaDecode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx) {
 	BPU_T_GF2_Vector orig_enc;
-	BPU_T_GF2_Vector error_vec;
+	BPU_T_GF2_Vector *error_vec = ctx->e;
+	int rc;
 
 	// get error vector
-	BPU_gf2VecMalloc(&error_vec, in->len);
-	BPU_goppaGetError(&error_vec, in, ctx);
+	rc = BPU_goppaGetError(error_vec, in, ctx);
 
 	// remove error
-	BPU_gf2VecMalloc(&orig_enc, in->len);
+	rc += BPU_gf2VecMalloc(&orig_enc, in->len);
 	BPU_gf2VecCopy(&orig_enc, in);
-	BPU_gf2VecXor(&orig_enc, &error_vec);
-	BPU_gf2VecFree(&error_vec, 0);
+	rc += BPU_gf2VecXor(&orig_enc, error_vec);
+
 	// get message
-	BPU_gf2VecCrop(out, &orig_enc, in->len - ctx->msg_len, ctx->msg_len);
+	rc += BPU_gf2VecCrop(out, &orig_enc, in->len - ctx->msg_len, ctx->msg_len);
 	BPU_gf2VecFree(&orig_enc, 0);
 
-	return 0;
+	return rc;
 }
 
 int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, const BPU_T_Code_Ctx *ctx) {

@@ -15,12 +15,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef MECSPOINTCHEVAL_H
+#define MECSPOINTCHEVAL_H
+
+#include <bitpunch/config.h>
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
-	#define BPU_CONF_SHA_512
-#endif
 
-#endif // CONFIG_H
+#include <bitpunch/math/gf2types.h>
+#include <bitpunch/crypto/mecsctx.h>
+#include <bitpunch/crypto/hash/sha512.h>
+
+int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
+
+int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
+#endif
+#endif // MECSPOINTCHEVAL_H
 

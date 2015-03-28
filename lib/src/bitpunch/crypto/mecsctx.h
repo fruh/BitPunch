@@ -18,12 +18,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MECSCTX_H
 #define MECSCTX_H
 
+#include <bitpunch/config.h>
 #include <bitpunch/math/gf2.h>
 #include <bitpunch/code/codectx.h>
 
 /// Possible types of MECS
 typedef enum _BPU_T_EN_Mecs_Types {
-	BPU_EN_MECS_BASIC_GOPPA ///< basic mecs, without any conversion
+	BPU_EN_MECS_BASIC_GOPPA, ///< basic mecs, without any conversion
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+	BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA, ///< adapted Pointcheval's cca2 conversion
+#endif
 }BPU_T_EN_Mecs_Types;
 
 typedef struct _BPU_T_Mecs_Ctx {

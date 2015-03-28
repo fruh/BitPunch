@@ -23,6 +23,8 @@
 #include <time.h>
 #include <sys/time.h>
 
+#include <bitpunch/crypto/hash/sha512.h>
+
 int main(int argc, char **argv) {
 	int rc = 0;
 	BPU_T_Mecs_Ctx ctx;
@@ -35,10 +37,10 @@ int main(int argc, char **argv) {
 	fprintf(stderr, "Initialisation...\n");
 //	BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
 	if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA)) {
+//	if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {
 //	 if (BPU_mecsInitCtx(&ctx, 5, 5, BPU_EN_MECS_BASIC_GOPPA)) {
 		return 1;
 	}
-
 	/***************************************/
 	fprintf(stderr, "Key generation...\n");
 	// key pair generation
@@ -49,12 +51,14 @@ int main(int argc, char **argv) {
 	}
 	/***************************************/
 	// prepare plain text, allocate memory and init random plaintext
-	if (BPU_gf2VecRand(&pt_in, ctx.pt_len, 0)) {
+	if (BPU_gf2VecMalloc(&pt_in, ctx.pt_len)) {
 		BPU_printError("PT initialisation error");
 
 		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
+	BPU_gf2VecRand(&pt_in, 0);
+
 	// alocate cipher text vector
 	if (BPU_gf2VecMalloc(&ct, ctx.ct_len)) {
 		BPU_printError("CT vector allocation error");
@@ -64,12 +68,13 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 	// prepare plain text, allocate memory and init random plaintext
-	if (BPU_gf2VecRand(&pt_out, ctx.pt_len, 0)) {
+	if (BPU_gf2VecMalloc(&pt_out, ctx.pt_len)) {
 		BPU_printError("PT out initialisation error");
 
 		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
+	BPU_gf2VecRand(&pt_out, 0);
 	/***************************************/
 	fprintf(stderr, "Encryption...\n");
 	// BPU_encrypt plain text
@@ -78,6 +83,7 @@ int main(int argc, char **argv) {
 
 		BPU_gf2VecFree(&ct, 0);
 		BPU_gf2VecFree(&pt_in, 0);
+		BPU_gf2VecFree(&pt_out, 0);
 		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
@@ -90,6 +96,7 @@ int main(int argc, char **argv) {
 
 		BPU_gf2VecFree(&ct, 0);
 		BPU_gf2VecFree(&pt_in, 0);
+		BPU_gf2VecFree(&pt_out, 0);
 		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}

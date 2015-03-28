@@ -33,13 +33,12 @@ int BPU_gf2VecHash(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in) {
 		return -1;
 	}
 	// if input len is not divisible by 4, then it is not complete vector
-	if ((in->len / 8) % 4) {
-		BPU_printError("Wrong input vector len %d, should be divisible by 4", out->len);
-
-		return -2;
+	if (in->len % 8) {
+//		BPU_printError("Wrong input vector len %d, should be divisible by 8", in->len);
+		BPU_printWarning("input vector len %d, should be divisible by 8", in->len);
 	}
 	// hash vector
-	sha512((uint8_t *)in->elements, in->elements_in_row, md, 0);
+	sha512((uint8_t *)in->elements, in->len / 8, md, 0);
 	// copy digest to vector
 	memcpy(out->elements, md, BPU_HASH_LEN);
 

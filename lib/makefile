@@ -34,7 +34,8 @@ CC = gcc $(INCLUDE_PATH)
 CFLAGS_PROF = -Wall -DERROR_L -O3 -pg
 #-fprofile-arcs
 CFLAGS_SPEED = -Wall -DERROR_L -O3
-CFLAGS = -Wall -DERROR_L -O2
+
+CFLAGS = -Wall -DBPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA -DERROR_L -O2
 #-fstack-protector-all
 
 # curent working directory
@@ -55,7 +56,26 @@ SHARED_TARGET = $(DIST_TARGET)/shared
 # test target
 TEST_TARGET = $(DIST_TARGET)/test
 
-SRC_FILES = src/bitpunch/code/*.h src/bitpunch/code/*.c src/bitpunch/code/goppa/*.h src/bitpunch/code/goppa/*.c src/bitpunch/crypto/*.c src/bitpunch/crypto/*.h src/bitpunch/crypto/mecsbasic/*.c src/bitpunch/crypto/mecsbasic/*.h src/bitpunch/*.c src/bitpunch/math/*.c src/bitpunch/math/*.h src/bitpunch/prng/*.h src/bitpunch/prng/*.c
+SRC_FILES = \
+	src/bitpunch/code/*.h \
+	src/bitpunch/code/*.c \
+	src/bitpunch/code/goppa/*.h \
+	src/bitpunch/code/goppa/*.c \
+	src/bitpunch/crypto/*.c \
+	src/bitpunch/crypto/*.h \
+	src/bitpunch/crypto/hash/*.c \
+	src/bitpunch/crypto/hash/*.h \
+	src/bitpunch/crypto/hash/polarssl/*.c \
+	src/bitpunch/crypto/hash/polarssl/polarssl/*.h \
+	src/bitpunch/crypto/mecsbasic/*.c \
+	src/bitpunch/crypto/mecsbasic/*.h \
+	src/bitpunch/crypto/cca2/*.c \
+	src/bitpunch/crypto/cca2/*.h \
+	src/bitpunch/*.c \
+	src/bitpunch/math/*.c \
+	src/bitpunch/math/*.h \
+	src/bitpunch/prng/*.h \
+	src/bitpunch/prng/*.c
 
 ######################################## TARGETS ###############################################
 default: test-with-h print-info
