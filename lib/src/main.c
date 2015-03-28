@@ -25,79 +25,62 @@
 
 #include <bitpunch/crypto/hash/sha512.h>
 
-int main(int argc, char **argv) {
-	int rc = 0;
-	BPU_T_Mecs_Ctx ctx;
+int testKeyGenEncDec(BPU_T_Mecs_Ctx *ctx) {
 	BPU_T_GF2_Vector ct, pt_in, pt_out;
+	int rc = 0;
 
-	srand(time(NULL));
-
-	/***************************************/
-	// mce initialisation t = 50, m = 11
-	fprintf(stderr, "Initialisation...\n");
-//	BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
-	if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA)) {
-//	if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {
-//	 if (BPU_mecsInitCtx(&ctx, 5, 5, BPU_EN_MECS_BASIC_GOPPA)) {
-		return 1;
-	}
 	/***************************************/
 	fprintf(stderr, "Key generation...\n");
 	// key pair generation
-	if (BPU_mecsGenKeyPair(&ctx)) {
+	if (BPU_mecsGenKeyPair(ctx)) {
 		BPU_printError("Key generation error");
 
 		return 1;
 	}
 	/***************************************/
 	// prepare plain text, allocate memory and init random plaintext
-	if (BPU_gf2VecMalloc(&pt_in, ctx.pt_len)) {
+	if (BPU_gf2VecMalloc(&pt_in, ctx->pt_len)) {
 		BPU_printError("PT initialisation error");
 
-		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
 	BPU_gf2VecRand(&pt_in, 0);
 
 	// alocate cipher text vector
-	if (BPU_gf2VecMalloc(&ct, ctx.ct_len)) {
+	if (BPU_gf2VecMalloc(&ct, ctx->ct_len)) {
 		BPU_printError("CT vector allocation error");
 
 		BPU_gf2VecFree(&pt_in, 0);
-		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
 	// prepare plain text, allocate memory and init random plaintext
-	if (BPU_gf2VecMalloc(&pt_out, ctx.pt_len)) {
+	if (BPU_gf2VecMalloc(&pt_out, ctx->pt_len)) {
 		BPU_printError("PT out initialisation error");
 
-		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
 	BPU_gf2VecRand(&pt_out, 0);
 	/***************************************/
 	fprintf(stderr, "Encryption...\n");
 	// BPU_encrypt plain text
-	if (BPU_mecsEncrypt(&ct, &pt_in, &ctx)) {
+	if (BPU_mecsEncrypt(&ct, &pt_in, ctx)) {
 		BPU_printError("Encryption error");
 
 		BPU_gf2VecFree(&ct, 0);
 		BPU_gf2VecFree(&pt_in, 0);
 		BPU_gf2VecFree(&pt_out, 0);
-		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
 	// exit(0);
 	/***************************************/
 	fprintf(stderr, "Decryption...\n");
 	// decrypt cipher text
-	if (BPU_mecsDecrypt(&pt_out, &ct, &ctx)) {
+	if (BPU_mecsDecrypt(&pt_out, &ct, ctx)) {
 		BPU_printError("Decryption error");
 
 		BPU_gf2VecFree(&ct, 0);
 		BPU_gf2VecFree(&pt_in, 0);
 		BPU_gf2VecFree(&pt_out, 0);
-		BPU_mecsFreeCtx(&ctx);
 		return 1;
 	}
 	/***************************************/
@@ -117,7 +100,33 @@ int main(int argc, char **argv) {
 	BPU_gf2VecFree(&pt_in, 0);
 	BPU_gf2VecFree(&pt_out, 0);
 	BPU_gf2VecFree(&ct, 0);
+	return rc;
+}
+
+int main(int argc, char **argv) {
+	int rc = 0;
+	BPU_T_Mecs_Ctx ctx;
+
+	srand(time(NULL));
+
+	/***************************************/
+	// mce initialisation t = 50, m = 11
+	fprintf(stderr, "Basic GOPPA Initialisation...\n");
+	if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA)) {
+		return 1;
+	}
+
+	rc += testKeyGenEncDec(&ctx);
 	BPU_mecsFreeCtx(&ctx);
 
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+	fprintf(stderr, "\nCCA2 Pointcheval GOPPA Initialisation...\n");
+	if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {
+		return 1;
+	}
+
+	rc += testKeyGenEncDec(&ctx);
+	BPU_mecsFreeCtx(&ctx);
+#endif
 	return rc;
 }

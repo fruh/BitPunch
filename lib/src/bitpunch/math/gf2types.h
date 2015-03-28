@@ -32,7 +32,7 @@ typedef uint32_t BPU_T_GF2;
 typedef struct _BPU_T_GF2_Vector {
 	BPU_T_GF2 *elements; ///< all element of matrix
 	uint8_t element_bit_size; ///< element size, is sizeof(BPU_T_GF2) i.e. 64 bits
-	uint8_t elements_in_row; ///< number of elements in one row
+	uint16_t elements_in_row; ///< number of elements in one row
 	uint32_t len; ///< cols
 }BPU_T_GF2_Vector;
 
@@ -43,7 +43,7 @@ typedef struct _BPU_T_GF2_Vector {
 typedef struct _BPU_T_GF2_Matrix {
 	BPU_T_GF2 **elements; ///< all element of matrix
 	uint8_t element_bit_size; ///< element size, is sizeof(BPU_T_GF2) i.e. 64 bits
-	uint8_t elements_in_row; ///< number of elements in one row
+	uint16_t elements_in_row; ///< number of elements in one row
 	uint32_t k; ///< rows
 	uint32_t n; ///< cols
 }BPU_T_GF2_Matrix;
