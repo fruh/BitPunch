@@ -202,7 +202,7 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 }
 
 void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_Code_Ctx *ctx) {
-	int row, column;
+	int row, column, bit;
 #ifndef BPU_GOPPA_WITH_H
 	int k, e;
 	BPU_T_GF2_16x element, divider;
@@ -216,17 +216,16 @@ void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector 
 	}
 #else
 	for(column = 0; column < z->len; column++) {
+		bit = BPU_gf2VecGetBit(z, column);
 		divider = BPU_gf2xPowerModT(BPU_gf2xPolyEval(ctx->code_spec->goppa->g, ctx->math_ctx->exp_table[column], ctx->math_ctx), -1, ctx->math_ctx);
-		if (BPU_gf2VecGetBit(z, column)) {
 			for(row = 0; row < ctx->code_spec->goppa->g->deg; row++) {
 				element = 0;
 				for(k = ctx->code_spec->goppa->g->deg - row, e = 0; k <= ctx->code_spec->goppa->g->deg; k++, e++) {
 					element ^= BPU_gf2xMulMod(ctx->code_spec->goppa->g->coef[k], BPU_gf2xPowerModT (ctx->math_ctx->exp_table[column], e, ctx->math_ctx), ctx->math_ctx->mod);
 				}
 				element = BPU_gf2xMulMod(element, divider, ctx->math_ctx->mod);
-				syndrome->coef[syndrome->max_deg - row] ^= element;
+				syndrome->coef[syndrome->max_deg - row] ^= bit * element;
 			}
-		}
 	}
 #endif
 	syndrome->deg = BPU_gf2xPolyGetDeg(syndrome);  	
