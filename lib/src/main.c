@@ -38,13 +38,15 @@ int main(int argc, char **argv) {
 }
 
 int elpMeasurementsBB() {
-	int test, number_of_tests;
+	int j, number_of_tests;
 	BPU_T_Mecs_Ctx ctx;
-	BPU_T_GF2_Vector ct, pt_in, pt_out, error;
+	BPU_T_GF2_Vector ct, pt_in, pt_out, error, error_i;
 	int i, iter;
 	unsigned long long int start, stop, delta;
+	unsigned long long int* times;
 
 	srand(0);
+//	srand(time(NULL));
 
 	BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
 	BPU_mecsGenKeyPair(&ctx);
@@ -61,29 +63,39 @@ int elpMeasurementsBB() {
 	BPU_gf2VecRand(&error, ctx.ct_len, ctx.code_ctx->t);
 	ctx.code_ctx->_encode(&ct, &pt_in, ctx.code_ctx);
 	BPU_gf2VecXor(&ct, &error);
+	BPU_gf2VecMalloc(&error_i, ctx.ct_len);
 
+	times = (unsigned long long int*) calloc(1, sizeof(unsigned long long int)*ctx.ct_len);
 
 //	Decryption
-	number_of_tests = 2;
-//	removeErrorBit(&ct, &error, 1);
-	for (test = 0; test < number_of_tests; test++){
-		iter = 600;
-		for (i = 0; i < iter; i++) {
-#ifdef ATTACK_BB
+	number_of_tests = ctx.ct_len;
+
+	for (i = 0; i < number_of_tests; i++){
+		BPU_gf2VecSetBit(&error_i, i, 1);
+		BPU_gf2VecXor(&ct, &error_i);
+		iter = 20;
+		delta = 0;
+		for (j = 0; j < iter; j++) {
+//#ifdef ATTACK_BB
 			start = rdtsc();
-#endif
+//#endif
 			BPU_mecsDecrypt(&pt_out, &ct, &ctx);
-#ifdef ATTACK_BB
+//#ifdef ATTACK_BB
 			stop = rdtsc();
-			delta = stop - start;
-			if (i % 2 == 0)
-				fprintf(stdout, "%d\n", delta);
-#endif
+			if (j % 2 == 0) {
+				delta += stop - start;
+//				fprintf(stdout, "%d\n", delta);
+			}
+//#endif
 		}
-//		removeErrorBit(&ct, &error, 1);
-//		addErrorBit(&ct, &error, 1);
+		times[i] = delta/(float)(iter/2);
+		BPU_gf2VecXor(&ct, &error_i);
+		BPU_gf2VecSetBit(&error_i, i, 0);
 	}
 
+	BPU_printGf2Vec(&error);
+	fprintf(stdout, "\n");
+	printArray(times, ctx.ct_len);
 
 
 

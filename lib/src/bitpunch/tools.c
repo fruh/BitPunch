@@ -59,6 +59,13 @@ void addErrorBit(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *error, int number_of_e
 	}
 }
 
+void printArray(unsigned long long int* array, int len) {
+	int i;
+	for (i=0; i < len; i++) {
+		fprintf(stdout, "%d ", array[i]);
+	}
+}
+
 unsigned long long int rdtsc(void)
 {
 	unsigned long lo, hi;

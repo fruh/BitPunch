@@ -50,7 +50,7 @@ void BPU_printBinaryMsb32Ln(uint32_t in) {
 
 void BPU_printBinaryLsb(uint32_t in, int len) {
 	if (len > 0) {
-		fprintf(stderr, "%d", (int) (in & (0x1u)));
+		fprintf(stdout, "%d", (int) (in & (0x1u)));
 
 		BPU_printBinaryLsb(in >> 1, len - 1);
 	}

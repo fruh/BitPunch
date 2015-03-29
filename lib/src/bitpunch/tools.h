@@ -11,4 +11,5 @@ float timeDiff(struct timespec *te, struct timespec *ts);
 void removeErrorBit(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *error, int number_of_errors);
 void addErrorBit(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *error, int number_of_errors);
 unsigned long long int rdtsc(void);
+void printArray(unsigned long long int* array, int len);
 #endif // TOOLS_H
