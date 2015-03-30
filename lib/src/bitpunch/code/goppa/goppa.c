@@ -111,6 +111,7 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	int l;
 	BPU_T_GF2_16x tmp_eval;
 	BPU_T_GF2_Vector enc_permuted;
+	int counter;
 #ifdef ATTACK_INSIDE
 	unsigned long long int start1, stop1, delta1;
 #endif
@@ -183,11 +184,10 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 #ifdef COUNTER_MEASURE
 	sigma.deg = ctx->t;
 #endif
+	counter = 0;
 	for (l = 0; l < ctx->code_spec->goppa->support_len; l++) {
 		tmp_eval = BPU_gf2xPolyEval(&sigma, ctx->math_ctx->exp_table[l], ctx->math_ctx);
-		if (tmp_eval == 0) {
-			BPU_gf2VecSetBit(error, l, 1);
-		}
+		BPU_gf2VecSetBit(error, l, !tmp_eval);
 	}
 #ifdef ATTACK_INSIDE
 	stop1 = rdtsc();

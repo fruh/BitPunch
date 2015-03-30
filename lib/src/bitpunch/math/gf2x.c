@@ -124,9 +124,11 @@ BPU_T_GF2_16x BPU_gf2xPowerModT(BPU_T_GF2_16x a, int e, const BPU_T_Math_Ctx *ma
 }
 
 BPU_T_GF2_16x BPU_gf2xMulModT(BPU_T_GF2_16x a, BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx) {
-	if (a == 0 || b == 0)
-		return 0;
-	return math_ctx->exp_table[(math_ctx->log_table[a] + math_ctx->log_table[b]) % math_ctx->ord];
+	BPU_T_GF2_16x candidate;
+	candidate = math_ctx->exp_table[(math_ctx->log_table[a] + math_ctx->log_table[b]) % math_ctx->ord];
+	if (a * b)
+		return candidate;
+	return 0;
 }
 
 /*** PZ: speedup critical instructions ***/

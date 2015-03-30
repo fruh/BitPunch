@@ -67,7 +67,7 @@ int elpMeasurementsBB() {
 	number_of_tests = 2;
 //	removeErrorBit(&ct, &error, 1);
 	for (test = 0; test < number_of_tests; test++){
-		iter = 600;
+		iter = 1000;
 		for (i = 0; i < iter; i++) {
 #ifdef ATTACK_BB
 			start = rdtsc();
@@ -80,8 +80,8 @@ int elpMeasurementsBB() {
 				fprintf(stdout, "%d\n", delta);
 #endif
 		}
-//		removeErrorBit(&ct, &error, 1);
-//		addErrorBit(&ct, &error, 1);
+		removeErrorBit(&ct, &error, 1);
+//		addErrorBit(&ct, &error, 2);
 	}
 
 
