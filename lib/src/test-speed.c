@@ -28,8 +28,9 @@
 #define BPU_TEST_ROUNDS 300
 
 int main(int argc, char **argv) {
-	BPU_T_Mecs_Ctx ctx;
-	BPU_T_GF2_Vector ct, pt;
+    // MUST BE INITIaLIZED TO NULL
+    BPU_T_Mecs_Ctx *ctx = NULL;
+    BPU_T_GF2_Vector *ct, *pt;
 	int i;
 	struct timeval tv, tv_end;
 	double res = 0;
@@ -42,27 +43,27 @@ int main(int argc, char **argv) {
 		BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
 		gettimeofday(&tv, NULL);
 
-		BPU_mecsGenKeyPair(&ctx);
+        BPU_mecsGenKeyPair(ctx);
 		gettimeofday(&tv_end, NULL);
 		res += (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000));
 
-		BPU_gf2VecMalloc(&ct, ctx.ct_len);
-		BPU_gf2VecMalloc(&pt, ctx.pt_len);
-		BPU_gf2VecRand(&pt, 0);
+        BPU_gf2VecMalloc(&ct, ctx->ct_len);
+        BPU_gf2VecMalloc(&pt, ctx->pt_len);
+        BPU_gf2VecRand(pt, 0);
 
 		gettimeofday(&tv, NULL);
-		BPU_mecsEncrypt(&ct, &pt, &ctx);
+        BPU_mecsEncrypt(ct, pt, ctx);
 		gettimeofday(&tv_end, NULL);
 		res_2 += (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000));
 
 		gettimeofday(&tv, NULL);
-		BPU_mecsDecrypt(&pt, &ct, &ctx);
+        BPU_mecsDecrypt(pt, ct, ctx);
 		gettimeofday(&tv_end, NULL);
 		res_3 += (tv_end.tv_sec - tv.tv_sec + ((tv_end.tv_usec - tv.tv_usec) / (double)1000000));
 
-		BPU_gf2VecFree(&pt, 0);
-		BPU_gf2VecFree(&ct, 0);
-		BPU_mecsFreeCtx(&ctx);
+        BPU_gf2VecFree(&pt);
+        BPU_gf2VecFree(&ct);
+        BPU_mecsFreeCtx(&ctx);
 	}
 	fprintf(stderr, "%0.6lf\n", res / BPU_TEST_ROUNDS);
 	fprintf(stderr, "%0.6lf\n", res_2 / BPU_TEST_ROUNDS);

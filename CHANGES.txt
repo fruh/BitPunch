@@ -1,3 +1,11 @@
+v0.0.3
+	- added Adapted Pointcheval's scheme
+	- implemented SHA512 from (https://polarssl.org)
+	- BPU_*Malloc - now using TYPE **pointer and laso BPU_*Free
+	- implemented ASN1 key serialization using libtasn1 (external dependency) (https://www.gnu.org/software/libtasn1/) for mecs basic, Pointcheval's scheme, both with H matrix
+	- some error checks fixed
+	- added zero to support
+
 v0.0.2
 	- module organization: crypto, math, code, prng
 	- convention unified see doc

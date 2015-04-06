@@ -39,6 +39,13 @@ void BPU_printPerm(const BPU_T_Perm_Vector *permutation);
 int BPU_permRandomize(BPU_T_Perm_Vector* permutation);
 
 /**
+ * @brief BPU_swap
+ * @param a
+ * @param b
+ */
+void BPU_permSwap(BPU_T_Perm_Element *a, BPU_T_Perm_Element *b);
+
+/**
  * Get inverse permutation to permutation.
  * @param  out inverted permutation must be allocated
  * @param  in  permutation

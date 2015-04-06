@@ -30,10 +30,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * @return   [description]
  */
 int BPU_isPrime(int n);
-/**
- * @brief BPU_swap
- * @param a
- * @param b
- */
-void BPU_swap(uint32_t *a, uint32_t *b);
+
 #endif // BPU_INT_H

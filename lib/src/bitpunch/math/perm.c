@@ -47,9 +47,16 @@ int BPU_permRandomize(BPU_T_Perm_Vector* permutation) {
 	}
 	for (i = 0; i < permutation->size; i++) {
 		rand_value = BPU_prngGetRand(i, permutation->size);
-		BPU_swap(&permutation->elements[i], &permutation->elements[rand_value]);
+        BPU_permSwap(&permutation->elements[i], &permutation->elements[rand_value]);
 	}
 	return 0;
+}
+
+void BPU_permSwap(BPU_T_Perm_Element *a, BPU_T_Perm_Element *b) {
+    BPU_T_Perm_Element tmp;
+    tmp = *a;
+    *a = *b;
+    *b = tmp;
 }
 
 int BPU_permGetInv(BPU_T_Perm_Vector *out, const BPU_T_Perm_Vector *in) {
@@ -69,25 +76,25 @@ int BPU_permGetInv(BPU_T_Perm_Vector *out, const BPU_T_Perm_Vector *in) {
 
 int BPU_permPermute(BPU_T_Perm_Vector *to_permute, const BPU_T_Perm_Vector *permutation) {
 	int i;
-	BPU_T_Perm_Vector new_permutation;
+    BPU_T_Perm_Vector *new_permutation;
 
 	// check if the size is correct
 	if (to_permute->size != permutation->size){
 		return -1;
 	}
 	// allocate new permutation
-	if (BPU_permMalloc(&new_permutation, to_permute->size) != 0){
+    if (BPU_permMalloc(&new_permutation, to_permute->size) != 0){
 		return -2;
 	}
 	// copy the permutation
 	for (i = 0; i < to_permute->size; i++) {
-		new_permutation.elements[i] = to_permute->elements[i];
+        new_permutation->elements[i] = to_permute->elements[i];
 	}
 	// permute
 	for (i = 0; i < permutation->size; i++) { // row loop
-		to_permute->elements[i] = new_permutation.elements[permutation->elements[i]];
+        to_permute->elements[i] = new_permutation->elements[permutation->elements[i]];
 	}
-	BPU_permFree(&new_permutation, 0);
+    BPU_permFree(&new_permutation);
 
 	return 0;
 }

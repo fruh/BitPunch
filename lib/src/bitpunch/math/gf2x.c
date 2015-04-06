@@ -163,8 +163,7 @@ void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
 	out_deg = a->deg > b->deg ? a->deg : b->deg;
 
 	if (out->max_deg < out_deg) {
-		BPU_gf2xPolyFree(out, 0);
-		BPU_gf2xPolyMalloc(out, out_deg);
+        BPU_gf2xPolyResize(out, out_deg);
 	}
 	else {
 		BPU_gf2xPolyNull(out);
@@ -182,30 +181,28 @@ void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
 
 void BPU_gf2xPolyDiv(BPU_T_GF2_16x_Poly *q, BPU_T_GF2_16x_Poly *r, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, const BPU_T_Math_Ctx *math_ctx) {
 	// a:b = q+r
-	BPU_T_GF2_16x_Poly tmp;
+    BPU_T_GF2_16x_Poly *tmp;
 	BPU_T_GF2_16x leader;
-	BPU_T_GF2_16x_Poly dividend;
+    BPU_T_GF2_16x_Poly *dividend;
 	const BPU_T_GF2_16x_Poly *divider = b;
 	int exponent;
 	int i;
 	int max_deg_q;
 
 	BPU_gf2xPolyMalloc(&dividend, a->max_deg);
-	BPU_gf2xPolyCopy(&dividend, a);
+    BPU_gf2xPolyCopy(dividend, a);
 	
 	max_deg_q = a->deg - b->deg;
 
 	// check size of outputs
 	if (q->max_deg < max_deg_q) {
-		BPU_gf2xPolyFree(q, 0);
-		BPU_gf2xPolyMalloc(q, max_deg_q);
+        BPU_gf2xPolyResize(q, max_deg_q);
 	}
 	else {
 		BPU_gf2xPolyNull(q);
 	}
 	if (r->max_deg < (b->max_deg - 1)) {
-		BPU_gf2xPolyFree(r, 0);
-		BPU_gf2xPolyMalloc(r, b->max_deg - 1);
+        BPU_gf2xPolyResize(r, b->max_deg - 1);
 	}
 	else {
 		BPU_gf2xPolyNull(r);
@@ -213,24 +210,24 @@ void BPU_gf2xPolyDiv(BPU_T_GF2_16x_Poly *q, BPU_T_GF2_16x_Poly *r, const BPU_T_G
 	BPU_gf2xPolyMalloc(&tmp, a->max_deg);
 
 	for (i = a->deg; i >= 0; i--) {
-		if (dividend.deg < divider->deg) {
-			BPU_gf2xPolyCopy(r, &dividend);
+        if (dividend->deg < divider->deg) {
+            BPU_gf2xPolyCopy(r, dividend);
 			break;
 		}
-		BPU_gf2xPolyNull(&tmp);
-		leader = BPU_gf2xMulModT(dividend.coef[i], BPU_gf2xPowerModT(divider->coef[divider->deg], -1, math_ctx), math_ctx);
-		exponent = dividend.deg - divider->deg;
+        BPU_gf2xPolyNull(tmp);
+        leader = BPU_gf2xMulModT(dividend->coef[i], BPU_gf2xPowerModT(divider->coef[divider->deg], -1, math_ctx), math_ctx);
+        exponent = dividend->deg - divider->deg;
 		q->coef[exponent] = leader;
 
 		if(q->deg == -1) {
 			q->deg = BPU_gf2xPolyGetDeg(q);            
 		}
-		BPU_gf2xPolyMul(&tmp, divider, q, math_ctx);
+        BPU_gf2xPolyMul(tmp, divider, q, math_ctx);
 
-		BPU_gf2xPolyAdd(&dividend, a, &tmp);
+        BPU_gf2xPolyAdd(dividend, a, tmp);
 	}
-	BPU_gf2xPolyFree(&dividend, 0);
-	BPU_gf2xPolyFree(&tmp, 0);
+    BPU_gf2xPolyFree(&dividend);
+    BPU_gf2xPolyFree(&tmp);
 }
 
 void BPU_gf2xPolyMul(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, const BPU_T_Math_Ctx *math_ctx) {
@@ -239,8 +236,7 @@ void BPU_gf2xPolyMul(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
 	int max_deg = a->deg + b->deg;
 	
 	if (out->max_deg < max_deg) {
-		BPU_gf2xPolyFree(out, 0);
-		BPU_gf2xPolyMalloc(out, max_deg);
+        BPU_gf2xPolyResize(out, max_deg);
 	}
 	else {
 		BPU_gf2xPolyNull(out);
@@ -255,51 +251,49 @@ void BPU_gf2xPolyMul(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
 }
 
 void BPU_gf2xPolyShr(BPU_T_GF2_16x_Poly *a, int n) {
-	BPU_T_GF2_16x_Poly tmp;
+    BPU_T_GF2_16x_Poly *tmp;
 
 	// if there is nothing to shift, return
 	if (a->deg == -1 || n <= 0) {
 		return;
 	}
 	BPU_gf2xPolyMalloc(&tmp, a->deg);
-	BPU_gf2xPolyCopy(&tmp, a);
+    BPU_gf2xPolyCopy(tmp, a);
 	BPU_gf2xPolyNull(a);
 
-	if (n < tmp.deg + 1) {
-		memcpy((void *)(a->coef), (void *)(tmp.coef + n), (tmp.deg + 1 - n) * sizeof(BPU_T_GF2_16x));
+    if (n < tmp->deg + 1) {
+        memcpy((void *)(a->coef), (void *)(tmp->coef + n), (tmp->deg + 1 - n) * sizeof(BPU_T_GF2_16x));
 
 		a->deg = BPU_gf2xPolyGetDeg(a);
 	}
-	BPU_gf2xPolyFree(&tmp, 0);
+    BPU_gf2xPolyFree(&tmp);
 }
 
 void BPU_gf2xPolyShl(BPU_T_GF2_16x_Poly *a, int n) {
-	BPU_T_GF2_16x_Poly tmp;
+    BPU_T_GF2_16x_Poly *tmp;
 
 	// if there is nothing to shift, return
 	if (a->deg == -1 || n <= 0) {
 		return;
 	}
 	BPU_gf2xPolyMalloc(&tmp, a->deg);
-	BPU_gf2xPolyCopy(&tmp, a);
+    BPU_gf2xPolyCopy(tmp, a);
 
 	if (a->max_deg < a->deg + n) {
-		BPU_gf2xPolyFree(a, 0);
-
-		BPU_gf2xPolyMalloc(a, a->deg + n);
+        BPU_gf2xPolyResize(a, a->deg + n);
 	}
 	else {
 		BPU_gf2xPolyNull(a);
 	}
-	memcpy((void *)(a->coef + n), (void *)tmp.coef, (tmp.deg + 1) * sizeof(BPU_T_GF2_16x));
+    memcpy((void *)(a->coef + n), (void *)tmp->coef, (tmp->deg + 1) * sizeof(BPU_T_GF2_16x));
 	a->deg = BPU_gf2xPolyGetDeg(a);
 
-	BPU_gf2xPolyFree(&tmp, 0);
+    BPU_gf2xPolyFree(&tmp);
 }
 
 void BPU_gf2xPolyPower(BPU_T_GF2_16x_Poly *a, int e, const BPU_T_Math_Ctx *math_ctx) {
 	int i;
-	BPU_T_GF2_16x_Poly tmp, tmp_2;
+    BPU_T_GF2_16x_Poly *tmp, *tmp_2;
 
 	if (e < 0) {
 		BPU_printError("gf2xPolyPower: e < 0, NOT IMPLEMENTED YET");
@@ -318,17 +312,17 @@ void BPU_gf2xPolyPower(BPU_T_GF2_16x_Poly *a, int e, const BPU_T_Math_Ctx *math_
 		BPU_gf2xPolyMalloc(&tmp, a->deg * e);
 		BPU_gf2xPolyMalloc(&tmp_2, a->deg * e);
 
-		BPU_gf2xPolyCopy(&tmp, a);
+        BPU_gf2xPolyCopy(tmp, a);
 
 		for (i = 1; i < e; i++) {
-			BPU_gf2xPolyCopy(&tmp_2, &tmp);
+            BPU_gf2xPolyCopy(tmp_2, tmp);
 
-			BPU_gf2xPolyMul(&tmp, &tmp_2, a, math_ctx);
+            BPU_gf2xPolyMul(tmp, tmp_2, a, math_ctx);
 		}
-		BPU_gf2xPolyCopy(a, &tmp);
+        BPU_gf2xPolyCopy(a, tmp);
 
-		BPU_gf2xPolyFree(&tmp, 0);
-		BPU_gf2xPolyFree(&tmp_2, 0);
+        BPU_gf2xPolyFree(&tmp);
+        BPU_gf2xPolyFree(&tmp_2);
 	}
 }
 
@@ -343,15 +337,14 @@ void BPU_gf2xPolyMulEl(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x el, const BPU_T_Math
 
 void BPU_gf2xPolyMod(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx) {
 	int i;
-	BPU_T_GF2_16x_Poly tmp_out, tmp_mod;
+    BPU_T_GF2_16x_Poly *tmp_out, *tmp_mod;
 	BPU_T_GF2_16x lead;
 
 	if (mod->deg < 0) {
 		return;
 	}
 	if (out->max_deg < a->deg) {
-		BPU_gf2xPolyFree(out, 0);
-		BPU_gf2xPolyMalloc(out, a->deg);
+        BPU_gf2xPolyResize(out, a->deg);
 	}
 	else {
 		BPU_gf2xPolyNull(out);
@@ -365,64 +358,62 @@ void BPU_gf2xPolyMod(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
 	// prepare tmp variables
 	BPU_gf2xPolyMalloc(&tmp_mod, a->deg);
 	BPU_gf2xPolyMalloc(&tmp_out, a->deg);
-	BPU_gf2xPolyCopy(&tmp_out, a);
+    BPU_gf2xPolyCopy(tmp_out, a);
 
 	for (i = a->deg; i >= mod->deg; i--) {
-		BPU_gf2xPolyCopy(&tmp_mod, mod);
+        BPU_gf2xPolyCopy(tmp_mod, mod);
 
-		lead = BPU_gf2xGetPseudoInv(BPU_gf2xPolyLeadCoef(mod), tmp_out.coef[i], math_ctx);
+        lead = BPU_gf2xGetPseudoInv(BPU_gf2xPolyLeadCoef(mod), tmp_out->coef[i], math_ctx);
 		
-		BPU_gf2xPolyMulEl(&tmp_mod, lead, math_ctx);
-		BPU_gf2xPolyShl(&tmp_mod, tmp_out.deg - mod->deg);
-		BPU_gf2xPolyAdd(out, &tmp_out, &tmp_mod);
+        BPU_gf2xPolyMulEl(tmp_mod, lead, math_ctx);
+        BPU_gf2xPolyShl(tmp_mod, tmp_out->deg - mod->deg);
+        BPU_gf2xPolyAdd(out, tmp_out, tmp_mod);
 
 		if (i > mod->deg) {
-			BPU_gf2xPolyCopy(&tmp_out, out);
+            BPU_gf2xPolyCopy(tmp_out, out);
 		}
 	}
-	BPU_gf2xPolyFree(&tmp_mod, 0);
-	BPU_gf2xPolyFree(&tmp_out, 0);
+    BPU_gf2xPolyFree(&tmp_mod);
+    BPU_gf2xPolyFree(&tmp_out);
 }
 
 void BPU_gf2xMatRoot(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx) {
 	int i, j;
-	BPU_T_GF2_16x_Poly row, tmp;
-	BPU_T_GF2_16x_Matrix bigMat;//, test;//, test_out; // matrix (S | I)
+    BPU_T_GF2_16x_Poly *row, *tmp;
+    BPU_T_GF2_16x_Matrix *bigMat;//, test;//, test_out; // matrix (S | I)
 
 	// create square matrix
 	BPU_gf2xMatNull(out);
 	BPU_gf2xMatMalloc(&bigMat, mod->deg, mod->deg * 2);
-	BPU_gf2xMatNull(&bigMat);
 	BPU_gf2xPolyMalloc(&tmp, 0);
-	
 	BPU_gf2xPolyMalloc(&row, (2 * out->k));
 
 	for (i = 0; i < out->k; i++) {
-		BPU_gf2xPolyNull(&row);
-		row.coef[2*i] = 1;
-		row.deg = 2*i;
+        BPU_gf2xPolyNull(row);
+        row->coef[2*i] = 1;
+        row->deg = 2*i;
 		// compute line
-		BPU_gf2xPolyMod(&tmp, &row, mod, math_ctx);
+        BPU_gf2xPolyMod(tmp, row, mod, math_ctx);
 		// copy elements from polynomial into matrix 
-		BPU_gf2xMatInsertPoly(out, &tmp, i);
+        BPU_gf2xMatInsertPoly(out, tmp, i);
 	}
-	BPU_gf2xPolyFree(&tmp, 0);
-	BPU_gf2xPolyFree(&row, 0);
+    BPU_gf2xPolyFree(&tmp);
+    BPU_gf2xPolyFree(&row);
 
 	for (i = 0; i < out->k; i++) {
 		for (j = 0; j < out->k; j++) {
-			bigMat.elements[i][j] = out->elements[i][j];
+            bigMat->elements[i][j] = out->elements[i][j];
 		}
-		bigMat.elements[i][out->n + i] = 1;
+        bigMat->elements[i][out->n + i] = 1;
 	}
-	BPU_gf2xMatGEM(&bigMat, math_ctx);
+    BPU_gf2xMatGEM(bigMat, math_ctx);
 
 	for (i = 0; i < out->k; i++) {
 		for (j = 0; j < out->k; j++) {
-			out->elements[i][j] = BPU_gf2xRoot(bigMat.elements[i][out->k + j], math_ctx);
+            out->elements[i][j] = BPU_gf2xRoot(bigMat->elements[i][out->k + j], math_ctx);
 		}
 	}
-	BPU_gf2xMatFree(&bigMat, 0);
+    BPU_gf2xMatFree(&bigMat);
 }
 
 void BPU_gf2xVecMulMat(BPU_T_GF2_16x_Vector *out, const BPU_T_GF2_16x_Vector *x, const BPU_T_GF2_16x_Matrix *mat, const BPU_T_Math_Ctx *math_ctx) {
@@ -455,31 +446,30 @@ BPU_T_GF2_16x BPU_gf2xRoot(BPU_T_GF2_16x element, const BPU_T_Math_Ctx *math_ctx
 }
 
 void BPU_gf2xPolyRoot(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx) {
-	BPU_T_GF2_16x_Vector tmp, tmp_out;
-	BPU_T_GF2_16x_Matrix squareMat;
+    BPU_T_GF2_16x_Vector *tmp, *tmp_out;
+    BPU_T_GF2_16x_Matrix *squareMat;
 	int i;
 
 	BPU_gf2xVecMalloc(&tmp_out, mod->deg);
 
 	if (out->deg < mod->deg) {
-		BPU_gf2xPolyFree(out, 0);
-		BPU_gf2xPolyMalloc(out, mod->deg);
+        BPU_gf2xPolyResize(out, mod->deg);
 	}
 	BPU_gf2xVecMalloc(&tmp, mod->deg);
-	BPU_gf2xPolyToVec(&tmp, poly, mod->deg);
+    BPU_gf2xPolyToVec(tmp, poly, mod->deg);
 	BPU_gf2xMatMalloc(&squareMat, mod->deg, mod->deg);
-	BPU_gf2xMatRoot(&squareMat, mod, math_ctx);
+    BPU_gf2xMatRoot(squareMat, mod, math_ctx);
 
-	for (i = 0; i < tmp.len; i++) {
-		tmp.elements[i] = BPU_gf2xRoot(tmp.elements[i], math_ctx);
+    for (i = 0; i < tmp->len; i++) {
+        tmp->elements[i] = BPU_gf2xRoot(tmp->elements[i], math_ctx);
 	}
-	BPU_gf2xVecMulMat(&tmp_out, &tmp, &squareMat, math_ctx);
+    BPU_gf2xVecMulMat(tmp_out, tmp, squareMat, math_ctx);
 	BPU_gf2xPolyNull(out);
-	BPU_gf2xVecToPoly(out, &tmp_out);
+    BPU_gf2xVecToPoly(out, tmp_out);
 
-	BPU_gf2xMatFree(&squareMat, 0);
-	BPU_gf2xVecFree(&tmp, 0);
-	BPU_gf2xVecFree(&tmp_out, 0);
+    BPU_gf2xMatFree(&squareMat);
+    BPU_gf2xVecFree(&tmp);
+    BPU_gf2xVecFree(&tmp_out);
 }
 
 int BPU_gf2xGetDeg(BPU_T_GF2_32x poly) {
@@ -551,7 +541,7 @@ int BPU_gf2xMatConvertToGf2Mat(BPU_T_GF2_Matrix *out, const BPU_T_GF2_16x_Matrix
 }
 
 int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF2_16x_Poly *t, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, const int end_deg, const BPU_T_Math_Ctx *math_ctx) {
-	BPU_T_GF2_16x_Poly tmp, tmp_2, old_s, old_t, old_r, r, q;
+    BPU_T_GF2_16x_Poly *tmp, *tmp_2, *old_s, *old_t, *old_r, *r, *q;
 	BPU_T_GF2_16x inv_lead;
 	int deg;
 
@@ -559,16 +549,13 @@ int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF
 	
 	// check GCD qoutient size
 	if (d->max_deg < deg) {
-		BPU_gf2xPolyFree(d, 0);
-		BPU_gf2xPolyMalloc(d, deg);
+        BPU_gf2xPolyResize(d, deg);
 	}
 	if (s->max_deg < deg) {
-		BPU_gf2xPolyFree(s, 0);
-		BPU_gf2xPolyMalloc(s, deg);
+        BPU_gf2xPolyResize(s, deg);
 	}
 	if (t->max_deg < deg) {
-		BPU_gf2xPolyFree(t, 0);
-		BPU_gf2xPolyMalloc(t, deg);
+        BPU_gf2xPolyResize(t, deg);
 	}
 	BPU_gf2xPolyMalloc(&tmp, deg);
 	BPU_gf2xPolyMalloc(&tmp_2, deg);
@@ -578,51 +565,51 @@ int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF
 	BPU_gf2xPolyMalloc(&r, deg);
 	BPU_gf2xPolyMalloc(&q, deg);
 
-	BPU_gf2xPolyCopy(&r, b);
-	BPU_gf2xPolyCopy(&old_r, a);
+    BPU_gf2xPolyCopy(r, b);
+    BPU_gf2xPolyCopy(old_r, a);
 
 	if (a->deg == -1) {
-		BPU_gf2xPolyCopy(&old_r, b);
-		old_t.coef[0] = 1;
-		old_t.deg = 0;
+        BPU_gf2xPolyCopy(old_r, b);
+        old_t->coef[0] = 1;
+        old_t->deg = 0;
 	}
 	else if (b->deg == -1) {
-		BPU_gf2xPolyCopy(&old_r, a);
-		old_s.coef[0] = 1;
-		old_s.deg = 0;
+        BPU_gf2xPolyCopy(old_r, a);
+        old_s->coef[0] = 1;
+        old_s->deg = 0;
 	}
 	else {
-		old_s.coef[0] = 1;
-		old_s.deg = 0;
+        old_s->coef[0] = 1;
+        old_s->deg = 0;
 
 		t->coef[0] = 1;
 		t->deg = 0;
 
-		while (old_r.deg > end_deg && r.deg > -1) {   
-			BPU_gf2xPolyDiv(&q, &tmp, &old_r, &r, math_ctx);
+        while (old_r->deg > end_deg && r->deg > -1) {
+            BPU_gf2xPolyDiv(q, tmp, old_r, r, math_ctx);
 
 			// save old reminder
-			BPU_gf2xPolyCopy(&old_r, &r);
+            BPU_gf2xPolyCopy(old_r, r);
 			// save current reminder
-			BPU_gf2xPolyCopy(&r, &tmp);
+            BPU_gf2xPolyCopy(r, tmp);
 
 			// save s quocient
-			BPU_gf2xPolyCopy(&tmp, &old_s);
-			BPU_gf2xPolyCopy(&old_s, s);
-			BPU_gf2xPolyMul(&tmp_2, &q, s, math_ctx);
-			BPU_gf2xPolyAdd(s, &tmp, &tmp_2);
+            BPU_gf2xPolyCopy(tmp, old_s);
+            BPU_gf2xPolyCopy(old_s, s);
+            BPU_gf2xPolyMul(tmp_2, q, s, math_ctx);
+            BPU_gf2xPolyAdd(s, tmp, tmp_2);
 
 			// save t quocient
-			BPU_gf2xPolyCopy(&tmp, &old_t);
-			BPU_gf2xPolyCopy(&old_t, t);
-			BPU_gf2xPolyMul(&tmp_2, &q, t, math_ctx);
-			BPU_gf2xPolyAdd(t, &tmp, &tmp_2);
+            BPU_gf2xPolyCopy(tmp, old_t);
+            BPU_gf2xPolyCopy(old_t, t);
+            BPU_gf2xPolyMul(tmp_2, q, t, math_ctx);
+            BPU_gf2xPolyAdd(t, tmp, tmp_2);
 		}
 	} 
 	// prepare return values
-	BPU_gf2xPolyCopy(d, &old_r);
-	BPU_gf2xPolyCopy(s, &old_s);
-	BPU_gf2xPolyCopy(t, &old_t);
+    BPU_gf2xPolyCopy(d, old_r);
+    BPU_gf2xPolyCopy(s, old_s);
+    BPU_gf2xPolyCopy(t, old_t);
 
 	// make monic, if it is not
 	inv_lead = BPU_gf2xPolyMakeMonic(d, math_ctx);
@@ -631,13 +618,13 @@ int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF
 		BPU_gf2xPolyMulEl(s, inv_lead, math_ctx);
 		BPU_gf2xPolyMulEl(t, inv_lead, math_ctx);
 	}
-	BPU_gf2xPolyFree(&tmp, 0);
-	BPU_gf2xPolyFree(&tmp_2, 0);
-	BPU_gf2xPolyFree(&old_s, 0);
-	BPU_gf2xPolyFree(&old_t, 0);
-	BPU_gf2xPolyFree(&old_r, 0);
-	BPU_gf2xPolyFree(&r, 0);
-	BPU_gf2xPolyFree(&q, 0);
+    BPU_gf2xPolyFree(&tmp);
+    BPU_gf2xPolyFree(&tmp_2);
+    BPU_gf2xPolyFree(&old_s);
+    BPU_gf2xPolyFree(&old_t);
+    BPU_gf2xPolyFree(&old_r);
+    BPU_gf2xPolyFree(&r);
+    BPU_gf2xPolyFree(&q);
 
 	return 0;
 }
@@ -656,14 +643,14 @@ BPU_T_GF2_16x BPU_gf2xPolyEval(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_1
 int BPU_gf2xPolyCmp(const BPU_T_GF2_16x_Poly *p1, const BPU_T_GF2_16x_Poly *p2) {
 	int i;    
 	if (p1->deg != p2->deg) {
-		return 0;
+        return -1;
 	}
 	for (i = 0; i <= p1->deg; i++) {
 		if (p1->coef[i] != p2->coef[i]) {
-			return 0;
+            return i + 1;
 		}    
 	}
-	return 1;
+    return 0;
 }
 
 int BPU_gf2xPolyIrredTest(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *math_ctx) {
@@ -678,7 +665,7 @@ int BPU_gf2xPolyIrredTest(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *mat
 	int m = math_ctx->mod_deg;
 	int n = p->deg;
 	int exponent = m*n;
-	BPU_T_GF2_16x_Poly tmp, out, qr, x, gcd, s, t, one;
+    BPU_T_GF2_16x_Poly *tmp, *out, *qr, *x, *gcd, *s, *t, *one;
 
 	// test if some alpha is root
 	for (i = 0; i < math_ctx->ord; i++) {
@@ -694,39 +681,40 @@ int BPU_gf2xPolyIrredTest(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *mat
 	// gcd, s, t, will be allocated inside gf2xPolyExtEuclidA
 
 	// set tmp polynomial tmp(x) = x
-	tmp.coef[0] = 0;
-	tmp.coef[1] = 1;
-	tmp.deg = BPU_gf2xPolyGetDeg(&tmp);
+    tmp->coef[0] = 0;
+    tmp->coef[1] = 1;
+    tmp->deg = BPU_gf2xPolyGetDeg(tmp);
 
-	x.coef[0] = 0;
-	x.coef[1] = 1;
-	x.deg = BPU_gf2xPolyGetDeg(&x);
+    x->coef[0] = 0;
+    x->coef[1] = 1;
+    x->deg = BPU_gf2xPolyGetDeg(x);
 
-	one.coef[0] = 1;
-	one.deg = 0;
+    one->coef[0] = 1;
+    one->deg = 0;
 
 	// simplify polynomial with big coeffitient
 	for (i = 0; i < exponent; i++) {
-		BPU_gf2xPolyMul(&out, &tmp, &tmp, math_ctx);
-		BPU_gf2xPolyMod(&tmp, &out, p, math_ctx);
+        BPU_gf2xPolyMul(out, tmp, tmp, math_ctx);
+        BPU_gf2xPolyMod(tmp, out, p, math_ctx);
 	}
-	BPU_gf2xPolyAdd(&qr, &tmp, &x);
+    BPU_gf2xPolyAdd(qr, tmp, x);
 
-	BPU_gf2xPolyMalloc(&gcd, (qr.deg > p->deg) ? qr.deg : p->deg);
-	BPU_gf2xPolyMalloc(&s, gcd.max_deg);
-	BPU_gf2xPolyMalloc(&t, gcd.max_deg);
+    BPU_gf2xPolyMalloc(&gcd, (qr->deg > p->deg) ? qr->deg : p->deg);
+    BPU_gf2xPolyMalloc(&s, gcd->max_deg);
+    BPU_gf2xPolyMalloc(&t, gcd->max_deg);
 
-	BPU_gf2xPolyExtEuclid(&gcd, &s, &t, &qr, p, -1, math_ctx);
+    BPU_gf2xPolyExtEuclid(gcd, s, t, qr, p, -1, math_ctx);
 
-	if (BPU_gf2xPolyCmp(p, &gcd) != 1) {
-		BPU_gf2xPolyFree(&out, 0);
-		BPU_gf2xPolyFree(&one, 0);
-		BPU_gf2xPolyFree(&qr, 0);
-		BPU_gf2xPolyFree(&tmp, 0);
-		BPU_gf2xPolyFree(&x, 0);
-		BPU_gf2xPolyFree(&gcd, 0);
-		BPU_gf2xPolyFree(&s, 0);
-		BPU_gf2xPolyFree(&t, 0);
+    // if differs
+    if (BPU_gf2xPolyCmp(p, gcd)) {
+        BPU_gf2xPolyFree(&out);
+        BPU_gf2xPolyFree(&one);
+        BPU_gf2xPolyFree(&qr);
+        BPU_gf2xPolyFree(&tmp);
+        BPU_gf2xPolyFree(&x);
+        BPU_gf2xPolyFree(&gcd);
+        BPU_gf2xPolyFree(&s);
+        BPU_gf2xPolyFree(&t);
 		return 0;
 	}
 
@@ -734,32 +722,32 @@ int BPU_gf2xPolyIrredTest(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *mat
 		if (p->deg % j != 0 || BPU_isPrime(j) == 0){
 			continue;
 		}
-		BPU_gf2xPolyNull(&tmp);
-		tmp.coef[0] = 0;
-		tmp.coef[1] = 1;
-		tmp.deg = BPU_gf2xPolyGetDeg(&tmp);
+        BPU_gf2xPolyNull(tmp);
+        tmp->coef[0] = 0;
+        tmp->coef[1] = 1;
+        tmp->deg = BPU_gf2xPolyGetDeg(tmp);
 		
 		exponent = m*(n/j);
 
 		for (i = 0; i < exponent; i++) {
-			BPU_gf2xPolyMul(&out, &tmp, &tmp, math_ctx);
-			BPU_gf2xPolyMod(&tmp, &out, p, math_ctx);
+            BPU_gf2xPolyMul(out, tmp, tmp, math_ctx);
+            BPU_gf2xPolyMod(tmp, out, p, math_ctx);
 		}
-		BPU_gf2xPolyExtEuclid(&gcd, &s, &t, &tmp, p, -1, math_ctx);
-
-		if (BPU_gf2xPolyCmp(&one, &gcd) != 1) {
+        BPU_gf2xPolyExtEuclid(gcd, s, t, tmp, p, -1, math_ctx);
+        // if differs
+        if (BPU_gf2xPolyCmp(one, gcd)) {
 			is_irred = 0;
 			break;
 		}
 	}
-	BPU_gf2xPolyFree(&out, 0);
-	BPU_gf2xPolyFree(&one, 0);
-	BPU_gf2xPolyFree(&qr, 0);
-	BPU_gf2xPolyFree(&tmp, 0);
-	BPU_gf2xPolyFree(&x, 0);
-	BPU_gf2xPolyFree(&gcd, 0);
-	BPU_gf2xPolyFree(&s, 0);
-	BPU_gf2xPolyFree(&t, 0);
+    BPU_gf2xPolyFree(&out);
+    BPU_gf2xPolyFree(&one);
+    BPU_gf2xPolyFree(&qr);
+    BPU_gf2xPolyFree(&tmp);
+    BPU_gf2xPolyFree(&x);
+    BPU_gf2xPolyFree(&gcd);
+    BPU_gf2xPolyFree(&s);
+    BPU_gf2xPolyFree(&t);
 
 	return is_irred;
 }
@@ -767,8 +755,7 @@ int BPU_gf2xPolyIrredTest(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *mat
 void BPU_gf2xPolyCopy(BPU_T_GF2_16x_Poly *dest, const BPU_T_GF2_16x_Poly *src) {
 	// if there is not enough space resize
 	if (dest->max_deg < src->max_deg) {
-		BPU_gf2xPolyFree(dest, 0);
-		BPU_gf2xPolyMalloc(dest, src->max_deg);
+        BPU_gf2xPolyResize(dest, src->max_deg);
 	}
 	else {
 		BPU_gf2xPolyNull(dest);
@@ -779,21 +766,21 @@ void BPU_gf2xPolyCopy(BPU_T_GF2_16x_Poly *dest, const BPU_T_GF2_16x_Poly *src) {
 }
 
 void BPU_gf2xPolyInv(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx) {
-	BPU_T_GF2_16x_Poly d, t;
+    BPU_T_GF2_16x_Poly *d, *t;
 	
 	BPU_gf2xPolyMalloc(&d, (a->deg > mod->deg) ? a->deg : mod->deg);
-	BPU_gf2xPolyMalloc(&t, d.max_deg);
+    BPU_gf2xPolyMalloc(&t, d->max_deg);
 
-	BPU_gf2xPolyExtEuclid(&d, out, &t, a, mod, 0, math_ctx);
+    BPU_gf2xPolyExtEuclid(d, out, t, a, mod, 0, math_ctx);
 
-	if (d.deg != 0 || d.coef[0] != 1) {
+    if (d->deg != 0 || d->coef[0] != 1) {
 		BPU_printDebug("inverse polynomial NOT found");
-		BPU_printError("degree: %d\nelement: %d\n", d.deg, d.coef[0]);
+        BPU_printError("degree: %d\nelement: %d", d->deg, d->coef[0]);
 		BPU_printGf2xPoly(out, math_ctx);
 		BPU_gf2xPolyNull(out);
 	}
-	BPU_gf2xPolyFree(&d, 0);
-	BPU_gf2xPolyFree(&t, 0);
+    BPU_gf2xPolyFree(&d);
+    BPU_gf2xPolyFree(&t);
 }
 
 BPU_T_GF2_16x BPU_gf2xPolyMakeMonic(BPU_T_GF2_16x_Poly *a, const BPU_T_Math_Ctx *math_ctx) {
@@ -885,20 +872,20 @@ void BPU_gf2xVecMulEl(BPU_T_GF2_16x_Vector *vec, BPU_T_GF2_16x element, const BP
 void BPU_gf2xMatXorRows(BPU_T_GF2_16x_Matrix *mat, int index, int j, const BPU_T_Math_Ctx *math_ctx) {
 	int k;
 	BPU_T_GF2_16x element;
-	BPU_T_GF2_16x_Vector tmp;
+    BPU_T_GF2_16x_Vector *tmp;
 
 	BPU_gf2xVecMalloc(&tmp, mat->n);
-	for (k = 0; k < tmp.len; k++) {
-		tmp.elements[k] = mat->elements[index][k];
+    for (k = 0; k < tmp->len; k++) {
+        tmp->elements[k] = mat->elements[index][k];
 	}
 	element = mat->elements[j][index];
 
-	BPU_gf2xVecMulEl(&tmp, element, math_ctx);
+    BPU_gf2xVecMulEl(tmp, element, math_ctx);
 
-	for (k = 0; k < tmp.len; k++) {
-		mat->elements[j][k] = mat->elements[j][k] ^ tmp.elements[k];
+    for (k = 0; k < tmp->len; k++) {
+        mat->elements[j][k] = mat->elements[j][k] ^ tmp->elements[k];
 	}
-	BPU_gf2xVecFree(&tmp, 0);
+    BPU_gf2xVecFree(&tmp);
 }
 
 void BPU_gf2xMatClearCol(BPU_T_GF2_16x_Matrix *mat, int index, const BPU_T_Math_Ctx *math_ctx) {

@@ -31,11 +31,14 @@ INCLUDE_PATH = -Isrc/
 CC = gcc $(INCLUDE_PATH)
 
 # compiler flags
-CFLAGS_PROF = -Wall -DERROR_L -O3 -pg
+CFLAGS_PROF = -Wall -DERROR_L -O3 -pg ${ARGS}
 #-fprofile-arcs
-CFLAGS_SPEED = -Wall -DERROR_L -O3
+CFLAGS_SPEED = -Wall -DERROR_L -O3 ${ARGS}
 
-CFLAGS = -Wall -DBPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA -DERROR_L -O2
+CFLAGS = -Wall -DBPU_CONF_FULL -DERROR_L ${ARGS}
+#-O2
+
+LDFLAGS = -ltasn1
 #-fstack-protector-all
 
 # curent working directory
@@ -72,34 +75,37 @@ SRC_FILES = \
 	src/bitpunch/crypto/cca2/*.c \
 	src/bitpunch/crypto/cca2/*.h \
 	src/bitpunch/*.c \
+	src/bitpunch/*.h \
 	src/bitpunch/math/*.c \
 	src/bitpunch/math/*.h \
 	src/bitpunch/prng/*.h \
-	src/bitpunch/prng/*.c
+	src/bitpunch/prng/*.c \
+	src/bitpunch/asn1/*.h \
+	src/bitpunch/asn1/*.c
 
 ######################################## TARGETS ###############################################
 default: test-with-h print-info
 
 test-wo-h: prepare-dir-test
-	$(CC) $(CFLAGS) $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+	$(CC) $(CFLAGS) $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
 
 test-wo-h-debug: prepare-dir-test
-	$(CC) $(CFLAGS) -ggdb $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+	$(CC) $(CFLAGS) -ggdb $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
 
 speed-test-wo-h: prepare-dir-test
-	$(CC) $(CFLAGS_SPEED) $(SRC_FILES) src/test-speed.c -o $(TEST_TARGET)/BitPunch
+	$(CC) $(CFLAGS_SPEED) $(SRC_FILES) src/test-speed.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
 
 test-with-h: prepare-dir-test
-	$(CC) $(CFLAGS) -DBPU_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+	$(CC) $(CFLAGS) -DBPU_CONF_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
 
 test-with-h-debug: prepare-dir-test
-	$(CC) $(CFLAGS) -ggdb -DBPU_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+	$(CC) $(CFLAGS) -ggdb -DBPU_CONF_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
 
 speed-test-with-h: prepare-dir-test
-	$(CC) $(CFLAGS_SPEED) -DBPU_GOPPA_WITH_H $(SRC_FILES) src/test-speed.c -o $(TEST_TARGET)/BitPunch
+	$(CC) $(CFLAGS_SPEED) -DBPU_CONF_GOPPA_WITH_H $(SRC_FILES) src/test-speed.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
 
 prof-wo-h: prepare-dir-test
-	$(CC) $(CFLAGS_PROF) $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+	$(CC) $(CFLAGS_PROF) $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
 	@echo ""
 	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
 	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
@@ -107,7 +113,7 @@ prof-wo-h: prepare-dir-test
 	@echo "\t to see statistics."
 
 prof-with-h: prepare-dir-test
-	$(CC) $(CFLAGS_PROF) -DBPU_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
+	$(CC) $(CFLAGS_PROF) -DBPU_CONF_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
 	@echo ""
 	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
 	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
@@ -123,15 +129,16 @@ print-info:
 ############################# prepare dirs
 prepare-dir-test: prepare-dir
 	@mkdir -vp $(TEST_TARGET)/
+	@cp -vR asn1/ $(TEST_TARGET)/
 
 prepare-dir:
 	@mkdir -vp $(BUILD_TARGET)/
-	@mkdir -vp $(DIST_TARGET)/	
+	@mkdir -vp $(DIST_TARGET)/
 
 ############################# clean up matters
 clean: clean-obj
 	rm -vRf $(DIST_TARGET)/
-	
+
 clean-obj:
 	rm -vRf $(BUILD_TARGET)/
 

@@ -31,10 +31,3 @@ int BPU_isPrime(int n) {
   }
   return 1;
 }
-
-void BPU_swap(uint32_t *a, uint32_t *b) {
-	uint32_t tmp;
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-}

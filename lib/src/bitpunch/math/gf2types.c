@@ -26,86 +26,113 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 
 
-void BPU_gf2MatFree(BPU_T_GF2_Matrix *m, int is_dyn) {
+void BPU_gf2MatFree(BPU_T_GF2_Matrix **m) {
 	int i;
 	
+    if (!*m) {
+        return;
+    }
 	// first free cols
-	for (i = 0; i < m->k; i++) {
-		free(m->elements[i]);
+    for (i = 0; i < (*m)->k; i++) {
+        free((*m)->elements[i]);
 	}
 	// then free rows
-	free(m->elements);
-	
-	if (is_dyn) {
-		free(m);
-	}
+    free((*m)->elements);
+    free((*m));
+    *m = NULL;
 }
 
-void BPU_gf2VecFree(BPU_T_GF2_Vector *v, int is_dyn) {
-	// then free rows
-	free(v->elements);
-	
-	if (is_dyn) {
-		free(v);
-	}
+void BPU_gf2VecFree(BPU_T_GF2_Vector **v) {
+    if (!*v) {
+        return;
+    }
+    free((*v)->elements);
+    free(*v);
+    *v = NULL;
 }
 
-int BPU_gf2MatMalloc(BPU_T_GF2_Matrix *m, int rows, int cols) {
+int BPU_gf2MatMalloc(BPU_T_GF2_Matrix **m, int rows, int cols) {
 	int i;
 
+    *m = (BPU_T_GF2_Matrix *) calloc(sizeof(BPU_T_GF2_Matrix), 1);
+
+    if (!*m) {
+        BPU_printError("allocation error");
+        return -1;
+    }
 	// element size
-	m->element_bit_size = sizeof(BPU_T_GF2)*8;
+    (*m)->element_bit_size = sizeof(BPU_T_GF2)*8;
 
 	// rows
-	m->k = rows;
+    (*m)->k = rows;
 	// cols
-	m->n = cols;
+    (*m)->n = cols;
 	
 	// calc how many elements of set size will be in one row
 	int modul = 0;
-	if ( cols % m->element_bit_size > 0) {
+    if ( cols % (*m)->element_bit_size > 0) {
 		modul = 1;
 	}
-	m->elements_in_row = cols/m->element_bit_size + modul;
+    (*m)->elements_in_row = cols/(*m)->element_bit_size + modul;
 
 	// allocate rows
-	m->elements = (BPU_T_GF2**) malloc(sizeof(BPU_T_GF2*) * m->k);
+    (*m)->elements = (BPU_T_GF2**) malloc(sizeof(BPU_T_GF2*) * (*m)->k);
 
-	if (!m->elements) {
-		BPU_printError("BPU_mallocMatrixGF2: can not allocate memory for matrix rows");
-		
-		return 1;
+    if (!(*m)->elements) {
+        BPU_printError("can not allocate memory for matrix rows");
+        return -1;
 	}
-
 	// allocate cols
-	for (i = 0; i < m->k; i++) {
-		m->elements[i] = (BPU_T_GF2*) calloc(1, sizeof(BPU_T_GF2) * m->elements_in_row);
+    for (i = 0; i < (*m)->k; i++) {
+        (*m)->elements[i] = (BPU_T_GF2*) calloc(1, sizeof(BPU_T_GF2) * (*m)->elements_in_row);
+
+        if (!(*m)->elements[i]) {
+            BPU_printError("can not allocate memory for matrix cols");
+            return -2;
+        }
 	}
 	return 0;
 }
 
-int BPU_gf2VecMalloc(BPU_T_GF2_Vector *v, int len) {
-	// element size in bits
-	v->element_bit_size = sizeof(BPU_T_GF2) * 8;
+int BPU_gf2VecMalloc(BPU_T_GF2_Vector **v, int len) {
+    *v = (BPU_T_GF2_Vector *) calloc(sizeof(BPU_T_GF2_Vector), 1);
 
-	// len
-	v->len = len;
-	
-	// calc how many elements of set size will be in one row
-	int modul = 0;
+    if (!*v) {
+        BPU_printError("allocation error");
+        return -1;
+    }
+    return BPU_gf2VecMallocElements(*v, len);
+}
 
-	if ( len % v->element_bit_size > 0) {
-		modul = 1;
-	}
-	v->elements_in_row = len / v->element_bit_size + modul;
+int BPU_gf2VecResize(BPU_T_GF2_Vector *v, int len) {
+    if (v->elements) {
+        free(v->elements);
+    }
+    return BPU_gf2VecMallocElements(v, len);
+}
 
-	// allocate elemtens
-	v->elements = (BPU_T_GF2*) calloc(1, sizeof(BPU_T_GF2) * v->elements_in_row);
+int BPU_gf2VecMallocElements(BPU_T_GF2_Vector *v, int len) {
+    // element size in bits
+    v->element_bit_size = sizeof(BPU_T_GF2) * 8;
 
-	if (!v->elements) {
-		BPU_printError("BPU_mallocVectorGF2: can not allocate memory for vector of len %d", len);
-		
-		return 1;
-	}
-	return 0;
+    // len
+    v->len = len;
+
+    // calc how many elements of set size will be in one row
+    int modul = 0;
+
+    if ( len % v->element_bit_size > 0) {
+        modul = 1;
+    }
+    v->elements_in_row = len / v->element_bit_size + modul;
+
+    // allocate elemtens
+    v->elements = (BPU_T_GF2*) calloc(1, sizeof(BPU_T_GF2) * v->elements_in_row);
+
+    if (!v->elements) {
+        BPU_printError("can not allocate memory for vector of len %d", len);
+
+        return -1;
+    }
+    return 0;
 }

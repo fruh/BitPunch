@@ -271,7 +271,7 @@ int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF
  * Function compares two polynomials
  * @param  p1 [description]
  * @param  p2 [description]
- * @return    0 if different, 1 otherwise.
+ * @return    0 if are same, -1 when deg differs, >0 index of first diff result is index + 1
  */
 int BPU_gf2xPolyCmp(const BPU_T_GF2_16x_Poly *p1, const BPU_T_GF2_16x_Poly *p2);
 

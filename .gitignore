@@ -50,6 +50,9 @@ massif.*
 *.blg 
 *.bbl 
 
+# key files
+*.der
+
 # build
 build
 dist

@@ -122,4 +122,4 @@
 		- make test-with-debug
 	Default optimization is -O2. To set up more verbosity define -DERRORL, -DWARNING_L or DDEBUG_L, this are using functions like BPU_printError, BPU_printWarning, BPU_printDebug.
 */
-VERSION = "0.0.2"
+#define VERSION = "0.0.2"

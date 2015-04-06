@@ -22,10 +22,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "prng.h"
 
 #include <stdlib.h>
+#include <stdio.h>
  
 uint32_t BPU_prngGetRand(int from, int to) {
-  if (from <= to){
-    return rand()%(to-from)+from;
-  }
-  return 0;
+//    int tmp;
+//    FILE *fp;
+
+//    if (from <= to){
+//        fp = fopen("/dev/random", "rb");
+
+//        if (!fp) {
+//            fprintf(stderr, "dsadsa\n");
+//            tmp = rand();
+//        }
+//        else {
+//            fread(&tmp, sizeof(int), 1, fp);
+//            fclose(fp);
+//        }
+//        return tmp % (to - from) + from;
+//    }
+//    return 0;
+    if (from <= to){
+        return rand() % (to - from) + from;
+    }
+    return 0;
 }

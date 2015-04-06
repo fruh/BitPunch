@@ -74,19 +74,18 @@ void BPU_gf2xMatNull(BPU_T_GF2_16x_Matrix *mat);
  * @return on succes 0, else error
  */
  /// Allocate memory for matrix.
-int BPU_gf2xMatMalloc(BPU_T_GF2_16x_Matrix *m, int rows, int cols);
+int BPU_gf2xMatMalloc(BPU_T_GF2_16x_Matrix **m, int rows, int cols);
 
-void BPU_gf2xVecMalloc(BPU_T_GF2_16x_Vector *vec, int size);
+int BPU_gf2xVecMalloc(BPU_T_GF2_16x_Vector **vec, int size);
 
-void BPU_gf2xVecFree(BPU_T_GF2_16x_Vector *vec, int is_dyn);
+void BPU_gf2xVecFree(BPU_T_GF2_16x_Vector **vec);
 
 /**
  * Free dynamically or statically allocated matrix.
  * @param[out] *m address of matrix object
- * @param[in] is_dyn boolean param, if 0 do not free mat object self (is statically allocated), just allocated matrix rows, cols, else free also m object
  */
 /// Free dynamically or statically allocated matrix
-void BPU_gf2xMatFree(BPU_T_GF2_16x_Matrix *m, int is_dyn);
+void BPU_gf2xMatFree(BPU_T_GF2_16x_Matrix **m);
 
 /**
  * Malloc memory for polynomial and zero-initialize
@@ -94,13 +93,16 @@ void BPU_gf2xMatFree(BPU_T_GF2_16x_Matrix *m, int is_dyn);
  * @param  max_deg max degree of polynomial
  * @return
  */
-int BPU_gf2xPolyMalloc(BPU_T_GF2_16x_Poly *p, int16_t max_deg);
+int BPU_gf2xPolyMalloc(BPU_T_GF2_16x_Poly **p, int16_t max_deg);
+
+int BPU_gf2xPolyResize(BPU_T_GF2_16x_Poly *p, int16_t max_deg);
+
+int BPU_gf2xPolyMallocCoef(BPU_T_GF2_16x_Poly *p, int16_t max_deg);
 
 /**
  * dealloc memory
  * @param p
- * @param is_dyn
  */
-void BPU_gf2xPolyFree(BPU_T_GF2_16x_Poly *p, int is_dyn);
+void BPU_gf2xPolyFree(BPU_T_GF2_16x_Poly **p);
 
 #endif // BPUT_GF2XTYPES_H

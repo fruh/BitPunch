@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #*/
 #DEFINES += BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+DEFINES += BPU_CONF_FULL
 
 TEMPLATE = app
 CONFIG += console
@@ -47,10 +48,10 @@ SOURCES += \
     lib/src/bitpunch/code/goppa/goppatypes.c \
     lib/src/test-speed.c \
     lib/src/bitpunch/crypto/hash/polarssl/sha512.c \
-    lib/src/bitpunch/crypto/hash/polarssl/polarssl/sha512.c \
     lib/src/bitpunch/crypto/hash/sha512.c \
     lib/src/bitpunch/crypto/hash/polarssl/sha512.c \
-    lib/src/bitpunch/crypto/cca2/mecspointcheval.c
+    lib/src/bitpunch/crypto/cca2/mecspointcheval.c \
+    lib/src/bitpunch/asn1/asn1.c
 
 #include(deployment.pri)
 #qtcAddDeployment()
@@ -81,7 +82,12 @@ HEADERS += \
     lib/src/bitpunch/crypto/hash/polarssl/polarssl/sha512.h \
     lib/src/bitpunch/crypto/hash/sha512.h \
     lib/src/bitpunch/config.h \
-    lib/src/bitpunch/crypto/cca2/mecspointcheval.h
+    lib/src/bitpunch/crypto/cca2/mecspointcheval.h \
+    lib/src/bitpunch/asn1/asn1.h
 
 OTHER_FILES += \
     lib/makefile
+
+DISTFILES += \
+    lib/asn1/MecsPriKey.asn \
+    lib/asn1/MecsPubKey.asn

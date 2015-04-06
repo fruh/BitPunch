@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // addiotional codes
 #include <bitpunch/code/goppa/goppa.h>
 
-int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Code_Types type) {
+int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Code_Types type, const BPU_T_GF2_16x mod) {
 	int tmp;
 	ctx->type = type;
 
@@ -42,7 +42,7 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, con
 
 		return BPU_EC_MALLOC_ERROR;
 	}
-	tmp = BPU_codeInitMathCtx(ctx->math_ctx, m, t);
+    tmp = BPU_codeInitMathCtx(ctx->math_ctx, m, t, mod);
 	if (tmp) {
 		BPU_printError("Code math context initialization ERROR.");
 
@@ -51,7 +51,7 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, con
 
 	switch (type) {
 	case BPU_EN_CODE_GOPPA:
-		ctx->_encode = BPU_goppaEncodeM;
+        ctx->_encode = BPU_goppaEncodeM;
 		ctx->_decode = BPU_goppaDecode;
 		ctx->code_spec->goppa = (BPU_T_Goppa_Spec *) calloc(1, sizeof(BPU_T_Goppa_Spec));
 		if (!ctx->code_spec->goppa) {
@@ -59,7 +59,7 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, con
 
 			return BPU_EC_MALLOC_ERROR;
 		}
-		ctx->code_spec->goppa->support_len = ctx->math_ctx->ord + 1;
+        ctx->code_spec->goppa->support_len = (1 << m); // ctx->math_ctx->ord + 1;
 		ctx->code_len = ctx->code_spec->goppa->support_len;
 		ctx->msg_len = ctx->code_spec->goppa->support_len - m*t; // n - m*t
 		ctx->t = t;
@@ -78,19 +78,23 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, con
 		BPU_printError("Code type not supported: %d", type);
 		return BPU_EC_CODE_TYPE_NOT_SUPPORTED;
 	}
-	ctx->e = (BPU_T_GF2_Vector *) calloc(1, sizeof(BPU_T_GF2_Vector));
-
-	if (!ctx->e || BPU_gf2VecMalloc(ctx->e, ctx->code_len)) {
+    if (BPU_gf2VecMalloc(&ctx->e, ctx->code_len)) {
 		BPU_printError("can not allocate error vector");
-		return 1;
+        return BPU_EC_MALLOC_ERROR;
 	}
 	return 0;
 }
 
-int BPU_codeInitMathCtx(BPU_T_Math_Ctx *ctx, const uint16_t m, const uint16_t t) {
-	int rc;
+int BPU_codeInitMathCtx(BPU_T_Math_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod) {
+    int rc = 0;
 
-	if (m == 5 && t == 5) {
+    if (mod == (BPU_T_GF2_16x) -1) {
+        ctx->mod_deg = m;
+    }
+    else if (mod != 0) {
+        rc = BPU_mathInitCtx(ctx, (BPU_T_GF2_16x)2, mod);
+    }
+    else if (m == 5 && t == 5) {
 		rc = BPU_mathInitCtx(ctx, (BPU_T_GF2_16x)2, (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_5);
 	}
 	else if (m == 6 && t == 6) {
@@ -100,7 +104,7 @@ int BPU_codeInitMathCtx(BPU_T_Math_Ctx *ctx, const uint16_t m, const uint16_t t)
 		rc = BPU_mathInitCtx(ctx, (BPU_T_GF2_16x)2, (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_6);
 	}
 	else if (m == 11 && t == 50) {
-		rc = BPU_mathInitCtx(ctx, (BPU_T_GF2_16x)2, (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_11);
+        rc = BPU_mathInitCtx(ctx, (BPU_T_GF2_16x)2, (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_11);
 	}
 	else {
 		BPU_printError("Code params not supported. Supported only (m,t): (5,5), (6,6), (6,7), (11,50)");
@@ -119,10 +123,9 @@ void BPU_codeFreeCtx(BPU_T_Code_Ctx *ctx) {
 	default:
 		BPU_printError("Code type not supported: %d", ctx->type);
 	}
-	BPU_gf2VecFree(ctx->e, 0);
-	free(ctx->e);
-
+    BPU_gf2VecFree(&ctx->e);
 	BPU_mathFreeCtx(ctx->math_ctx, 0);
+
 	free(ctx->math_ctx);
 	free(ctx->code_spec);
 }

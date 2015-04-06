@@ -41,7 +41,7 @@
   #include <errno.h>
 
   /// print error message with filename, line
-  #define BPU_printError(fmt, ...) fprintf(stderr, "ERROR::%s::%s::%d: "fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); if (errno) perror("ERROR TYPE:")
+#define BPU_printError(fmt, ...) fprintf(stderr, "ERROR::%s::%s::%d: "fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); if (errno) {perror("ERROR MSG:"); errno = 0;}
 #else
   /// print error message with filename, line
   #define BPU_printError(fmt, ...)
@@ -49,7 +49,7 @@
 
 #if defined(DEBUG_L) || defined(WARNING_L)
   /// print warning message with filename, line
-  #define BPU_printWarning(fmt, ...) fprintf(stderr, "WARNING::%s::%s::%d: "fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); if (errno) perror("ERROR TYPE:")
+  #define BPU_printWarning(fmt, ...) fprintf(stderr, "WARNING::%s::%s::%d: "fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); if (errno) {perror("ERROR MSG:"); errno = 0;}
 #else
   /// print warning message with filename, line
   #define BPU_printWarning(fmt, ...)

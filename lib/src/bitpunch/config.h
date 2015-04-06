@@ -18,8 +18,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#ifdef BPU_CONF_FULL
+    #ifndef BPU_CONF_ASN1
+        #define BPU_CONF_ASN1
+    #endif
+    #ifndef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+        #define BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+    #endif
+    #ifndef BPU_CONF_SHA_512
+        #define BPU_CONF_SHA_512
+    #endif
+#endif
+
+// constraints
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
-	#define BPU_CONF_SHA_512
+    #ifndef BPU_CONF_SHA_512
+        #define BPU_CONF_SHA_512
+    #endif
 #endif
 
 #endif // CONFIG_H

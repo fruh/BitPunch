@@ -24,27 +24,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 #include <stdlib.h>
 
-void BPU_permFree(BPU_T_Perm_Vector *p, int is_dyn) {
-	free(p->elements);
-
-	if (is_dyn) {
-		free(p);
-	}
+void BPU_permFree(BPU_T_Perm_Vector **p) {
+    if (!*p) {
+        return;
+    }
+    free((*p)->elements);
+    free(*p);
 }
 
-int BPU_permMalloc(BPU_T_Perm_Vector *p, int size) {
+int BPU_permMalloc(BPU_T_Perm_Vector **p, int size) {
 	// allocate memory
 	int i;
-	p->size = size;
-	p->elements = (uint32_t*) malloc(sizeof(uint32_t) * size);
+    *p = (BPU_T_Perm_Vector *) calloc(sizeof(BPU_T_Perm_Vector), 1);
 
-	if (!p->elements) {
+    if (!*p) {
+        BPU_printError("allocation error");
+        return -1;
+    }
+
+    (*p)->size = size;
+    (*p)->elements = (BPU_T_Perm_Element*) malloc(sizeof(BPU_T_Perm_Element) * size);
+
+    if (!(*p)->elements) {
 		BPU_printError("BPU_mallocPerm: can not allocate permutation vector");
 
 		return -1;
 	}
-	for (i = 0; i < p->size; i++) {
-		p->elements[i] = i;
+    for (i = 0; i < (*p)->size; i++) {
+        (*p)->elements[i] = i;
 	}
 	return 0;
 }

@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /// Possible types of MECS
 typedef enum _BPU_T_EN_Mecs_Types {
-	BPU_EN_MECS_BASIC_GOPPA, ///< basic mecs, without any conversion
+    BPU_EN_MECS_BASIC_GOPPA = 1, ///< basic mecs, without any conversion
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
 	BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA, ///< adapted Pointcheval's cca2 conversion
 #endif
@@ -42,8 +42,10 @@ typedef struct _BPU_T_Mecs_Ctx {
 }BPU_T_Mecs_Ctx;
 
 /// Initialize (register) mecs functions for encryption, decryption and key gen based on type.
-int BPU_mecsInitCtx(BPU_T_Mecs_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Mecs_Types type);
+int BPU_mecsInitCtx(BPU_T_Mecs_Ctx **ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Mecs_Types type);
 
-int BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx);
+int BPU_mecsInitCtxMod(BPU_T_Mecs_Ctx **ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Mecs_Types type, const BPU_T_GF2_16x mod);
+
+int BPU_mecsFreeCtx(BPU_T_Mecs_Ctx **ctx);
 
 #endif // MECSCTX_H

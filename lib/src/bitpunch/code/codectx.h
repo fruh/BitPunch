@@ -53,9 +53,9 @@ typedef struct _BPU_T_Code_Ctx {
 }BPU_T_Code_Ctx;
 
 /// Initialize (register) code functions encode, decode and code spec structure based on code type.
-int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Code_Types type);
+int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Code_Types type, const BPU_T_GF2_16x mod);
 
-int BPU_codeInitMathCtx(BPU_T_Math_Ctx *ctx, const uint16_t m, const uint16_t t);
+int BPU_codeInitMathCtx(BPU_T_Math_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod);
 
 void BPU_codeFreeCtx(BPU_T_Code_Ctx *ctx);
 #endif // BPU_CODECTX_H

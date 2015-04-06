@@ -66,18 +66,16 @@ typedef struct _BPU_T_GF2_Matrix {
 /**
  * Free dynamically or statically allocated matrix GF2. 
  * @param[out] *m address of matrix object
- * @param[in] is_dyn boolean param, if 0 do not free mat object self (is statically allocated), just allocated matrix rows, cols, else free also m object
  */
 /// Free dynamically or statically allocated matrix
-void BPU_gf2MatFree(BPU_T_GF2_Matrix *m, int is_dyn);
+void BPU_gf2MatFree(BPU_T_GF2_Matrix **m);
 
 /**
  * Free dynamically or statically allocated vector GF2. 
  * @param[out] *m address of vector object
- * @param[in] is_dyn boolean param, if 0 do not free mat object self (is statically allocated), just allocated vector cols, else free also m object
  */
 /// Free dynamically or statically allocated vector
-void BPU_gf2VecFree(BPU_T_GF2_Vector *v, int is_dyn);
+void BPU_gf2VecFree(BPU_T_GF2_Vector **v);
 
 /**
  * Allocate memory for matrix GF2. It also nulls new matrix. After work you have to free memory using call BPU_freeMatGF2
@@ -85,13 +83,17 @@ void BPU_gf2VecFree(BPU_T_GF2_Vector *v, int is_dyn);
  * @param cols cols
  * @return on succes 0, else error
  */
-int BPU_gf2MatMalloc(BPU_T_GF2_Matrix *m, int rows, int cols);
+int BPU_gf2MatMalloc(BPU_T_GF2_Matrix **m, int rows, int cols);
 
 /**
  * Allocate memory for vector GF2. It also null vector. After work you have to free memory using call BPU_freeVecGF2.
  * @param len len of vector
  * @return on succes 0, else error
  */
-int BPU_gf2VecMalloc(BPU_T_GF2_Vector *v, int len);
+int BPU_gf2VecMalloc(BPU_T_GF2_Vector **v, int len);
+
+int BPU_gf2VecResize(BPU_T_GF2_Vector *v, int len);
+
+int BPU_gf2VecMallocElements(BPU_T_GF2_Vector *v, int len);
 
 #endif // BPUT_GF2TYPES_H

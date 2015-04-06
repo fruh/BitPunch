@@ -310,7 +310,7 @@ int BPU_gf2MatCrop(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in, uint16_t w
  * @param  alloc if set to 0, jsut copy row to allocated vector yet, or also allocate output vector
  * @return       0 - success, else error
  */
-int BPU_gf2MatGetRowAsGf2Vec(BPU_T_GF2_Vector *out, const BPU_T_GF2_Matrix *in, int row, int alloc);
+int BPU_gf2MatGetRowAsGf2Vec(BPU_T_GF2_Vector *out, const BPU_T_GF2_Matrix *in, int row);
 
 /**
  * Copy VectorGF2.
