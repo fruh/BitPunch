@@ -124,11 +124,46 @@ BPU_T_GF2_16x BPU_gf2xPowerModT(BPU_T_GF2_16x a, int e, const BPU_T_Math_Ctx *ma
 }
 
 BPU_T_GF2_16x BPU_gf2xMulModT(BPU_T_GF2_16x a, BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx) {
+	BPU_T_GF2_32x condition;
 	BPU_T_GF2_16x candidate;
 	candidate = math_ctx->exp_table[(math_ctx->log_table[a] + math_ctx->log_table[b]) % math_ctx->ord];
-	if (a * b)
+	if (condition = (a * b))
 		return candidate;
-	return 0;
+	return condition;
+}
+
+BPU_T_GF2_16x BPU_gf2xMulModC(BPU_T_GF2_16x a, BPU_T_GF2_16x b, BPU_T_GF2_16x mod, BPU_T_GF2_16x mod_deg) {
+	BPU_T_GF2_16x ret=0, i;
+	for(i = 0; i < mod_deg; i++) {
+		b ^= ((b >> mod_deg) & 1) * mod;
+		ret ^= ((a >> i) & 1) * b;
+		b = b << 1;
+	}
+	return ret;
+}
+
+BPU_T_GF2_16x BPU_gf2xMulModTC(BPU_T_GF2_16x a, BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx) {
+	BPU_T_GF2_16x candidate;
+	BPU_T_GF2_16x exp, bit, carry_mask = 1 << math_ctx->mod_deg;
+	BPU_T_GF2_32x condition;
+	exp = math_ctx->log_table[a] + math_ctx->log_table[b];
+	exp = exp + 1;
+	bit = (exp & carry_mask);
+	exp = (exp & math_ctx->ord);
+	exp = (exp & math_ctx->ord) - !bit;
+	candidate = math_ctx->exp_table[exp];
+
+	if (condition = (a * b))
+		return candidate;
+	return condition;
+//	a = !a;
+//	b = !b;
+//	a = a | b;
+////	a = a - 1;
+//	a = !a;
+//	return candidate * a;
+//	candidate = BPU_gf2xMulModC(a, b, math_ctx->mod, math_ctx->mod_deg);
+//	return candidate;
 }
 
 /*** PZ: speedup critical instructions ***/
@@ -650,13 +685,34 @@ int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF
 	return 0;
 }
 
+//BPU_T_GF2_16x BPU_gf2xPolyEval(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x x, const BPU_T_Math_Ctx *math_ctx) {
+//	int i;
+//	BPU_T_GF2_16x ret = 0;
+//	ret = poly->coef[0];
+
+//	for (i = 1; i <= poly->deg; i++) {
+//		ret = ret ^ BPU_gf2xMulModT(poly->coef[i], BPU_gf2xPowerModT(x, i, math_ctx), math_ctx);
+//	}
+//	return ret;
+//}
+
 BPU_T_GF2_16x BPU_gf2xPolyEval(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x x, const BPU_T_Math_Ctx *math_ctx) {
 	int i;
 	BPU_T_GF2_16x ret = 0;
 	ret = poly->coef[0];
-
 	for (i = 1; i <= poly->deg; i++) {
 		ret = ret ^ BPU_gf2xMulModT(poly->coef[i], BPU_gf2xPowerModT(x, i, math_ctx), math_ctx);
+	}
+	return ret;
+}
+
+BPU_T_GF2_16x BPU_gf2xPolyEvalC(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x x, const BPU_T_Math_Ctx *math_ctx) {
+	int i;
+	BPU_T_GF2_16x ret = poly->coef[poly->deg];
+
+	for (i = poly->deg; i > 0; i--) {
+		ret = BPU_gf2xMulModC(ret, x, math_ctx->mod, math_ctx->mod_deg) ^ poly->coef[i-1];
+//		ret = BPU_gf2xMulModTC(ret, x, math_ctx) ^ poly->coef[i-1];
 	}
 	return ret;
 }
@@ -954,7 +1010,6 @@ void BPU_gf2xPolyGenGoppa(BPU_T_GF2_16x_Poly *p, int t, const BPU_T_Math_Ctx *ma
 #endif
 	while(1) {
 		BPU_gf2xPolyGenRandom(p, t, math_ctx);
-		
 		if (BPU_gf2xPolyIrredTest(p, math_ctx) == 1) {
 			break;
 		}

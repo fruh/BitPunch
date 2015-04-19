@@ -34,7 +34,7 @@ typedef struct _BPU_T_Math_Ctx {
   	BPU_T_GF2_16x *log_table; ///< there are all indexes referenced by element, so alpha elemnet (g^i) -> i
   	BPU_T_GF2_16x mod; ///< polynomial modulus
   	int mod_deg; ///< modulo degree, galois finite field GF(2^m)
-  	int ord; ///< group ord, number of elements
+	BPU_T_GF2_16x ord; ///< group ord, number of elements
 }BPU_T_Math_Ctx;
 
 /**

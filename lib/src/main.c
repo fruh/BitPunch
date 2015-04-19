@@ -43,9 +43,9 @@ int elpMeasurementsBB() {
 	BPU_T_GF2_Vector ct, pt_in, pt_out, error;
 	int i, iter;
 	unsigned long long int start, stop, delta;
-
+//	fprintf(stderr, "%u\n", (~!(0x0800 & 4000)) & 2047);
+//	return 0;
 	srand(0);
-
 	BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
 	BPU_mecsGenKeyPair(&ctx);
 //	Generate random input vector
@@ -61,7 +61,6 @@ int elpMeasurementsBB() {
 	BPU_gf2VecRand(&error, ctx.ct_len, ctx.code_ctx->t);
 	ctx.code_ctx->_encode(&ct, &pt_in, ctx.code_ctx);
 	BPU_gf2VecXor(&ct, &error);
-
 
 //	Decryption
 	number_of_tests = 2;
@@ -80,8 +79,9 @@ int elpMeasurementsBB() {
 				fprintf(stdout, "%d\n", delta);
 #endif
 		}
-		removeErrorBit(&ct, &error, 1);
-//		addErrorBit(&ct, &error, 2);
+		removeErrorBit(&ct, &error, 49);
+//		addErrorBit(&ct, &error, 1);
+//		addErrorBit(&ct, &error, 4);
 	}
 
 

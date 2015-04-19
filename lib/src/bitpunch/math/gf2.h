@@ -169,13 +169,6 @@ void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec);
  * @param  i         col index
  * @param  bit       bit value 0 or 1
  */
-//#define BPU_gf2VecSetBit(v_pointer, i, bit)  if (bit) { \
-//												(v_pointer)->elements[(i) / (v_pointer)->element_bit_size] |= ((BPU_T_GF2) 1) << ((i) % (v_pointer)->element_bit_size);\
-//												} \
-//												else { \
-//													/* this is like: 00101111 ^ 00000100 = 00101011 */\
-//													(v_pointer)->elements[(i) / (v_pointer)->element_bit_size] &= ((BPU_T_GF2) (0xFFFFFFFFu)) ^ (((BPU_T_GF2) 1) << ((i) % (v_pointer)->element_bit_size));\
-//												}
 
 #define BPU_gf2VecSetBit(v_pointer, i, bit)  (v_pointer)->elements[(i) / (v_pointer)->element_bit_size] &= ((BPU_T_GF2) (0xFFFFFFFFu)) ^ (((BPU_T_GF2) 1) << ((i) % (v_pointer)->element_bit_size));\
 												(v_pointer)->elements[(i) / (v_pointer)->element_bit_size] |= ((BPU_T_GF2) bit) << ((i) % (v_pointer)->element_bit_size);

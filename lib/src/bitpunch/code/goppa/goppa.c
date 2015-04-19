@@ -109,9 +109,8 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	BPU_T_Perm_Vector inv_perm;
 	BPU_T_GF2_16x_Poly syndrome, tau, a, b, sigma, inv_syndrome, tmp, tmp2;
 	int l;
-	BPU_T_GF2_16x tmp_eval;
+	BPU_T_GF2_16x tmp_eval, counter;
 	BPU_T_GF2_Vector enc_permuted;
-	int counter;
 #ifdef ATTACK_INSIDE
 	unsigned long long int start1, stop1, delta1;
 #endif
@@ -176,17 +175,17 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	else {
 		BPU_gf2VecNull(error);
 	}
-
+//	for (l=0; l < error->elements_in_row; l++) {
+//		error->elements[l] = 0xFFFFFFFF;
+//	}
 
 #ifdef ATTACK_INSIDE
 	start1 = rdtsc();
 #endif
-#ifdef COUNTER_MEASURE
 	sigma.deg = ctx->t;
-#endif
 	counter = 0;
 	for (l = 0; l < ctx->code_spec->goppa->support_len; l++) {
-		tmp_eval = BPU_gf2xPolyEval(&sigma, ctx->math_ctx->exp_table[l], ctx->math_ctx);
+		tmp_eval = BPU_gf2xPolyEvalC(&sigma, ctx->math_ctx->exp_table[l], ctx->math_ctx);
 		BPU_gf2VecSetBit(error, l, !tmp_eval);
 	}
 #ifdef ATTACK_INSIDE
@@ -198,7 +197,7 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	// permute error vector
 	BPU_gf2VecPermute(error, ctx->code_spec->goppa->permutation);
 	BPU_gf2xPolyFree(&sigma, 0);
-	return 0;
+	return tmp_eval;
 }
 
 void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_Code_Ctx *ctx) {

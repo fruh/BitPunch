@@ -42,7 +42,6 @@ void addErrorBit(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *error, int number_of_e
 	int i;
 	for(i = 0; i < error->len; i++) {
 		if (!BPU_gf2VecGetBit(error, i)) {
-
 			if (BPU_gf2VecGetBit(out, i)) {
 				BPU_gf2VecSetBit(out, i, 0);
 			}

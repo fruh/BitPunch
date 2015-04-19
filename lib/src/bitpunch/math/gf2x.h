@@ -27,7 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "gf2.h"
 #include "gf2xtypes.h"
 #include "mathctx.h"
-
+BPU_T_GF2_16x BPU_gf2xMulModTC(BPU_T_GF2_16x a, BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx);
+BPU_T_GF2_16x BPU_gf2xPolyEvalC(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x x, const BPU_T_Math_Ctx *math_ctx);
 /* ==================================== Print functions ==================================== */
 // TODO: Be enable to turn off print function, to not compile in in code
 /**
