@@ -109,12 +109,19 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	BPU_T_Perm_Vector inv_perm;
 	BPU_T_GF2_16x_Poly syndrome, tau, a, b, sigma, inv_syndrome, tmp, tmp2;
 	int l;
-	BPU_T_GF2_16x tmp_eval, counter;
+	BPU_T_GF2_16x tmp_eval;
 	BPU_T_GF2_Vector enc_permuted;
 #ifdef ATTACK_INSIDE
 	unsigned long long int start1, stop1, delta1;
 #endif
-
+#ifdef ATTACK_INSIDE
+	start1 = rdtsc();
+#endif
+#ifdef ATTACK_INSIDE
+	stop1 = rdtsc();
+	delta1 = stop1 - start1;
+//	fprintf(stdout, "%lld\n", delta1);
+#endif
 	// permute code word
 	BPU_gf2VecMalloc(&enc_permuted, encoded->len);
 	BPU_gf2VecCopy(&enc_permuted, encoded);
@@ -130,7 +137,10 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	BPU_gf2VecFree(&enc_permuted, 0);
 
 	BPU_gf2xPolyMalloc(&inv_syndrome, (syndrome.deg > ctx->code_spec->goppa->g->deg) ? syndrome.deg : ctx->code_spec->goppa->g->deg);
+
+
 	BPU_gf2xPolyInv(&inv_syndrome, &syndrome, ctx->code_spec->goppa->g, ctx->math_ctx);
+
 	BPU_gf2xPolyFree(&syndrome, 0);
 	inv_syndrome.coef[1] = inv_syndrome.coef[1] ^ 1;
 
@@ -175,29 +185,17 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	else {
 		BPU_gf2VecNull(error);
 	}
-//	for (l=0; l < error->elements_in_row; l++) {
-//		error->elements[l] = 0xFFFFFFFF;
-//	}
 
-#ifdef ATTACK_INSIDE
-	start1 = rdtsc();
-#endif
 	sigma.deg = ctx->t;
-	counter = 0;
 	for (l = 0; l < ctx->code_spec->goppa->support_len; l++) {
 		tmp_eval = BPU_gf2xPolyEvalC(&sigma, ctx->math_ctx->exp_table[l], ctx->math_ctx);
 		BPU_gf2VecSetBit(error, l, !tmp_eval);
 	}
-#ifdef ATTACK_INSIDE
-	stop1 = rdtsc();
-	delta1 = stop1 - start1;
-	fprintf(stdout, "%d\n", delta1);
-#endif
 
 	// permute error vector
 	BPU_gf2VecPermute(error, ctx->code_spec->goppa->permutation);
 	BPU_gf2xPolyFree(&sigma, 0);
-	return tmp_eval;
+	return 0;
 }
 
 void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_Code_Ctx *ctx) {
@@ -235,7 +233,7 @@ void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU
 	int end_deg = mod->deg / 2;
 
 	BPU_gf2xPolyMalloc(&tmp, (tau->deg > mod->deg) ? tau->deg : mod->deg);
-	BPU_gf2xPolyExtEuclid(a, b, &tmp, tau, mod, end_deg, math_ctx);
+	BPU_gf2xPolyExtEuclidC(a, b, &tmp, tau, mod, end_deg, math_ctx);
 	BPU_gf2xPolyFree(&tmp, 0);
 }
 

@@ -42,10 +42,13 @@ int elpMeasurementsBB() {
 	BPU_T_Mecs_Ctx ctx;
 	BPU_T_GF2_Vector ct, pt_in, pt_out, error;
 	int i, iter;
+#ifdef ATTACK_BB
 	unsigned long long int start, stop, delta;
-//	fprintf(stderr, "%u\n", (~!(0x0800 & 4000)) & 2047);
+#endif
+	//	fprintf(stderr, "%u\n", (~!(0x0800 & 4000)) & 2047);
 //	return 0;
 	srand(0);
+//	srand(time(NULL));
 	BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
 	BPU_mecsGenKeyPair(&ctx);
 //	Generate random input vector
@@ -63,10 +66,11 @@ int elpMeasurementsBB() {
 	BPU_gf2VecXor(&ct, &error);
 
 //	Decryption
+//	removeErrorBit(&ct, &error, 25);
 	number_of_tests = 2;
 //	removeErrorBit(&ct, &error, 1);
 	for (test = 0; test < number_of_tests; test++){
-		iter = 1000;
+		iter = 10;
 		for (i = 0; i < iter; i++) {
 #ifdef ATTACK_BB
 			start = rdtsc();
@@ -79,7 +83,6 @@ int elpMeasurementsBB() {
 				fprintf(stdout, "%d\n", delta);
 #endif
 		}
-		removeErrorBit(&ct, &error, 49);
 //		addErrorBit(&ct, &error, 1);
 //		addErrorBit(&ct, &error, 4);
 	}
