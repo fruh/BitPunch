@@ -29,7 +29,7 @@
 #define BYTES_TO_TEST (uint64_t)(1 << 16)
 #define BPU_TEST_ROUNDS 300
 
-void encLoop(Vector_GF2 *ct, Vector_GF2 *pt, BPU_T_McEliece_Ctx *ctx) {
+void encLoop(BPU_T_Vector_GF2 *ct, BPU_T_Vector_GF2 *pt, BPU_T_McEliece_Ctx *ctx) {
 	uint64_t i = 0;
 	uint64_t end = (BYTES_TO_TEST * 8) / ctx->max_pt_len_bit;
 	
@@ -38,7 +38,7 @@ void encLoop(Vector_GF2 *ct, Vector_GF2 *pt, BPU_T_McEliece_Ctx *ctx) {
 	}
 }
 
-void decLoop(Vector_GF2 *pt, Vector_GF2 *ct, BPU_T_McEliece_Ctx *ctx) {
+void decLoop(BPU_T_Vector_GF2 *pt, BPU_T_Vector_GF2 *ct, BPU_T_McEliece_Ctx *ctx) {
 	uint64_t i = 0;
 	uint64_t end = (BYTES_TO_TEST * 8) / ctx->max_pt_len_bit;
 
@@ -67,7 +67,7 @@ double keyGenLoop() {
 
 int main(int argc, char **argv) {
 	BPU_T_McEliece_Ctx ctx;
-	Vector_GF2 ct, pt;
+	BPU_T_Vector_GF2 ct, pt;
 	// double kt;
 	// time_t t, te;
 	int i;
@@ -127,7 +127,7 @@ int main(int argc, char **argv) {
 
 int main2(int argc, char **argv) {
 	BPU_T_McEliece_Ctx ctx;
-	Vector_GF2 ct, pt;
+	BPU_T_Vector_GF2 ct, pt;
 	double kt;
 	time_t t, te;
 
