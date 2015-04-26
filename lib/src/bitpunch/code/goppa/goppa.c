@@ -111,17 +111,8 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	int l;
 	BPU_T_GF2_16x tmp_eval;
 	BPU_T_GF2_Vector enc_permuted;
-#ifdef ATTACK_INSIDE
-	unsigned long long int start1, stop1, delta1;
-#endif
-#ifdef ATTACK_INSIDE
-	start1 = rdtsc();
-#endif
-#ifdef ATTACK_INSIDE
-	stop1 = rdtsc();
-	delta1 = stop1 - start1;
-//	fprintf(stdout, "%lld\n", delta1);
-#endif
+
+
 	// permute code word
 	BPU_gf2VecMalloc(&enc_permuted, encoded->len);
 	BPU_gf2VecCopy(&enc_permuted, encoded);
@@ -151,6 +142,7 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	/**************** FROM NOW WE ARE NOT USING MODULUS g for a, b ********************/
 	BPU_gf2xPolyMalloc(&a, (tau.deg > ctx->code_spec->goppa->g->deg) ? tau.deg : ctx->code_spec->goppa->g->deg);
 	BPU_gf2xPolyMalloc(&b, a.max_deg);
+
 	BPU_goppaFindPolyAB(&a, &b, &tau, ctx->code_spec->goppa->g, ctx->math_ctx);
 	BPU_gf2xPolyFree(&tau, 0);
 
@@ -233,7 +225,8 @@ void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU
 	int end_deg = mod->deg / 2;
 
 	BPU_gf2xPolyMalloc(&tmp, (tau->deg > mod->deg) ? tau->deg : mod->deg);
-	BPU_gf2xPolyExtEuclidC(a, b, &tmp, tau, mod, end_deg, math_ctx);
+	BPU_gf2xPolyExtEuclidC(a, &tmp, b, mod, tau, end_deg, math_ctx);
+//	BPU_gf2xPolyExtEuclid(a, &tmp, b, mod, tau, end_deg, math_ctx);
 	BPU_gf2xPolyFree(&tmp, 0);
 }
 

@@ -45,7 +45,6 @@ int elpMeasurementsBB() {
 #ifdef ATTACK_BB
 	unsigned long long int start, stop, delta;
 #endif
-	//	fprintf(stderr, "%u\n", (~!(0x0800 & 4000)) & 2047);
 //	return 0;
 	srand(0);
 //	srand(time(NULL));
@@ -61,16 +60,17 @@ int elpMeasurementsBB() {
 
 //	TODO: custom encryption - set own error vector
 //	Create error vector
-	BPU_gf2VecRand(&error, ctx.ct_len, ctx.code_ctx->t);
 	ctx.code_ctx->_encode(&ct, &pt_in, ctx.code_ctx);
-	BPU_gf2VecXor(&ct, &error);
+//	BPU_gf2VecRand(&error, ctx.ct_len, ctx.code_ctx->t);
 
 //	Decryption
-//	removeErrorBit(&ct, &error, 25);
 	number_of_tests = 2;
-//	removeErrorBit(&ct, &error, 1);
+//	removeErrorBit(&ct, &error, 4);
+	BPU_gf2VecRand(&error, ctx.ct_len, ctx.code_ctx->t);
+	BPU_gf2VecXor(&ct, &error);
+
+	iter = 1;
 	for (test = 0; test < number_of_tests; test++){
-		iter = 10;
 		for (i = 0; i < iter; i++) {
 #ifdef ATTACK_BB
 			start = rdtsc();
@@ -79,11 +79,13 @@ int elpMeasurementsBB() {
 #ifdef ATTACK_BB
 			stop = rdtsc();
 			delta = stop - start;
-			if (i % 2 == 0)
+//			if (i % 2 == 0)
 				fprintf(stdout, "%d\n", delta);
 #endif
 		}
-//		addErrorBit(&ct, &error, 1);
+		removeErrorBit(&ct, &error, 2);
+//		removeErrorBit(&ct, &error, 1);
+//		addErrorBit(&ct, &error, 3);
 //		addErrorBit(&ct, &error, 4);
 	}
 

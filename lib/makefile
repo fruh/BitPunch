@@ -34,7 +34,7 @@ CC = gcc $(INCLUDE_PATH)
 CFLAGS_PROF = -Wall -DERROR_L -O3 -pg
 #-fprofile-arcs
 CFLAGS_SPEED = -Wall -DERROR_L -O3
-CFLAGS = -Wall -DERROR_L -O2
+CFLAGS = -Wall -DERROR_L -O2 -g
 #-fstack-protector-all
 
 # curent working directory
