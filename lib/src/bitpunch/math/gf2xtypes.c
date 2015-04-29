@@ -90,11 +90,6 @@ int BPU_gf2xPolyMalloc(BPU_T_GF2_16x_Poly *p, int16_t max_deg) {
 	p->deg = -1;
 	p->max_deg = max_deg;
 
-	if (p->max_deg < 0) {
-		BPU_printError("BPU_mallocPoly: max_deg must be at least 0");
-
-		return -1;
-	}
 	p->coef = (BPU_T_GF2_16x*) calloc(max_deg + 1, sizeof(BPU_T_GF2_16x));
 
 	if (!p->coef) {

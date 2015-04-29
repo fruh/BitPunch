@@ -117,6 +117,7 @@ void BPU_gf2xVecMulMat(BPU_T_GF2_16x_Vector *out, const BPU_T_GF2_16x_Vector *x,
  * @param b   [description]
  */
 void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b);
+void BPU_gf2xPolyAddC(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b);
 
 /**
  * Divide two polynomials. All argumets must be allocated before using BPU_mallocPoly().
@@ -135,7 +136,7 @@ void BPU_gf2xPolyDivC(BPU_T_GF2_16x_Poly *q, BPU_T_GF2_16x_Poly *r, const BPU_T_
  * @param math_ctx log and exp table needed for multiplication of elements in GF2^m
  */
 void BPU_gf2xPolyMul(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, const BPU_T_Math_Ctx *math_ctx);
-
+void BPU_gf2xPolyMulC(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, const BPU_T_Math_Ctx *math_ctx);
 /**
  * Shift polynomial right, it is like a div x^n.
  * @param a[inout] input/output polynomial

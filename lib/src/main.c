@@ -69,7 +69,7 @@ int elpMeasurementsBB() {
 	BPU_gf2VecRand(&error, ctx.ct_len, ctx.code_ctx->t);
 	BPU_gf2VecXor(&ct, &error);
 
-	iter = 1;
+	iter = 500;
 	for (test = 0; test < number_of_tests; test++){
 		for (i = 0; i < iter; i++) {
 #ifdef ATTACK_BB
@@ -83,7 +83,7 @@ int elpMeasurementsBB() {
 				fprintf(stdout, "%d\n", delta);
 #endif
 		}
-		removeErrorBit(&ct, &error, 2);
+		removeErrorBit(&ct, &error, 48);
 //		removeErrorBit(&ct, &error, 1);
 //		addErrorBit(&ct, &error, 3);
 //		addErrorBit(&ct, &error, 4);
