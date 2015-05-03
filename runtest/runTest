@@ -1,0 +1,200 @@
+#!/usr/bin/python -u
+# -*- coding: utf-8 -*-
+# /*
+#  This file is part of BitPunch
+#  Copyright (C) 2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# */
+import os
+import sys
+from optparse import OptionParser
+from tests import register
+import subprocess
+import datetime
+import shutil
+
+VERSION = "0.0.2"
+
+RUN_LEVEL = {"express" : 0, "regular" : 1, "extreme" : 2}
+RUN_LEVEL_NAMES = {"0" : "express", "1" : "regular", "2" : "extreme"}
+VERBOSE_LEVEL = {"ERROR" : 0, "WARNING" : 1, "INFO" : 2, "DEBUG" : 3}
+VERBOSE_LEVEL_NAMES = {"0" : "ERROR", "1" : "WARNING", "2" : "INFO", "3" : "DEBUG"}
+
+TESTS_FOLDER = sys.path[0] + os.sep + "tests"
+RESULTS_FOLDER = sys.path[0] + os.sep + "results"
+LIB_FOLDER = sys.path[0] + os.sep + "../lib"
+RUN_DATE = datetime.datetime.isoformat(datetime.datetime.today())
+RESULT_FOLDER = RESULTS_FOLDER + os.sep + RUN_DATE
+LOGFILE = None
+
+def printAndLog(msg):
+	if msg[-1] == '\n': 
+		print(msg[:-1]) 
+	else: 
+		print(msg)
+	# if (LOGFILE != None):
+	# 	LOGFILE.write(msg)
+	# 	LOGFILE.flush()
+
+def runTest(testname, verbose_levels):
+	error = False
+	test = register.TESTS[testname]
+	printAndLog("======== BEGIN::%s ========" % testname)
+	tmp_log = ""
+	try:
+		tp = subprocess.Popen("cd %s/%s; ./%s %s %s" % (TESTS_FOLDER, test["suite"], test["file"], RESULT_FOLDER, test["args"]), shell = True, stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+
+		l = tp.stdout.readline()
+		while l:
+			tmp_log += l
+			for lev in verbose_levels:
+				if (l.startswith(lev)):
+					printAndLog(l),
+					break
+			if (l.startswith("ERROR")):
+				error = True
+			l = tp.stdout.readline()
+	except Exception as e:
+		printAndLog("ERROR: %s" % str(e))
+		printAndLog("FAILED")
+	tp.wait()
+	rc = tp.poll()
+
+	if (rc == 0 and not error):
+		printAndLog("PASSED")
+	else:
+		printAndLog("DEBUG: *** BEGIN ERROR LOG ***")
+		printAndLog(tmp_log),
+		printAndLog("DEBUG: ***   END ERROR LOG ***")
+		printAndLog("DEBUG: rc = %d" % rc)
+		if (error):
+			printAndLog("ERROR: Found ERROR string at the beggining of line, result FAILED")
+			if (rc == 0):
+				rc = -1
+		printAndLog("FAILED")
+	printAndLog("--------   END::%s --------\n" % testname)
+	return rc
+
+def prepareResults():
+	"""
+		Copy library surces into results
+	"""
+	# printAndLog("See log file: '%s/console.log'" % RESULT_FOLDER)
+	if (not os.path.exists(RESULTS_FOLDER)):
+		os.mkdir(RESULTS_FOLDER)
+	shutil.copytree(LIB_FOLDER, RESULT_FOLDER)
+	# LOGFILE = open("%s/console.log" % RESULT_FOLDER, "w")
+
+def main():
+	result = {"passed" : 0, "skipped" : 0, "failed" : 0}
+	parser = OptionParser(version=VERSION)
+
+	parser.add_option("-a", "--all", dest = "run_all", action = "store_true", help = "Run all registered tests" , default = False)
+	parser.add_option("-t", "--test", dest = "run_test", action = "store", help = "Run named tests" , default = None)
+	parser.add_option("-r", "--runLevel", dest = "run_level", action = "store", help = "Run all tests <= runLevel" , default = None)
+	parser.add_option("-v", "--verbose", dest = "verbose_level", action = "store", help = "Verbose level, can be ERROR, WARNING, INFO, DEBUG" , default = "INFO")
+	parser.add_option("-l", "--list", dest = "list_tests", action = "store_true", help = "List available tests" , default = False)
+	(options, args) = parser.parse_args(sys.argv)
+
+	if (options.list_tests):
+		for t, v in register.TESTS.iteritems():
+			printAndLog("Test: %-30s runLevel: %s" % (t, v["runLevel"]))
+		return
+	# verbose level
+	try:
+		options.verbose_level = VERBOSE_LEVEL_NAMES[options.run_level]
+	except:
+		pass
+	if (options.verbose_level not in VERBOSE_LEVEL):
+		parser.error("Not existing verbose level, only: %s" % VERBOSE_LEVEL.keys())
+	verbose_levels = []
+
+	for k, v in VERBOSE_LEVEL.iteritems():
+		if (VERBOSE_LEVEL[options.verbose_level] >= v):
+			verbose_levels.append(k)
+
+	if (options.run_all):
+		prepareResults()
+		printAndLog("Tests to run (%d): %s\n" % (len(register.TESTS), " ".join(register.TESTS.keys())))
+		result["skipped"] = len(register.TESTS)
+
+		for t in register.TESTS:
+			if (runTest(t, verbose_levels) == 0):
+				result["passed"] += 1
+			else:
+				result["failed"] += 1
+			result["skipped"] -= 1
+	elif (bool(options.run_test) or len(args) > 1):
+		prepareResults()
+		if (bool(options.run_test)):
+			tmp_tests = options.run_test.split()
+		else:
+			tmp_tests = []
+		tmp_tests += args[1:]
+		result["skipped"] = len(tmp_tests)
+
+		tests_to_run = []
+		for t in tmp_tests:
+			if (t not in register.TESTS):
+				printAndLog("ERROR: test '%s' not exists, skipping" % t)
+			else:
+				tests_to_run.append(t)
+		printAndLog("Tests to run (%d): %s\n" % (len(tests_to_run), " ".join(tests_to_run)))
+
+		for t in tests_to_run:
+			if (runTest(t, verbose_levels) == 0):
+				result["passed"] += 1
+			else:
+				result["failed"] += 1
+			result["skipped"] -= 1
+	elif (options.run_level != None):
+		prepareResults()
+		try:
+			options.run_level = RUN_LEVEL_NAMES[options.run_level]
+		except:
+			pass
+		if (options.run_level not in RUN_LEVEL):
+			parser.error("Not existing runLevel, only: %s" % RUN_LEVEL.keys())
+
+		tests_to_run = []
+		for t, v in register.TESTS.iteritems():
+			if (RUN_LEVEL[v["runLevel"]] <= RUN_LEVEL[options.run_level]):
+				tests_to_run.append(t)
+			else:
+				# printAndLog("WARNING: test '%s' has higher runLevel '%s', current is '%s', skipping" % (t, v["runLevel"], options.run_level))
+				pass
+		result["skipped"] = len(tests_to_run)
+		printAndLog("Tests to run (%d): %s\n" % (len(tests_to_run), " ".join(tests_to_run)))
+
+		for t in tests_to_run:
+			if (runTest(t, verbose_levels) == 0):
+				result["passed"] += 1
+			else:
+				result["failed"] += 1
+			result["skipped"] -= 1
+	else:
+		parser.print_help()
+		return
+	printAndLog("======== RESULTS ========")
+	printAndLog("Result folder: %s" % (RESULT_FOLDER))
+	# printAndLog("See log file: '%s/console.log'" % RESULT_FOLDER)
+	for k, v in result.iteritems():
+		printAndLog("%s: %d" % (k.upper(), v))
+	printAndLog("-------------------------")
+
+if __name__ == "__main__":
+	main()
+	if (LOGFILE != None):
+		LOGFILE.close()
