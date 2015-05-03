@@ -21,10 +21,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 #include <stdlib.h>
 
-int BPU_mathInitCtx(BPU_T_Math_Ctx *math_ctx, const BPU_T_GF2_16x g, const BPU_T_GF2_16x mod) {
+int BPU_mathInitCtx(BPU_T_Math_Ctx **ctx, const BPU_T_GF2_16x g, const BPU_T_GF2_16x mod) {
 	BPU_T_GF2_16x b = 1;
 	int i = 0;
+	BPU_T_Math_Ctx *math_ctx;
 
+	*ctx = (BPU_T_Math_Ctx *) calloc(1, sizeof(BPU_T_Math_Ctx));
+	if (!*ctx) {
+		BPU_printError("Can not malloc BPU_T_Math_Ctx");
+
+		return -1;
+	}
+	math_ctx = *ctx;
 	// get group ord, number of elements
 	BPU_T_GF2_16x ord = ((1 << BPU_gf2xGetDeg(mod)) - 1);
 
@@ -56,14 +64,16 @@ int BPU_mathInitCtx(BPU_T_Math_Ctx *math_ctx, const BPU_T_GF2_16x g, const BPU_T
 	return 0;
 }
 
-void BPU_mathFreeCtx(BPU_T_Math_Ctx *a, int is_dyn) {
-	if (a->exp_table) {
-		free(a->exp_table);
+void BPU_mathFreeCtx(BPU_T_Math_Ctx **ctx) {
+	if (!*ctx) {
+		return;
 	}
-	if (a->log_table) {
-		free(a->log_table);
+	if ((*ctx)->exp_table) {
+		free((*ctx)->exp_table);
 	}
-	if (is_dyn) {
-		free(a);
+	if ((*ctx)->log_table) {
+		free((*ctx)->log_table);
 	}
+	free(*ctx);
+	*ctx = NULL;
 }

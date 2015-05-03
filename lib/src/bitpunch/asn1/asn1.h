@@ -42,11 +42,29 @@ int BPU_asn1EncodePubKey(char **buffer, int *size, const BPU_T_Mecs_Ctx *ctx);
 
 int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx **ctx, const char *buffer, const int size);
 
-int BPU_asn1ReadValue(char **buffer, int *len, const char *name, const asn1_node node);
+/**
+ * @brief BPU_asn1ReadValue
+ * @param buffer
+ * @param len
+ * @param max_len for security reason, to avoid memory consumption of wrong input
+ * @param name
+ * @param node
+ * @return
+ */
+int BPU_asn1ReadValue(char **buffer, int *len, const int max_len, const char *name, const asn1_node node);
 
 BPU_T_EN_Mecs_Types BPU_asn1GetMecsTypeFromOid(asn1_node node);
 
-int BPU_asn1MallocBuffer(char **buffer, int *len, const asn1_node node, const char *name);
+/**
+ * @brief BPU_asn1MallocBuffer
+ * @param buffer
+ * @param len
+ * @param max_len for security reason, to avoid memory consumption of wrong input
+ * @param node
+ * @param name
+ * @return
+ */
+int BPU_asn1MallocBuffer(char **buffer, int *len, const int max_len, const asn1_node node, const char *name);
 
 int BPU_asn1LoadFileToBuffer(char **buffer, long *size, const char *file_name);
 

@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 void BPU_goppaFreeSpec(BPU_T_Goppa_Spec *spec) {
     BPU_gf2xPolyFree(&spec->g);
     BPU_gf2MatFree(&spec->g_mat);
-#ifdef BPU_CONF_GOPPA_WITH_H
+#ifndef BPU_CONF_GOPPA_WO_H
     BPU_gf2xMatFree(&spec->h_mat);
 #endif
     BPU_permFree(&spec->permutation);

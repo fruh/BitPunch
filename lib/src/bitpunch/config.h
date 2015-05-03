@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef CONFIG_H
 #define CONFIG_H
 
+// constraints
 #ifdef BPU_CONF_FULL
     #ifndef BPU_CONF_ASN1
         #define BPU_CONF_ASN1
@@ -28,9 +29,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #ifndef BPU_CONF_SHA_512
         #define BPU_CONF_SHA_512
     #endif
+	#ifndef BPU_CONF_FULL_MECS
+		#define BPU_CONF_FULL_MECS
+	#endif
+	#if !defined(BPU_CONF_NO_PRINT) && !defined(BPU_CONF_PRINT)
+		#define BPU_CONF_PRINT
+	#endif
 #endif
 
-// constraints
+#ifdef BPU_CONF_FULL_MECS
+	#ifndef BPU_CONF_ENCRYPTION
+		#define BPU_CONF_ENCRYPTION
+	#endif
+	#ifndef BPU_CONF_DECRYPTION
+		#define BPU_CONF_DECRYPTION
+	#endif
+	#ifndef BPU_CONF_KEY_GEN
+		#define BPU_CONF_KEY_GEN
+	#endif
+#endif
+
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     #ifndef BPU_CONF_SHA_512
         #define BPU_CONF_SHA_512

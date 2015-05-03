@@ -26,6 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 #include <bitpunch/prng/prng.h>
 
+#ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
 void BPU_printBinaryMsb(uint32_t in, int len) {
 	if (len > 0) {
@@ -151,6 +152,7 @@ void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec) {
 	fprintf(stderr, "\n");
 }
 /* ------------------------------------ Print functions ------------------------------------ */
+#endif // BPU_CONF_PRINT
 
 int BPU_gf2VecRand(BPU_T_GF2_Vector *out, int w) {
 	int i, j;

@@ -22,13 +22,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
 
+#include <bitpunch/config.h>
 #include <bitpunch/math/gf2types.h>
 #include <bitpunch/crypto/mecsctx.h>
 #include <bitpunch/crypto/hash/sha512.h>
 
+#ifdef BPU_CONF_ENCRYPTION
 int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
+#endif
 
+#ifdef BPU_CONF_DECRYPTION
 int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
 #endif
+
+#endif // BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
 #endif // MECSPOINTCHEVAL_H
 

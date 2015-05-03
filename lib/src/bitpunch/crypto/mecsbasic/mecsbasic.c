@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/math/gf2.h>
 #include <bitpunch/debugio.h>
 
+#ifdef BPU_CONF_ENCRYPTION
 int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx) {
 	int rc;
 	BPU_T_GF2_Vector *e = ctx->code_ctx->e;
@@ -53,7 +54,9 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, cons
 	}
 	return rc;
 }
+#endif
 
+#ifdef BPU_CONF_DECRYPTION
 int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx) {
 	int rc = 0;
     BPU_T_GF2_Vector *temp;
@@ -67,3 +70,4 @@ int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, cons
 
 	return rc;
 }
+#endif

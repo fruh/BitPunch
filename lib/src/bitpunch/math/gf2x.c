@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "int.h"
 #include "mathctx.h"
 
+#ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
 void BPU_printGf2xMat(const BPU_T_GF2_16x_Matrix* in) {
 	uint32_t i;
@@ -72,6 +73,7 @@ void BPU_printGf2xVec(const BPU_T_GF2_16x_Vector *v) {
 	fprintf(stderr, "\n");
 }
 /* ------------------------------------ Print functions ------------------------------------ */
+#endif
 
 BPU_T_GF2_16x BPU_gf2xMulMod(BPU_T_GF2_16x a, BPU_T_GF2_16x b, BPU_T_GF2_16x mod) {
 	BPU_T_GF2_16x tmp, tmp2;
@@ -776,7 +778,9 @@ void BPU_gf2xPolyInv(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
     if (d->deg != 0 || d->coef[0] != 1) {
 		BPU_printDebug("inverse polynomial NOT found");
         BPU_printError("degree: %d\nelement: %d", d->deg, d->coef[0]);
+#ifdef BPU_CONF_PRINT
 		BPU_printGf2xPoly(out, math_ctx);
+#endif
 		BPU_gf2xPolyNull(out);
 	}
     BPU_gf2xPolyFree(&d);

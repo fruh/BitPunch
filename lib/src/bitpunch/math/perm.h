@@ -22,14 +22,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef BPU_PERM_H
 #define BPU_PERM_H
 
+#include <bitpunch/config.h>
+
 #include "permtypes.h"
 
+#ifdef BPU_CONF_PRINT
 /**
 * Print permutation.
 * @param permutation permutation
 */
 void BPU_printPerm(const BPU_T_Perm_Vector *permutation);
-
+#endif // BPU_CONF_PRINT
 /**
  * Generate random permutation.
  * @param permutation pointer to structure BPU_T_Perm_Vector 

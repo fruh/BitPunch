@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/prng/prng.h>
 #include <bitpunch/debugio.h>
 
+#ifdef BPU_CONF_PRINT
 void BPU_printPerm(const BPU_T_Perm_Vector *permutation) {
 	int i;
 
@@ -37,6 +38,7 @@ void BPU_printPerm(const BPU_T_Perm_Vector *permutation) {
 	}
 	fprintf(stderr, "\n");
 }
+#endif // BPU_CONF_PRINT
 
 int BPU_permRandomize(BPU_T_Perm_Vector* permutation) {
 	int i;
@@ -106,8 +108,9 @@ int BPU_permIsValid(const BPU_T_Perm_Vector *p) {
 		for (j = 0; j < p->size; j++) {
 			if (i != j && p->elements[i] == p->elements[j]) {
 				BPU_printError("permutation is not valid");
+#ifdef BPU_CONF_PRINT
 				BPU_printPerm(p);
-
+#endif
 				return 1;
 			}
 		}

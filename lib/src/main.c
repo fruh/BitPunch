@@ -131,7 +131,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx *ctx) {
 	/***************************************/
 	fprintf(stderr, "Key generation...\n");
 	// key pair generation
-    if (BPU_mecsGenKeyPair(ctx)) {
+	if (BPU_mecsGenKeyPair(ctx)) {
 //    if (BPU_asn1LoadKeyPair(&ctx, "prikey.der", "pubkey.der")) {
 		BPU_printError("Key generation error");
 
@@ -246,8 +246,8 @@ int main(int argc, char **argv) {
     BPU_T_Mecs_Ctx *ctx = NULL;
 
 	srand(time(NULL));
-#if defined(BPU_CONF_GOPPA_WITH_H) && defined(BPU_CONF_ASN1)
-    testKeyGenAsn1();
+#if !defined(BPU_CONF_GOPPA_WO_H) && defined(BPU_CONF_ASN1)
+	testKeyGenAsn1();
 #endif
 
 	/***************************************/
@@ -264,7 +264,7 @@ int main(int argc, char **argv) {
 	if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {
 		return 1;
 	}
-    rc += testKeyGenEncDec(ctx);
+	rc += testKeyGenEncDec(ctx);
 	BPU_mecsFreeCtx(&ctx);
 #endif
 	return rc;

@@ -18,8 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MECSBASIC_H
 #define MECSBASIC_H
 
+#include <bitpunch/config.h>
 #include <bitpunch/crypto/mecsctx.h>
 
+#ifdef BPU_CONF_ENCRYPTION
 /**
  * Encrypt plaintext.
  * @param  out    cyphertext
@@ -28,7 +30,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * @return     0 - succes, else error
  */
 int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
+#endif
 
+#ifdef BPU_CONF_DECRYPTION
 int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx);
+#endif
 
 #endif // MECSBASIC_H

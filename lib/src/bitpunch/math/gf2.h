@@ -25,10 +25,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <string.h>
 
+#include <bitpunch/config.h>
 #include "permtypes.h"
 #include "gf2types.h"
-// #include "gf2xtypes.h"
 
+#ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
 // TODO: Be enable to turn off print function, to not compile in in code
 /**
@@ -119,7 +120,7 @@ void BPU_printGf2VecMsb(const BPU_T_GF2_Vector* v);
 
 void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec);
 /* ------------------------------------ Print functions ------------------------------------ */
-
+#endif // BPU_CONF_PRINT
 /**
  * Check if is set bit at n-th index makro.
  * @param w bit word to check

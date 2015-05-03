@@ -24,10 +24,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <stdint.h>
 
+#include <bitpunch/config.h>
+
 #include "gf2.h"
 #include "gf2xtypes.h"
 #include "mathctx.h"
 
+#ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
 // TODO: Be enable to turn off print function, to not compile in in code
 /**
@@ -41,6 +44,7 @@ void BPU_printGf2xPoly(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *math_c
 
 void BPU_printGf2xVec(const BPU_T_GF2_16x_Vector *v);
 /* ------------------------------------ Print functions ------------------------------------ */
+#endif // BPU_CONF_PRINT
 
 /**
  * Get inverse element of galois field.

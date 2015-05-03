@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/math/gf2.h>
 #include <bitpunch/crypto/mecsbasic/mecsbasic.h>
 
+#ifdef BPU_CONF_ENCRYPTION
 int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx) {
     BPU_T_GF2_Vector *r1, *r2, *cca2_pt, *hash, *hash_in, *enc_pt, *tmp;
 	int rc = 0;
@@ -69,7 +70,9 @@ int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector
 
 	return rc;
 }
+#endif // BPU_CONF_ENCRYPTION
 
+#ifdef BPU_CONF_DECRYPTION
 int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx) {
     BPU_T_GF2_Vector *z1, *z3; // n, l, l-bit
     BPU_T_GF2_Vector *tmp_2, *pt_cca2;
@@ -125,5 +128,7 @@ int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector
     BPU_gf2VecFree(&h_tmp);
 	return rc;
 }
-#endif
+#endif // BPU_CONF_DECRYPTION
+
+#endif // BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
 

@@ -55,19 +55,18 @@ int BPU_mecsInitCtxMod(BPU_T_Mecs_Ctx **ctx, const uint16_t m, const uint16_t t,
     ctx_p = *ctx;
     ctx_p->type = type;
 
-    ctx_p->code_ctx = (BPU_T_Code_Ctx *) calloc(1, sizeof(BPU_T_Code_Ctx));
-    if (!ctx_p->code_ctx) {
-        BPU_printError("Can not malloc BPU_T_Code_Ctx");
-
-        return BPU_EC_MALLOC_ERROR;
-    }
     switch (type) {
     case BPU_EN_MECS_BASIC_GOPPA:
+#ifdef BPU_CONF_ENCRYPTION
         ctx_p->_encrypt = BPU_mecsBasicEncrypt;
+#endif
+#ifdef BPU_CONF_DECRYPTION
         ctx_p->_decrypt = BPU_mecsBasicDecrypt;
+#endif
+#ifdef BPU_CONF_KEY_GEN
         ctx_p->_genKeyPair = BPU_goppaGenCode;
-
-        rc = BPU_codeInitCtx(ctx_p->code_ctx, m, t, BPU_EN_CODE_GOPPA, mod);
+#endif
+		rc = BPU_codeInitCtx(&ctx_p->code_ctx, m, t, BPU_EN_CODE_GOPPA, mod);
         if (rc) {
             return rc;
         }
@@ -77,11 +76,16 @@ int BPU_mecsInitCtxMod(BPU_T_Mecs_Ctx **ctx, const uint16_t m, const uint16_t t,
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     case BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA:
-        ctx_p->_encrypt = BPU_mecsPointchevalCCA2Encrypt;
-        ctx_p->_decrypt = BPU_mecsPointchevalCCA2Decrypt;
-        ctx_p->_genKeyPair = BPU_goppaGenCode;
-
-        rc = BPU_codeInitCtx(ctx_p->code_ctx, m, t, BPU_EN_CODE_GOPPA, mod);
+#ifdef BPU_CONF_ENCRYPTION
+		ctx_p->_encrypt = BPU_mecsPointchevalCCA2Encrypt;
+#endif
+#ifdef BPU_CONF_DECRYPTION
+		ctx_p->_decrypt = BPU_mecsPointchevalCCA2Decrypt;
+#endif
+#ifdef BPU_CONF_KEY_GEN
+		ctx_p->_genKeyPair = BPU_goppaGenCode;
+#endif
+		rc = BPU_codeInitCtx(&ctx_p->code_ctx, m, t, BPU_EN_CODE_GOPPA, mod);
         if (rc) {
             return rc;
         }
@@ -91,19 +95,24 @@ int BPU_mecsInitCtxMod(BPU_T_Mecs_Ctx **ctx, const uint16_t m, const uint16_t t,
 #endif
     /* EXAMPLE please DO NOT REMOVE
     case BPU_EN_MECS_*****:
-        ctx->_encrypt = FUNC_FROM_YOUR_FILE;
-        ctx->_decrypt = FUNC_FROM_YOUR_FILE;
-        ctx->_genKeyPair = FUNC_FROM_YOUR_FILE;
-
-        BPU_codeInitCtx(ctx->code_ctx, BPU_EN_CODE_GOPPA);
-
+#ifdef BPU_CONF_ENCRYPTION
+		ctx_p->_encrypt = FUNC_FROM_YOUR_FILE;
+#endif
+#ifdef BPU_CONF_DECRYPTION
+		ctx_p->_decrypt = FUNC_FROM_YOUR_FILE;
+#endif
+#ifdef BPU_CONF_KEY_GEN
+		ctx_p->_genKeyPair = FUNC_FROM_YOUR_FILE;
+#endif
+		rc = BPU_codeInitCtx(&ctx_p->code_ctx, m, t, BPU_EN_CODE_GOPPA, mod);
+		if (rc) {
+			return rc;
+		}
         ctx->pt_len = PT_LEN;
         ctx->ct_len = CT_LEN;
         break;
         */
     default:
-        free(ctx_p->code_ctx);
-
         BPU_printError("MECS type not supported: %d", type);
         return BPU_EC_MECS_TYPE_NOT_SUPPORTED;
     }
@@ -129,8 +138,7 @@ int BPU_mecsFreeCtx(BPU_T_Mecs_Ctx **ctx) {
         BPU_printError("MECS type not supported: %d", ctx_p->type);
 		return BPU_EC_MECS_TYPE_NOT_SUPPORTED;
 	}
-    BPU_codeFreeCtx(ctx_p->code_ctx);
-    free(ctx_p->code_ctx);
+	BPU_codeFreeCtx(&ctx_p->code_ctx);
     free(ctx_p);
     *ctx = NULL;
 

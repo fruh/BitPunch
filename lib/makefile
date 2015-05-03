@@ -27,16 +27,18 @@
 PREFIX_SRC = src
 INCLUDE_PATH = -Isrc/
 
+ifndef CFLAGS
+	CFLAGS += -O2 -Wall -DBPU_CONF_FULL -DERROR_L
+endif
+
+# ifeq ($(BT), debug)
+# 	CFLAGS += -ggdb -DDEBUG_L
+# else ifeq ($(BT), profile)
+# 	CFLAGS += -O2 -pg
+# endif
+
 # compiler
 CC = gcc $(INCLUDE_PATH)
-
-# compiler flags
-CFLAGS_PROF = -Wall -DERROR_L -O3 -pg ${ARGS}
-#-fprofile-arcs
-CFLAGS_SPEED = -Wall -DERROR_L -O3 ${ARGS}
-
-CFLAGS = -Wall -DBPU_CONF_FULL -DERROR_L ${ARGS}
-#-O2
 
 LDFLAGS = -ltasn1
 #-fstack-protector-all
@@ -44,103 +46,88 @@ LDFLAGS = -ltasn1
 # curent working directory
 CWD = $(shell pwd)
 
-# build path
-BUILD_TARGET = build
-
 # output, distribution files target, dynamic
-DIST_TARGET = dist
+DIST_DIR = dist
+BUILD_DIR = build
 
 # static target dir
-STATIC_TARGET = $(DIST_TARGET)/static
+STATIC_TARGET = $(DIST_DIR)/static
 
 # shared target dir
-SHARED_TARGET = $(DIST_TARGET)/shared
+SHARED_TARGET = $(DIST_DIR)/shared
 
 # test target
-TEST_TARGET = $(DIST_TARGET)/test
+TEST_DIR = $(DIST_DIR)/test
 
-SRC_FILES = \
-	src/bitpunch/code/*.h \
-	src/bitpunch/code/*.c \
-	src/bitpunch/code/goppa/*.h \
-	src/bitpunch/code/goppa/*.c \
-	src/bitpunch/crypto/*.c \
-	src/bitpunch/crypto/*.h \
-	src/bitpunch/crypto/hash/*.c \
-	src/bitpunch/crypto/hash/*.h \
-	src/bitpunch/crypto/hash/polarssl/*.c \
-	src/bitpunch/crypto/hash/polarssl/polarssl/*.h \
-	src/bitpunch/crypto/mecsbasic/*.c \
-	src/bitpunch/crypto/mecsbasic/*.h \
-	src/bitpunch/crypto/cca2/*.c \
-	src/bitpunch/crypto/cca2/*.h \
-	src/bitpunch/*.c \
-	src/bitpunch/*.h \
-	src/bitpunch/math/*.c \
-	src/bitpunch/math/*.h \
-	src/bitpunch/prng/*.h \
-	src/bitpunch/prng/*.c \
-	src/bitpunch/asn1/*.h \
-	src/bitpunch/asn1/*.c
+C_FILES = $(shell find src/bitpunch/ -type f -name '*.c')
+
+OBJS := $(patsubst %.c, %.c.o, $(C_FILES))
+
+PICS := $(patsubst %.c, %.c.o.pic, $(C_FILES))
 
 ######################################## TARGETS ###############################################
-default: test-with-h print-info
+# default: test-with-h print-info
+default: test print-info
 
-test-wo-h: prepare-dir-test
-	$(CC) $(CFLAGS) $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
+test: prepare-dir static-lib
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a
 
-test-wo-h-debug: prepare-dir-test
-	$(CC) $(CFLAGS) -ggdb $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
+test-debug: CFLAGS += -ggdb -DDEBUG_L
+test-debug: prepare-dir static-lib
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a
 
-speed-test-wo-h: prepare-dir-test
-	$(CC) $(CFLAGS_SPEED) $(SRC_FILES) src/test-speed.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
+test-wo-h-debug: CFLAGS += -ggdb -DDEBUG_L -DBPU_CONF_GOPPA_WO_H
+test-wo-h-debug: prepare-dir static-lib
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a
 
-test-with-h: prepare-dir-test
-	$(CC) $(CFLAGS) -DBPU_CONF_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
+speed-test: CFLAGS += -O3 -Wall -DBPU_CONF_FULL -DERROR_L
+speed-test: prepare-dir static-lib
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/test-speed.c $(DIST_DIR)/libbpumecs.a
 
-test-with-h-debug: prepare-dir-test
-	$(CC) $(CFLAGS) -ggdb -DBPU_CONF_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
-
-speed-test-with-h: prepare-dir-test
-	$(CC) $(CFLAGS_SPEED) -DBPU_CONF_GOPPA_WITH_H $(SRC_FILES) src/test-speed.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
-
-prof-wo-h: prepare-dir-test
-	$(CC) $(CFLAGS_PROF) $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
+profile: prepare-dir static-lib
+	$(CC) $(CFLAGS_PROF) $(C_FILES) src/main.c -o $(TEST_DIR)/BitPunch $(LDFLAGS)
 	@echo ""
 	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
-	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
-	@echo "Then run: gprof $(TEST_TARGET)/BitPunch | less"
-	@echo "\t to see statistics."
-
-prof-with-h: prepare-dir-test
-	$(CC) $(CFLAGS_PROF) -DBPU_CONF_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch $(LDFLAGS)
-	@echo ""
-	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
-	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
-	@echo "Then run: gprof $(TEST_TARGET)/BitPunch | less"
+	@echo "Now you can run test aplication: $(TEST_DIR)/BitPunch"
+	@echo "Then run: gprof $(TEST_DIR)/BitPunch | less"
 	@echo "\t to see statistics."
 
 print-info:
 	@echo ""
 	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
-	@echo "Now you can run test aplication: $(TEST_TARGET)/BitPunch"
+	@echo "Now you can run test aplication: $(TEST_DIR)/BitPunch"
 	@echo "See source file in: $(CWD)/$(PREFIX_SRC)/main.c"
 
-############################# prepare dirs
-prepare-dir-test: prepare-dir
-	@mkdir -vp $(TEST_TARGET)/
-	@cp -vR asn1/ $(TEST_TARGET)/
+%.c.o.pic: %.c
+	$(CC) $(CFLAGS) -c -fpic $< -o $@
 
+# shared-lib: CFLAGS = -O3 -DBPU_CONF_ENCRYPTION
+shared-lib: prepare-dir $(PICS)
+	 gcc -shared $(PICS) -o $(DIST_DIR)/libbpumecs.so
+
+%.c.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+static-lib: prepare-dir $(OBJS)
+	cd $(BUILD_DIR) && ar -x /usr/lib/x86_64-linux-gnu/libtasn1.a
+	ar rcs $(DIST_DIR)/libbpumecs.a $(OBJS) $(BUILD_DIR)/*.o
+
+############################# prepare dirs
 prepare-dir:
-	@mkdir -vp $(BUILD_TARGET)/
-	@mkdir -vp $(DIST_TARGET)/
+	@mkdir -vp $(BUILD_DIR)/
+	@mkdir -vp $(DIST_DIR)/
+	@mkdir -vp $(TEST_DIR)/
+	@cp -vR asn1/ $(TEST_DIR)/
 
 ############################# clean up matters
 clean: clean-obj
-	rm -vRf $(DIST_TARGET)/
+	rm -vRf $(DIST_DIR)/
+	rm -vRf $(BUILD_DIR)/
 
 clean-obj:
-	rm -vRf $(BUILD_TARGET)/
+	find src/bitpunch/ -type f -name '*.o' -exec rm -v {} \;
+	find src/bitpunch/ -type f -name '*.pic' -exec rm -v {} \;
+	find src/bitpunch/ -type f -name '*.gch' -exec rm -v {} \;
 
 ############################# help
 help:
@@ -150,9 +137,10 @@ help:
 	@echo ""
 	@echo "Default build makes test binary:"
 	@echo "\tSource file: $(CWD)/$(PREFIX_SRC)/main.c"
-	@echo "\tApplication: $(TEST_TARGET)/BitPunch"
+	@echo "\tApplication: $(TEST_DIR)/BitPunch"
+	@echo "\tStatic library: $(DIST_DIR)/libbpumecs or $(DIST_DIR)/libbpumecs"
 	@echo ""
-	@echo "It is possible to build library which has H matrix precomputed or not. See targets with '*-wo-h*' or '*-with-h*'"
+	@echo "It is possible to build library which has H matrix precomputed or not."
 #	@echo "It will build files 'libbpumecs.so' or for debug 'libbpumecsd.so' or 'libbpumecsd.a', then you can link it to your project."
 #	@echo "Output will be in dist/static/ or dist/shared/"
 #	@echo ""

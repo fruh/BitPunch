@@ -22,74 +22,94 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 #include <bitpunch/errorcodes.h>
 
-// addiotional codes
+// additional codes
 #include <bitpunch/code/goppa/goppa.h>
 
-int BPU_codeInitCtx(BPU_T_Code_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Code_Types type, const BPU_T_GF2_16x mod) {
+int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Code_Types type, const BPU_T_GF2_16x mod) {
 	int tmp;
-	ctx->type = type;
+	BPU_T_Code_Ctx *ctx_p;
 
-	ctx->math_ctx = (BPU_T_Math_Ctx *) calloc(1, sizeof(BPU_T_Math_Ctx));
-	if (!ctx->math_ctx) {
-		BPU_printError("Can not malloc BPU_T_Math_Ctx");
+	*ctx = (BPU_T_Code_Ctx *) calloc(1, sizeof(BPU_T_Code_Ctx));
+	if (!*ctx) {
+		BPU_printError("Can not malloc BPU_T_Code_Ctx");
 
 		return BPU_EC_MALLOC_ERROR;
 	}
-	ctx->code_spec = (BPU_T_UN_Code_Spec *) calloc(1, sizeof(BPU_T_UN_Code_Spec));
-	if (!ctx->code_spec) {
+	ctx_p = *ctx;
+	ctx_p->type = type;
+
+	ctx_p->code_spec = (BPU_T_UN_Code_Spec *) calloc(1, sizeof(BPU_T_UN_Code_Spec));
+	if (!ctx_p->code_spec) {
 		BPU_printError("Can not malloc BPU_T_UN_Code_Spec");
-		free(ctx->math_ctx);
 
 		return BPU_EC_MALLOC_ERROR;
 	}
-    tmp = BPU_codeInitMathCtx(ctx->math_ctx, m, t, mod);
+	tmp = BPU_codeInitMathCtx(&ctx_p->math_ctx, m, t, mod);
 	if (tmp) {
 		BPU_printError("Code math context initialization ERROR.");
 
 		return tmp;
 	}
-
 	switch (type) {
 	case BPU_EN_CODE_GOPPA:
-        ctx->_encode = BPU_goppaEncodeM;
-		ctx->_decode = BPU_goppaDecode;
-		ctx->code_spec->goppa = (BPU_T_Goppa_Spec *) calloc(1, sizeof(BPU_T_Goppa_Spec));
-		if (!ctx->code_spec->goppa) {
+#ifdef BPU_CONF_ENCRYPTION
+		ctx_p->_encode = BPU_goppaEncodeM;
+#endif
+#ifdef BPU_CONF_DECRYPTION
+		ctx_p->_decode = BPU_goppaDecode;
+#endif
+		ctx_p->code_spec->goppa = (BPU_T_Goppa_Spec *) calloc(1, sizeof(BPU_T_Goppa_Spec));
+		if (!ctx_p->code_spec->goppa) {
 			BPU_printError("Can not malloc BPU_T_Goppa_Spec");
 
 			return BPU_EC_MALLOC_ERROR;
 		}
-        ctx->code_spec->goppa->support_len = (1 << m); // ctx->math_ctx->ord + 1;
-		ctx->code_len = ctx->code_spec->goppa->support_len;
-		ctx->msg_len = ctx->code_spec->goppa->support_len - m*t; // n - m*t
-		ctx->t = t;
+		ctx_p->code_spec->goppa->support_len = (1 << m); // ctx->math_ctx->ord + 1;
+		ctx_p->code_len = ctx_p->code_spec->goppa->support_len;
+		ctx_p->msg_len = ctx_p->code_spec->goppa->support_len - m*t; // n - m*t
+		ctx_p->t = t;
 
 		break;
 	/* EXAMPLE please DO NOT REMOVE
 	case BPU_EN_CODE_*****:
-		ctx->_encode = FUNC_FROM_YOUR_FILE;
-		ctx->_decode = FUNC_FROM_YOUR_FILE;
+#ifdef BPU_CONF_ENCRYPTION
+		ctx_p->_encode = FUNC_FROM_YOUR_FILE;
+#endif
+#ifdef BPU_CONF_DECRYPTION
+		ctx_p->_decode = FUNC_FROM_YOUR_FILE;
+#endif
 		ctx->code_spec->YOURS = ALLOC OR NULL;
+
+		ctx_p->code_len = LEN;
+		ctx_p->msg_len = LEN;
+		ctx_p->t = T;
 		break;
 		*/
 	default:
-		free(ctx->math_ctx);
+		free(ctx_p->math_ctx);
 
 		BPU_printError("Code type not supported: %d", type);
 		return BPU_EC_CODE_TYPE_NOT_SUPPORTED;
 	}
-    if (BPU_gf2VecMalloc(&ctx->e, ctx->code_len)) {
+	// error vector
+	if (BPU_gf2VecMalloc(&ctx_p->e, ctx_p->code_len)) {
 		BPU_printError("can not allocate error vector");
-        return BPU_EC_MALLOC_ERROR;
+		return BPU_EC_MALLOC_ERROR;
 	}
 	return 0;
 }
 
-int BPU_codeInitMathCtx(BPU_T_Math_Ctx *ctx, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod) {
+int BPU_codeInitMathCtx(BPU_T_Math_Ctx **ctx, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod) {
     int rc = 0;
 
     if (mod == (BPU_T_GF2_16x) -1) {
-        ctx->mod_deg = m;
+		*ctx = (BPU_T_Math_Ctx *) calloc(1, sizeof(BPU_T_Math_Ctx));
+		if (!*ctx) {
+			BPU_printError("Can not malloc BPU_T_Math_Ctx");
+
+			return -1;
+		}
+		(*ctx)->mod_deg = m;
     }
     else if (mod != 0) {
         rc = BPU_mathInitCtx(ctx, (BPU_T_GF2_16x)2, mod);
@@ -114,18 +134,24 @@ int BPU_codeInitMathCtx(BPU_T_Math_Ctx *ctx, const uint16_t m, const uint16_t t,
 	return rc;
 }
 
-void BPU_codeFreeCtx(BPU_T_Code_Ctx *ctx) {
-	switch (ctx->type) {
+void BPU_codeFreeCtx(BPU_T_Code_Ctx **ctx) {
+	BPU_T_Code_Ctx *ctx_p = *ctx;
+
+	if (!ctx_p) {
+		return;
+	}
+	switch (ctx_p->type) {
 	case BPU_EN_CODE_GOPPA:
-		BPU_goppaFreeSpec(ctx->code_spec->goppa);
-		free(ctx->code_spec->goppa);
+		BPU_goppaFreeSpec(ctx_p->code_spec->goppa);
+		free(ctx_p->code_spec->goppa);
 		break;
 	default:
-		BPU_printError("Code type not supported: %d", ctx->type);
+		BPU_printError("Code type not supported: %d", ctx_p->type);
 	}
-    BPU_gf2VecFree(&ctx->e);
-	BPU_mathFreeCtx(ctx->math_ctx, 0);
+	BPU_gf2VecFree(&ctx_p->e);
+	BPU_mathFreeCtx(&ctx_p->math_ctx);
 
-	free(ctx->math_ctx);
-	free(ctx->code_spec);
+	free(ctx_p->code_spec);
+	free(ctx_p);
+	*ctx = NULL;
 }

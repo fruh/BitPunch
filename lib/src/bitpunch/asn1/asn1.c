@@ -169,19 +169,19 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx **ctx, const char *buffer, const int siz
         BPU_printError("Wrong OID");
         return -1;
     }
-    if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, "m", asn1_element)) {
+	if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, 1, "m", asn1_element)) {
         return -1;
     }
     m = *(uint8_t *) tmp_buf;
     free(tmp_buf);
 
-    if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, "t", asn1_element)) {
+	if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, 1, "t", asn1_element)) {
         return -1;
     }
     t = *(uint8_t *) tmp_buf;
     free(tmp_buf);
 
-    if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, "mod", asn1_element)) {
+	if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, sizeof(BPU_T_GF2_16x), "mod", asn1_element)) {
         return -1;
     }
 
@@ -191,7 +191,7 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx **ctx, const char *buffer, const int siz
     free(tmp_buf);
 
     if ((*ctx)->code_ctx->type == BPU_EN_CODE_GOPPA) {
-        if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, "g", asn1_element)) {
+		if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, sizeof(BPU_T_GF2_16x) * (t + 1), "g", asn1_element)) {
             return -1;
         }
         if (BPU_gf2xPolyMalloc(&((*ctx)->code_ctx->code_spec->goppa->g), t)) {
@@ -205,7 +205,7 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx **ctx, const char *buffer, const int siz
         BPU_printError("Not supported for this code type.");
         return -1;
     }
-    if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, "p", asn1_element)) {
+	if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, sizeof(BPU_T_Perm_Element) * (*ctx)->code_ctx->code_len, "p", asn1_element)) {
         return -1;
     }
     if (BPU_permMalloc(&((*ctx)->code_ctx->code_spec->goppa->permutation), (*ctx)->code_ctx->code_len)) {
@@ -214,7 +214,7 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx **ctx, const char *buffer, const int siz
     memcpy((*ctx)->code_ctx->code_spec->goppa->permutation->elements, tmp_buf, tmp_len);
     free(tmp_buf);
 
-    if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, "h_mat", asn1_element)) {
+	if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, sizeof(BPU_T_GF2_16x) * (*ctx)->code_ctx->t * (*ctx)->code_ctx->code_len, "h_mat", asn1_element)) {
         return -1;
     }
     if (BPU_gf2xMatMalloc(&((*ctx)->code_ctx->code_spec->goppa->h_mat), (*ctx)->code_ctx->t, (*ctx)->code_ctx->code_len)) {
@@ -357,13 +357,13 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx **ctx, const char *buffer, const int siz
         BPU_printError("Wrong OID");
         return -1;
     }
-    if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, "m", asn1_element)) {
+	if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, 1, "m", asn1_element)) {
         return -1;
     }
     m = *(uint8_t *) tmp_buf;
     free(tmp_buf);
 
-    if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, "t", asn1_element)) {
+	if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, 1, "t", asn1_element)) {
         return -1;
     }
     t = *(uint8_t *) tmp_buf;
@@ -375,7 +375,7 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx **ctx, const char *buffer, const int siz
 
         return rc;
     }
-    if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, "g_mat", asn1_element)) {
+	if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, (*ctx)->code_ctx->code_len * (*ctx)->code_ctx->msg_len, "g_mat", asn1_element)) {
         return -1;
     }
     if (BPU_gf2MatMalloc(&((*ctx)->code_ctx->code_spec->goppa->g_mat), (*ctx)->code_ctx->code_len - (*ctx)->code_ctx->msg_len, (*ctx)->code_ctx->msg_len)) {
@@ -393,12 +393,12 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx **ctx, const char *buffer, const int siz
     return rc;
 }
 
-int BPU_asn1ReadValue(char **buffer, int *len, const char *name, const asn1_node node) {
+int BPU_asn1ReadValue(char **buffer, int *len, const int max_len, const char *name, const asn1_node node) {
     int rc;
 
     // get size and malloc buffer
-    if (BPU_asn1MallocBuffer(buffer, len, node, name)) {
-        return -1;
+	if ((rc = BPU_asn1MallocBuffer(buffer, len, max_len, node, name))) {
+		return rc;
     }
     // decode data
     rc = asn1_read_value(node, name, *buffer, len);
@@ -415,7 +415,7 @@ BPU_T_EN_Mecs_Types BPU_asn1GetMecsTypeFromOid(asn1_node node) {
     int rc, tmp_len;
     char *tmp_buf = NULL;
 
-    if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, "oid", node)) {
+	if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, 60, "oid", node)) {
         return -1;
     }
     tmp_buf[tmp_len - 1] = '\0';
@@ -437,12 +437,16 @@ BPU_T_EN_Mecs_Types BPU_asn1GetMecsTypeFromOid(asn1_node node) {
     return rc;
 }
 
-int BPU_asn1MallocBuffer(char **buffer, int *len, const asn1_node node, const char *name) {
+int BPU_asn1MallocBuffer(char **buffer, int *len, const int max_len, const asn1_node node, const char *name) {
     int rc;
 
     rc = asn1_read_value(node, name, NULL, len);
 
-    if (*len > 0) {
+	if (*len > max_len) {
+		BPU_printError("requested length %d is bigger than max expected %d", *len, max_len);
+		return -1;
+	}
+	else if (*len > 0) {
         // malloc data
         *buffer = (char *) malloc(*len);
 

@@ -21,7 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "polarssl/polarssl/sha512.h"
 
 #include <bitpunch/debugio.h>
-
 #include <bitpunch/math/gf2.h>
 
 int BPU_gf2VecHash(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in) {

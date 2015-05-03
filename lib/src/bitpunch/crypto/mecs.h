@@ -24,19 +24,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "mecsctx.h"
 
+#include <bitpunch/config.h>
 #include <bitpunch/math/gf2.h>
 #include <bitpunch/math/gf2x.h>
 #include <bitpunch/code/codectx.h>
 
-/********************************** dsadsadsad ********************************/
-/**
- * Key generation, first must be initialized context using BPU_mecsInitCtx().
- * @param  ctx McEliece context
- * @return     0 - success, else error
- */
-/// Key generation, first must be initialized context using BPU_mecsInitCtx.
-int BPU_mecsGenKeyPair(BPU_T_Mecs_Ctx *ctx);
-
+/******************************************************************/
+#ifdef BPU_CONF_ENCRYPTION
 /**
  * Encrypt plaintext (pt) and save it to cipher text. All strctures must be allocated before use.
  * @param  ct  cipher text
@@ -46,8 +40,9 @@ int BPU_mecsGenKeyPair(BPU_T_Mecs_Ctx *ctx);
  */
 /// Encrypt plaintext (pt) and save it to cipher text.
 int BPU_mecsEncrypt(BPU_T_GF2_Vector *ct, const BPU_T_GF2_Vector *pt, const BPU_T_Mecs_Ctx *ctx);
+#endif
 
-
+#ifdef BPU_CONF_DECRYPTION
 /**
  * Decrypt cipher text (ct) and save it to plain text. All strctures must be allocated before use.
  * @param  pt  plain text
@@ -57,5 +52,16 @@ int BPU_mecsEncrypt(BPU_T_GF2_Vector *ct, const BPU_T_GF2_Vector *pt, const BPU_
  */
 /// Decrypt cipher text (ct) and save it to plain text.
 int BPU_mecsDecrypt(BPU_T_GF2_Vector *pt, BPU_T_GF2_Vector *ct, const BPU_T_Mecs_Ctx *ctx);
+#endif
+
+#ifdef BPU_CONF_KEY_GEN
+/**
+ * Key generation, first must be initialized context using BPU_mecsInitCtx().
+ * @param  ctx McEliece context
+ * @return     0 - success, else error
+ */
+/// Key generation, first must be initialized context using BPU_mecsInitCtx.
+int BPU_mecsGenKeyPair(BPU_T_Mecs_Ctx *ctx);
+#endif
 
 #endif // BPU_MECS_H
