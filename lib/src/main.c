@@ -45,7 +45,6 @@ int elpMeasurementsBB() {
 #ifdef ATTACK_BB
 	unsigned long long int start, stop, delta;
 #endif
-//	return 0;
 	srand(0);
 //	srand(time(NULL));
 	BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
@@ -56,9 +55,8 @@ int elpMeasurementsBB() {
 	BPU_gf2VecMalloc(&ct, ctx.ct_len);
 //	Prepare output plain text
 	BPU_gf2VecMalloc(&pt_out, ctx.pt_len);
-//	Encryption
 
-//	TODO: custom encryption - set own error vector
+//	Encryption
 //	Create error vector
 	ctx.code_ctx->_encode(&ct, &pt_in, ctx.code_ctx);
 //	BPU_gf2VecRand(&error, ctx.ct_len, ctx.code_ctx->t);
@@ -69,7 +67,7 @@ int elpMeasurementsBB() {
 	BPU_gf2VecRand(&error, ctx.ct_len, ctx.code_ctx->t);
 	BPU_gf2VecXor(&ct, &error);
 
-	iter = 500;
+	iter = 1;
 	for (test = 0; test < number_of_tests; test++){
 		for (i = 0; i < iter; i++) {
 #ifdef ATTACK_BB
@@ -79,14 +77,11 @@ int elpMeasurementsBB() {
 #ifdef ATTACK_BB
 			stop = rdtsc();
 			delta = stop - start;
-//			if (i % 2 == 0)
-				fprintf(stdout, "%d\n", delta);
+			fprintf(stdout, "%d\n", delta);
 #endif
 		}
-		removeErrorBit(&ct, &error, 48);
-//		removeErrorBit(&ct, &error, 1);
-//		addErrorBit(&ct, &error, 3);
-//		addErrorBit(&ct, &error, 4);
+		removeErrorBit(&ct, &error, 26);
+//		addErrorBit(&ct, &error, 2);
 	}
 
 
@@ -114,7 +109,6 @@ int basicTest() {
 	/***************************************/
 	// mce initialisation t = 50, m = 11
 	fprintf(stderr, "Initialisation...\n");
-//	BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
 	if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA)) {
 //	 if (BPU_mecsInitCtx(&ctx, 5, 5, BPU_EN_MECS_BASIC_GOPPA)) {
 		return 1;

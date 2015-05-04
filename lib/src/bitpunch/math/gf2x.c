@@ -219,7 +219,7 @@ void BPU_gf2xPolyAddC(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, cons
 			out->coef[i] ^= b->coef[i];
 		}
 	}
-	out->deg = BPU_gf2xPolyGetDeg(out);
+	out->deg = BPU_gf2xPolyGetDegC(out);
 }
 
 void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b) {
@@ -410,6 +410,25 @@ void BPU_gf2xPolyShr(BPU_T_GF2_16x_Poly *a, int n) {
 	BPU_gf2xPolyFree(&tmp, 0);
 }
 
+void BPU_gf2xPolyShlC(BPU_T_GF2_16x_Poly *a, int n) {
+	BPU_T_GF2_16x_Poly tmp;
+
+	BPU_gf2xPolyMalloc(&tmp, a->deg);
+	BPU_gf2xPolyCopy(&tmp, a);
+
+	if (a->max_deg < a->deg + n) {
+		BPU_gf2xPolyFree(a, 0);
+
+		BPU_gf2xPolyMalloc(a, a->deg + n);
+	}
+	else {
+		BPU_gf2xPolyNull(a);
+	}
+	memcpy((void *)(a->coef + n), (void *)tmp.coef, (tmp.deg + 1) * sizeof(BPU_T_GF2_16x));
+	a->deg += (!!a->deg) * n;
+	BPU_gf2xPolyFree(&tmp, 0);
+}
+
 void BPU_gf2xPolyShl(BPU_T_GF2_16x_Poly *a, int n) {
 	BPU_T_GF2_16x_Poly tmp;
 
@@ -426,7 +445,6 @@ void BPU_gf2xPolyShl(BPU_T_GF2_16x_Poly *a, int n) {
 	}
 	memcpy((void *)(a->coef + n), (void *)tmp.coef, (tmp.deg + 1) * sizeof(BPU_T_GF2_16x));
 	a->deg = BPU_gf2xPolyGetDeg(a);
-
 	BPU_gf2xPolyFree(&tmp, 0);
 }
 
@@ -473,7 +491,7 @@ void BPU_gf2xPolyMulEl(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x el, const BPU_T_Math
 		a->coef[i] = BPU_gf2xMulModTC(a->coef[i], el, math_ctx);
 //		a->coef[i] = BPU_gf2xMulModC(a->coef[i], el, math_ctx->mod, math_ctx->mod_deg);
 	}
-	a->deg = BPU_gf2xPolyGetDeg(a);
+	a->deg = a->deg * (!!el);
 }
 
 void BPU_gf2xPolyMod(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx) {
@@ -629,18 +647,24 @@ int BPU_gf2xGetDeg(BPU_T_GF2_32x poly) {
 	return -1;
 }
 
+int BPU_gf2xPolyGetDegC(BPU_T_GF2_16x_Poly *poly) {
+	int i = poly->max_deg;
+	int deg = 0;
+	for (i; i >= 0; i--) {
+		deg = deg ^ ((i + 1) * !deg * !!poly->coef[i]);
+	}
+	deg = deg - 1;
+	return deg;
+}
+
 int BPU_gf2xPolyGetDeg(BPU_T_GF2_16x_Poly *poly) {
 	int i = poly->max_deg;
-	int deg = -1;
-	for (i = 0; i <= poly->max_deg; i++) {
+	for (i; i >= 0; i--) {
 		if (poly->coef[i] != 0) {
-			deg = i;
+			return i;
 		}
-		else
-			deg = deg;
-//		i--;
 	}
-	return deg;
+	return i;
 }
 
 int BPU_gf2xMatPermute(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Matrix *m, const BPU_T_Perm_Vector *permutation) {
@@ -688,12 +712,12 @@ int BPU_gf2xMatConvertToGf2Mat(BPU_T_GF2_Matrix *out, const BPU_T_GF2_16x_Matrix
 }
 
 
-int BPU_gf2xPolyExtEuclidC(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF2_16x_Poly *t, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, const int end_deg, const BPU_T_Math_Ctx *math_ctx) {
+int BPU_gf2xPolyExtEuclidC(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF2_16x_Poly *t, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, int end_deg, const BPU_T_Math_Ctx *math_ctx) {
 	BPU_T_GF2_16x_Poly tmp, tmp_2, old_s, old_t, old_r, r, q, helper1, helper2;
 	BPU_T_GF2_16x inv_lead, leader;
 	int deg, leader_exp;
 	int counter = 0;
-	int act_deg;
+	int act_deg, parity = 0;
 #ifdef ATTACK_INSIDE
 	unsigned long long int start1, stop1, delta1;
 #endif
@@ -746,60 +770,55 @@ int BPU_gf2xPolyExtEuclidC(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_G
 		t->deg = 0;
 
 		act_deg = old_r.max_deg;
-
-		for (counter = 0; counter < end_deg*2; counter++) {
+		parity = (!(end_deg & 1)) * 2;
+		for (counter = 0; counter < end_deg*2 + parity; counter++) {
 
 			//// leader = old_r.coef[act_deg] / r.coef[r.deg];
 			leader_exp = math_ctx->log_table[old_r.coef[act_deg]] - math_ctx->log_table[r.coef[r.deg]];
 			if (leader_exp < 0){
 				leader_exp += math_ctx->ord;
 			}
-			if (old_r.coef[act_deg] == 0)
-				leader = 0;
-			else {
-				leader = math_ctx->exp_table[leader_exp];
-			}
+			leader = math_ctx->exp_table[leader_exp];
+			leader = leader * (!!old_r.coef[act_deg]);
 
-			//// old_r = old_r + r tmp_q(X);
+			//// old_r = old_r + r q_i(X);
 			BPU_gf2xPolyCopy(&helper1, &r);
 			BPU_gf2xPolyMulEl(&helper1, leader, math_ctx);
-			BPU_gf2xPolyShl(&helper1, act_deg - r.deg);
+			BPU_gf2xPolyShlC(&helper1, act_deg - r.deg);
 			BPU_gf2xPolyAddC(&helper2, &old_r, &helper1);
 			BPU_gf2xPolyCopy(&old_r, &helper2);
 
 			//// q = q + tmp_q(X);
-//			q.coef[act_deg - r.deg] ^= leader;
-//			BPU_gf2xPolyAddC(&helper1, &q, &tmp_q);
-//			BPU_gf2xPolyCopy(&q, &helper1);
-
 			BPU_gf2xPolyCopy(&helper1, t);
 			BPU_gf2xPolyMulEl(&helper1, leader, math_ctx);
-			BPU_gf2xPolyShl(&helper1, act_deg - r.deg);
+			BPU_gf2xPolyShlC(&helper1, act_deg - r.deg);
 			BPU_gf2xPolyCopy(&helper2, &tmp_2);
-			BPU_gf2xPolyAdd(&tmp_2, &helper1, &helper2);
+			BPU_gf2xPolyAddC(&tmp_2, &helper1, &helper2);
 
 			BPU_gf2xPolyCopy(&helper1, &old_r);
 			BPU_gf2xPolyCopy(&old_r, &r);
-
+//			BPU_gf2xPolyCopy(&tmp, &old_t);
 			if (r.deg < act_deg) {
-				act_deg--;
+				act_deg -= 2;
 				BPU_gf2xPolyCopy(&old_r, &helper1);
 
-//				// save s quocient
-				BPU_gf2xPolyCopy(&tmp, &old_s);
-				BPU_gf2xPolyCopy(&old_s, s);
+				//// Perform dummy operations
+				BPU_gf2xPolyCopy(&tmp, &old_t);
+				BPU_gf2xPolyCopy(&old_s, t);
 				BPU_gf2xPolyAddC(s, &tmp, &tmp_2);
 				BPU_gf2xPolyNull(&tmp);
 			}
 			else {
+				act_deg -= 1;
 				BPU_gf2xPolyCopy(&r, &helper1);
 
-				// save t quocient
+				//// save t quocient
 				BPU_gf2xPolyCopy(&tmp, &old_t);
 				BPU_gf2xPolyCopy(&old_t, t);
 				BPU_gf2xPolyAddC(t, &tmp, &tmp_2);
 				BPU_gf2xPolyNull(&tmp_2);
 			}
+			act_deg += 1;
 		}
 	}
 #ifdef ATTACK_INSIDE
@@ -900,7 +919,7 @@ int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF
 			BPU_gf2xPolyMul(&tmp_2, &q, t, math_ctx);
 			BPU_gf2xPolyAdd(t, &tmp, &tmp_2);
 		}
-	} 
+	}
 	// prepare return values
 	BPU_gf2xPolyCopy(d, &old_r);
 	BPU_gf2xPolyCopy(s, &old_s);
@@ -1073,7 +1092,7 @@ void BPU_gf2xPolyInv(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
 	BPU_T_GF2_16x_Poly d, t;
 	BPU_gf2xPolyMalloc(&d, (a->deg > mod->deg) ? a->deg : mod->deg);
 	BPU_gf2xPolyMalloc(&t, d.max_deg);
-	BPU_gf2xPolyExtEuclid(&d, out, &t, a, mod, 0, math_ctx);
+	BPU_gf2xPolyExtEuclid(&d, &t, out, mod, a, 0, math_ctx);
 
 	if (d.deg != 0 || d.coef[0] != 1) {
 		BPU_printDebug("inverse polynomial NOT found");

@@ -152,7 +152,7 @@ void BPU_gf2xPolyShr(BPU_T_GF2_16x_Poly *a, int n);
  */
 /// Shift polynomial left, it is like a mul 1/x^n.
 void BPU_gf2xPolyShl(BPU_T_GF2_16x_Poly *a, int n);
-
+void BPU_gf2xPolyShlC(BPU_T_GF2_16x_Poly *a, int n);
 /**
  * Calculate power of polynomial.
  * @param a[inout] polynomial to be 'powered'
@@ -226,7 +226,7 @@ int BPU_gf2xGetDeg(BPU_T_GF2_32x pol);
 */
 /// Get degree of polynomial over GF2x
 int BPU_gf2xPolyGetDeg(BPU_T_GF2_16x_Poly *poly);
-
+int BPU_gf2xPolyGetDegC(BPU_T_GF2_16x_Poly *poly);
 /**
  * Permute matrix GF2^m with permutation.
  * @param m matrix GF2^m
@@ -268,7 +268,7 @@ BPU_T_GF2_16x BPU_gf2xPolyEval(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_1
  */
 /// Extended Euclidean to find greatest common divisor and Bézout coefficients s, t, where gcd(a, b) = d = a*s + b*t.
 int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF2_16x_Poly *t, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, int end_deg, const BPU_T_Math_Ctx *math_ctx);
-int BPU_gf2xPolyExtEuclidC(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF2_16x_Poly *t, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, const int end_deg, const BPU_T_Math_Ctx *math_ctx);
+int BPU_gf2xPolyExtEuclidC(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF2_16x_Poly *t, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, int end_deg, const BPU_T_Math_Ctx *math_ctx);
 /**
  * Function compares two polynomials
  * @param  p1 [description]
