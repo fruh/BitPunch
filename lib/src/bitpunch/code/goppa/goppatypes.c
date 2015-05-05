@@ -16,6 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "goppatypes.h"
+#include <bitpunch/debugio.h>
+
 #include <stdlib.h>
 
 #include <bitpunch/math/gf2types.h>
@@ -29,4 +31,26 @@ void BPU_goppaFreeSpec(BPU_T_Goppa_Spec *spec) {
     BPU_gf2xMatFree(&spec->h_mat);
 #endif
     BPU_permFree(&spec->permutation);
+}
+
+int BPU_goppaInitParams(BPU_T_Goppa_Params **params, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod) {
+	*params = (BPU_T_Goppa_Params*) calloc(sizeof(BPU_T_Goppa_Params), 1);
+
+	if (!params) {
+		BPU_printError("Can't init Code params");
+
+		return -1;
+	}
+	(*params)->m = m;
+	(*params)->t = t;
+	(*params)->mod = mod;
+
+	return 0;
+}
+
+void BPU_goppaFreeParams(BPU_T_Goppa_Params **params) {
+	if (*params) {
+		free(*params);
+	}
+	*params = NULL;
 }

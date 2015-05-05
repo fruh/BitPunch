@@ -32,11 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/crypto/cca2/mecspointcheval.h>
 #endif
 
-int BPU_mecsInitCtx(BPU_T_Mecs_Ctx **ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Mecs_Types type) {
-    return BPU_mecsInitCtxMod(ctx, m, t, type, 0);
-}
-
-int BPU_mecsInitCtxMod(BPU_T_Mecs_Ctx **ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Mecs_Types type, const BPU_T_GF2_16x mod) {
+int BPU_mecsInitCtx(BPU_T_Mecs_Ctx **ctx, const BPU_T_UN_Mecs_Params *params, const BPU_T_EN_Mecs_Types type) {
     int rc = 0;
     BPU_T_Mecs_Ctx *ctx_p;
 
@@ -66,7 +62,7 @@ int BPU_mecsInitCtxMod(BPU_T_Mecs_Ctx **ctx, const uint16_t m, const uint16_t t,
 #ifdef BPU_CONF_KEY_GEN
         ctx_p->_genKeyPair = BPU_goppaGenCode;
 #endif
-		rc = BPU_codeInitCtx(&ctx_p->code_ctx, m, t, BPU_EN_CODE_GOPPA, mod);
+		rc = BPU_codeInitCtx(&ctx_p->code_ctx, (BPU_T_UN_Code_Params *)params, BPU_EN_CODE_GOPPA);
         if (rc) {
             return rc;
         }
@@ -85,7 +81,7 @@ int BPU_mecsInitCtxMod(BPU_T_Mecs_Ctx **ctx, const uint16_t m, const uint16_t t,
 #ifdef BPU_CONF_KEY_GEN
 		ctx_p->_genKeyPair = BPU_goppaGenCode;
 #endif
-		rc = BPU_codeInitCtx(&ctx_p->code_ctx, m, t, BPU_EN_CODE_GOPPA, mod);
+		rc = BPU_codeInitCtx(&ctx_p->code_ctx, (BPU_T_UN_Code_Params *)params, BPU_EN_CODE_GOPPA);
         if (rc) {
             return rc;
         }
@@ -143,4 +139,12 @@ int BPU_mecsFreeCtx(BPU_T_Mecs_Ctx **ctx) {
     *ctx = NULL;
 
 	return 0;
+}
+
+int BPU_mecsInitParamsGoppa(BPU_T_UN_Mecs_Params *params, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod) {
+	return BPU_codeInitParamsGoppa((BPU_T_UN_Code_Params *)params, m, t, mod);
+}
+
+void BPU_mecsFreeParamsGoppa(BPU_T_UN_Mecs_Params *params) {
+	BPU_codeFreeParamsGoppa((BPU_T_UN_Code_Params *)params);
 }

@@ -41,11 +41,18 @@ typedef struct _BPU_T_Mecs_Ctx {
 	uint16_t ct_len; ///< CT len in bits
 }BPU_T_Mecs_Ctx;
 
-/// Initialize (register) mecs functions for encryption, decryption and key gen based on type.
-int BPU_mecsInitCtx(BPU_T_Mecs_Ctx **ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Mecs_Types type);
+typedef union _BPU_T_UN_Code_Params BPU_T_UN_Mecs_Params;
 
-int BPU_mecsInitCtxMod(BPU_T_Mecs_Ctx **ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Mecs_Types type, const BPU_T_GF2_16x mod);
+/// Initialize (register) mecs functions for encryption, decryption and key gen based on type.
+int BPU_mecsInitCtx(BPU_T_Mecs_Ctx **ctx, const BPU_T_UN_Mecs_Params *params, const BPU_T_EN_Mecs_Types type);
 
 int BPU_mecsFreeCtx(BPU_T_Mecs_Ctx **ctx);
+
+// Available init params for all codes, it is only wrapper for code params init
+int BPU_mecsInitParamsGoppa(BPU_T_UN_Mecs_Params *params, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod);
+
+void BPU_mecsFreeParamsGoppa(BPU_T_UN_Mecs_Params *params);
+
+// add yours additional params if needed
 
 #endif // MECSCTX_H

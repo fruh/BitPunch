@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // additional codes
 #include <bitpunch/code/goppa/goppa.h>
 
-int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Code_Types type, const BPU_T_GF2_16x mod) {
+int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const BPU_T_UN_Code_Params *params, const BPU_T_EN_Code_Types type) {
 	int tmp;
 	BPU_T_Code_Ctx *ctx_p;
 
@@ -44,12 +44,6 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const uint16_t m, const uint16_t t, co
 
 		return BPU_EC_MALLOC_ERROR;
 	}
-	tmp = BPU_codeInitMathCtx(&ctx_p->math_ctx, m, t, mod);
-	if (tmp) {
-		BPU_printError("Code math context initialization ERROR.");
-
-		return tmp;
-	}
 	switch (type) {
 	case BPU_EN_CODE_GOPPA:
 #ifdef BPU_CONF_ENCRYPTION
@@ -58,16 +52,22 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const uint16_t m, const uint16_t t, co
 #ifdef BPU_CONF_DECRYPTION
 		ctx_p->_decode = BPU_goppaDecode;
 #endif
+		tmp = BPU_codeInitMathCtx(&ctx_p->math_ctx, params->goppa->m, params->goppa->t, params->goppa->mod);
+		if (tmp) {
+			BPU_printError("Code math context initialization ERROR.");
+
+			return tmp;
+		}
 		ctx_p->code_spec->goppa = (BPU_T_Goppa_Spec *) calloc(1, sizeof(BPU_T_Goppa_Spec));
 		if (!ctx_p->code_spec->goppa) {
 			BPU_printError("Can not malloc BPU_T_Goppa_Spec");
 
 			return BPU_EC_MALLOC_ERROR;
 		}
-		ctx_p->code_spec->goppa->support_len = (1 << m); // ctx->math_ctx->ord + 1;
+		ctx_p->code_spec->goppa->support_len = (1 << params->goppa->m); // ctx->math_ctx->ord + 1;
 		ctx_p->code_len = ctx_p->code_spec->goppa->support_len;
-		ctx_p->msg_len = ctx_p->code_spec->goppa->support_len - m*t; // n - m*t
-		ctx_p->t = t;
+		ctx_p->msg_len = ctx_p->code_spec->goppa->support_len - params->goppa->m*params->goppa->t; // n - m*t
+		ctx_p->t = params->goppa->t;
 
 		break;
 	/* EXAMPLE please DO NOT REMOVE
@@ -86,8 +86,6 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const uint16_t m, const uint16_t t, co
 		break;
 		*/
 	default:
-		free(ctx_p->math_ctx);
-
 		BPU_printError("Code type not supported: %d", type);
 		return BPU_EC_CODE_TYPE_NOT_SUPPORTED;
 	}
@@ -154,4 +152,12 @@ void BPU_codeFreeCtx(BPU_T_Code_Ctx **ctx) {
 	free(ctx_p->code_spec);
 	free(ctx_p);
 	*ctx = NULL;
+}
+
+int BPU_codeInitParamsGoppa(BPU_T_UN_Code_Params *params, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod) {
+	return BPU_goppaInitParams(&params->goppa, m, t, mod);
+}
+
+void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params *params) {
+	BPU_goppaFreeParams(&params->goppa);
 }

@@ -30,6 +30,7 @@
 int main(int argc, char **argv) {
     // MUST BE INITIaLIZED TO NULL
     BPU_T_Mecs_Ctx *ctx = NULL;
+	BPU_T_UN_Mecs_Params params;
     BPU_T_GF2_Vector *ct, *pt;
 	int i;
 	struct timeval tv, tv_end;
@@ -40,7 +41,8 @@ int main(int argc, char **argv) {
 	srand(time(NULL));
 
 	for (i = 0; i < BPU_TEST_ROUNDS; i++){
-		BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_BASIC_GOPPA);
+		BPU_mecsInitParamsGoppa(&params, 11, 50, 0);
+		BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA);
 		gettimeofday(&tv, NULL);
 
         BPU_mecsGenKeyPair(ctx);
@@ -64,6 +66,7 @@ int main(int argc, char **argv) {
         BPU_gf2VecFree(&pt);
         BPU_gf2VecFree(&ct);
         BPU_mecsFreeCtx(&ctx);
+		BPU_mecsFreeParamsGoppa(&params);
 	}
 	fprintf(stderr, "%0.6lf\n", res / BPU_TEST_ROUNDS);
 	fprintf(stderr, "%0.6lf\n", res_2 / BPU_TEST_ROUNDS);

@@ -139,6 +139,7 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx **ctx, const char *buffer, const int siz
     char error_desc[ASN1_MAX_ERROR_DESCRIPTION_SIZE];
     char *tmp_buf;
     BPU_T_EN_Mecs_Types type;
+	BPU_T_UN_Mecs_Params params;
     uint8_t m, t;
     int i, j;
 
@@ -184,13 +185,15 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx **ctx, const char *buffer, const int siz
 	if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, sizeof(BPU_T_GF2_16x), "mod", asn1_element)) {
         return -1;
     }
-
-    if (BPU_mecsInitCtxMod(ctx, m, t, type, *((BPU_T_GF2_16x *) tmp_buf))) {
-        return -1;
-    }
-    free(tmp_buf);
-
-    if ((*ctx)->code_ctx->type == BPU_EN_CODE_GOPPA) {
+	if (type == BPU_EN_MECS_BASIC_GOPPA || type == BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA) {
+		if (BPU_mecsInitParamsGoppa(&params, m, t, *((BPU_T_GF2_16x *) tmp_buf))) {
+			return -1;
+		}
+		free(tmp_buf);
+		if (BPU_mecsInitCtx(ctx, &params, type)) {
+			return -1;
+		}
+		BPU_mecsFreeParamsGoppa(&params);
 		if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, sizeof(BPU_T_GF2_16x) * (t + 1), "g", asn1_element)) {
             return -1;
         }
@@ -327,6 +330,7 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx **ctx, const char *buffer, const int siz
     char error_desc[ASN1_MAX_ERROR_DESCRIPTION_SIZE];
     char *tmp_buf = NULL;
     BPU_T_EN_Mecs_Types type;
+	BPU_T_UN_Mecs_Params params;
     uint8_t m, t;
     int i, j, tmp;
 
@@ -370,11 +374,22 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx **ctx, const char *buffer, const int siz
     free(tmp_buf);
 
     // init mecs context without mod
-    if ((rc = BPU_mecsInitCtxMod(ctx, m, t, type, -1))) {
+	if (type == BPU_EN_MECS_BASIC_GOPPA || type == BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA) {
+		if (BPU_mecsInitParamsGoppa(&params, m, t, -1)) {
+			return -1;
+		}
+	}
+	else {
+		BPU_printError("Type not supported");
+		return -1;
+	}
+	if ((rc = BPU_mecsInitCtx(ctx, &params, type))) {
         BPU_printError("can not initialize mecs ctx");
 
         return rc;
     }
+	BPU_mecsFreeParamsGoppa(&params);
+
 	if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, (*ctx)->code_ctx->code_len * (*ctx)->code_ctx->msg_len, "g_mat", asn1_element)) {
         return -1;
     }

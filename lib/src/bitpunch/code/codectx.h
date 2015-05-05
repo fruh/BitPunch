@@ -40,6 +40,11 @@ typedef union _BPU_T_UN_Code_Spec{
 	// HERE you add your code spec structure
 }BPU_T_UN_Code_Spec;
 
+typedef union _BPU_T_UN_Code_Params{
+	BPU_T_Goppa_Params *goppa;
+	// HERE you add your code spec structure
+}BPU_T_UN_Code_Params;
+
 typedef struct _BPU_T_Code_Ctx {
 	BPU_T_EN_Code_Types type;
 	int (* _encode)(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx); ///< This is reference to encode function. It will be set in BPU_codeInitCtx
@@ -54,9 +59,16 @@ typedef struct _BPU_T_Code_Ctx {
 }BPU_T_Code_Ctx;
 
 /// Initialize (register) code functions encode, decode and code spec structure based on code type.
-int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const uint16_t m, const uint16_t t, const BPU_T_EN_Code_Types type, const BPU_T_GF2_16x mod);
+int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const BPU_T_UN_Code_Params *params, const BPU_T_EN_Code_Types type);
 
 int BPU_codeInitMathCtx(BPU_T_Math_Ctx **ctx, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod);
 
 void BPU_codeFreeCtx(BPU_T_Code_Ctx **ctx);
+
+// Available init params for all codes, it is only wrapper for code params init
+int BPU_codeInitParamsGoppa(BPU_T_UN_Code_Params *params, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod);
+
+void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params *params);
+
+// add yours additional params if needed
 #endif // BPU_CODECTX_H

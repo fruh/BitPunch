@@ -29,6 +29,19 @@ typedef struct _BPU_T_Goppa_Spec {
 	uint16_t support_len; ///< number of elements in support
 }BPU_T_Goppa_Spec;
 
+/**
+  Goppa code params.
+  */
+typedef struct _BPU_T_Goppa_Params {
+	uint16_t m;
+	uint16_t t;
+	BPU_T_GF2_16x mod;
+}BPU_T_Goppa_Params;
+
 void BPU_goppaFreeSpec(BPU_T_Goppa_Spec *spec);
+
+int BPU_goppaInitParams(BPU_T_Goppa_Params **params, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod);
+
+void BPU_goppaFreeParams(BPU_T_Goppa_Params **params);
 
 #endif // GOPPATYPES_H
