@@ -1052,25 +1052,6 @@ int BPU_gf2PolyIsZero(const BPU_T_GF2_Poly *a) {
   return 1;
 }
 
-int BPU_gf2VecCompare(BPU_T_GF2_Vector *a, BPU_T_GF2_Vector *b) {
-  int i;
-
-  // if vectors dont have the same element count
-  if (a->elements_in_row != b->elements_in_row)
-    // cant be same
-    return 1;
-
-  // for all elements
-  for (i = 0; i < a->elements_in_row; i++)
-    // compare elements
-    if (a->elements[i] != b->elements[i])
-      // not the same
-      return 1;
-
-  // the same
-  return 0;
-}
-
 void BPU_printGf2SparsePoly (const BPU_T_GF2_Sparse_Poly *v) {
   int i;
 

@@ -72,15 +72,19 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, con
   int ret = 0, delta = param_delta;
   int i;
 
+  // BPU_printGf2Vec(ctx->e);
+  // null error vector 
+  BPU_gf2VecNull(ctx->e);
+
   // try to decode with faster algorithm
   if (!BPU_mecsQcmdpcDecode2(ctx->e, in, ctx)) {
     // free decoded
-    BPU_gf2PolyFree(ctx->e, 0);
+    BPU_gf2VecNull(ctx->e);
     while(1) {
       // if not decoded, try algorithm with lower DFR
       if (!BPU_mecsQcmdpcDecode1(ctx->e, in, delta, ctx)) {
         // free decoded
-        BPU_gf2PolyFree(ctx->e, 0);
+        BPU_gf2VecNull(ctx->e);
         // if not decoded decrease threshold tolerance param
         delta--;
         if (delta < 0) {
@@ -95,8 +99,6 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, con
 
   // if decoded, get message from first param_m bits
   if (ret == 0) {
-    // allocate message
-    // BPU_gf2PolyMalloc(out, ctx->code_spec->qcmdpc->H.element_size);
     // decrypt message
     for (i = 0; i < out->elements_in_row; i++)
       out->elements[i] = ctx->e->elements[i] ^ in->elements[i];
@@ -105,7 +107,7 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, con
     out->elements[out->elements_in_row-1] >>= out->element_bit_size - (out->len % out->element_bit_size); 
   }
   else
-    BPU_gf2PolyMalloc(out, 0);
+    BPU_gf2VecNull(ctx->e);
 
   return ret;
 }
@@ -180,9 +182,6 @@ int BPU_mecsQcmdpcDecode2(BPU_T_GF2_Vector *error_vec, const BPU_T_GF2_Vector *c
   BPU_T_GF2_Sparse_Poly row;
   int iter = -1, bit, upc, isSyndromZero = 0;
   int flipped_bits = 0, flipped_bits_iter = 0;
-
-  // allocate output error vector
-  // BPU_gf2PolyMalloc(error_vec, cipher_text->len);
 
   // calc the syndrom
   BPU_mecsQcmdpcCalcSyndrom(&syndrom, cipher_text, ctx);

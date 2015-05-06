@@ -374,19 +374,6 @@ uint8_t BPU_getParity(BPU_T_GF2 dword);
 
 
 /************************************************
-VECTOR UTILS
-************************************************/
-
-/**
- * Copare two vectors.
- * @param  a vector
- * @param  b vector
- * @return   if 0, they are the same, else 1
- */
-int BPU_gf2VecCompare(BPU_T_GF2_Vector *a, BPU_T_GF2_Vector *b);
-
-
-/************************************************
 POLYNOMIAL UTILS
 ************************************************/
 

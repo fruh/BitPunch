@@ -257,9 +257,9 @@ int main(int argc, char **argv) {
 	testKeyGenAsn1();
 #endif
 
-	/***************************************/
-    mce initialisation t = 50, m = 11
-	fprintf(stderr, "Basic GOPPA Initialisation...\n");
+//  /***************************************/
+//     // mce initialisation t = 50, m = 11
+    fprintf(stderr, "Basic GOPPA Initialisation...\n");
     if (BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
         return 1;
     }
@@ -270,15 +270,16 @@ int main(int argc, char **argv) {
     BPU_mecsFreeCtx(&ctx);
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
-	fprintf(stderr, "\nCCA2 Pointcheval GOPPA Initialisation...\n");
-	if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {
-		return 1;
-	}
-	rc += testKeyGenEncDec(ctx);
-	BPU_mecsFreeCtx(&ctx);
-	BPU_mecsFreeParamsGoppa(&params);
+    fprintf(stderr, "\nCCA2 Pointcheval GOPPA Initialisation...\n");
+    if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {
+        return 1;
+    }
+    rc += testKeyGenEncDec(ctx);
+    BPU_mecsFreeCtx(&ctx);
+    BPU_mecsFreeParamsGoppa(&params);
 #endif
 
+// 	/***************************************/
 //     mce initialisation of 80-bit security
 //     fprintf(stderr, "Basic QC-MDPC Initialisation...\n");
 //     if (BPU_mecsInitParamsQcmdpc(&params, 4801, 2, 90, 84)) {
