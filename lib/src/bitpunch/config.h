@@ -26,6 +26,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #ifndef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
         #define BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     #endif
+	#ifndef BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC
+        #define BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC
+    #endif
     #ifndef BPU_CONF_SHA_512
         #define BPU_CONF_SHA_512
     #endif
@@ -50,6 +53,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+    #ifndef BPU_CONF_SHA_512
+        #define BPU_CONF_SHA_512
+    #endif
+#endif
+
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC
     #ifndef BPU_CONF_SHA_512
         #define BPU_CONF_SHA_512
     #endif

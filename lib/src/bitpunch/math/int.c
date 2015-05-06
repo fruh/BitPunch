@@ -31,3 +31,31 @@ int BPU_isPrime(int n) {
   }
   return 1;
 }
+
+int msb32(uint32_t x, int start, int len, int ele_size) {
+  // crop lenght to half
+  len /= 2;
+
+  // last recursion
+  if (len == 1) {
+    // return position of highest bit
+    if ((x >> len) == 1ul)
+      return start+1;
+    else
+      return start;
+  }
+  
+  // right half of integer
+  if ((x >> len) != 0ul) {
+    start += len;
+    x >>= len;
+  }
+  // left half of integer
+  else {
+    x <<= ele_size - len;
+    x >>= ele_size - len;
+  }
+
+  // recursion
+  return msb32(x, start, len, ele_size);
+}
