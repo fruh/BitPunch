@@ -58,16 +58,46 @@ typedef struct _BPU_T_Code_Ctx {
 	uint8_t t; ///< Error code correction capability
 }BPU_T_Code_Ctx;
 
-/// Initialize (register) code functions encode, decode and code spec structure based on code type.
+/**
+ * @brief BPU_codeInitCtx Initialize (register) code functions encode, decode and code spec structure based on code type.
+ * @param ctx
+ * @param params
+ * @param type
+ * @return
+ */
 int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const BPU_T_UN_Code_Params *params, const BPU_T_EN_Code_Types type);
 
+/**
+ * @brief BPU_codeInitMathCtx
+ * @param ctx
+ * @param m
+ * @param t
+ * @param mod
+ * @return
+ */
 int BPU_codeInitMathCtx(BPU_T_Math_Ctx **ctx, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod);
 
+/**
+ * @brief BPU_codeFreeCtx
+ * @param ctx
+ */
 void BPU_codeFreeCtx(BPU_T_Code_Ctx **ctx);
 
 // Available init params for all codes, it is only wrapper for code params init
+/**
+ * @brief BPU_codeInitParamsGoppa
+ * @param params
+ * @param m
+ * @param t
+ * @param mod
+ * @return
+ */
 int BPU_codeInitParamsGoppa(BPU_T_UN_Code_Params *params, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod);
 
+/**
+ * @brief BPU_codeFreeParamsGoppa
+ * @param params
+ */
 void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params *params);
 
 // add yours additional params if needed

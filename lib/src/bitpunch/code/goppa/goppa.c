@@ -31,27 +31,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef BPU_CONF_ENCRYPTION
 int BPU_goppaEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx) {
 	int rc = 0;
-    BPU_T_GF2_Vector *tmp;
-
-	BPU_gf2VecNull(out);
-
-	// test the size of message and g_m
-	fprintf(stderr, "%d\n", in->len);
-	if (in->len != ctx->code_spec->goppa->g_mat->k) {
-		BPU_printError("message length have to be of length %d", ctx->code_spec->goppa->g_mat->k);
-
-		return -1;
-	}
-	BPU_gf2VecMalloc(&tmp, ctx->code_spec->goppa->g_mat->n);
-    rc += BPU_gf2VecMulMat(tmp, in, ctx->code_spec->goppa->g_mat);
-    rc += BPU_gf2VecConcat(out, tmp, in);
-    BPU_gf2VecFree(&tmp);
-
-	return rc;
-}
-
-int BPU_goppaEncodeM(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx) {
-	int rc = 0;
 	int i, j;
 	uint8_t out_bit = 0;
 	BPU_T_GF2 out_dword;
@@ -121,7 +100,7 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 
 	// Beginning of patterson
 	BPU_gf2xPolyMalloc(&syndrome, ctx->code_spec->goppa->g->deg - 1);
-    BPU_goppaDetSyndromeM(syndrome, enc_permuted, ctx);
+    BPU_goppaDetSyndrome(syndrome, enc_permuted, ctx);
     BPU_gf2VecFree(&enc_permuted);
 
     BPU_gf2xPolyMalloc(&inv_syndrome, (syndrome->deg > ctx->code_spec->goppa->g->deg) ? syndrome->deg : ctx->code_spec->goppa->g->deg);
@@ -181,7 +160,7 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	return 0;
 }
 
-void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_Code_Ctx *ctx) {
+void BPU_goppaDetSyndrome(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_Code_Ctx *ctx) {
 	int row, column;
 #ifdef BPU_CONF_GOPPA_WO_H
 	int k, e;
@@ -300,7 +279,7 @@ int BPU_goppaGenCode(BPU_T_Code_Ctx *ctx) {
             BPU_gf2MatPermute(ctx->code_spec->goppa->g_mat, temp);
 		}
 	}
-	rc = BPU_gf2MatCropMemory(ctx->code_spec->goppa->g_mat, (ctx->code_spec->goppa->g_mat->n - ctx->code_spec->goppa->g_mat->k));
+	rc = BPU_gf2MatCrop(ctx->code_spec->goppa->g_mat, (ctx->code_spec->goppa->g_mat->n - ctx->code_spec->goppa->g_mat->k));
     BPU_permFree(&temp);
 
 	if (rc != 0) {

@@ -40,8 +40,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 void BPU_printGf2xMat(const BPU_T_GF2_16x_Matrix *in);
 
+/**
+ * @brief BPU_printGf2xPoly print GF2x polynomial.
+ * @param p
+ * @param math_ctx
+ */
 void BPU_printGf2xPoly(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *math_ctx);
 
+/**
+ * @brief BPU_printGf2xVec print GF2x vector.
+ * @param v
+ */
 void BPU_printGf2xVec(const BPU_T_GF2_16x_Vector *v);
 /* ------------------------------------ Print functions ------------------------------------ */
 #endif // BPU_CONF_PRINT
@@ -201,6 +210,13 @@ void BPU_gf2xMatRoot(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Poly *mod, c
  */
 BPU_T_GF2_16x BPU_gf2xRoot(BPU_T_GF2_16x element, const BPU_T_Math_Ctx *math_ctx);
 
+/**
+ * @brief BPU_gf2xPolyRoot calculate root of given polynomial over GF2x.
+ * @param out
+ * @param poly
+ * @param mod
+ * @param math_ctx
+ */
 void BPU_gf2xPolyRoot(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
 
 /**
@@ -210,8 +226,6 @@ void BPU_gf2xPolyRoot(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *poly, c
  */
  /// Copy Polynomial.
 void BPU_gf2xPolyCopy(BPU_T_GF2_16x_Poly *dest, const BPU_T_GF2_16x_Poly *src);
-
-
 
 /**
 * Get degree of polynomial over GF2.

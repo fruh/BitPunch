@@ -30,14 +30,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/math/gf2x.h>
 
 #ifdef BPU_CONF_ENCRYPTION
+/**
+ * @brief BPU_goppaEncode Encode message using goppa code.
+ * @param out
+ * @param in
+ * @param ctx
+ * @return
+ */
 int BPU_goppaEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
-
-int BPU_goppaEncodeM(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
 #endif
 
 #ifdef BPU_CONF_DECRYPTION
 /**
- * Decode message. Decoded must be allocated before use, or use function decodeA
+ * Decode message using Patterson alg.
  * @param encoded[in] encoded message
  * @param decoded[out] decoded message, allocated inside
  * @param ctx[out] McEliece context
@@ -47,7 +52,7 @@ int BPU_goppaEncodeM(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const st
 int BPU_goppaDecode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
 
 /**
- * Get error vector. Decoded must be allocated before use, or use function decodeA
+ * Get error vector Patterson alg.
  * @param encoded[in] encoded message
  * @param decoded[out] decoded message, allocated inside
  * @param ctx[out] McEliece context
@@ -67,13 +72,30 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 /// Find polynomials a, b of degree <= (t div 2)
 void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU_T_GF2_16x_Poly *tau, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
 
-void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_Code_Ctx *ctx);
+/**
+ * @brief BPU_goppaDetSyndrome
+ * @param syndrome
+ * @param z
+ * @param ctx
+ */
+void BPU_goppaDetSyndrome(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_Code_Ctx *ctx);
 #endif
 
 #ifdef BPU_CONF_KEY_GEN
+/**
+ * @brief BPU_goppaGenCode Generate random code based on params.
+ * @param ctx
+ * @return
+ */
 int BPU_goppaGenCode(BPU_T_Code_Ctx *ctx);
 
-// TODO: :)
+/**
+ * @brief BPU_goppaInitMatH2 Initialize control matrix.
+ * @param h2
+ * @param hx
+ * @param ctx
+ * @return
+ */
 int BPU_goppaInitMatH2(BPU_T_GF2_Matrix *h2, BPU_T_GF2_16x_Matrix *hx, const BPU_T_Code_Ctx *ctx);
 #endif
 

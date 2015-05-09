@@ -21,6 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/math/gf2xtypes.h>
 #include <bitpunch/math/permtypes.h>
 
+/**
+  Internal Goppa code structure.
+  */
 typedef struct _BPU_T_Goppa_Spec {
 	BPU_T_GF2_Matrix *g_mat; ///< Generator matrix
 	BPU_T_GF2_16x_Matrix *h_mat; ///< Control matrix H
@@ -33,15 +36,31 @@ typedef struct _BPU_T_Goppa_Spec {
   Goppa code params.
   */
 typedef struct _BPU_T_Goppa_Params {
-	uint16_t m;
-	uint16_t t;
-	BPU_T_GF2_16x mod;
+    uint16_t m; ///< degree of mod polynomial
+    uint16_t t; ///< error capability of code
+    BPU_T_GF2_16x mod; ///< Galois field polynomial
 }BPU_T_Goppa_Params;
 
+/**
+ * @brief BPU_goppaFreeSpec Free Goppa code internal structure.
+ * @param spec
+ */
 void BPU_goppaFreeSpec(BPU_T_Goppa_Spec *spec);
 
+/**
+ * @brief BPU_goppaInitParams Initi Goppa code params.
+ * @param params
+ * @param m
+ * @param t
+ * @param mod
+ * @return
+ */
 int BPU_goppaInitParams(BPU_T_Goppa_Params **params, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod);
 
+/**
+ * @brief BPU_goppaFreeParams Free goppa code params.
+ * @param params
+ */
 void BPU_goppaFreeParams(BPU_T_Goppa_Params **params);
 
 #endif // GOPPATYPES_H

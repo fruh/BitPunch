@@ -92,8 +92,20 @@ int BPU_gf2MatMalloc(BPU_T_GF2_Matrix **m, int rows, int cols);
  */
 int BPU_gf2VecMalloc(BPU_T_GF2_Vector **v, int len);
 
+/**
+ * @brief BPU_gf2VecResize Resize vecor.
+ * @param v
+ * @param len
+ * @return
+ */
 int BPU_gf2VecResize(BPU_T_GF2_Vector *v, int len);
 
+/**
+ * @brief BPU_gf2VecMallocElements Malloc vector elements and set to zero.
+ * @param v
+ * @param len
+ * @return
+ */
 int BPU_gf2VecMallocElements(BPU_T_GF2_Vector *v, int len);
 
 #endif // BPUT_GF2TYPES_H

@@ -76,8 +76,18 @@ void BPU_gf2xMatNull(BPU_T_GF2_16x_Matrix *mat);
  /// Allocate memory for matrix.
 int BPU_gf2xMatMalloc(BPU_T_GF2_16x_Matrix **m, int rows, int cols);
 
+/**
+ * @brief BPU_gf2xVecMalloc Malloc vector structure.
+ * @param vec
+ * @param size
+ * @return
+ */
 int BPU_gf2xVecMalloc(BPU_T_GF2_16x_Vector **vec, int size);
 
+/**
+ * @brief BPU_gf2xVecFree Free vector structure.
+ * @param vec
+ */
 void BPU_gf2xVecFree(BPU_T_GF2_16x_Vector **vec);
 
 /**
@@ -95,8 +105,20 @@ void BPU_gf2xMatFree(BPU_T_GF2_16x_Matrix **m);
  */
 int BPU_gf2xPolyMalloc(BPU_T_GF2_16x_Poly **p, int16_t max_deg);
 
+/**
+ * @brief BPU_gf2xPolyResize Resize polynomial, increase max deg.
+ * @param p
+ * @param max_deg
+ * @return
+ */
 int BPU_gf2xPolyResize(BPU_T_GF2_16x_Poly *p, int16_t max_deg);
 
+/**
+ * @brief BPU_gf2xPolyMallocCoef Malloc internal coeficients for polynomial.
+ * @param p
+ * @param max_deg
+ * @return
+ */
 int BPU_gf2xPolyMallocCoef(BPU_T_GF2_16x_Poly *p, int16_t max_deg);
 
 /**

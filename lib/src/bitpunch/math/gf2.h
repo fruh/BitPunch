@@ -116,8 +116,16 @@ void BPU_printGf2Mat(const BPU_T_GF2_Matrix *m);
 */
 void BPU_printGf2Vec(const BPU_T_GF2_Vector *v);
 
+/**
+ * @brief BPU_printGf2VecMsb Most significant bit is printed first.
+ * @param v
+ */
 void BPU_printGf2VecMsb(const BPU_T_GF2_Vector* v);
 
+/**
+ * @brief BPU_printGf2VecOnes Print only ones.
+ * @param vec
+ */
 void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec);
 /* ------------------------------------ Print functions ------------------------------------ */
 #endif // BPU_CONF_PRINT
@@ -187,6 +195,12 @@ void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec);
  /// Copy Matrix GF2 row to Vector GF2.
 #define BPU_gf2MatCopyRowToVec(v_pointer, m_pointer, row) memcpy((void *) ((v_pointer)->elements), (void *) ((m_pointer)->elements[row]), (v_pointer)->element_bit_size / 8 * (v_pointer)->elements_in_row)
 
+/**
+ * @brief BPU_gf2MatCopyCreate copy of input matrix.
+ * @param out
+ * @param in
+ * @return
+ */
 int BPU_gf2MatCopy(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in);
 
 /**
@@ -294,16 +308,6 @@ int BPU_gf2VecConcat(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *vec1, const 
 int BPU_gf2VecCrop(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const int start, const int length);
 
 /**
- * Crop matrix GF2 from left.
- * @param in input matrix GF2
- * @param out croped output matrix GF2 
- * @param width width of cropped matrix
- * @return on succes 0, on higher or equal width as actual width of in matrix -1, on allocation of new matrix error -2
- */
-/// Crop matrix GF2 from left.
-int BPU_gf2MatCrop(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in, uint16_t width);
-
-/**
  * Get matrix GF2 row as vector gf2. You can set alloc param, to allocate it dynamically inside function, or use allocated vector yet. When set alloc, after work call BPU_freeVecGF2
  * @param  out   vector
  * @param  in    matrix
@@ -321,6 +325,12 @@ int BPU_gf2MatGetRowAsGf2Vec(BPU_T_GF2_Vector *out, const BPU_T_GF2_Matrix *in, 
  /// Copy VectorGF2.
 void BPU_gf2VecCopy(BPU_T_GF2_Vector *dest, const BPU_T_GF2_Vector *src);
 
+/**
+ * @brief BPU_gf2VecCmp Compare two vectors.
+ * @param v1
+ * @param v2
+ * @return 0 - same, -1 - len differs, > 0 (index + 1) of first difference
+ */
 int BPU_gf2VecCmp(const BPU_T_GF2_Vector *v1, const BPU_T_GF2_Vector *v2);
 
 /**
@@ -359,7 +369,21 @@ int BPU_gf2VecRand(BPU_T_GF2_Vector *out, int w);
 */
 int BPU_gf2VecMulMat(BPU_T_GF2_Vector *x, const BPU_T_GF2_Vector *v, const BPU_T_GF2_Matrix *b);
 
-int BPU_gf2MatCropMemory(BPU_T_GF2_Matrix *m, uint16_t width);
+/**
+ * Crop matrix GF2 from left.
+ * @param in input matrix GF2
+ * @param out croped output matrix GF2
+ * @param width width of cropped matrix
+ * @return on succes 0, on higher or equal width as actual width of in matrix -1, on allocation of new matrix error -2
+ */
+/// Crop matrix GF2 from left.
+int BPU_gf2MatCrop(BPU_T_GF2_Matrix *m, uint16_t width);
 
+/**
+ * @brief BPU_getParity Get parity of word.
+ * @param dword
+ * @return
+ */
 uint8_t BPU_getParity(BPU_T_GF2 dword);
+
 #endif // BPU_GF2_H
