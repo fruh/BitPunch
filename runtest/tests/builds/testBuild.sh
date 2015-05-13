@@ -1,12 +1,12 @@
 #!/bin/bash
-if [ "$1" == "" ]; then
+if [ "$1" = "" ]; then
 	echo "First argument is result folder."
 	exit 1
 fi
 target=$2
 cd "$1"
 
-if [ "$2" == "" ]; then
+if [ "$2" = "" ]; then
 	# for each target
 	a=0
 	for target in $(grep -E '^[A-Za-z\-]*:' makefile | cut -d ':' -f 1 | sort | uniq); do

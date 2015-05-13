@@ -358,42 +358,6 @@ int BPU_gf2VecCrop(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const int 
 	return 0;
 }
 
-int BPU_gf2MatCrop(BPU_T_GF2_Matrix *out, const BPU_T_GF2_Matrix *in, uint16_t width) {
-	int i, j, startElement;
-	uint8_t cropBits;
-
-	if (out->k != in->k || out->n != width) {
-		BPU_printError("wrong matrix dimenzion.");
-		return -3;
-	}
-	// if is new width lower than old width of matrix
-	if (in->n >= width) {
-		startElement = (in->n - width) / in->element_bit_size;
-		cropBits = (in->n - width) % in->element_bit_size;
-
-		// fill new matrix
-		for (i = 0; i < out->k; i++) { // row loop
-			for (j = 0; j < out->elements_in_row; j++) { // column loop
-				
-				// if there is no need to make shift through elements
-				if (j+startElement >= in->elements_in_row-1)
-					out->elements[i][j] = (in->elements[i][j+startElement] >> cropBits);
-				// with shift through elements
-				else 
-					out->elements[i][j] = (in->elements[i][j+startElement] >> cropBits) ^ (in->elements[i][j+startElement+1] << (in->element_bit_size - cropBits));
-			}
-		}
-		return 0;
-
-	}
-	// else error
-	else {
-		BPU_printError("BPU_gf2MatCropA in->n <= width, (%d <= %d)", in->n, width);
-
-		return -1;
-	}
-}
-
 int BPU_gf2MatGetRowAsGf2Vec(BPU_T_GF2_Vector *out, const BPU_T_GF2_Matrix *in, int row) {
     if (out->len != in->n) {
 		BPU_printError("dimension is wrong out->len %d != in->n %d", out->len, in->n);
@@ -417,17 +381,15 @@ void BPU_gf2VecCopy(BPU_T_GF2_Vector *dest, const BPU_T_GF2_Vector *src) {
 	dest->len = src->len;
 }
 
-
-
 int BPU_gf2VecCmp(const BPU_T_GF2_Vector *v1, const BPU_T_GF2_Vector *v2) {
 	int i;
 
 	if (v1->len != v2->len) {
-		return 1;
+        return -1;
 	}
 	for (i = 0; i < v1->len; i++) {
 		if (BPU_gf2VecGetBit(v1, i) != BPU_gf2VecGetBit(v2, i)) {
-			return 2;
+            return i + 1;
 		}
 	}
 	return 0;
@@ -504,7 +466,7 @@ int BPU_gf2MatPermute(BPU_T_GF2_Matrix *inout, BPU_T_Perm_Vector *permutation) {
 	return 0;
 }
 
-int BPU_gf2MatCropMemory(BPU_T_GF2_Matrix *m, uint16_t width) {
+int BPU_gf2MatCrop(BPU_T_GF2_Matrix *m, uint16_t width) {
 	BPU_T_GF2_Vector *row, *cropped_row;
 	int length, i, new_length;
 

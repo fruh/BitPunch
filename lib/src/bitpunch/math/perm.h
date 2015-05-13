@@ -64,6 +64,11 @@ int BPU_permGetInv(BPU_T_Perm_Vector *out, const BPU_T_Perm_Vector *in);
  */
 int BPU_permPermute(BPU_T_Perm_Vector *to_permute, const BPU_T_Perm_Vector *permutation);
 
+/**
+ * @brief BPU_permIsValid Check wheter is permutaion valid.
+ * @param p
+ * @return on succes 0, else error
+ */
 int BPU_permIsValid(const BPU_T_Perm_Vector *p);
 
 #endif // BPU_PERM_H

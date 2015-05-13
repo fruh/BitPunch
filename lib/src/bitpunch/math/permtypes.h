@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <stdint.h>
 
+/// Definition of permutation element type.
 typedef uint16_t BPU_T_Perm_Element;
 
 /**

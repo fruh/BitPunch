@@ -47,7 +47,7 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const BPU_T_UN_Code_Params *params, co
 	switch (type) {
 	case BPU_EN_CODE_GOPPA:
 #ifdef BPU_CONF_ENCRYPTION
-		ctx_p->_encode = BPU_goppaEncodeM;
+		ctx_p->_encode = BPU_goppaEncode;
 #endif
 #ifdef BPU_CONF_DECRYPTION
 		ctx_p->_decode = BPU_goppaDecode;

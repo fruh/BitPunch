@@ -1,7 +1,7 @@
 TMP_FILE=/tmp/memleak.$$
 trap "rm -f $TMP_FILE" EXIT
 
-if [ "$1" == "" ]; then
+if [ "$1" = "" ]; then
 	echo "First argument is result folder."
 	exit 1
 fi
