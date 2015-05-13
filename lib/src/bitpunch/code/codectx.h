@@ -42,7 +42,7 @@ typedef union _BPU_T_UN_Code_Spec{
 
 typedef union _BPU_T_UN_Code_Params{
 	BPU_T_Goppa_Params *goppa;
-	// HERE you add your code spec structure
+	// HERE you add your code params structure
 }BPU_T_UN_Code_Params;
 
 typedef struct _BPU_T_Code_Ctx {
