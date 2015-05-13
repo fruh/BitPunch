@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ "$1" == "" ]; then
+if [ "$1" = "" ]; then
 	echo "First argument is result folder."
 	exit 1
 fi
