@@ -1,7 +1,7 @@
 var NAVTREE =
 [
   [ "McEliece BitPunch", "index.html", [
-    [ "BitPunch McEliece", "index.html", [
+    [ "BitPunch McEliece v0.0.3", "index.html", [
       [ "Introduction", "index.html#Introduction", null ],
       [ "Changes", "index.html#Changes", null ],
       [ "Structure", "index.html#Structure", [
@@ -37,7 +37,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"gf2xtypes_8h.html#a1b07dc68d6cca5a894b44146ef0cb601"
+"gf2x_8h.html#a34f7a916e4965320a294abb47c0538a9",
+"polarssl_2polarssl_2sha512_8h.html#abbbcba6e6c1a9c6b098be20418d81305"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

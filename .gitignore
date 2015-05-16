@@ -3,3 +3,4 @@ lib
 *.pro
 *.pro.*
 *.sublime*
+runtest

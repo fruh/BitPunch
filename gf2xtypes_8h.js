@@ -9,11 +9,13 @@ var gf2xtypes_8h =
     [ "BPU_T_GF2_16x_Poly", "gf2xtypes_8h.html#a2a1d2600db4ef96a8c17573fcb8c5ddd", null ],
     [ "BPU_T_GF2_16x_Vector", "gf2xtypes_8h.html#afb00f182add0656ab51fd6c26b705e7a", null ],
     [ "BPU_T_GF2_32x", "gf2xtypes_8h.html#a957f144f51954a68bf9d5f5fe2abf8ad", null ],
-    [ "BPU_gf2xMatFree", "gf2xtypes_8h.html#ab9fe4b6f1e0bb81ebf21215ed8709324", null ],
-    [ "BPU_gf2xMatMalloc", "gf2xtypes_8h.html#a37a3d87fea670aab5c7641aeeade73d1", null ],
+    [ "BPU_gf2xMatFree", "gf2xtypes_8h.html#a602c093bf94d9508f4aa1a844c18d5ff", null ],
+    [ "BPU_gf2xMatMalloc", "gf2xtypes_8h.html#a1b915c4f34c98765c574467cd7d25568", null ],
     [ "BPU_gf2xMatNull", "gf2xtypes_8h.html#aa14e90c0b95f72b4ed9dc59fcfe70bce", null ],
-    [ "BPU_gf2xPolyFree", "gf2xtypes_8h.html#a06c3609f4bd084bbe5ed378d97e543db", null ],
-    [ "BPU_gf2xPolyMalloc", "gf2xtypes_8h.html#aeda77efb269ccc761cbd2d7d82acb48e", null ],
-    [ "BPU_gf2xVecFree", "gf2xtypes_8h.html#a1b07dc68d6cca5a894b44146ef0cb601", null ],
-    [ "BPU_gf2xVecMalloc", "gf2xtypes_8h.html#a75bf5e5a36c2529dfc48445443eb4297", null ]
+    [ "BPU_gf2xPolyFree", "gf2xtypes_8h.html#ada638a40c6367d303e479952c9216524", null ],
+    [ "BPU_gf2xPolyMalloc", "gf2xtypes_8h.html#a912588731f4d09f27f372dd65ecfc590", null ],
+    [ "BPU_gf2xPolyMallocCoef", "gf2xtypes_8h.html#a0e67c3b8a7aca2d021faab1373bc67b6", null ],
+    [ "BPU_gf2xPolyResize", "gf2xtypes_8h.html#a69d040d287cfc164a10cc09826006c39", null ],
+    [ "BPU_gf2xVecFree", "gf2xtypes_8h.html#a0b645507c356999a324361507fa0ddea", null ],
+    [ "BPU_gf2xVecMalloc", "gf2xtypes_8h.html#ae9889c222423ce4be65bfc96843ea448", null ]
 ];

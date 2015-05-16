@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['len',['len',['../struct___b_p_u___t___g_f2___vector.html#a96bbf959016e4411c9e6b9812a8be60a',1,'_BPU_T_GF2_Vector::len()'],['../struct___b_p_u___t___g_f2__16x___vector.html#a5723e60ffd628510c699eddbce90be23',1,'_BPU_T_GF2_16x_Vector::len()']]],
-  ['log_5ftable',['log_table',['../struct___b_p_u___t___math___ctx.html#a39ee876827819dbd13bac4b830e23ea2',1,'_BPU_T_Math_Ctx']]]
+  ['ipad',['ipad',['../structsha512__context.html#a8eda327709815cd2dc37d9eb9826dc0d',1,'sha512_context']]],
+  ['is384',['is384',['../structsha512__context.html#a3a2eb682efe55866a62b98327f9cbbc9',1,'sha512_context']]]
 ];

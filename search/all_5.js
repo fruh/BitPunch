@@ -1,18 +1,9 @@
 var searchData=
 [
-  ['g',['g',['../struct___b_p_u___t___goppa___spec.html#a83821dd94d9ed9d003d1db7d899d0440',1,'_BPU_T_Goppa_Spec']]],
-  ['g_5fmat',['g_mat',['../struct___b_p_u___t___goppa___spec.html#a10a921c83b0ee909e329994bd1aac465',1,'_BPU_T_Goppa_Spec']]],
-  ['gf2_2ec',['gf2.c',['../gf2_8c.html',1,'']]],
-  ['gf2_2eh',['gf2.h',['../gf2_8h.html',1,'']]],
-  ['gf2types_2ec',['gf2types.c',['../gf2types_8c.html',1,'']]],
-  ['gf2types_2eh',['gf2types.h',['../gf2types_8h.html',1,'']]],
-  ['gf2x_2ec',['gf2x.c',['../gf2x_8c.html',1,'']]],
-  ['gf2x_2eh',['gf2x.h',['../gf2x_8h.html',1,'']]],
-  ['gf2xtypes_2ec',['gf2xtypes.c',['../gf2xtypes_8c.html',1,'']]],
-  ['gf2xtypes_2eh',['gf2xtypes.h',['../gf2xtypes_8h.html',1,'']]],
-  ['goppa',['goppa',['../union___b_p_u___t___u_n___code___spec.html#acd4f4270ece50c8d52cfb1779d668cbc',1,'_BPU_T_UN_Code_Spec']]],
-  ['goppa_2ec',['goppa.c',['../goppa_8c.html',1,'']]],
-  ['goppa_2eh',['goppa.h',['../goppa_8h.html',1,'']]],
-  ['goppatypes_2ec',['goppatypes.c',['../goppatypes_8c.html',1,'']]],
-  ['goppatypes_2eh',['goppatypes.h',['../goppatypes_8h.html',1,'']]]
+  ['e',['e',['../struct___b_p_u___t___code___ctx.html#a91e9c912d392344d058b89eff2749e6b',1,'_BPU_T_Code_Ctx']]],
+  ['element_5fbit_5fsize',['element_bit_size',['../struct___b_p_u___t___g_f2___vector.html#aea04d86b7a1dfeb00c160eacc03c8dce',1,'_BPU_T_GF2_Vector::element_bit_size()'],['../struct___b_p_u___t___g_f2___matrix.html#aea04d86b7a1dfeb00c160eacc03c8dce',1,'_BPU_T_GF2_Matrix::element_bit_size()']]],
+  ['elements',['elements',['../struct___b_p_u___t___g_f2___vector.html#a70a34a3d43a3757e1725380906fb825b',1,'_BPU_T_GF2_Vector::elements()'],['../struct___b_p_u___t___g_f2___matrix.html#afa810907580dcf9ceaeec6db6fd9e437',1,'_BPU_T_GF2_Matrix::elements()'],['../struct___b_p_u___t___g_f2__16x___vector.html#a45606e35a19c138ed41bb5a76262582e',1,'_BPU_T_GF2_16x_Vector::elements()'],['../struct___b_p_u___t___g_f2__16x___matrix.html#a7944028cd1930da263883acac529a2ec',1,'_BPU_T_GF2_16x_Matrix::elements()'],['../struct___b_p_u___t___perm___vector.html#af4db288838ec383d882de07ef2a7a71d',1,'_BPU_T_Perm_Vector::elements()']]],
+  ['elements_5fin_5frow',['elements_in_row',['../struct___b_p_u___t___g_f2___vector.html#aeb4cf35ad2fa4739abcc8cf3ca8bf7fb',1,'_BPU_T_GF2_Vector::elements_in_row()'],['../struct___b_p_u___t___g_f2___matrix.html#aeb4cf35ad2fa4739abcc8cf3ca8bf7fb',1,'_BPU_T_GF2_Matrix::elements_in_row()']]],
+  ['errorcodes_2eh',['errorcodes.h',['../errorcodes_8h.html',1,'']]],
+  ['exp_5ftable',['exp_table',['../struct___b_p_u___t___math___ctx.html#ada1b9661dd0ce33a9580fdc4c522bebc',1,'_BPU_T_Math_Ctx']]]
 ];

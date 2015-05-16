@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: /media/fruh/data/school/BitPunch/lib/src/bitpunch/math/perm.h File Reference</title>
+<title>McEliece BitPunch: /home/fero/projects/BitPunch/lib/src/bitpunch/math/perm.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -107,7 +107,8 @@ $(document).ready(function(){initNavTree('perm_8h.html','');});
 <div class="title">perm.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="permtypes_8h_source.html">permtypes.h</a>&quot;</code><br/>
+<div class="textblock"><code>#include &lt;<a class="el" href="config_8h_source.html">bitpunch/config.h</a>&gt;</code><br/>
+<code>#include &quot;<a class="el" href="permtypes_8h_source.html">permtypes.h</a>&quot;</code><br/>
 </div>
 <p><a href="perm_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -117,11 +118,15 @@ Functions</h2></td></tr>
 <tr class="separator:a0c24e1652c436cda9fd81d4467f5cb94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1c460c7794c1be08417c50b0503858c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="perm_8h.html#af1c460c7794c1be08417c50b0503858c">BPU_permRandomize</a> (<a class="el" href="permtypes_8h.html#acb588e2a5e6a980f6a98479d3ab5999e">BPU_T_Perm_Vector</a> *permutation)</td></tr>
 <tr class="separator:af1c460c7794c1be08417c50b0503858c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c1b141ad453807f2426c1b39ae92ea7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="perm_8h.html#a5c1b141ad453807f2426c1b39ae92ea7">BPU_permSwap</a> (<a class="el" href="permtypes_8h.html#a353ffb2c3ec1736426526e7b60bec11e">BPU_T_Perm_Element</a> *a, <a class="el" href="permtypes_8h.html#a353ffb2c3ec1736426526e7b60bec11e">BPU_T_Perm_Element</a> *b)</td></tr>
+<tr class="memdesc:a5c1b141ad453807f2426c1b39ae92ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">BPU_swap.  <a href="#a5c1b141ad453807f2426c1b39ae92ea7">More...</a><br/></td></tr>
+<tr class="separator:a5c1b141ad453807f2426c1b39ae92ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa02d5544707cccfa2f1db9a048c6b2ca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="perm_8h.html#aa02d5544707cccfa2f1db9a048c6b2ca">BPU_permGetInv</a> (<a class="el" href="permtypes_8h.html#acb588e2a5e6a980f6a98479d3ab5999e">BPU_T_Perm_Vector</a> *out, const <a class="el" href="permtypes_8h.html#acb588e2a5e6a980f6a98479d3ab5999e">BPU_T_Perm_Vector</a> *in)</td></tr>
 <tr class="separator:aa02d5544707cccfa2f1db9a048c6b2ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d9c8d7d5f36638f7d55ef65b091d0ba"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="perm_8h.html#a4d9c8d7d5f36638f7d55ef65b091d0ba">BPU_permPermute</a> (<a class="el" href="permtypes_8h.html#acb588e2a5e6a980f6a98479d3ab5999e">BPU_T_Perm_Vector</a> *to_permute, const <a class="el" href="permtypes_8h.html#acb588e2a5e6a980f6a98479d3ab5999e">BPU_T_Perm_Vector</a> *permutation)</td></tr>
 <tr class="separator:a4d9c8d7d5f36638f7d55ef65b091d0ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad93d6ae3c0a2db60725f05a730a17419"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="perm_8h.html#ad93d6ae3c0a2db60725f05a730a17419">BPU_permIsValid</a> (const <a class="el" href="permtypes_8h.html#acb588e2a5e6a980f6a98479d3ab5999e">BPU_T_Perm_Vector</a> *p)</td></tr>
+<tr class="memdesc:ad93d6ae3c0a2db60725f05a730a17419"><td class="mdescLeft">&#160;</td><td class="mdescRight">BPU_permIsValid Check wheter is permutaion valid.  <a href="#ad93d6ae3c0a2db60725f05a730a17419">More...</a><br/></td></tr>
 <tr class="separator:ad93d6ae3c0a2db60725f05a730a17419"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -158,7 +163,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>on succes 0, else error </dd></dl>
 
-<p>Definition at line <a class="el" href="perm_8c_source.html#l00063">63</a> of file <a class="el" href="perm_8c_source.html">perm.c</a>.</p>
+<p>Definition at line <a class="el" href="perm_8c_source.html#l00064">64</a> of file <a class="el" href="perm_8c_source.html">perm.c</a>.</p>
 
 </div>
 </div>
@@ -176,7 +181,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="perm_8c_source.html#l00103">103</a> of file <a class="el" href="perm_8c_source.html">perm.c</a>.</p>
+<p>BPU_permIsValid Check wheter is permutaion valid. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>on succes 0, else error </dd></dl>
+
+<p>Definition at line <a class="el" href="perm_8c_source.html#l00104">104</a> of file <a class="el" href="perm_8c_source.html">perm.c</a>.</p>
 
 </div>
 </div>
@@ -213,7 +227,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 success, -1 when size of vectors is not the same, -2 on memory allocation error </dd></dl>
 
-<p>Definition at line <a class="el" href="perm_8c_source.html#l00078">78</a> of file <a class="el" href="perm_8c_source.html">perm.c</a>.</p>
+<p>Definition at line <a class="el" href="perm_8c_source.html#l00079">79</a> of file <a class="el" href="perm_8c_source.html">perm.c</a>.</p>
 
 </div>
 </div>
@@ -240,7 +254,44 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>on succes 0, else error </dd></dl>
 
-<p>Definition at line <a class="el" href="perm_8c_source.html#l00040">40</a> of file <a class="el" href="perm_8c_source.html">perm.c</a>.</p>
+<p>Definition at line <a class="el" href="perm_8c_source.html#l00043">43</a> of file <a class="el" href="perm_8c_source.html">perm.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5c1b141ad453807f2426c1b39ae92ea7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BPU_permSwap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="permtypes_8h.html#a353ffb2c3ec1736426526e7b60bec11e">BPU_T_Perm_Element</a> *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="permtypes_8h.html#a353ffb2c3ec1736426526e7b60bec11e">BPU_T_Perm_Element</a> *&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>BPU_swap. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td></td></tr>
+    <tr><td class="paramname">b</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="perm_8c_source.html#l00057">57</a> of file <a class="el" href="perm_8c_source.html">perm.c</a>.</p>
 
 </div>
 </div>
@@ -257,22 +308,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This file is part of BitPunch Copyright (C) 2013-2015 Frantisek Uhrecky &lt;frantisek.uhrecky[what here]gmail.com&gt; Copyright (C) 2013-2014 Andrej Gulyas &lt;andrej.guly[what here]gmail.com&gt; Copyright (C) 2013-2014 Marek Klein &lt;kleinmrk[what here]gmail.com&gt; Copyright (C) 2013-2014 Filip Machovec &lt;filipmachovec[what here]yahoo.com&gt; Copyright (C) 2013-2014 Jozef Kudlac &lt;jozef[what here]kudlac.sk&gt;</p>
-<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
-<p>You should have received a copy of the GNU General Public License along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. Print permutation. </p>
+<p>Print permutation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">permutation</td><td>permutation</td></tr>
+    <tr><td class="paramname">permutation</td><td>permutation </td></tr>
   </table>
   </dd>
 </dl>
-<p>This file is part of BitPunch Copyright (C) 2013-2015 Frantisek Uhrecky &lt;frantisek.uhrecky[what here]gmail.com&gt; Copyright (C) 2013-2014 Andrej Gulyas &lt;andrej.guly[what here]gmail.com&gt; Copyright (C) 2013-2014 Marek Klein &lt;kleinmrk[what here]gmail.com&gt; Copyright (C) 2013-2014 Filip Machovec &lt;filipmachovec[what here]yahoo.com&gt; Copyright (C) 2013-2014 Jozef Kudlac &lt;jozef[what here]kudlac.sk&gt;</p>
-<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
-<p>You should have received a copy of the GNU General Public License along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. </p>
 
-<p>Definition at line <a class="el" href="perm_8c_source.html#l00030">30</a> of file <a class="el" href="perm_8c_source.html">perm.c</a>.</p>
+<p>Definition at line <a class="el" href="perm_8c_source.html#l00032">32</a> of file <a class="el" href="perm_8c_source.html">perm.c</a>.</p>
 
 </div>
 </div>
@@ -281,8 +325,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li><li class="navelem"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></li><li class="navelem"><a class="el" href="dir_0f89a311a44853eaaaf3dbdb23434ca6.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_b9c9d5f7d81b3b29ba2924b8b369188e.html">math</a></li><li class="navelem"><a class="el" href="perm_8h.html">perm.h</a></li>
-    <li class="footer">Generated on Mon Mar 2 2015 09:10:24 for McEliece BitPunch by
+    <li class="navelem"><a class="el" href="dir_c56c2120216b9f5565d19a0879c67849.html">lib</a></li><li class="navelem"><a class="el" href="dir_36bc0d3594a53b4616e1660c5d0ae143.html">src</a></li><li class="navelem"><a class="el" href="dir_c9a0fad782ccabcfd2fb34c48555b3b8.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_c08a0d26e71242271fe3605ad940a086.html">math</a></li><li class="navelem"><a class="el" href="perm_8h.html">perm.h</a></li>
+    <li class="footer">Generated on Sun May 17 2015 00:18:41 for McEliece BitPunch by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

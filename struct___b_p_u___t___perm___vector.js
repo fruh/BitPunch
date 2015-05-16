@@ -1,5 +1,5 @@
 var struct___b_p_u___t___perm___vector =
 [
-    [ "elements", "struct___b_p_u___t___perm___vector.html#a44f6b459bc5a550535e33e14360ae709", null ],
-    [ "size", "struct___b_p_u___t___perm___vector.html#ab2c6b258f02add8fdf4cfc7c371dd772", null ]
+    [ "elements", "struct___b_p_u___t___perm___vector.html#af4db288838ec383d882de07ef2a7a71d", null ],
+    [ "size", "struct___b_p_u___t___perm___vector.html#a47e7918a0a122983da20ddd3d2d150e5", null ]
 ];

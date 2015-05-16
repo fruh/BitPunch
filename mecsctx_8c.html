@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: /media/fruh/data/school/BitPunch/lib/src/bitpunch/crypto/mecsctx.c File Reference</title>
+<title>McEliece BitPunch: /home/fero/projects/BitPunch/lib/src/bitpunch/crypto/mecsctx.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -115,57 +115,74 @@ $(document).ready(function(){initNavTree('mecsctx_8c.html','');});
 <code>#include &lt;<a class="el" href="mathctx_8h_source.html">bitpunch/math/mathctx.h</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="mecsbasic_8h_source.html">bitpunch/crypto/mecsbasic/mecsbasic.h</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="goppa_8h_source.html">bitpunch/code/goppa/goppa.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="mecspointcheval_8h_source.html">bitpunch/crypto/cca2/mecspointcheval.h</a>&gt;</code><br/>
 </div>
 <p><a href="mecsctx_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac6c854c3452dff1f928b333c6b0976bf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecsctx_8c.html#ac6c854c3452dff1f928b333c6b0976bf">BPU_mecsInitCtx</a> (<a class="el" href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">BPU_T_Mecs_Ctx</a> *ctx, const uint16_t m, const uint16_t t, const <a class="el" href="mecsctx_8h.html#a46cf236ede287ac0f540379be0d567e2">BPU_T_EN_Mecs_Types</a> type)</td></tr>
-<tr class="memdesc:ac6c854c3452dff1f928b333c6b0976bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize (register) mecs functions for encryption, decryption and key gen based on type.  <a href="#ac6c854c3452dff1f928b333c6b0976bf">More...</a><br/></td></tr>
-<tr class="separator:ac6c854c3452dff1f928b333c6b0976bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afca8898636252a8c9f9b095d1dbd35bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecsctx_8c.html#afca8898636252a8c9f9b095d1dbd35bd">BPU_mecsFreeCtx</a> (<a class="el" href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">BPU_T_Mecs_Ctx</a> *ctx)</td></tr>
-<tr class="separator:afca8898636252a8c9f9b095d1dbd35bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acab3e0bb66485a31cd4bcc258c8c2649"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecsctx_8c.html#acab3e0bb66485a31cd4bcc258c8c2649">BPU_mecsInitCtx</a> (<a class="el" href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">BPU_T_Mecs_Ctx</a> **ctx, const <a class="el" href="mecsctx_8h.html#a3f8931a1955adced0ae404b46df35544">BPU_T_UN_Mecs_Params</a> *params, const <a class="el" href="mecsctx_8h.html#a46cf236ede287ac0f540379be0d567e2">BPU_T_EN_Mecs_Types</a> type)</td></tr>
+<tr class="memdesc:acab3e0bb66485a31cd4bcc258c8c2649"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize (register) mecs functions for encryption, decryption and key gen based on type.  <a href="#acab3e0bb66485a31cd4bcc258c8c2649">More...</a><br/></td></tr>
+<tr class="separator:acab3e0bb66485a31cd4bcc258c8c2649"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d540f95132a2ee135c0bc3663a31301"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecsctx_8c.html#a8d540f95132a2ee135c0bc3663a31301">BPU_mecsFreeCtx</a> (<a class="el" href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">BPU_T_Mecs_Ctx</a> **ctx)</td></tr>
+<tr class="separator:a8d540f95132a2ee135c0bc3663a31301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3448776b821f291c5f529078bbaa642f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecsctx_8c.html#a3448776b821f291c5f529078bbaa642f">BPU_mecsInitParamsGoppa</a> (<a class="el" href="mecsctx_8h.html#a3f8931a1955adced0ae404b46df35544">BPU_T_UN_Mecs_Params</a> *params, const uint16_t m, const uint16_t t, const <a class="el" href="gf2xtypes_8h.html#a00e45ae8665b961417e0da15f85dad9d">BPU_T_GF2_16x</a> mod)</td></tr>
+<tr class="separator:a3448776b821f291c5f529078bbaa642f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f324fd22e4f039388b10af248ead6b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecsctx_8c.html#a6f324fd22e4f039388b10af248ead6b6">BPU_mecsFreeParamsGoppa</a> (<a class="el" href="mecsctx_8h.html#a3f8931a1955adced0ae404b46df35544">BPU_T_UN_Mecs_Params</a> *params)</td></tr>
+<tr class="separator:a6f324fd22e4f039388b10af248ead6b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="afca8898636252a8c9f9b095d1dbd35bd"></a>
+<a class="anchor" id="a8d540f95132a2ee135c0bc3663a31301"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int BPU_mecsFreeCtx </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">BPU_T_Mecs_Ctx</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">BPU_T_Mecs_Ctx</a> **&#160;</td>
           <td class="paramname"><em>ctx</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00068">68</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
+<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00118">118</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac6c854c3452dff1f928b333c6b0976bf"></a>
+<a class="anchor" id="a6f324fd22e4f039388b10af248ead6b6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BPU_mecsFreeParamsGoppa </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="mecsctx_8h.html#a3f8931a1955adced0ae404b46df35544">BPU_T_UN_Mecs_Params</a> *&#160;</td>
+          <td class="paramname"><em>params</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00148">148</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acab3e0bb66485a31cd4bcc258c8c2649"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int BPU_mecsInitCtx </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">BPU_T_Mecs_Ctx</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">BPU_T_Mecs_Ctx</a> **&#160;</td>
           <td class="paramname"><em>ctx</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const uint16_t&#160;</td>
-          <td class="paramname"><em>m</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const uint16_t&#160;</td>
-          <td class="paramname"><em>t</em>, </td>
+          <td class="paramtype">const <a class="el" href="mecsctx_8h.html#a3f8931a1955adced0ae404b46df35544">BPU_T_UN_Mecs_Params</a> *&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -182,12 +199,48 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Initialize (register) mecs functions for encryption, decryption and key gen based on type. </p>
-<p>This file is part of BitPunch Copyright (C) 2015 Frantisek Uhrecky &lt;frantisek.uhrecky[what here]gmail.com&gt;</p>
-<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
-<p>You should have received a copy of the GNU General Public License along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. </p>
 
-<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00030">30</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
+<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00035">35</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3448776b821f291c5f529078bbaa642f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int BPU_mecsInitParamsGoppa </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="mecsctx_8h.html#a3f8931a1955adced0ae404b46df35544">BPU_T_UN_Mecs_Params</a> *&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint16_t&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint16_t&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="gf2xtypes_8h.html#a00e45ae8665b961417e0da15f85dad9d">BPU_T_GF2_16x</a>&#160;</td>
+          <td class="paramname"><em>mod</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00144">144</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
 
 </div>
 </div>
@@ -196,8 +249,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li><li class="navelem"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></li><li class="navelem"><a class="el" href="dir_0f89a311a44853eaaaf3dbdb23434ca6.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_8e8c1badd115a0205c74d7c0975524ef.html">crypto</a></li><li class="navelem"><a class="el" href="mecsctx_8c.html">mecsctx.c</a></li>
-    <li class="footer">Generated on Mon Mar 2 2015 09:10:23 for McEliece BitPunch by
+    <li class="navelem"><a class="el" href="dir_c56c2120216b9f5565d19a0879c67849.html">lib</a></li><li class="navelem"><a class="el" href="dir_36bc0d3594a53b4616e1660c5d0ae143.html">src</a></li><li class="navelem"><a class="el" href="dir_c9a0fad782ccabcfd2fb34c48555b3b8.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_63d1665b570c60b6b93baa563ecb63d4.html">crypto</a></li><li class="navelem"><a class="el" href="mecsctx_8c.html">mecsctx.c</a></li>
+    <li class="footer">Generated on Sun May 17 2015 00:18:41 for McEliece BitPunch by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
