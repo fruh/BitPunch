@@ -27,25 +27,38 @@
 		- xuhreckyf [ you know what to put here ] stuba.sk
 
 \section Changes
-	v0.0.2
-		- module organization: crypto, math, code, prng
-		- convention unified see doc
-		- new context managment: mecs, code and math context
-		- memory usage reduction (heap peak) from 8 MiB to ~170 KiB with params m=11 t=50 w/o H
-		- removed memory leaks
-		- removed functions which are allocating memory inside for output (suffix A)
-		- posibility to build with or w/o using H precomputed matrix by decription
-		- added basic tests
-		- removed Adapted CCA2 Pointcheval's scheme (TEMPORARLY)
-		- no external dependecies
+    v0.0.3
+        - added Adapted Pointcheval's scheme
+        - implemented SHA512 from (https://polarssl.org)
+        - BPU_*Malloc - now using TYPE **pointer and also BPU_*Free
+        - implemented ASN1 key serialization using libtasn1 (external dependency) (https://www.gnu.org/software/libtasn1/) for mecs basic, Pointcheval's scheme, both with H matrix
+        - some error checks fixed
+        - added zero to support
+        - added code and mecs parameters initialization
+        - test enviroment reconfigured, now it creates snapshot of current workspace
+        - some BUGs fixed
+        - now possible to compile static or shared lib
+        - compilation w/o print functions, enc, dec or keygen, CCA2 Pointchval's scheme
 
-	v0.0.1
-		- Initial version - of BitPunch project
-		- contains implementation of MECS using Goppa code
-		- Patterson's alg. for decoding
-		- dependencies on OpenSSL (sha)
-		- Adapted CCA2 Pointcheval's scheme
-		- some math function over gf2, gf2x, gf2xpoly like ext. eclidean, gen. of irreducible goppa poly...
+    v0.0.2
+        - module organization: crypto, math, code, prng
+        - convention unified see doc
+        - new context management: mecs, code and math context
+        - memory usage reduction (heap peak) from 8 MiB to ~170 KiB with params m=11 t=50 w/o H
+        - removed memory leaks
+        - removed functions which are allocating memory inside for output (suffix A)
+        - posibility to build with or w/o using H precomputed matrix by decription
+        - added basic tests
+        - removed Adapted CCA2 Pointcheval's scheme (TEMPORARLY)
+        - no external dependecies
+
+    v0.0.1
+        - Initial version - of BitPunch project
+        - contains implementation of MECS using Goppa code
+        - Patterson's alg. for decoding
+        - dependencies on OpenSSL (sha)
+        - Adapted CCA2 Pointcheval's scheme
+        - some math function over gf2, gf2x, gf2xpoly like ext. eclidean, gen. of irreducible goppa poly...
 
 \section Structure
 	Here is the basic structure overview.
@@ -122,4 +135,4 @@
 		- make test-with-debug
 	Default optimization is -O2. To set up more verbosity define -DERRORL, -DWARNING_L or DDEBUG_L, this are using functions like BPU_printError, BPU_printWarning, BPU_printDebug.
 */
-#define VERSION = "0.0.2"
+#define VERSION = "0.0.3"

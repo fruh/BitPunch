@@ -37,6 +37,12 @@ endif
 # 	CFLAGS += -O2 -pg
 # endif
 
+# get libtasn1 path
+ARCH = $(shell uname -m)
+
+LIBTASN1 = $(shell dirname `ldconfig -p | grep libtasn1 | grep ${ARCH} | head -n 1 | cut -d '>' -f 2`)/libtasn1.a
+
+
 # compiler
 CC = gcc $(INCLUDE_PATH)
 
@@ -109,7 +115,7 @@ shared-lib: prepare-dir $(PICS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 static-lib: prepare-dir $(OBJS)
-	cd $(BUILD_DIR) && ar -x /usr/lib/x86_64-linux-gnu/libtasn1.a
+	cd $(BUILD_DIR) && ar -x $(LIBTASN1)
 	ar rcs $(DIST_DIR)/libbpumecs.a $(OBJS) $(BUILD_DIR)/*.o
 
 ############################# prepare dirs

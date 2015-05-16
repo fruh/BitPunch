@@ -1,15 +1,20 @@
 v0.0.3
 	- added Adapted Pointcheval's scheme
 	- implemented SHA512 from (https://polarssl.org)
-	- BPU_*Malloc - now using TYPE **pointer and laso BPU_*Free
+	- BPU_*Malloc - now using TYPE **pointer and also BPU_*Free
 	- implemented ASN1 key serialization using libtasn1 (external dependency) (https://www.gnu.org/software/libtasn1/) for mecs basic, Pointcheval's scheme, both with H matrix
 	- some error checks fixed
 	- added zero to support
+	- added code and mecs parameters initialization
+	- test enviroment reconfigured, now it creates snapshot of current workspace
+	- some BUGs fixed
+	- now possible to compile static or shared lib
+	- compilation w/o print functions, enc, dec or keygen, CCA2 Pointchval's scheme
 
 v0.0.2
 	- module organization: crypto, math, code, prng
 	- convention unified see doc
-	- new context managment: mecs, code and math context
+	- new context management: mecs, code and math context
 	- memory usage reduction (heap peak) from 8 MiB to ~170 KiB with params m=11 t=50 w/o H
 	- removed memory leaks
 	- removed functions which are allocating memory inside for output (suffix A)
