@@ -26,7 +26,7 @@ Project is now only in *development version*.
   - make static - to build static lib
   - make shared - to build shared lib
 
-  Builded libraries are located in dist/ folder. For more preprocesor options see lib/src/bitpunch/config.h file.
+  Builded libraries are located in dist/ folder. For more preprocesor options see [lib/src/bitpunch/config.h](lib/src/bitpunch/config.h) file.
   Default optimization is -O2. To set up more verbosity define -DERRORL, -DWARNING_L or DDEBUG_L, this are using functions like BPU_printError, BPU_printWarning, BPU_printDebug.
 
 ### Example:
