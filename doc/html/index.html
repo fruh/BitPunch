@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: BitPunch McEliece</title>
+<title>McEliece BitPunch: BitPunch McEliece v0.0.3</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">BitPunch McEliece </div>  </div>
+<div class="title">BitPunch McEliece v0.0.3 </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="Introduction"></a>
@@ -106,13 +106,67 @@ Introduction</h1>
 <ul>
 <li>xuhreckyf [ you know what to put here ] stuba.sk</li>
 </ul>
+<p>Where are the most important processes done?</p>
+<ul>
+<li>Initialization:<ul>
+<li><a class="el" href="mecsctx_8h.html">lib/src/bitpunch/crypto/mecsctx.h</a><ul>
+<li><a class="el" href="mecsctx_8c.html#acab3e0bb66485a31cd4bcc258c8c2649" title="Initialize (register) mecs functions for encryption, decryption and key gen based on type...">BPU_mecsInitCtx()</a></li>
+<li><a class="el" href="codectx_8c.html#a17a28764bb91b6c7c919174fa2702b36" title="BPU_codeInitCtx Initialize (register) code functions encode, decode and code spec structure based on ...">BPU_codeInitCtx()</a></li>
+<li><a class="el" href="mathctx_8c.html#ac7e16be6b17fa9ad9fdc50d80c49b172" title="Precalculate logaritmic and exponencial tables and initialize structure Aritmetic_Data. ">BPU_mathInitCtx()</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Encryption/Decryption:<ul>
+<li><a class="el" href="mecsbasic_8h.html">lib/src/bitpunch/crypto/mecsbasic/mecsbasic.h</a><ul>
+<li><a class="el" href="mecsbasic_8c.html#a3c39ab9dfab2440e89f0606c86b10c8c">BPU_mecsBasicEncrypt()</a></li>
+<li><a class="el" href="mecsbasic_8c.html#a433f6b45ab29095895c104f948964b41">BPU_mecsBasicDecrypt()</a></li>
+</ul>
+</li>
+<li><a class="el" href="mecspointcheval_8h.html">lib/src/bitpunch/crypto/cca2/mecspointcheval.h</a><ul>
+<li><a class="el" href="mecspointcheval_8c.html#a7022e252183e2b9a6004e11b620256da" title="BPU_mecsPointchevalCCA2Encrypt. ">BPU_mecsPointchevalCCA2Encrypt()</a></li>
+<li><a class="el" href="mecspointcheval_8c.html#a434904547f72d0a7d390758dc0b4360e" title="BPU_mecsPointchevalCCA2Decrypt. ">BPU_mecsPointchevalCCA2Decrypt()</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>KeyGen:<ul>
+<li><a class="el" href="goppa_8h.html">lib/src/bitpunch/code/goppa/goppa.h</a><ul>
+<li><a class="el" href="goppa_8c.html#a657f8a008c261eca5a14d1703efe138d" title="BPU_goppaGenCode Generate random code based on params. ">BPU_goppaGenCode()</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Encode/Decode:<ul>
+<li><a class="el" href="goppa_8h.html">lib/src/bitpunch/code/goppa/goppa.h</a><ul>
+<li><a class="el" href="goppa_8c.html#a06fdb1ea39ebbf77cfb8fd9d89de0090" title="BPU_goppaEncode Encode message using goppa code. ">BPU_goppaEncode()</a></li>
+<li><a class="el" href="goppa_8c.html#ade07f571e2d0874864461156550bcf6e">BPU_goppaDecode()</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h1><a class="anchor" id="Changes"></a>
 Changes</h1>
+<p>v0.0.3</p>
+<ul>
+<li>added Adapted Pointcheval's scheme</li>
+<li>implemented SHA512 from (<a href="https://polarssl.org">https://polarssl.org</a>)</li>
+<li>BPU_*Malloc - now using TYPE **pointer and also BPU_*Free</li>
+<li>implemented ASN1 key serialization using libtasn1 (external dependency) (<a href="https://www.gnu.org/software/libtasn1/">https://www.gnu.org/software/libtasn1/</a>) for mecs basic, Pointcheval's scheme, both with H matrix</li>
+<li>some error checks fixed</li>
+<li>added zero to support</li>
+<li>added code and mecs parameters initialization</li>
+<li>test enviroment reconfigured, now it creates snapshot of current workspace</li>
+<li>some BUGs fixed</li>
+<li>now possible to compile static or shared lib</li>
+<li>compilation w/o print functions, enc, dec or keygen, CCA2 Pointchval's scheme</li>
+</ul>
 <p>v0.0.2</p>
 <ul>
 <li>module organization: crypto, math, code, prng</li>
 <li>convention unified see doc</li>
-<li>new context managment: mecs, code and math context</li>
+<li>new context management: mecs, code and math context</li>
 <li>memory usage reduction (heap peak) from 8 MiB to ~170 KiB with params m=11 t=50 w/o H</li>
 <li>removed memory leaks</li>
 <li>removed functions which are allocating memory inside for output (suffix A)</li>
@@ -135,7 +189,7 @@ Structure</h1>
 <p>Here is the basic structure overview.</p>
 <h2><a class="anchor" id="Convention"></a>
 Convention</h2>
-<p>Current version: 0.0.2</p>
+<p>Current version: 0.0.3</p>
 <ul>
 <li>function name format: BPU_thisFunctionMakesMeDead</li>
 <li>data types name format: BPU_T_This_Data_Type_Rocks</li>
@@ -148,7 +202,9 @@ Convention</h2>
 </li>
 <li>enumeration data types BPU_T_EN_* -enumeration etries BPU_EN_*</li>
 <li>unoin data types BPU_T_UN_*</li>
-<li>error codes definitions BPU_EC_*</li>
+</ul>
+<p>error codes definitions BPU_EC_*</p>
+<ul>
 <li>all functions, macros has prefix BPU_*<ul>
 <li>there is also specific prefix for functions, which are working with kind of data:<ul>
 <li>BPU_gf2Vec*</li>
@@ -163,7 +219,6 @@ Convention</h2>
 <li>BPU_math*</li>
 <li>BPU_pad*</li>
 <li>BPU_prng*</li>
-<li>BPU_perm*</li>
 </ul>
 </li>
 </ul>
@@ -172,15 +227,22 @@ Convention</h2>
 </ul>
 <h2><a class="anchor" id="Modules"></a>
 Modules</h2>
-<p>BitPunch has more modules, are sources are lcated in lib/src/bitpunch/:</p>
+<p>BitPunch has more modules, all sources are located in lib/src/bitpunch/:</p>
 <ul>
-<li>math<ul>
-<li>contains all aruthmetic operation over GF2, GF2x, polynomials, Matrices, Vectors, Permutations, ...</li>
+<li>asn1<ul>
+<li>is used for searializing key using libtasn1</li>
+<li>it uses DER encoding<ul>
+<li>math</li>
 </ul>
 </li>
-<li>code<ul>
-<li>implement code matters, here you can specify your own codes</li>
+<li>contains all arithmetic operation over GF2, GF2x, polynomials, Matrices, Vectors, Permutations, ...<ul>
+<li>code</li>
+</ul>
+</li>
+<li>implements code matters, here you can specify your own codes<ul>
 <li>goppa</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>crypto<ul>
@@ -212,32 +274,27 @@ Contexts</h2>
 </ul>
 <h2><a class="anchor" id="Tests"></a>
 Tests</h2>
-<p>In lib/tests are some basic tests. You can run them:</p>
-<ul>
-<li>go to lib/</li>
-<li>run them using:<ul>
-<li>./runAllTests</li>
-<li>or go to lib/tests/ and use ./runTest TESTNAME ARGS. Now there is only build test and memory leak check tests.</li>
-</ul>
-</li>
-</ul>
+<p>There is implemented simple test enviroment. You can run it using ./runTest TEST_NAME, or use help: ./runTest -h to see all options.</p>
 <h1><a class="anchor" id="Build"></a>
 Build</h1>
 <p>For build details go to lib/ and see makefile help. Now you can build test aplication, realease or debug, you can specify wheter you want to use precomputed H matrix (more memory) or not:</p>
 <ul>
 <li>make help - it is make help</li>
 <li>make print-info - info where is your aplication</li>
-<li>make test-wo-h</li>
-<li>make test-wo-h-debug</li>
-<li>make test-with</li>
-<li>make test-with-debug Default optimization is -O2. To set up more verbosity define -DERRORL, -DWARNING_L or DDEBUG_L, this are using functions like BPU_printError, BPU_printWarning, BPU_printDebug. </li>
+<li>make test - with H matrix</li>
+<li>make test-debug - with H matrix</li>
+<li>make test-wo-h - without H matrix</li>
+<li>make test-with-debug - without H matrix</li>
+<li>make static - to build static lib</li>
+<li>make shared - to build shared lib</li>
 </ul>
+<p>Builded libraries are located in dist/ folder. For more preprocesor options see <a class="el" href="config_8h.html">lib/src/bitpunch/config.h</a> file. Default optimization is -O2. To set up more verbosity define -DERRORL, -DWARNING_L or DDEBUG_L, this are using functions like BPU_printError, BPU_printWarning, BPU_printDebug. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Mar 2 2015 09:10:24 for McEliece BitPunch by
+    <li class="footer">Generated on Sun May 17 2015 00:18:41 for McEliece BitPunch by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

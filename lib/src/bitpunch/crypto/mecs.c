@@ -1,4 +1,4 @@
-/**
+/*
 This file is part of BitPunch
 Copyright (C) 2013-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 Copyright (C) 2013-2014 Andrej Gulyas <andrej.guly[what here]gmail.com>
@@ -22,14 +22,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "mecs.h"
 #include "mecsctx.h"
 
+/**
+ * Encrypt plaintext (pt) and save it to cipher text. All strctures must be allocated before use.
+ * @param  ct  cipher text
+ * @param  pt  plain text
+ * @param  ctx McEliece context
+ * @return     0 - succes, else error
+ */
+/// Encrypt plaintext (pt) and save it to cipher text.
 int BPU_mecsEncrypt(BPU_T_GF2_Vector *ct, const BPU_T_GF2_Vector *pt, const BPU_T_Mecs_Ctx *ctx) {
 	return ctx->_encrypt(ct, pt, ctx);
 }
 
+/**
+ * Decrypt cipher text (ct) and save it to plain text. All strctures must be allocated before use.
+ * @param  pt  plain text
+ * @param  ct  cipher text
+ * @param  ctx McEliece context
+ * @return     0 - succes, else error
+ */
+/// Decrypt cipher text (ct) and save it to plain text.
 int BPU_mecsDecrypt(BPU_T_GF2_Vector *pt, BPU_T_GF2_Vector *ct, const BPU_T_Mecs_Ctx *ctx) {
 	return ctx->_decrypt(pt, ct, ctx);
 }
 
+/**
+ * Key generation, first must be initialized context using BPU_mecsInitCtx().
+ * @param  ctx McEliece context
+ * @return     0 - success, else error
+ */
+/// Key generation, first must be initialized context using BPU_mecsInitCtx().
 int BPU_mecsGenKeyPair(BPU_T_Mecs_Ctx *ctx) {
 	return ctx->_genKeyPair(ctx->code_ctx);
 }

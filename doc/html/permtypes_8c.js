@@ -1,5 +1,5 @@
 var permtypes_8c =
 [
-    [ "BPU_permFree", "permtypes_8c.html#acb3cc2eb06ec766086d8116f67159c83", null ],
-    [ "BPU_permMalloc", "permtypes_8c.html#abd16c22cfc09cf216d327f4f84a6bb10", null ]
+    [ "BPU_permFree", "permtypes_8c.html#ad7598b058b30221e76e202d0e79815dd", null ],
+    [ "BPU_permMalloc", "permtypes_8c.html#a4e18f7afa6bff3326593cfd757cbd6c2", null ]
 ];

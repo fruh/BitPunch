@@ -1,5 +1,5 @@
 var mathctx_8c =
 [
-    [ "BPU_mathFreeCtx", "mathctx_8c.html#afa6c089716284c70401fae61bdfd9c74", null ],
-    [ "BPU_mathInitCtx", "mathctx_8c.html#a8d26e4c9b5bd6f54c8a676b0a57d4b9e", null ]
+    [ "BPU_mathFreeCtx", "mathctx_8c.html#a4289a8080e15785fca4c3b32c3540511", null ],
+    [ "BPU_mathInitCtx", "mathctx_8c.html#ac7e16be6b17fa9ad9fdc50d80c49b172", null ]
 ];

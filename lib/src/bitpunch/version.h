@@ -16,7 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
-\mainpage BitPunch McEliece
+\mainpage BitPunch McEliece v0.0.3
 
 \section Introduction
 	Goal of BitPunch project is to make a standalone McEliece implementation. Current version is only develompent version, it is not suitable to use in real-life implementation.
@@ -25,6 +25,31 @@
 	I know, there is a lot of BUGS now.
 	If you have any questions, ideas create new issue or contact me:
 		- xuhreckyf [ you know what to put here ] stuba.sk
+
+    Where are the most important processes done?
+        - Initialization:
+            - lib/src/bitpunch/crypto/mecsctx.h
+                - BPU_mecsInitCtx()
+                - BPU_codeInitCtx()
+                - BPU_mathInitCtx()
+
+        - Encryption/Decryption:
+            - lib/src/bitpunch/crypto/mecsbasic/mecsbasic.h
+                - BPU_mecsBasicEncrypt()
+                - BPU_mecsBasicDecrypt()
+            - lib/src/bitpunch/crypto/cca2/mecspointcheval.h
+                - BPU_mecsPointchevalCCA2Encrypt()
+                - BPU_mecsPointchevalCCA2Decrypt()
+
+        - KeyGen:
+            - lib/src/bitpunch/code/goppa/goppa.h
+                - BPU_goppaGenCode()
+
+        - Encode/Decode:
+            - lib/src/bitpunch/code/goppa/goppa.h
+                - BPU_goppaEncode()
+                - BPU_goppaDecode()
+
 
 \section Changes
     v0.0.3
@@ -64,7 +89,7 @@
 	Here is the basic structure overview.
 
 	\subsection Convention
-	Current version: 0.0.2
+    Current version: 0.0.3
 		- function name format: BPU_thisFunctionMakesMeDead
 		- data types name format: BPU_T_This_Data_Type_Rocks
 		- variable name format: four_your_information
@@ -75,7 +100,7 @@
 		- enumeration data types BPU_T_EN_*
 			-enumeration etries BPU_EN_*
 		- unoin data types BPU_T_UN_*
-		- error codes definitions BPU_EC_*
+        - error codes definitions BPU_EC_*
 		- all functions, macros has prefix BPU_*
 		  - there is also specific prefix for functions, which are working with kind of data:
 			- BPU_gf2Vec*
@@ -90,22 +115,24 @@
 			- BPU_math*
 			- BPU_pad*
 			- BPU_prng*
-			- BPU_perm*
 		- print functions stating with prefix:
 			-BPU_print*
 
 	\subsection Modules
-		BitPunch has more modules, are sources are lcated in lib/src/bitpunch/:
+        BitPunch has more modules, all sources are located in lib/src/bitpunch/:
+            - asn1
+                - is used for searializing key using libtasn1
+                - it uses DER encoding
 			- math
-				- contains all aruthmetic operation over GF2,  GF2x, polynomials, Matrices, Vectors, Permutations, ...
+                - contains all arithmetic operation over GF2,  GF2x, polynomials, Matrices, Vectors, Permutations, ...
 			- code
-				- implement code matters, here you can specify your own codes
+                - implements code matters, here you can specify your own codes
 				- goppa
-			- crypto
+            - crypto
 				- implements cryptosystem matters
 				- mecsbasic, padding
-			- prng
-				- interface for PRNG
+            - prng
+                - interface for PRNG
 
 	\subsection Contexts
 		There are 3 contexts:
@@ -118,21 +145,20 @@
 		When you want to use MECS you just need to initialize context, using BPU_mecsInitCtx, see doc for more details.
 
 	\subsection Tests
-		In lib/tests are some basic tests. You can run them:
-			- go to lib/
-			- run them using:
-				- ./runAllTests
-				- or go to lib/tests/ and use ./runTest TESTNAME ARGS.
-		Now there is only build test and memory leak check tests.
+        There is implemented simple test enviroment. You can run it using ./runTest TEST_NAME, or use help: ./runTest -h to see all options.
   
 \section Build
 	For build details go to lib/ and see makefile help. Now you can build test aplication, realease or debug, you can specify wheter you want to use precomputed H matrix (more memory) or not:
-		- make help - it is make help
-		- make print-info - info where is your aplication
-		- make test-wo-h
-		- make test-wo-h-debug
-		- make test-with
-		- make test-with-debug
+        - make help - it is make help
+        - make print-info - info where is your aplication
+        - make test - with H matrix
+        - make test-debug - with H matrix
+        - make test-wo-h - without H matrix
+        - make test-with-debug - without H matrix
+        - make static - to build static lib
+        - make shared - to build shared lib
+
+    Builded libraries are located in dist/ folder. For more preprocesor options see lib/src/bitpunch/config.h file.
 	Default optimization is -O2. To set up more verbosity define -DERRORL, -DWARNING_L or DDEBUG_L, this are using functions like BPU_printError, BPU_printWarning, BPU_printDebug.
 */
 #define VERSION = "0.0.3"

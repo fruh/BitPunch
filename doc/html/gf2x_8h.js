@@ -1,6 +1,7 @@
 var gf2x_8h =
 [
     [ "BPU_gf2xInvElement", "gf2x_8h.html#adddebaf10def5a75897d87cdee697ce8", null ],
+    [ "BPU_gf2xMulModT", "gf2x_8h.html#ad83cdf5f85e71d55cfd120cad2e18ad9", null ],
     [ "BPU_gf2xPolyLeadCoef", "gf2x_8h.html#a333694d0efe2dd8c9198d7f893ac768f", null ],
     [ "BPU_gf2xGetDeg", "gf2x_8h.html#a34f7a916e4965320a294abb47c0538a9", null ],
     [ "BPU_gf2xGetPseudoInv", "gf2x_8h.html#a963514964c5d9a30d5b0d8ab7e0cf34f", null ],
@@ -16,7 +17,6 @@ var gf2x_8h =
     [ "BPU_gf2xMatSwapRows", "gf2x_8h.html#a5744f4310ba95b748179b11bb1f433ce", null ],
     [ "BPU_gf2xMatXorRows", "gf2x_8h.html#ad1d996702f12ea7da2d2a84fd5e002c4", null ],
     [ "BPU_gf2xMulMod", "gf2x_8h.html#a7a171bb707939842cb6742e9b38fe59c", null ],
-    [ "BPU_gf2xMulModT", "gf2x_8h.html#a457f08b4652ca1bd62546bd0e40f6fb6", null ],
     [ "BPU_gf2xPolyAdd", "gf2x_8h.html#abf11f0c4c1897f4e326cfe7ee903ce85", null ],
     [ "BPU_gf2xPolyCmp", "gf2x_8h.html#a38a9c87fdd4007d55b15b5cbf974b04d", null ],
     [ "BPU_gf2xPolyCopy", "gf2x_8h.html#a91cbc4f7d6d3898f3ca300b44df4f1f5", null ],

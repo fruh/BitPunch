@@ -1,4 +1,4 @@
-/**
+/*
  This file is part of BitPunch
  Copyright (C) 2014-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
  Copyright (C) 2014 Andrej Gulyas <andrej.guly[what here]gmail.com>
@@ -28,7 +28,7 @@
 #define BPU_TEST_ROUNDS 300
 
 int main(int argc, char **argv) {
-    // MUST BE INITIaLIZED TO NULL
+    // MUST BE INITIALIZED TO NULL
     BPU_T_Mecs_Ctx *ctx = NULL;
 	BPU_T_UN_Mecs_Params params;
     BPU_T_GF2_Vector *ct, *pt;
