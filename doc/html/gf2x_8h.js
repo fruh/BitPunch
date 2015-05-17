@@ -42,8 +42,5 @@ var gf2x_8h =
     [ "BPU_gf2xSwap", "gf2x_8h.html#a3a54707ec87b86c7fca03bbdf942dc33", null ],
     [ "BPU_gf2xVecMulEl", "gf2x_8h.html#af15fa972d2f5df0191bc440073c490a4", null ],
     [ "BPU_gf2xVecMulMat", "gf2x_8h.html#a12503b00a873a968cb5bb9107ea31b16", null ],
-    [ "BPU_gf2xVecToPoly", "gf2x_8h.html#a94754ee33557f3902c001ca5027a4f77", null ],
-    [ "BPU_printGf2xMat", "gf2x_8h.html#a5ae102b335372c2f27c941a44f2b5113", null ],
-    [ "BPU_printGf2xPoly", "gf2x_8h.html#ad0e3507eb0afc292b1ba0316e992b118", null ],
-    [ "BPU_printGf2xVec", "gf2x_8h.html#a2395aa9fb27048743982e65aa04637bc", null ]
+    [ "BPU_gf2xVecToPoly", "gf2x_8h.html#a94754ee33557f3902c001ca5027a4f77", null ]
 ];

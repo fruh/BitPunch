@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: /home/fero/projects/BitPunch/lib/src/bitpunch/debugio.h File Reference</title>
+<title>McEliece BitPunch: /media/fruh/data/school/BitPunch/lib/src/bitpunch/debugio.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -109,8 +110,6 @@ $(document).ready(function(){initNavTree('debugio_8h.html','');});
 <div class="contents">
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br/>
 <code>#include &lt;inttypes.h&gt;</code><br/>
-<code>#include &lt;stdlib.h&gt;</code><br/>
-<code>#include &lt;errno.h&gt;</code><br/>
 </div>
 <p><a href="debugio_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -119,13 +118,13 @@ Macros</h2></td></tr>
 <tr class="memitem:ab779dfdaf177578cdc9015c2a1962856"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debugio_8h.html#ab779dfdaf177578cdc9015c2a1962856">BPU_PRINT_U_64</a>&#160;&#160;&#160;PRIu64</td></tr>
 <tr class="memdesc:ab779dfdaf177578cdc9015c2a1962856"><td class="mdescLeft">&#160;</td><td class="mdescRight">print macro for 64bit data types  <a href="#ab779dfdaf177578cdc9015c2a1962856">More...</a><br/></td></tr>
 <tr class="separator:ab779dfdaf177578cdc9015c2a1962856"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bbce215c376a75d91b96a77cb759923"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debugio_8h.html#a6bbce215c376a75d91b96a77cb759923">BPU_printError</a>(fmt,...)&#160;&#160;&#160;fprintf(stderr, &quot;ERROR::%s::%s::%d: &quot;fmt&quot;\n&quot;, __FILE__, __func__, __LINE__, ##__VA_ARGS__); if (errno) {perror(&quot;ERROR MSG:&quot;); errno = 0;}</td></tr>
+<tr class="memitem:a6bbce215c376a75d91b96a77cb759923"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debugio_8h.html#a6bbce215c376a75d91b96a77cb759923">BPU_printError</a>(fmt,...)</td></tr>
 <tr class="memdesc:a6bbce215c376a75d91b96a77cb759923"><td class="mdescLeft">&#160;</td><td class="mdescRight">print error message with filename, line  <a href="#a6bbce215c376a75d91b96a77cb759923">More...</a><br/></td></tr>
 <tr class="separator:a6bbce215c376a75d91b96a77cb759923"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0166e7149a42aa5d4bf0558c2f6bb7f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debugio_8h.html#a0166e7149a42aa5d4bf0558c2f6bb7f1">BPU_printWarning</a>(fmt,...)&#160;&#160;&#160;fprintf(stderr, &quot;WARNING::%s::%s::%d: &quot;fmt&quot;\n&quot;, __FILE__, __func__, __LINE__, ##__VA_ARGS__); if (errno) {perror(&quot;ERROR MSG:&quot;); errno = 0;}</td></tr>
+<tr class="memitem:a0166e7149a42aa5d4bf0558c2f6bb7f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debugio_8h.html#a0166e7149a42aa5d4bf0558c2f6bb7f1">BPU_printWarning</a>(fmt,...)</td></tr>
 <tr class="memdesc:a0166e7149a42aa5d4bf0558c2f6bb7f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">print warning message with filename, line  <a href="#a0166e7149a42aa5d4bf0558c2f6bb7f1">More...</a><br/></td></tr>
 <tr class="separator:a0166e7149a42aa5d4bf0558c2f6bb7f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa607fafc1ae8a1d56a921b5e922e3579"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debugio_8h.html#aa607fafc1ae8a1d56a921b5e922e3579">BPU_printDebug</a>(fmt,...)&#160;&#160;&#160;fprintf(stderr, &quot;DEBUG::%s::%s::%d: &quot;fmt&quot;\n&quot;, __FILE__, __func__, __LINE__, ##__VA_ARGS__)</td></tr>
+<tr class="memitem:aa607fafc1ae8a1d56a921b5e922e3579"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debugio_8h.html#aa607fafc1ae8a1d56a921b5e922e3579">BPU_printDebug</a>(fmt,...)</td></tr>
 <tr class="memdesc:aa607fafc1ae8a1d56a921b5e922e3579"><td class="mdescLeft">&#160;</td><td class="mdescRight">print debug message with filename, line  <a href="#aa607fafc1ae8a1d56a921b5e922e3579">More...</a><br/></td></tr>
 <tr class="separator:aa607fafc1ae8a1d56a921b5e922e3579"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -166,14 +165,14 @@ Macros</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;fprintf(stderr, &quot;DEBUG::%s::%s::%d: &quot;fmt&quot;\n&quot;, __FILE__, __func__, __LINE__, ##__VA_ARGS__)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>print debug message with filename, line </p>
 
-<p>Definition at line <a class="el" href="debugio_8h_source.html#l00060">60</a> of file <a class="el" href="debugio_8h_source.html">debugio.h</a>.</p>
+<p>Definition at line <a class="el" href="debugio_8h_source.html#l00063">63</a> of file <a class="el" href="debugio_8h_source.html">debugio.h</a>.</p>
 
 </div>
 </div>
@@ -196,14 +195,14 @@ Macros</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;fprintf(stderr, &quot;ERROR::%s::%s::%d: &quot;fmt&quot;\n&quot;, __FILE__, __func__, __LINE__, ##__VA_ARGS__); if (errno) {perror(&quot;ERROR MSG:&quot;); errno = 0;}</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>print error message with filename, line </p>
 
-<p>Definition at line <a class="el" href="debugio_8h_source.html#l00044">44</a> of file <a class="el" href="debugio_8h_source.html">debugio.h</a>.</p>
+<p>Definition at line <a class="el" href="debugio_8h_source.html#l00047">47</a> of file <a class="el" href="debugio_8h_source.html">debugio.h</a>.</p>
 
 </div>
 </div>
@@ -226,14 +225,14 @@ Macros</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;fprintf(stderr, &quot;WARNING::%s::%s::%d: &quot;fmt&quot;\n&quot;, __FILE__, __func__, __LINE__, ##__VA_ARGS__); if (errno) {perror(&quot;ERROR MSG:&quot;); errno = 0;}</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>print warning message with filename, line </p>
 
-<p>Definition at line <a class="el" href="debugio_8h_source.html#l00052">52</a> of file <a class="el" href="debugio_8h_source.html">debugio.h</a>.</p>
+<p>Definition at line <a class="el" href="debugio_8h_source.html#l00055">55</a> of file <a class="el" href="debugio_8h_source.html">debugio.h</a>.</p>
 
 </div>
 </div>
@@ -242,8 +241,8 @@ Macros</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c56c2120216b9f5565d19a0879c67849.html">lib</a></li><li class="navelem"><a class="el" href="dir_36bc0d3594a53b4616e1660c5d0ae143.html">src</a></li><li class="navelem"><a class="el" href="dir_c9a0fad782ccabcfd2fb34c48555b3b8.html">bitpunch</a></li><li class="navelem"><a class="el" href="debugio_8h.html">debugio.h</a></li>
-    <li class="footer">Generated on Sun May 17 2015 12:20:11 for McEliece BitPunch by
+    <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li><li class="navelem"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></li><li class="navelem"><a class="el" href="dir_0f89a311a44853eaaaf3dbdb23434ca6.html">bitpunch</a></li><li class="navelem"><a class="el" href="debugio_8h.html">debugio.h</a></li>
+    <li class="footer">Generated on Mon May 18 2015 00:16:43 for McEliece BitPunch by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

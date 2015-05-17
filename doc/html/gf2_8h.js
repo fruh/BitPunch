@@ -49,22 +49,5 @@ var gf2_8h =
     [ "BPU_gf2VecMulMat", "gf2_8h.html#aba65b9f4cf4e72ca49b03706ec0222d8", null ],
     [ "BPU_gf2VecPermute", "gf2_8h.html#ae99452ee336dc70e52370d25842aada0", null ],
     [ "BPU_gf2VecRand", "gf2_8h.html#ab933717eceee63b5c45a94c136219e95", null ],
-    [ "BPU_gf2VecXor", "gf2_8h.html#a68af06a2c123de9fd3824b60f1b17fe5", null ],
-    [ "BPU_printBinary32LsbLn", "gf2_8h.html#a890b031761ef0864fdf95f79bea63709", null ],
-    [ "BPU_printBinaryLsb", "gf2_8h.html#a55cc8d7121b55a859e302499ff73ff39", null ],
-    [ "BPU_printBinaryLsb32", "gf2_8h.html#aee81ed42eb0f9ca66f2f7264f989e516", null ],
-    [ "BPU_printBinaryLsbLn", "gf2_8h.html#ae96ba4da68face33a2a6c5842666b0e5", null ],
-    [ "BPU_printBinaryMsb", "gf2_8h.html#ad66693342d1081bc33c0776cd84174c5", null ],
-    [ "BPU_printBinaryMsb32", "gf2_8h.html#a9fee94b8c15d0f99b9dacc5e8666c27d", null ],
-    [ "BPU_printBinaryMsb32Ln", "gf2_8h.html#af96aeeecdda7ff2c6ff3247faa8e8881", null ],
-    [ "BPU_printBinaryMsbLn", "gf2_8h.html#a3c85f1a3b6612a26a17cc3785373f913", null ],
-    [ "BPU_printGf2Mat", "gf2_8h.html#ac94bdc326863a4dd723f252198dddf6c", null ],
-    [ "BPU_printGf2Poly", "gf2_8h.html#a8528d77946968ea73791fddd72034a55", null ],
-    [ "BPU_printGf2PolyForMatrix", "gf2_8h.html#acac439f65bc8018df9e84a16e098c157", null ],
-    [ "BPU_printGf2QcMatrix", "gf2_8h.html#a42a06667df0c0199828ab94fe12041f3", null ],
-    [ "BPU_printGf2SparsePoly", "gf2_8h.html#a130fd30b5b01a0c06927b6a325171f3a", null ],
-    [ "BPU_printGf2SparseQcMatrix", "gf2_8h.html#af273974f7921840f85880bff11dbf279", null ],
-    [ "BPU_printGf2Vec", "gf2_8h.html#afa38a7cb7fbf24e34de5b081af5f8c8a", null ],
-    [ "BPU_printGf2VecMsb", "gf2_8h.html#a5ac87e8743a61599cc9b15eec09c8a45", null ],
-    [ "BPU_printGf2VecOnes", "gf2_8h.html#a4a2f4c8338c96a9a8aecf6ca03f44951", null ]
+    [ "BPU_gf2VecXor", "gf2_8h.html#a68af06a2c123de9fd3824b60f1b17fe5", null ]
 ];

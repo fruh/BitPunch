@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: /home/fero/projects/BitPunch/lib/src/bitpunch/crypto/cca2/mecspointcheval.h File Reference</title>
+<title>McEliece BitPunch: /media/fruh/data/school/BitPunch/lib/src/bitpunch/crypto/cca2/mecspointcheval.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -101,126 +102,20 @@ $(document).ready(function(){initNavTree('mecspointcheval_8h.html','');});
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">mecspointcheval.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="config_8h_source.html">bitpunch/config.h</a>&gt;</code><br/>
-<code>#include &lt;<a class="el" href="gf2types_8h_source.html">bitpunch/math/gf2types.h</a>&gt;</code><br/>
-<code>#include &lt;<a class="el" href="mecsctx_8h_source.html">bitpunch/crypto/mecsctx.h</a>&gt;</code><br/>
-<code>#include &lt;<a class="el" href="sha512_8h_source.html">bitpunch/crypto/hash/sha512.h</a>&gt;</code><br/>
 </div>
 <p><a href="mecspointcheval_8h_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a7022e252183e2b9a6004e11b620256da"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecspointcheval_8h.html#a7022e252183e2b9a6004e11b620256da">BPU_mecsPointchevalCCA2Encrypt</a> (<a class="el" href="gf2types_8h.html#a016a734f8833224b1e4e1dba70baa284">BPU_T_GF2_Vector</a> *out, const <a class="el" href="gf2types_8h.html#a016a734f8833224b1e4e1dba70baa284">BPU_T_GF2_Vector</a> *in, const <a class="el" href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">BPU_T_Mecs_Ctx</a> *ctx)</td></tr>
-<tr class="memdesc:a7022e252183e2b9a6004e11b620256da"><td class="mdescLeft">&#160;</td><td class="mdescRight">BPU_mecsPointchevalCCA2Encrypt.  <a href="#a7022e252183e2b9a6004e11b620256da">More...</a><br/></td></tr>
-<tr class="separator:a7022e252183e2b9a6004e11b620256da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a434904547f72d0a7d390758dc0b4360e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecspointcheval_8h.html#a434904547f72d0a7d390758dc0b4360e">BPU_mecsPointchevalCCA2Decrypt</a> (<a class="el" href="gf2types_8h.html#a016a734f8833224b1e4e1dba70baa284">BPU_T_GF2_Vector</a> *out, const <a class="el" href="gf2types_8h.html#a016a734f8833224b1e4e1dba70baa284">BPU_T_GF2_Vector</a> *in, const <a class="el" href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">BPU_T_Mecs_Ctx</a> *ctx)</td></tr>
-<tr class="memdesc:a434904547f72d0a7d390758dc0b4360e"><td class="mdescLeft">&#160;</td><td class="mdescRight">BPU_mecsPointchevalCCA2Decrypt.  <a href="#a434904547f72d0a7d390758dc0b4360e">More...</a><br/></td></tr>
-<tr class="separator:a434904547f72d0a7d390758dc0b4360e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a434904547f72d0a7d390758dc0b4360e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int BPU_mecsPointchevalCCA2Decrypt </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="gf2types_8h.html#a016a734f8833224b1e4e1dba70baa284">BPU_T_GF2_Vector</a> *&#160;</td>
-          <td class="paramname"><em>out</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="gf2types_8h.html#a016a734f8833224b1e4e1dba70baa284">BPU_T_GF2_Vector</a> *&#160;</td>
-          <td class="paramname"><em>in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">BPU_T_Mecs_Ctx</a> *&#160;</td>
-          <td class="paramname"><em>ctx</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>BPU_mecsPointchevalCCA2Decrypt. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">out</td><td></td></tr>
-    <tr><td class="paramname">in</td><td></td></tr>
-    <tr><td class="paramname">ctx</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Definition at line <a class="el" href="mecspointcheval_8c_source.html#l00076">76</a> of file <a class="el" href="mecspointcheval_8c_source.html">mecspointcheval.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7022e252183e2b9a6004e11b620256da"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int BPU_mecsPointchevalCCA2Encrypt </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="gf2types_8h.html#a016a734f8833224b1e4e1dba70baa284">BPU_T_GF2_Vector</a> *&#160;</td>
-          <td class="paramname"><em>out</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="gf2types_8h.html#a016a734f8833224b1e4e1dba70baa284">BPU_T_GF2_Vector</a> *&#160;</td>
-          <td class="paramname"><em>in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">BPU_T_Mecs_Ctx</a> *&#160;</td>
-          <td class="paramname"><em>ctx</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>BPU_mecsPointchevalCCA2Encrypt. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">out</td><td></td></tr>
-    <tr><td class="paramname">in</td><td></td></tr>
-    <tr><td class="paramname">ctx</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Definition at line <a class="el" href="mecspointcheval_8c_source.html#l00026">26</a> of file <a class="el" href="mecspointcheval_8c_source.html">mecspointcheval.c</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c56c2120216b9f5565d19a0879c67849.html">lib</a></li><li class="navelem"><a class="el" href="dir_36bc0d3594a53b4616e1660c5d0ae143.html">src</a></li><li class="navelem"><a class="el" href="dir_c9a0fad782ccabcfd2fb34c48555b3b8.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_63d1665b570c60b6b93baa563ecb63d4.html">crypto</a></li><li class="navelem"><a class="el" href="dir_5df57c8729912765f95d2ef69b819dd6.html">cca2</a></li><li class="navelem"><a class="el" href="mecspointcheval_8h.html">mecspointcheval.h</a></li>
-    <li class="footer">Generated on Sun May 17 2015 12:20:11 for McEliece BitPunch by
+    <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li><li class="navelem"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></li><li class="navelem"><a class="el" href="dir_0f89a311a44853eaaaf3dbdb23434ca6.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_8e8c1badd115a0205c74d7c0975524ef.html">crypto</a></li><li class="navelem"><a class="el" href="dir_b96fbab0567ce50a970b833b16fe4020.html">cca2</a></li><li class="navelem"><a class="el" href="mecspointcheval_8h.html">mecspointcheval.h</a></li>
+    <li class="footer">Generated on Mon May 18 2015 00:16:43 for McEliece BitPunch by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

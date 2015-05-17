@@ -18,6 +18,12 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # */
 TESTS = {
+	"testFooName" : {
+		"suite" : "foosuite",
+		"file" : "testFoo.sh",
+		"args" : "testFoo fooarg2",
+		"runLevel" : "regular",
+	},
 	"testMemLeakWithH" : {
 		"suite" : "memory",
 		"file" : "testMemLeaks.sh",

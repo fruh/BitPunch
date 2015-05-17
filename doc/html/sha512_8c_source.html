@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: /home/fero/projects/BitPunch/lib/src/bitpunch/crypto/hash/sha512.c Source File</title>
+<title>McEliece BitPunch: /media/fruh/data/school/BitPunch/lib/src/bitpunch/crypto/hash/sha512.c Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -122,7 +123,7 @@ $(document).ready(function(){initNavTree('sha512_8c_source.html','');});
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">You should have received a copy of the GNU General Public License</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="polarssl_2polarssl_2sha512_8h.html">sha512.h</a>&quot;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="sha512_8h.html">sha512.h</a>&quot;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifdef BPU_CONF_SHA_512</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="polarssl_2polarssl_2sha512_8h.html">polarssl/polarssl/sha512.h</a>&quot;</span></div>
@@ -130,10 +131,10 @@ $(document).ready(function(){initNavTree('sha512_8c_source.html','');});
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="debugio_8h.html">bitpunch/debugio.h</a>&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="gf2_8h.html">bitpunch/math/gf2.h</a>&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="sha512_8h.html#a8507fdfc7b198c31cfa9e42bbe66431e">   26</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="sha512_8c.html#a8507fdfc7b198c31cfa9e42bbe66431e">BPU_gf2VecHash</a>(<a class="code" href="struct___b_p_u___t___g_f2___vector.html">BPU_T_GF2_Vector</a> *out, <span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___g_f2___vector.html">BPU_T_GF2_Vector</a> *in) {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        uint8_t md[<a class="code" href="sha512_8h.html#ab91d129f58b7589fd1981c776d33bee8">BPU_HASH_LEN</a>];</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">int</span> BPU_gf2VecHash(<a class="code" href="struct___b_p_u___t___g_f2___vector.html">BPU_T_GF2_Vector</a> *out, <span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___g_f2___vector.html">BPU_T_GF2_Vector</a> *in) {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        uint8_t md[BPU_HASH_LEN];</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordflow">if</span> (out-&gt;<a class="code" href="struct___b_p_u___t___g_f2___vector.html#a96bbf959016e4411c9e6b9812a8be60a">len</a> != <a class="code" href="sha512_8h.html#ab91d129f58b7589fd1981c776d33bee8">BPU_HASH_LEN</a> * 8) {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordflow">if</span> (out-&gt;<a class="code" href="struct___b_p_u___t___g_f2___vector.html#a96bbf959016e4411c9e6b9812a8be60a">len</a> != BPU_HASH_LEN * 8) {</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                <a class="code" href="debugio_8h.html#a6bbce215c376a75d91b96a77cb759923">BPU_printError</a>(<span class="stringliteral">&quot;Wrong vector len %d&quot;</span>, out-&gt;<a class="code" href="struct___b_p_u___t___g_f2___vector.html#a96bbf959016e4411c9e6b9812a8be60a">len</a>);</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <span class="keywordflow">return</span> -1;</div>
@@ -146,29 +147,28 @@ $(document).ready(function(){initNavTree('sha512_8c_source.html','');});
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="comment">// hash vector</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <a class="code" href="polarssl_2sha512_8c.html#a84e277fd84a8cbacceabcd0909610681">sha512</a>((uint8_t *)in-&gt;<a class="code" href="struct___b_p_u___t___g_f2___vector.html#a70a34a3d43a3757e1725380906fb825b">elements</a>, in-&gt;<a class="code" href="struct___b_p_u___t___g_f2___vector.html#a96bbf959016e4411c9e6b9812a8be60a">len</a> / 8, md, 0);</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="comment">// copy digest to vector</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        memcpy(out-&gt;<a class="code" href="struct___b_p_u___t___g_f2___vector.html#a70a34a3d43a3757e1725380906fb825b">elements</a>, md, <a class="code" href="sha512_8h.html#ab91d129f58b7589fd1981c776d33bee8">BPU_HASH_LEN</a>);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        memcpy(out-&gt;<a class="code" href="struct___b_p_u___t___g_f2___vector.html#a70a34a3d43a3757e1725380906fb825b">elements</a>, md, BPU_HASH_LEN);</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="gf2_8h_html"><div class="ttname"><a href="gf2_8h.html">gf2.h</a></div></div>
-<div class="ttc" id="sha512_8c_html_a8507fdfc7b198c31cfa9e42bbe66431e"><div class="ttname"><a href="sha512_8c.html#a8507fdfc7b198c31cfa9e42bbe66431e">BPU_gf2VecHash</a></div><div class="ttdeci">int BPU_gf2VecHash(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in)</div><div class="ttdef"><b>Definition:</b> <a href="sha512_8c_source.html#l00026">sha512.c:26</a></div></div>
 <div class="ttc" id="polarssl_2sha512_8c_html_a84e277fd84a8cbacceabcd0909610681"><div class="ttname"><a href="polarssl_2sha512_8c.html#a84e277fd84a8cbacceabcd0909610681">sha512</a></div><div class="ttdeci">void sha512(const unsigned char *input, size_t ilen, unsigned char output[64], int is384)</div><div class="ttdoc">Output = SHA-512( input buffer ) </div><div class="ttdef"><b>Definition:</b> <a href="polarssl_2sha512_8c_source.html#l00336">sha512.c:336</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___g_f2___vector_html"><div class="ttname"><a href="struct___b_p_u___t___g_f2___vector.html">_BPU_T_GF2_Vector</a></div><div class="ttdef"><b>Definition:</b> <a href="gf2types_8h_source.html#l00032">gf2types.h:32</a></div></div>
-<div class="ttc" id="debugio_8h_html_a0166e7149a42aa5d4bf0558c2f6bb7f1"><div class="ttname"><a href="debugio_8h.html#a0166e7149a42aa5d4bf0558c2f6bb7f1">BPU_printWarning</a></div><div class="ttdeci">#define BPU_printWarning(fmt,...)</div><div class="ttdoc">print warning message with filename, line </div><div class="ttdef"><b>Definition:</b> <a href="debugio_8h_source.html#l00052">debugio.h:52</a></div></div>
-<div class="ttc" id="debugio_8h_html_a6bbce215c376a75d91b96a77cb759923"><div class="ttname"><a href="debugio_8h.html#a6bbce215c376a75d91b96a77cb759923">BPU_printError</a></div><div class="ttdeci">#define BPU_printError(fmt,...)</div><div class="ttdoc">print error message with filename, line </div><div class="ttdef"><b>Definition:</b> <a href="debugio_8h_source.html#l00044">debugio.h:44</a></div></div>
+<div class="ttc" id="debugio_8h_html_a0166e7149a42aa5d4bf0558c2f6bb7f1"><div class="ttname"><a href="debugio_8h.html#a0166e7149a42aa5d4bf0558c2f6bb7f1">BPU_printWarning</a></div><div class="ttdeci">#define BPU_printWarning(fmt,...)</div><div class="ttdoc">print warning message with filename, line </div><div class="ttdef"><b>Definition:</b> <a href="debugio_8h_source.html#l00055">debugio.h:55</a></div></div>
+<div class="ttc" id="debugio_8h_html_a6bbce215c376a75d91b96a77cb759923"><div class="ttname"><a href="debugio_8h.html#a6bbce215c376a75d91b96a77cb759923">BPU_printError</a></div><div class="ttdeci">#define BPU_printError(fmt,...)</div><div class="ttdoc">print error message with filename, line </div><div class="ttdef"><b>Definition:</b> <a href="debugio_8h_source.html#l00047">debugio.h:47</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___g_f2___vector_html_a70a34a3d43a3757e1725380906fb825b"><div class="ttname"><a href="struct___b_p_u___t___g_f2___vector.html#a70a34a3d43a3757e1725380906fb825b">_BPU_T_GF2_Vector::elements</a></div><div class="ttdeci">BPU_T_GF2 * elements</div><div class="ttdoc">all element of matrix </div><div class="ttdef"><b>Definition:</b> <a href="gf2types_8h_source.html#l00033">gf2types.h:33</a></div></div>
 <div class="ttc" id="polarssl_2polarssl_2sha512_8h_html"><div class="ttname"><a href="polarssl_2polarssl_2sha512_8h.html">sha512.h</a></div></div>
+<div class="ttc" id="sha512_8h_html"><div class="ttname"><a href="sha512_8h.html">sha512.h</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___g_f2___vector_html_a96bbf959016e4411c9e6b9812a8be60a"><div class="ttname"><a href="struct___b_p_u___t___g_f2___vector.html#a96bbf959016e4411c9e6b9812a8be60a">_BPU_T_GF2_Vector::len</a></div><div class="ttdeci">uint32_t len</div><div class="ttdoc">cols </div><div class="ttdef"><b>Definition:</b> <a href="gf2types_8h_source.html#l00036">gf2types.h:36</a></div></div>
-<div class="ttc" id="sha512_8h_html_ab91d129f58b7589fd1981c776d33bee8"><div class="ttname"><a href="sha512_8h.html#ab91d129f58b7589fd1981c776d33bee8">BPU_HASH_LEN</a></div><div class="ttdeci">#define BPU_HASH_LEN</div><div class="ttdef"><b>Definition:</b> <a href="sha512_8h_source.html#l00028">sha512.h:28</a></div></div>
 <div class="ttc" id="debugio_8h_html"><div class="ttname"><a href="debugio_8h.html">debugio.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c56c2120216b9f5565d19a0879c67849.html">lib</a></li><li class="navelem"><a class="el" href="dir_36bc0d3594a53b4616e1660c5d0ae143.html">src</a></li><li class="navelem"><a class="el" href="dir_c9a0fad782ccabcfd2fb34c48555b3b8.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_63d1665b570c60b6b93baa563ecb63d4.html">crypto</a></li><li class="navelem"><a class="el" href="dir_80c9b4606039fde3fb7b24db3735d748.html">hash</a></li><li class="navelem"><a class="el" href="sha512_8c.html">sha512.c</a></li>
-    <li class="footer">Generated on Sun May 17 2015 12:20:11 for McEliece BitPunch by
+    <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li><li class="navelem"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></li><li class="navelem"><a class="el" href="dir_0f89a311a44853eaaaf3dbdb23434ca6.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_8e8c1badd115a0205c74d7c0975524ef.html">crypto</a></li><li class="navelem"><a class="el" href="dir_e9de095a987da5ac04c0d0e4ea3c93a1.html">hash</a></li><li class="navelem"><a class="el" href="sha512_8c.html">sha512.c</a></li>
+    <li class="footer">Generated on Mon May 18 2015 00:16:43 for McEliece BitPunch by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

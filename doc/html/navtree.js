@@ -7,10 +7,13 @@ var NAVTREE =
       [ "Structure", "index.html#Structure", [
         [ "Convention", "index.html#Convention", null ],
         [ "Modules", "index.html#Modules", null ],
-        [ "Contexts", "index.html#Contexts", null ],
-        [ "Tests", "index.html#Tests", null ]
+        [ "Contexts", "index.html#Contexts", null ]
       ] ],
       [ "Build", "index.html#Build", null ]
+    ] ],
+    [ "Test enviroment", "_test_01enviroment.html", [
+      [ "Intro", "_test_01enviroment.html#Intro", null ],
+      [ "Example", "_test_01enviroment.html#Example", null ]
     ] ],
     [ "Data Structures", null, [
       [ "Data Structures", "annotated.html", "annotated" ],
@@ -36,10 +39,9 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html",
-"gf2types_8c.html#ae53967e418fb0bce932d4bfc9eaf38b9",
-"mecs_8c_source.html",
-"structsha512__context.html"
+"_test_01enviroment.html",
+"gf2x_8c.html#afec808f029a1239261c641ddabc13139",
+"polarssl_2sha512_8c.html#afc6a7362c0f0c9cfa8fc76b3281e2b37"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

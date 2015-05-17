@@ -143,9 +143,6 @@
 			- Math context
 				- speed up math operations over GF2x
 		When you want to use MECS you just need to initialize context, using BPU_mecsInitCtx, see doc for more details.
-
-	\subsection Tests
-        There is implemented simple test enviroment. You can run it using ./runTest TEST_NAME, or use help: ./runTest -h to see all options.
   
 \section Build
 	For build details go to lib/ and see makefile help. Now you can build test aplication, realease or debug, you can specify wheter you want to use precomputed H matrix (more memory) or not:
@@ -160,5 +157,163 @@
 
     Builded libraries are located in dist/ folder. For more preprocesor options see lib/src/bitpunch/config.h file.
 	Default optimization is -O2. To set up more verbosity define -DERRORL, -DWARNING_L or DDEBUG_L, this are using functions like BPU_printError, BPU_printWarning, BPU_printDebug.
+
+\page "Test enviroment"
+
+\section Intro
+	There is implemented simple test enviroment. You can run it using ./runTest TEST_NAME, or use help: ./runTest -h to see all options.
+\verbatim
+fruh@htfuws:~/projects/BitPunch$ ./runTest -h
+Usage: runTest [options]
+
+Options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+  -a, --all             Run all registered tests
+  -t RUN_TEST, --test=RUN_TEST
+						Run named tests
+  -r RUN_LEVEL, --runLevel=RUN_LEVEL
+						Run all tests <= runLevel
+  -v VERBOSE_LEVEL, --verbose=VERBOSE_LEVEL
+						Verbose level, can be ERROR, WARNING, INFO, DEBUG
+  -l, --list            List available tests
+\endverbatim
+
+This test enviroment creates on every run snapshot of current workspace and copies it into runtest/results/ISO_TIME_FORMAT/ folder.
+
+Test is considered as PASSED when return code is 0 (zero) and 'ERROR' string not occured at the beggining of the line. Otherwise, test is considered as FAILED.
+
+\section Example
+	Here is the guide, how to create dummy test using C and bash sources. C source represents test body and bash source represents control section.
+
+	We can create new suite called "foosuite" or use existing. "Create" means to make directory "foosuite" in our test root:
+	- runtest/tests/foosuite/
+
+	Then we have to create our source files:
+	- runtest/tests/foosuite/testFoo.sh (with EXECUTABLE RIGHTS)
+	- runtest/tests/foosuite/testFoo.c
+
+	Now we have to register this test, it means we have to add following record into TESTS python structure defined in:
+	- runtest/tests/register.py
+\verbatim
+TESTS = {
+	"testFooName" : {
+		"suite" : "foosuite",
+		"file" : "testFoo.sh",
+		"args" : "testFoo fooarg2",
+		"runLevel" : "regular",
+	},
+	... heere are other tests ...
+}
+\endverbatim
+
+Now we can set up body of the control bash source. The first lines are required (until cd $1 (included)), first argument is still set to the path of the current workspace snapshot (this is done automatically by test enviroment):
+- runtest/tests/foosuite/testFoo.sh
+\verbatim
+#!/bin/bash
+if [ "$1" = "" ]; then
+	echo "First argument is result folder."
+	exit 1
+fi
+
+TESTFILE_DIR=$(pwd)
+echo "INFO: $TESTFILE_DIR"
+
+# now we are in current snapshot
+cd "$1"
+
+APP="./dist/test/fooBuild"
+
+# control body
+echo "INFO: fooarg1: $2"
+echo "INFO: fooarg2: $3"
+
+echo "WARNING: warning message"
+
+echo "INFO: cleaning build..."
+make clean
+if [ $? != 0 ]; then
+	echo "ERROR: make clean"
+	exit 1
+fi
+
+echo "INFO: building static-lib..."
+make static-lib
+if [ $? != 0 ]; then
+	echo "ERROR: building target static-lib"
+	exit 2
+fi
+gcc -Isrc/ $TESTFILE_DIR/testFoo.c ./dist/libbpumecs.a -o $APP || exit 1
+
+# run app
+$APP
+
+# return code
+exit $?
+\endverbatim
+
+And now we set test body:
+- runtest/tests/foosuite/testFoo.c
+\verbatim
+#include <bitpunch/bitpunch.h>
+
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+	int rc = 0;
+	// MUST BE NULL
+	BPU_T_Mecs_Ctx *ctx = NULL;
+	BPU_T_UN_Mecs_Params params;
+
+	/***************************************/
+	// mce initialisation t = 50, m = 11
+	if (BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
+		return 1;
+	}
+	fprintf(stderr, "Basic GOPPA Initialisation...\n");
+	if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {
+		return 1;
+	}
+	BPU_mecsFreeCtx(&ctx);
+	BPU_mecsFreeParamsGoppa(&params);
+
+	return rc;
+}
+\endverbatim
+
+We can see our registered test in the list of the tests:
+- ./runTest -l
+\verbatim
+fruh@htfuws:~/projects/BitPunch$ ./runTest -l
+Test: testMemRun                     runLevel: regular
+Test: testFooName                    runLevel: regular
+Test: testMemLeakWithH               runLevel: regular
+Test: testBuild                      runLevel: express
+Test: testMemLeakWoH                 runLevel: regular
+Test: testLibSize                    runLevel: express
+\endverbatim
+
+We can run our dummy test using:
+	 - ./runTest testFooName
+ \verbatim
+ fruh@htfuws:~/projects/BitPunch$ ./runTest testFooName
+ Tests to run (1): testFooName
+ ======== BEGIN::testFooName ========
+ INFO: /media/fruh/data/projects/BitPunch/runtest/tests/foosuite
+ INFO: fooarg1: testFoo
+ INFO: fooarg2: fooarg2
+ WARNING: warning message
+ INFO: cleaning build...
+ INFO: building static-lib...
+ PASSED
+ --------   END::testFooName --------
+ ======== RESULTS ========
+ Result folder: /media/fruh/data/projects/BitPunch/runtest/results/2015-05-17T23:51:36.709632
+ FAILED: 0
+ SKIPPED: 0
+ PASSED: 1
+ -------------------------
+ \endverbatim
+
 */
 #define VERSION = "0.0.3"
