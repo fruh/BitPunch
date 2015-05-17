@@ -31,4 +31,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 int BPU_isPrime(int n);
 
+/**
+ * Get recursively index of highest set bit in unsigned integer.
+ * @param  x        integer
+ * @param  start    start position in recursion
+ * @param  len      actual processing length in recursion
+ * @param  ele_size size of integer
+ * @return          index of highest set bit
+ */
+int msb32(uint32_t x, int start, int len, int ele_size);
+
 #endif // BPU_INT_H

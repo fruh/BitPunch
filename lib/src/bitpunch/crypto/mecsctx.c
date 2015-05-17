@@ -1,6 +1,7 @@
 /*
 This file is part of BitPunch
 Copyright (C) 2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+Copyright (C) 2015 Andrej Gulyas <andrej.guly[what here]gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,8 +28,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // additional encryption schemes
 #include <bitpunch/crypto/mecsbasic/mecsbasic.h>
 #include <bitpunch/code/goppa/goppa.h>
+#include <bitpunch/code/qcmdpc/qcmdpc.h>
 
-#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+#if defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA) || defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC)
 #include <bitpunch/crypto/cca2/mecspointcheval.h>
 #endif
 
@@ -89,6 +91,44 @@ int BPU_mecsInitCtx(BPU_T_Mecs_Ctx **ctx, const BPU_T_UN_Mecs_Params *params, co
         ctx_p->ct_len = ctx_p->code_ctx->code_len + 2 * ctx_p->ct_len;
         break;
 #endif
+
+    case BPU_EN_MECS_BASIC_QCMDPC:
+#ifdef BPU_CONF_ENCRYPTION
+        ctx_p->_encrypt = BPU_mecsBasicEncrypt;
+#endif
+#ifdef BPU_CONF_DECRYPTION
+        ctx_p->_decrypt = BPU_mecsBasicDecrypt;
+#endif
+#ifdef BPU_CONF_KEY_GEN
+        ctx_p->_genKeyPair = BPU_mecsQcmdpcGenKeys;
+#endif
+        rc = BPU_codeInitCtx(&ctx_p->code_ctx, (BPU_T_UN_Code_Params *)params, BPU_EN_CODE_QCMDPC);
+        if (rc) {
+            return rc;
+        }
+        ctx_p->pt_len = ctx_p->code_ctx->msg_len;
+        ctx_p->ct_len = ctx_p->code_ctx->code_len;
+        break;
+
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC
+    case BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC:
+#ifdef BPU_CONF_ENCRYPTION
+        ctx_p->_encrypt = BPU_mecsPointchevalCCA2Encrypt;
+#endif
+#ifdef BPU_CONF_DECRYPTION
+        ctx_p->_decrypt = BPU_mecsPointchevalCCA2Decrypt;
+#endif
+#ifdef BPU_CONF_KEY_GEN
+        ctx_p->_genKeyPair = BPU_mecsQcmdpcGenKeys;
+#endif
+        rc = BPU_codeInitCtx(&ctx_p->code_ctx, (BPU_T_UN_Code_Params *)params, BPU_EN_CODE_QCMDPC);
+        if (rc) {
+            return rc;
+        }
+        ctx_p->pt_len = BPU_HASH_LEN * 8 < ctx_p->code_ctx->msg_len ? BPU_HASH_LEN * 8 : ctx_p->code_ctx->msg_len;
+        ctx_p->ct_len = ctx_p->code_ctx->code_len + 2 * ctx_p->ct_len;
+        break;
+#endif
     /* EXAMPLE please DO NOT REMOVE
     case BPU_EN_MECS_*****:
 #ifdef BPU_CONF_ENCRYPTION
@@ -130,6 +170,14 @@ int BPU_mecsFreeCtx(BPU_T_Mecs_Ctx **ctx) {
         ctx_p->_decrypt = NULL;
         ctx_p->_genKeyPair = NULL;
 		break;
+    case BPU_EN_MECS_BASIC_QCMDPC:
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC
+    case BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC:
+#endif
+        ctx_p->_encrypt = NULL;
+        ctx_p->_decrypt = NULL;
+        ctx_p->_genKeyPair = NULL;
+        break;
 	default:
         BPU_printError("MECS type not supported: %d", ctx_p->type);
 		return BPU_EC_MECS_TYPE_NOT_SUPPORTED;
@@ -147,4 +195,12 @@ int BPU_mecsInitParamsGoppa(BPU_T_UN_Mecs_Params *params, const uint16_t m, cons
 
 void BPU_mecsFreeParamsGoppa(BPU_T_UN_Mecs_Params *params) {
 	BPU_codeFreeParamsGoppa((BPU_T_UN_Code_Params *)params);
+}
+
+int BPU_mecsInitParamsQcmdpc(BPU_T_UN_Mecs_Params *params, const uint16_t m, const uint16_t n0, const uint16_t w, const uint16_t t) {
+    return BPU_codeInitParamsQcmdpc((BPU_T_UN_Code_Params *)params, m, n0, w, t);
+}
+
+void BPU_mecsFreeParamsQcmdpc(BPU_T_UN_Mecs_Params *params) {
+    BPU_codeFreeParamsQcmdpc((BPU_T_UN_Code_Params *)params);
 }

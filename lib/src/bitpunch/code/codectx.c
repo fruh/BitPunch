@@ -1,6 +1,7 @@
 /*
 This file is part of BitPunch
 Copyright (C) 2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+Copyright (C) 2015 Andrej Gulyas <andrej.guly[what here]gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,9 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <bitpunch/debugio.h>
 #include <bitpunch/errorcodes.h>
+#include <bitpunch/math/gf2types.h>
 
 // additional codes
 #include <bitpunch/code/goppa/goppa.h>
+#include <bitpunch/code/qcmdpc/qcmdpc.h>
 
 int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const BPU_T_UN_Code_Params *params, const BPU_T_EN_Code_Types type) {
 	int tmp;
@@ -68,6 +71,29 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const BPU_T_UN_Code_Params *params, co
 		ctx_p->code_len = ctx_p->code_spec->goppa->support_len;
 		ctx_p->msg_len = ctx_p->code_spec->goppa->support_len - params->goppa->m*params->goppa->t; // n - m*t
 		ctx_p->t = params->goppa->t;
+
+		break;
+	case BPU_EN_CODE_QCMDPC:
+		ctx_p->code_spec->qcmdpc = (BPU_T_Qcmdpc_Spec *) calloc(1, sizeof(BPU_T_Qcmdpc_Spec));
+#ifdef BPU_CONF_ENCRYPTION
+		ctx_p->_encode = BPU_mecsQcmdpcEncode;
+		// ctx_p->code_spec->qcmdpc->G = (BPU_T_GF2_QC_Matrix *) malloc(sizeof(BPU_T_GF2_QC_Matrix));
+#endif
+#ifdef BPU_CONF_DECRYPTION
+		ctx_p->_decode = BPU_mecsQcmdpcDecrypt;
+		// ctx_p->code_spec->qcmdpc->H = (BPU_T_GF2_Sparse_Qc_Matrix *) malloc(sizeof(BPU_T_GF2_Sparse_Qc_Matrix));
+#endif
+		if (!ctx_p->code_spec->qcmdpc) {
+			BPU_printError("Can not malloc BPU_T_Goppa_Spec");
+
+			return BPU_EC_MALLOC_ERROR;
+		}
+		ctx_p->code_spec->qcmdpc->m = params->qcmdpc->m;
+		ctx_p->code_spec->qcmdpc->n0 = params->qcmdpc->n0;
+		ctx_p->code_spec->qcmdpc->w = params->qcmdpc->w;
+		ctx_p->code_len = params->qcmdpc->m * params->qcmdpc->n0;
+		ctx_p->msg_len = ctx_p->code_len - params->qcmdpc->m;
+		ctx_p->t = params->qcmdpc->t;
 
 		break;
 	/* EXAMPLE please DO NOT REMOVE
@@ -143,6 +169,10 @@ void BPU_codeFreeCtx(BPU_T_Code_Ctx **ctx) {
 		BPU_goppaFreeSpec(ctx_p->code_spec->goppa);
 		free(ctx_p->code_spec->goppa);
 		break;
+	case BPU_EN_CODE_QCMDPC:
+		BPU_qcmdpcFreeSpec(ctx_p->code_spec->qcmdpc);
+		// free(ctx_p->code_spec->qcmdpc);
+		break;
 	default:
 		BPU_printError("Code type not supported: %d", ctx_p->type);
 	}
@@ -160,4 +190,12 @@ int BPU_codeInitParamsGoppa(BPU_T_UN_Code_Params *params, const uint16_t m, cons
 
 void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params *params) {
 	BPU_goppaFreeParams(&params->goppa);
+}
+
+int BPU_codeInitParamsQcmdpc(BPU_T_UN_Code_Params *params, const uint16_t m, const uint16_t n0, const uint16_t w, const uint16_t t) {
+	return BPU_qcmdpcInitParams(&params->qcmdpc, m, n0, w, t);
+}
+
+void BPU_codeFreeParamsQcmdpc(BPU_T_UN_Code_Params *params) {
+	BPU_qcmdpcFreeParams(&params->qcmdpc);
 }

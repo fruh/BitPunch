@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <bitpunch/config.h>
 
-#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+#if defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA) || defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC)
 
 #include <bitpunch/config.h>
 #include <bitpunch/math/gf2types.h>

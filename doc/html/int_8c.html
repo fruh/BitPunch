@@ -115,6 +115,8 @@ $(document).ready(function(){initNavTree('int_8c.html','');});
 Functions</h2></td></tr>
 <tr class="memitem:a759e05ee70ef26f91a2293d6ba8f69b5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="int_8c.html#a759e05ee70ef26f91a2293d6ba8f69b5">BPU_isPrime</a> (int n)</td></tr>
 <tr class="separator:a759e05ee70ef26f91a2293d6ba8f69b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc03af106e751bf3bb05cf989951c779"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="int_8c.html#acc03af106e751bf3bb05cf989951c779">msb32</a> (uint32_t x, int start, int len, int ele_size)</td></tr>
+<tr class="separator:acc03af106e751bf3bb05cf989951c779"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="a759e05ee70ef26f91a2293d6ba8f69b5"></a>
@@ -143,13 +145,64 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="acc03af106e751bf3bb05cf989951c779"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int msb32 </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ele_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get recursively index of highest set bit in unsigned integer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>integer </td></tr>
+    <tr><td class="paramname">start</td><td>start position in recursion </td></tr>
+    <tr><td class="paramname">len</td><td>actual processing length in recursion </td></tr>
+    <tr><td class="paramname">ele_size</td><td>size of integer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>index of highest set bit </dd></dl>
+
+<p>Definition at line <a class="el" href="int_8c_source.html#l00035">35</a> of file <a class="el" href="int_8c_source.html">int.c</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_c56c2120216b9f5565d19a0879c67849.html">lib</a></li><li class="navelem"><a class="el" href="dir_36bc0d3594a53b4616e1660c5d0ae143.html">src</a></li><li class="navelem"><a class="el" href="dir_c9a0fad782ccabcfd2fb34c48555b3b8.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_c08a0d26e71242271fe3605ad940a086.html">math</a></li><li class="navelem"><a class="el" href="int_8c.html">int.c</a></li>
-    <li class="footer">Generated on Sun May 17 2015 00:18:41 for McEliece BitPunch by
+    <li class="footer">Generated on Sun May 17 2015 12:20:11 for McEliece BitPunch by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

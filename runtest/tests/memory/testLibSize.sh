@@ -29,4 +29,5 @@ build static-lib shared-lib CFLAGS='-O2 -Wall -DBPU_CONF_ENCRYPTION -DBPU_CONF_N
 build static-lib shared-lib CFLAGS='-O2 -Wall -DBPU_CONF_DECRYPTION -DBPU_CONF_NO_PRINT'
 build static-lib shared-lib CFLAGS='-O2 -Wall -DBPU_CONF_FULL_MECS -DBPU_CONF_NO_PRINT'
 build static-lib shared-lib CFLAGS='-O2 -Wall -DBPU_CONF_FULL_MECS -DBPU_CONF_NO_PRINT -DBPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA'
+build static-lib shared-lib CFLAGS='-O2 -Wall -DBPU_CONF_FULL_MECS -DBPU_CONF_NO_PRINT -DBPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC'
 exit 0

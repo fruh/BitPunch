@@ -1,7 +1,7 @@
 /*
 This file is part of BitPunch
 Copyright (C) 2013-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
-Copyright (C) 2013-2014 Andrej Gulyas <andrej.guly[what here]gmail.com>
+Copyright (C) 2013-2015 Andrej Gulyas <andrej.guly[what here]gmail.com>
 Copyright (C) 2013-2014 Marek Klein  <kleinmrk[what here]gmail.com>
 Copyright (C) 2013-2014 Filip Machovec  <filipmachovec[what here]yahoo.com>
 Copyright (C) 2013-2014 Jozef Kudlac <jozef[what here]kudlac.sk>
@@ -150,6 +150,89 @@ void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec) {
 		}
 	}
 	fprintf(stderr, "\n");
+}
+
+void BPU_printGf2SparsePoly (const BPU_T_GF2_Sparse_Poly *v) {
+  int i;
+
+  fprintf(stderr, "Sparse poly (%i): ", v->weight);
+  for (i = 0; i < v->weight; i++) {
+    fprintf(stderr, "%3i ", v->index[i]);
+  }
+  fprintf(stderr, "\n");
+}
+
+void BPU_printGf2PolyForMatrix(const BPU_T_GF2_Poly* v) {
+  int j, bits_to_print;
+
+  for (j = 0; j < v->elements_in_row; j++) {
+    if (j == v->elements_in_row-1) {
+      if (v->len % (v->element_bit_size) != 0) {
+        bits_to_print = v->len % v->element_bit_size;
+      }
+      else {
+        bits_to_print = v->element_bit_size;
+      }
+    }
+    else {
+      bits_to_print = v->element_bit_size;
+    }
+    BPU_printBinaryLsb(v->elements[j], bits_to_print);
+  }
+}
+
+void BPU_printGf2Poly(const BPU_T_GF2_Poly* v) {
+  int j, bits_to_print;
+
+  fprintf(stderr, "Poly (%4d): ", v->len-1);
+  for (j = v->elements_in_row - 1; j >= 0; j--) {
+    if (j == v->elements_in_row-1) {
+      if (v->len % (v->element_bit_size) != 0) {
+        bits_to_print = v->len % v->element_bit_size;
+      }
+      else {
+        bits_to_print = v->element_bit_size;
+      }
+    }
+    else {
+      bits_to_print = v->element_bit_size;
+    }
+    BPU_printBinaryMsb(v->elements[j], bits_to_print);
+  }
+  fprintf(stderr, "\n");
+}
+
+void BPU_printGf2QcMatrix(const BPU_T_GF2_QC_Matrix *v) {
+  int ele, i;
+  BPU_T_GF2_Poly temp;
+
+  fprintf(stderr, "%s QC Matrix(%i x %i) with %i elements", v->isVertical ? "VERTICAL" : "HORIZONTAL", (v->is_I_appended ? v->k : 0) + v->n, v->k, v->element_count);
+  if (v->is_I_appended)
+  fprintf(stderr, " and Identity matrix");
+  fprintf(stderr, "\n");
+
+  for (ele = 0; ele < v->element_count; ele++) {
+    BPU_gf2PolyCopy(&temp, &v->matrices[ele]);
+    for (i = 0; i < v->element_size; i++) {
+      BPU_printGf2PolyForMatrix(&temp);
+      fprintf(stderr, "\n");
+      BPU_gf2PolyMulX(&temp);
+    }
+    BPU_gf2PolyFree(&temp, 0);
+  }
+}
+
+void BPU_printGf2SparseQcMatrix(const BPU_T_GF2_Sparse_Qc_Matrix *v) {
+  int i;
+  BPU_T_GF2_Sparse_Poly row;
+
+  fprintf(stderr, "%s QC Matrix(%i x %i) with %i elements\n", v->isVertical ? "VERTICAL" : "HORIZONTAL", v->n, v->k, v->element_count);
+
+  for (i = 0; i < v->k; i++) {
+    BPU_gf2SparseQcMatrixGetRow(&row, v, i);
+    BPU_printGf2SparsePoly(&row);
+    BPU_gf2SparsePolyFree(&row, 0);
+  }
 }
 /* ------------------------------------ Print functions ------------------------------------ */
 #endif // BPU_CONF_PRINT
@@ -498,4 +581,518 @@ uint8_t BPU_getParity(BPU_T_GF2 dword) {
 	tmp = (tmp >> 2 ) ^ tmp;
 	tmp = (tmp >> 1 ) ^ tmp;
 	return tmp & 1;
+}
+
+void BPU_gf2PolyCopy(BPU_T_GF2_Poly *out, const BPU_T_GF2_Poly *in) {
+
+  int i;
+  // allocate output poly
+  BPU_gf2PolyMalloc(out, in->len);
+  
+  // copy all elements
+  if (in->len != 0)
+    for (i = 0; i < in->elements_in_row; i++) {
+      out->elements[i] = in->elements[i];
+    }
+}
+
+int BPU_gf2QcMatrixToSparse(BPU_T_GF2_Sparse_Qc_Matrix *out, const BPU_T_GF2_QC_Matrix *in, const int wi[]) {
+  int i, counter, bit;
+
+  // allocate output matrix
+  BPU_gf2SparseQcMatrixMalloc(out, in->element_count, in->element_size, 1);
+
+  // transpose polynoms
+  for (i = 0; i < in->element_count; i++) {
+    counter = 0;
+    // allocate sparse poly
+    BPU_gf2SparsePolyMalloc(&out->matrices[i], wi[i]);
+    // set bits
+    for (bit = 0; bit < in->matrices[i].len; bit++) {
+      if (BPU_gf2VecGetBit(&in->matrices[i], bit) == 1ul) {
+        out->matrices[i].index[counter] = (uint32_t)(bit);
+        counter++;
+      }
+    }
+    // weight error
+    if (counter != wi[i]) {
+      BPU_printError("weight error. Weight should be %i, but is %i.\n", wi[i], counter);
+      return -1;
+    }
+  }
+  return 0;
+}
+
+int BPU_gf2PolyInitRand(BPU_T_GF2_Poly *out, int l, int w, int set_deg) {
+  int ret;
+
+  // allocate output poly
+  ret = BPU_gf2PolyMalloc(out, l);
+
+  // set random bits
+  if (w >= 0)
+    ret = BPU_gf2VecRand((BPU_T_GF2_Vector*) out, w);
+
+  // set poly deg
+  if (set_deg) BPU_gf2PolySetDeg(out, -1);
+
+  return ret;
+}
+
+void BPU_gf2SparsePolyCopy(BPU_T_GF2_Sparse_Poly *out, const BPU_T_GF2_Sparse_Poly *in) {
+  int i;
+  // allocate output poly
+  BPU_gf2SparsePolyMalloc(out, in->weight);
+  // copy all indexes
+  for (i = 0; i < in->weight; i++) {
+    out->index[i] = in->index[i];
+  }
+}
+
+void BPU_gf2SparseQcMatrixTransp(BPU_T_GF2_Sparse_Qc_Matrix *out, const BPU_T_GF2_Sparse_Qc_Matrix *in) {
+  int counter, coeff, ele, zero_coeff_is_set;
+
+  // allocate memory for output matrix
+  BPU_gf2SparseQcMatrixMalloc(out, in->element_count, in->element_size, 1);
+
+  // for all polynoms
+  for (ele = 0; ele < in->element_count; ele++) {
+    counter = 0; zero_coeff_is_set = 0;
+    
+    // alloc new matrix of same weight
+    BPU_gf2SparsePolyMalloc(&out->matrices[ele], in->matrices[ele].weight);
+    
+    // is zero coeff set?
+    zero_coeff_is_set = (in->matrices[ele].index[0] == 0ul);
+    // set zero coeff
+    if (zero_coeff_is_set) {
+      out->matrices[ele].index[counter] = 0ul;
+      counter++;
+    }
+
+    // for other coeffs
+    for (coeff = in->matrices[ele].weight-1; coeff >= (1-!zero_coeff_is_set); coeff--) {
+      out->matrices[ele].index[counter] = in->element_size - in->matrices[ele].index[coeff];
+      counter++;
+    }
+  }
+}
+
+void BPU_gf2PolyShiftLeft(BPU_T_GF2_Poly *a, int shift_count) {
+  int i;
+  int diff, bit_shift, start, shift_right, shift_left;
+  uint32_t ele1, ele2;
+
+  // allocate new poly, with additional bits
+  // BPU_gf2PolyMalloc(&poly, a->len+shift_count);
+  BPU_gf2PolySetDeg(a, a->len+shift_count);
+
+  // calc element shift and bit shift
+  diff = shift_count / a->element_bit_size;
+  bit_shift = shift_count % a->element_bit_size;
+
+  start = diff;
+  // shift elements
+  for (i = a->elements_in_row-1; i >= start; i--) {
+    // not the first element, concat two elements
+    if (i-start != 0) {
+
+      // get first element
+      if ((a->element_bit_size - bit_shift) >= a->element_bit_size) {
+        ele1 = 0ul;
+        shift_right = 0;
+      }
+      else {
+        ele1 = a->elements[i-start-1];
+        shift_right = a->element_bit_size - bit_shift;
+      }
+
+      // get second element
+      if ((i-start) >= a->elements_in_row) {
+        ele2 = 0ul;
+        shift_left = 0;
+      }
+      else {
+        ele2 = a->elements[i-start];
+        shift_left = bit_shift;
+      }
+
+      // set element
+      a->elements[i] = (ele1 >> shift_right) ^ (ele2 << shift_left);
+    }
+    // first element, just shift
+    else 
+      a->elements[i] = a->elements[i-start] << bit_shift;
+  }
+
+  // set zeros in the beginning
+  for (i = 0; i < diff; i++)
+    a->elements[i] = 0ul;
+}
+
+int BPU_gf2PolyGetHighestBitPos(BPU_T_GF2_Poly *a) {
+  int ele;
+
+  // scan all elements and found highest non zero element
+  for (ele = a->elements_in_row-1; ele >= 0; ele--) {
+    if (a->elements[ele] != 0ul)
+      // find highest bit in highest non zero element
+      return msb32(a->elements[ele], 1, a->element_bit_size, a->element_bit_size) + ele*a->element_bit_size;
+  }
+
+  // poly is zero
+  return -1;
+}
+
+void BPU_gf2PolySetDeg(BPU_T_GF2_Poly *a, int deg) {
+  int j, orig_elements_in_row = a->elements_in_row;
+
+  // find max degree
+  if (deg == -1) {
+    deg = BPU_gf2PolyGetHighestBitPos(a);
+  }
+
+  if (deg != -1) {
+    // set degree and element count
+    a->len = deg;
+    a->elements_in_row = a->len / a->element_bit_size + ((a->len % a->element_bit_size) != 0 ? 1 : 0);
+    // reallocate elements
+    a->elements = (BPU_T_GF2*) realloc(a->elements, sizeof(BPU_T_GF2) * a->elements_in_row);
+    // null new elements
+    for (j = orig_elements_in_row; j < a->elements_in_row; j++)
+      a->elements[j] = 0ul;
+  }
+  // poly is zero
+  else {
+    a->len = 0;
+    a->elements_in_row = 0;
+  }
+}
+
+void BPU_gf2PolyMulX(BPU_T_GF2_Poly *a) {
+  int ele;
+  uint8_t shift = a->element_bit_size-1;
+
+  // save highest bit
+  uint32_t msb = BPU_gf2VecGetBit(a, a->len-1);
+  // null highest bit
+  BPU_gf2VecSetBit(a, a->len-1, 0ul);
+
+  // for all elements
+  for (ele = a->elements_in_row-1; ele >= 1; ele--) {
+    a->elements[ele] = (a->elements[ele] << 1) ^ (a->elements[ele-1] >> shift);
+  }
+
+  // last element just shift
+  a->elements[0] <<= 1;
+  // and set lowest bit
+  a->elements[0] ^= msb;
+}
+
+void BPU_gf2PolyShiftRightOne(BPU_T_GF2_Poly *a) {
+  int i;
+
+  // for all elements
+  for (i = 0; i < a->elements_in_row-1; i++) {
+    // shift right by one and add lowest bit from next element
+    a->elements[i] = (a->elements[i] >> 1) ^ ((a->elements[i+1] & 1ul) << (a->element_bit_size-1));
+  }
+
+  // last element just shift
+  a->elements[a->elements_in_row-1] >>= 1;
+
+}
+
+void BPU_gf2PolyAdd(BPU_T_GF2_Poly *out, const BPU_T_GF2_Poly *in, int crop) {
+  int i;
+
+  // if out poly is zero, just copy in into out
+  if (out->len == 0) {
+    BPU_gf2PolyFree(out, 0);
+    BPU_gf2PolyCopy(out, in);
+  }
+  // if in is non zero
+  else if (in->len != 0) {
+    // if deg(in) > deg(out)
+    if (in->len > out->len)
+      // set degree
+      BPU_gf2PolySetDeg(out, in->len);
+    // make add
+    for (i = 0; i < in->elements_in_row; i++)
+      out->elements[i] ^= in->elements[i];
+  }
+
+  // if set new degree
+  if (crop) BPU_gf2PolySetDeg(out, -1);
+}
+
+// operation add with binary polynomials with high degree
+void BPU_gf2SparsePolyAdd(BPU_T_GF2_Poly *out, const BPU_T_GF2_Sparse_Poly *in) {
+  int i;
+
+  // for all coefficients
+  for (i = 0; i < in->weight; i++) 
+    // make add
+    BPU_gf2VecSetBit(out, in->index[i], BPU_gf2VecGetBit(out, in->index[i]) ^ 1ul); 
+}
+
+int BPU_gf2SparsePolyAndHW(const BPU_T_GF2_Poly *a, const BPU_T_GF2_Sparse_Poly *b) {
+  int i, hw = 0;
+
+  // for all coefficients
+  for (i = 0; i < b->weight; i++)
+    // if both poly has set coeff 
+    if (BPU_gf2VecGetBit(a, b->index[i]) == 1ul) 
+      // increase hamming weight
+      hw++;
+
+  return hw;
+}
+
+void BPU_gf2SparseQcMatrixGetRow(BPU_T_GF2_Sparse_Poly *p, const BPU_T_GF2_Sparse_Qc_Matrix *m, int row_num) {
+  int i;
+
+  // if rownum is in matrix
+  if (row_num < m->k) {
+    // allocate output polynom
+    BPU_gf2SparsePolyCopy(p, &m->matrices[row_num / m->element_size]);
+    // VERTICAL QC matrix
+    if (m->isVertical)
+      // for all coefficients
+      for (i = 0; i < p->weight; i++)
+        // shift coefficients 
+        p->index[i] = ((p->index[i]) + row_num) % m->element_size; 
+    // horizontal matrix is not supported
+    else {
+      BPU_printError("BPU_QcMatrixGetRow: HORIZONTAL matrix not supported\n");
+    }
+  }
+  // row num is out of the matrix
+  else {
+    BPU_printError("BPU_QcMatrixGetRow: row with index %i does not exist\n", row_num);
+  }
+}
+
+void BPU_gf2PolyMulMod(const BPU_T_GF2_Poly *a, const BPU_T_GF2_Poly *b, BPU_T_GF2_Poly *c, const BPU_T_GF2_Poly *m, int crop) {
+  int i;
+  BPU_T_GF2_Poly temp_b;
+
+  // if one of factors is zero, product will also be zero
+  if (a->len == 0 || b->len == 0) {
+    BPU_gf2PolyMalloc(c, 0);
+    return;
+  }
+
+  // copy b to temp_b and prolong to modulo lenght - 1
+  BPU_gf2PolyCopy(&temp_b, b);
+  BPU_gf2PolySetDeg(&temp_b, m->len-1);
+
+  // malloc multiplication product
+  BPU_gf2PolyMalloc(c, m->len);
+
+  // for length of a
+  for (i = 0; i < a->len; i++) {
+    // 1 in a -> multiply
+    if (BPU_gf2VecGetBit(a, i) == 1ul) 
+        BPU_gf2PolyAdd(c, &temp_b, 0);
+
+    // multiply b by 2
+    BPU_gf2PolyMulX(&temp_b);
+  }
+
+  // if do not crop the result length
+  if (!crop)
+    BPU_gf2PolySetDeg(c, m->len-1);
+  else
+    BPU_gf2PolySetDeg(c, -1);
+
+  BPU_gf2PolyFree(&temp_b, 0);
+}
+
+void BPU_gf2PolyDiv(BPU_T_GF2_Poly *q, BPU_T_GF2_Poly *r, const BPU_T_GF2_Poly *a, const BPU_T_GF2_Poly *b) {
+  BPU_T_GF2_Poly divisor, dividend;
+  int limit_deg = a->len - b->len;
+  int i = 0;
+
+  // copy a, b
+  BPU_gf2PolyCopy(&divisor, b);
+  BPU_gf2PolyCopy(&dividend, a);
+
+  // allocate quotient
+  BPU_gf2PolyMalloc(q, a->len);
+
+  // divisor shift to deg of dividend
+  BPU_gf2PolyShiftLeft(&divisor, a->len - b->len);
+
+  while (dividend.len >= b->len) {
+    if (dividend.len == divisor.len) {
+      BPU_gf2VecSetBit(q, limit_deg - i, 1ul);
+
+      // dividend - divisor
+      BPU_gf2PolyAdd(&dividend, &divisor, 1);
+    }
+
+    // divisor degree decreased by 1
+    BPU_gf2PolyShiftRightOne(&divisor);
+    // set actual degree
+    BPU_gf2PolySetDeg(&divisor, -1);
+    i++;
+  }
+
+  BPU_gf2PolyCopy(r, &dividend);
+  BPU_gf2PolySetDeg(q, -1);  
+
+  // free
+  BPU_gf2PolyFree(&dividend, 0);
+  BPU_gf2PolyFree(&divisor, 0);
+}
+
+// XGCD with binary polynomial with high degree
+void BPU_gf2PolyExtEuclidA(BPU_T_GF2_Poly *d, BPU_T_GF2_Poly *s, BPU_T_GF2_Poly *t, const BPU_T_GF2_Poly *a, const BPU_T_GF2_Poly *b, const BPU_T_GF2_Poly *m) {
+  BPU_T_GF2_Poly tmp, tmp_2, old_s, old_t, old_r, r, q;
+  int deg = (a->len > b->len) ? a->len : b->len;
+
+  // allocate Bezout coeffitients
+  BPU_gf2PolyMalloc(s, 0);
+  BPU_gf2PolyMalloc(t, deg);
+  BPU_gf2PolyMalloc(&old_s, deg);
+  BPU_gf2PolyMalloc(&old_t, 0);
+
+  // set initial values
+  BPU_gf2PolyCopy(&r, a);
+  BPU_gf2PolyCopy(&old_r, b);
+
+  if (a->len == 0) {
+    old_t.elements[0] = 1ul;
+    BPU_gf2PolySetDeg(&old_t, -1);
+  }
+  else if (b->len == 0) {
+    BPU_gf2PolyFree(&old_r, 0);
+    BPU_gf2PolyCopy(&old_r, a);
+    old_s.elements[0] = 1ul;
+    BPU_gf2PolySetDeg(&old_s, -1);
+  }
+  // run algoritm, if everything is OK
+  else {
+    // set initial values
+    old_s.elements[0] = 1ul;
+    BPU_gf2PolySetDeg(&old_s, -1);
+    t->elements[0] = 1ul;
+    BPU_gf2PolySetDeg(t, -1);
+
+    // while loop until r is not zero
+    while (r.len > 0) {
+      // divide
+      BPU_gf2PolyDiv(&q, &tmp, &old_r, &r);
+
+      // save old reminder
+      BPU_gf2PolyFree(&old_r, 0);
+      BPU_gf2PolyCopy(&old_r, &r);
+
+      // save current reminder
+      BPU_gf2PolyFree(&r, 0);
+      BPU_gf2PolyCopy(&r, &tmp);
+
+      // free
+      BPU_gf2PolyFree(&tmp, 0);
+
+      // save s quocient
+      BPU_gf2PolyCopy(&tmp, &old_s);
+      BPU_gf2PolyFree(&old_s, 0);
+      BPU_gf2PolyCopy(&old_s, s);
+
+      BPU_gf2PolyMulMod(&q, s, &tmp_2, m, 1);
+      BPU_gf2PolyAdd(&tmp, &tmp_2, 1);
+      BPU_gf2PolyFree(s, 0);
+      BPU_gf2PolyCopy(s, &tmp);
+
+      // free
+      BPU_gf2PolyFree(&tmp, 0);
+      BPU_gf2PolyFree(&tmp_2, 0);
+
+      // save t quocient
+      BPU_gf2PolyCopy(&tmp, &old_t);
+      BPU_gf2PolyFree(&old_t, 0);
+      BPU_gf2PolyCopy(&old_t, t);
+      BPU_gf2PolyMulMod(&q, t, &tmp_2, m, 1);
+      BPU_gf2PolyAdd(&tmp, &tmp_2, 1);
+      BPU_gf2PolyFree(t, 0);
+      BPU_gf2PolyCopy(t, &tmp);
+
+      // free
+      BPU_gf2PolyFree(&tmp_2, 0);
+      BPU_gf2PolyFree(&tmp, 0);
+      BPU_gf2PolyFree(&q, 0);
+    }
+  } 
+  // prepare return values
+  BPU_gf2PolyFree(t, 0);
+  BPU_gf2PolyFree(s, 0);
+  BPU_gf2PolyCopy(d, &old_r);
+  BPU_gf2PolyCopy(s, &old_s);
+  BPU_gf2PolyCopy(t, &old_t);
+
+  // free
+  BPU_gf2PolyFree(&old_s, 0);
+  BPU_gf2PolyFree(&old_t, 0);
+  BPU_gf2PolyFree(&old_r, 0);
+  BPU_gf2PolyFree(&r, 0);
+}
+
+int BPU_gf2PolyInv(BPU_T_GF2_Poly *out, const BPU_T_GF2_Poly *a, const BPU_T_GF2_Poly *m) {
+  BPU_T_GF2_Poly d, s;
+  int ret = 1;
+
+  // call XGCD
+  BPU_gf2PolyExtEuclidA(&d, &s, out, a, m, m);
+
+  // if GCD (a,m) is not 1
+  if (d.len != 1 || d.elements[0] != 1ul) {
+    BPU_printDebug("inverse polynomial NOT found");
+    ret = 0;
+  }
+
+  // free
+  BPU_gf2PolyFree(&d, 0);
+  BPU_gf2PolyFree(&s, 0);
+  return ret;
+}
+
+void BPU_gf2PolyTransp(BPU_T_GF2_Poly *out, const BPU_T_GF2_Poly *in) {
+  int i;
+
+  // allocate output poly
+  BPU_gf2PolyMalloc(out, in->len);
+
+  // copy zero coefficient
+  BPU_gf2VecSetBit(out, 0, BPU_gf2VecGetBit(in, 0));
+  
+  // swap other coefficients
+  for (i = 1; i < out->len; i++) {
+    BPU_gf2VecSetBit(out, out->len-i, BPU_gf2VecGetBit(in, i));
+  }
+}
+
+void BPU_gf2QcMatrixTransp(BPU_T_GF2_QC_Matrix *out, const BPU_T_GF2_QC_Matrix *in) {
+  int i;
+
+  // allocate output matrix
+  BPU_gf2QcMatrixMalloc(out, in->element_count, in->element_size, !in->isVertical, 0);
+
+  // transpose all polynoms
+  for (i = 0; i < in->element_count; i++)
+    BPU_gf2PolyTransp(&out->matrices[i], &in->matrices[i]);
+}
+
+int BPU_gf2PolyIsZero(const BPU_T_GF2_Poly *a) {
+  int i;
+
+  // scan all elements
+  for (i = 0; i < a->elements_in_row; i++)
+    // if there is non zero element, poly is not zero
+    if (a->elements[i] != 0ul)
+      return 0;
+
+  // all elements are zero, so also poly is zero
+  return 1;
 }

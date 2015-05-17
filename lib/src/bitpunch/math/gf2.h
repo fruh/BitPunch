@@ -1,7 +1,7 @@
 /*
 This file is part of BitPunch
 Copyright (C) 2013-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
-Copyright (C) 2013-2014 Andrej Gulyas <andrej.guly[what here]gmail.com>
+Copyright (C) 2013-2015 Andrej Gulyas <andrej.guly[what here]gmail.com>
 Copyright (C) 2013-2014 Marek Klein  <kleinmrk[what here]gmail.com>
 Copyright (C) 2013-2014 Filip Machovec  <filipmachovec[what here]yahoo.com>
 Copyright (C) 2013-2014 Jozef Kudlac <jozef[what here]kudlac.sk>
@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/config.h>
 #include "permtypes.h"
 #include "gf2types.h"
+#include "int.h"
 
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
@@ -127,6 +128,39 @@ void BPU_printGf2VecMsb(const BPU_T_GF2_Vector* v);
  * @param vec
  */
 void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec);
+
+
+/**
+ * Print sparse polynomial.
+ * @param v sparse polynomial to print
+ */
+void BPU_printGf2SparsePoly (const BPU_T_GF2_Sparse_Poly *v);
+
+/**
+ * Print polynomial over GF2 for matrix.
+ * Without header and new line.
+ * @param v polynomial to print
+ */
+void BPU_printGf2PolyForMatrix(const BPU_T_GF2_Poly* v);
+
+/**
+ * Print polynomial.
+ * @param v polynomial to print
+ */
+void BPU_printGf2Poly(const BPU_T_GF2_Poly* v);
+
+/**
+ * Print quasi-cyclic matrix.
+ * @param v quasi-cyclic matrix to print
+ */
+void BPU_printGf2QcMatrix(const BPU_T_GF2_QC_Matrix *v);
+
+/**
+ * Print sparse quasi-cyclic matrix.
+ * @param v sparse quasi-cyclic matrix to print
+ */
+void BPU_printGf2SparseQcMatrix(const BPU_T_GF2_Sparse_Qc_Matrix *v);
+
 /* ------------------------------------ Print functions ------------------------------------ */
 #endif // BPU_CONF_PRINT
 /**
@@ -194,6 +228,14 @@ void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec);
  */
  /// Copy Matrix GF2 row to Vector GF2.
 #define BPU_gf2MatCopyRowToVec(v_pointer, m_pointer, row) memcpy((void *) ((v_pointer)->elements), (void *) ((m_pointer)->elements[row]), (v_pointer)->element_bit_size / 8 * (v_pointer)->elements_in_row)
+
+/**
+ * Check if is set coeff with index bit in poly.
+ * @param  poly polynomial
+ * @param  bit  index of coefficient
+ * @return      1 if is set bit, else 0
+ */
+#define BPU_gf2PolyGetBit(poly, bit) ((poly->elements[bit/poly->element_bit_size] >> (bit%poly->element_bit_size)) & 1ul)
 
 /**
  * @brief BPU_gf2MatCopyCreate copy of input matrix.
@@ -385,5 +427,211 @@ int BPU_gf2MatCrop(BPU_T_GF2_Matrix *m, uint16_t width);
  * @return
  */
 uint8_t BPU_getParity(BPU_T_GF2 dword);
+
+/************************************************
+POLYNOMIAL UTILS
+************************************************/
+
+/**
+ * Is poly zero?
+ * @param  a poly
+ * @return   if 1, poly is zero, else 0
+ */
+int BPU_gf2PolyIsZero(const BPU_T_GF2_Poly *a);
+
+/**
+ * Find highest coefficient in polynomial and set degree.
+ * Reallocating new size.
+ * @param a   poly
+ * @param deg if -1, set degree = max poly degree, else set given degree
+ */
+void BPU_gf2PolySetDeg(BPU_T_GF2_Poly *a, int deg);
+
+/**
+ * Returns highest set coefficient in polynomial.
+ * @param  a poly
+ * @return   Index of highest set coefficient in polynomial.
+ */
+int BPU_gf2PolyGetHighestBitPos(BPU_T_GF2_Poly *a);
+
+/**
+ * Shift polynomial left by given positions.
+ * @param a           polynomial to be shifted
+ * @param shift_count count of shiftes to do
+ */
+void BPU_gf2PolyShiftLeft(BPU_T_GF2_Poly *a, int shift_count);
+
+/**
+ * Shift polynomial right by one.
+ * @param  a polynomial to be shifted
+ */
+void BPU_gf2PolyShiftRightOne(BPU_T_GF2_Poly *a);
+
+/**
+ * Transpose polynomial.
+ * @param out transposed output polynomial
+ * @param in  input polynomial
+ */
+void BPU_gf2PolyTransp(BPU_T_GF2_Poly *out, const BPU_T_GF2_Poly *in);
+
+
+/************************************************
+POLYNOMIAL MATH
+************************************************/
+
+/**
+ * Multiplicate polynomial by x.
+ * @param a input / output polynomial
+ */
+void BPU_gf2PolyMulX(BPU_T_GF2_Poly *a);
+
+/**
+ * Polynomial add.
+ * out = out + in
+ * If is set crop to 1, it will set new polynomial degree.
+ * Else it will have degree of maximum degree of out and in poly.
+ * @param out  input / output polynomial
+ * @param in   intput polynomial
+ * @param crop boolean, if set actual degree of output
+ */
+void BPU_gf2PolyAdd(BPU_T_GF2_Poly *out, const BPU_T_GF2_Poly *in, int crop);
+
+/**
+ * Polynomial multiplication modulo.
+ * c = a * b mod m
+ * If is set crop to 1, it will set new polynomial degree.
+ * Else it will have degree of degree(modulo) - 1.
+ * @param a    factor
+ * @param b    factor
+ * @param c    product
+ * @param m    modulo
+ * @param crop boolean, if set actual degree of output
+ */
+void BPU_gf2PolyMulMod(const BPU_T_GF2_Poly *a, const BPU_T_GF2_Poly *b, BPU_T_GF2_Poly *c, const BPU_T_GF2_Poly *m, int crop);
+
+/**
+ * Polynomial division.
+ * q = a / b
+ * r = a % b
+ * @param q quotient
+ * @param r reminder
+ * @param a dividend
+ * @param b divisor
+ */
+void BPU_gf2PolyDiv(BPU_T_GF2_Poly *q, BPU_T_GF2_Poly *r, const BPU_T_GF2_Poly *a, const BPU_T_GF2_Poly *b);
+
+/**
+ * Extended Euclidean algorithm (XGCD).
+ * a*s + b*t = d
+ * @param  d gcd(a,b)
+ * @param  s Bézout coefficient s
+ * @param  t Bézout coefficient t
+ * @param  a poly a
+ * @param  b poly b
+ * @param  m modulo
+ */
+void BPU_gf2PolyExtEuclidA(BPU_T_GF2_Poly *d, BPU_T_GF2_Poly *s, BPU_T_GF2_Poly *t, const BPU_T_GF2_Poly *a, const BPU_T_GF2_Poly *b, const BPU_T_GF2_Poly *m);
+
+/**
+ * Calc inversion polynomial.
+ * out = a^-1 mod m 
+ * @param  out inversion to a
+ * @param  a   polynomial
+ * @param  m   modulo
+ * @return     1 if found, else not found
+ */
+int BPU_gf2PolyInv(BPU_T_GF2_Poly *out, const BPU_T_GF2_Poly *a, const BPU_T_GF2_Poly *mod);
+
+
+/************************************************
+SPARSE POLYNOMIAL UTILS
+************************************************/
+
+/**
+ * Copy sparse polynomial. After work you have to free memory using call BPU_gf2SparsePolyFree.
+ * @param out output sparse polynomial
+ * @param in input sparse polynomial 
+ */
+void BPU_gf2SparsePolyCopy(BPU_T_GF2_Sparse_Poly *out, const BPU_T_GF2_Sparse_Poly *in);
+
+/**
+ * Copy polynomial. After work you have to free memory using call BPU_gf2PolyFree.
+ * @param out output polynomial
+ * @param in input polynomial 
+ */
+void BPU_gf2PolyCopy(BPU_T_GF2_Poly *out, const BPU_T_GF2_Poly *in);
+
+/**
+ * Initialize random polynomial. After work you have to free memory using call BPU_gf2PolyFree.
+ * @param out output polynomial
+ * @param l length of polynomial (length - 1 = degree of polynomial)
+ * @param w weight of polynomial
+ * @param set_deg boolean param, if 1, it will crop polynomial to the actual degree and reallocate it
+ * @return 0 - succes, else error
+ */
+int BPU_gf2PolyInitRand(BPU_T_GF2_Poly *out, int l, int w, int set_deg);
+
+
+/************************************************
+SPARSE POLYNOMIAL MATH
+************************************************/
+
+/**
+ * Polynomial add sparse polynomial.
+ * out = out + in
+ * @param out  input / output polynomial
+ * @param in   intput sparse polynomial
+ */
+void BPU_gf2SparsePolyAdd(BPU_T_GF2_Poly *out, const BPU_T_GF2_Sparse_Poly *in);
+
+/**
+ * Polynomial and sparse polynomial, returns hamming weight of result.
+ * hw(and(a,b))
+ * @param  a polynomial
+ * @param  b sparse polynomial
+ * @return   hamming weight of result of and operation
+ */
+int BPU_gf2SparsePolyAndHW(const BPU_T_GF2_Poly *a, const BPU_T_GF2_Sparse_Poly *b);
+
+
+/************************************************
+QUASI-CYCLIC MATRIX UTILS
+************************************************/
+
+/**
+ * Transpose quasi-cyclic matrix.
+ * @param out output transposed matrix
+ * @param in  input matrix
+ */
+void BPU_gf2QcMatrixTransp(BPU_T_GF2_QC_Matrix *out, const BPU_T_GF2_QC_Matrix *in);
+
+/**
+ * Convert quasi-cyclic matrix into sparse quasi-cyclic matrix. Allocate memory, so after work it has to be freed by using call BPU_gf2SparseQcMatrixFree.
+ * @param out output sparse quasi-cyclic matrix
+ * @param input quasi-cyclic matrix
+ * @param wi weights of cyclic elements in input matrix
+ * @return
+ */
+int BPU_gf2QcMatrixToSparse(BPU_T_GF2_Sparse_Qc_Matrix *out, const BPU_T_GF2_QC_Matrix *in, const int wi[]);
+
+
+/************************************************
+SPARSE QUASI-CYCLIC MATRIX UTILS
+************************************************/
+
+/**
+ * Get row from sparse quasi-cyclic matrix.
+ * @param m       sparse QC matrix
+ * @param p       output row
+ * @param row_num index of row to get
+ */
+void BPU_gf2SparseQcMatrixGetRow(BPU_T_GF2_Sparse_Poly *p, const BPU_T_GF2_Sparse_Qc_Matrix *m, int row_num);
+
+/**
+ * Transpose sparse quasi-cyclic matrix.
+ * @param  out output transposed matrix
+ * @param  in  input matrix
+ */
+void BPU_gf2SparseQcMatrixTransp(BPU_T_GF2_Sparse_Qc_Matrix *out, const BPU_T_GF2_Sparse_Qc_Matrix *in);
 
 #endif // BPU_GF2_H

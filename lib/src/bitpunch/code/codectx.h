@@ -1,6 +1,7 @@
 /*
 This file is part of BitPunch
-Copyright (C) 2014-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+Copyright (C) 2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+Copyright (C) 2015 Andrej Gulyas <andrej.guly[what here]gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,22 +28,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // addiotional codes
 #include <bitpunch/code/goppa/goppatypes.h>
+#include <bitpunch/code/qcmdpc/qcmdpctypes.h>
 
 /// Possible types of codes
 typedef enum _BPU_T_EN_Code_Types {
-	BPU_EN_CODE_GOPPA
+	BPU_EN_CODE_GOPPA,
+	BPU_EN_CODE_QCMDPC
 	// HERE you can add your code type
 }BPU_T_EN_Code_Types;
 
 /// Code specifics union type
 typedef union _BPU_T_UN_Code_Spec{
 	BPU_T_Goppa_Spec *goppa;
+	BPU_T_Qcmdpc_Spec *qcmdpc;
 	// HERE you add your code spec structure
 }BPU_T_UN_Code_Spec;
 
 typedef union _BPU_T_UN_Code_Params{
 	BPU_T_Goppa_Params *goppa;
-	// HERE you add your code params structure
+	BPU_T_Qcmdpc_Params *qcmdpc;
+	// HERE you add your code spec structure
 }BPU_T_UN_Code_Params;
 
 typedef struct _BPU_T_Code_Ctx {
@@ -99,6 +104,23 @@ int BPU_codeInitParamsGoppa(BPU_T_UN_Code_Params *params, const uint16_t m, cons
  * @param params
  */
 void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params *params);
+
+/**
+ * Wrapper for param initialization. After work you have to free memory using call BPU_codeFreeParamsQcmdpc
+ * @param  params pointer to structure
+ * @param  m      size of cyclic matrix
+ * @param  n0     number of cyclic matrices
+ * @param  w      weight of parity-check matrix row
+ * @param  t      count of errors
+ * @return        [description]
+ */
+int BPU_codeInitParamsQcmdpc(BPU_T_UN_Code_Params *params, const uint16_t m, const uint16_t n0, const uint16_t w, const uint16_t t);
+
+/**
+ * Free memory for params.
+ * @param params pointer to structure
+ */
+void BPU_codeFreeParamsQcmdpc(BPU_T_UN_Code_Params *params);
 
 // add yours additional params if needed
 #endif // BPU_CODECTX_H

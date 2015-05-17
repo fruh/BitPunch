@@ -136,3 +136,128 @@ int BPU_gf2VecMallocElements(BPU_T_GF2_Vector *v, int len) {
     }
     return 0;
 }
+
+void BPU_gf2SparsePolyMalloc(BPU_T_GF2_Sparse_Poly *p, int weight) {
+  // allocate indexes
+  p->index = (uint32_t*) malloc(weight*sizeof(uint32_t));
+  // set weight
+  p->weight = weight;
+}
+
+void BPU_gf2SparsePolyFree(BPU_T_GF2_Sparse_Poly *p, int is_dyn) {
+  free(p->index);
+
+  if (is_dyn)
+    free(p);
+}
+
+void BPU_gf2SparseQcMatrixMalloc(BPU_T_GF2_Sparse_Qc_Matrix *v, int element_count, int element_size, int isVertical) {
+  // allocate matrices
+  v->matrices = (BPU_T_GF2_Sparse_Poly*) malloc(element_count*sizeof(BPU_T_GF2_Sparse_Poly));
+
+  // set sizes depended on orientation
+  if (isVertical) {
+    v->k = element_count * element_size;
+    v->n = element_size;
+  }
+  else {
+    v->k = element_size;
+    v->n = element_count * element_size;
+  }
+
+  // set others
+  v->element_count = element_count;
+  v->element_size = element_size;
+  v->isVertical = isVertical;
+}
+
+void BPU_gf2SparseQcMatrixFree(BPU_T_GF2_Sparse_Qc_Matrix *v, int is_dyn) {
+  int i;
+
+  // free matrices
+  for (i = 0; i < v->element_count; i++)
+    BPU_gf2SparsePolyFree(&v->matrices[i], is_dyn);
+
+  free(v->matrices);
+
+  if (is_dyn)
+    free (v);
+}
+
+void BPU_gf2PolyFree(BPU_T_GF2_Poly *p, int is_dyn) {
+  free(p->elements);
+  
+  if (is_dyn) {
+    free(p);
+  }
+}
+
+int BPU_gf2PolyMalloc(BPU_T_GF2_Poly *p, int len) {
+  // element size in bits
+  p->element_bit_size = sizeof(BPU_T_GF2) * 8;
+
+  // len
+  p->len = len;
+  
+  // calc how many elements of set size will be in one row
+  int modul = 0;
+
+  if ( len % p->element_bit_size > 0) {
+    modul = 1;
+  }
+  p->elements_in_row = len / p->element_bit_size + modul;
+
+  // allocate elemtens
+  p->elements = (BPU_T_GF2*) calloc(1, sizeof(BPU_T_GF2) * p->elements_in_row);
+
+  if (!p->elements) {
+    BPU_printError("can not allocate memory for vector of len %d", len);
+    return 1;
+  }
+  return 0;
+}
+
+int BPU_gf2QcMatrixMalloc(BPU_T_GF2_QC_Matrix *v, int element_count, int element_size, int isVertical, int is_I_appended) {
+  int err = 0;
+
+  // check isVertical
+  if (isVertical != 0 && isVertical != 1) {
+    return -1;
+  }
+  
+  // allocate matrices
+  v->matrices = (BPU_T_GF2_Poly*) malloc(element_count*sizeof(BPU_T_GF2_Poly));
+
+  // set sizes depended on orientation
+  if (isVertical) {
+    v->k = element_count * element_size;
+    v->n = element_size;
+  }
+  else {
+    v->k = element_size;
+    v->n = element_count * element_size;
+  }
+
+  // set others
+  v->element_count = element_count;
+  v->element_size = element_size;
+  v->is_I_appended = is_I_appended;
+  v->isVertical = isVertical;
+
+  return err;
+}
+
+// free QC binary matrix
+void BPU_gf2QcMatrixFree(BPU_T_GF2_QC_Matrix *v, int is_dyn) {
+  int i;
+
+  // free matrices
+  for (i = 0; i < v->element_count; i++) {
+    BPU_gf2PolyFree(&v->matrices[i], 0);
+  }
+
+  free(v->matrices);
+
+  if (is_dyn)
+    free (v);
+}

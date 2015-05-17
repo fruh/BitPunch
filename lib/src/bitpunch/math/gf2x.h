@@ -32,7 +32,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
-// TODO: Be enable to turn off print function, to not compile in in code
 /**
 * Print number as binary string. Print also new line at the end.
 * It will be padded 64 bits.

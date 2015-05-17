@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "mecspointcheval.h"
 
-#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+#if defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA) || defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC)
 #include <bitpunch/debugio.h>
 #include <bitpunch/math/gf2.h>
 #include <bitpunch/crypto/mecsbasic/mecsbasic.h>

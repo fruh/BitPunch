@@ -115,6 +115,7 @@ $(document).ready(function(){initNavTree('mecsctx_8c.html','');});
 <code>#include &lt;<a class="el" href="mathctx_8h_source.html">bitpunch/math/mathctx.h</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="mecsbasic_8h_source.html">bitpunch/crypto/mecsbasic/mecsbasic.h</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="goppa_8h_source.html">bitpunch/code/goppa/goppa.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="qcmdpc_8h_source.html">bitpunch/code/qcmdpc/qcmdpc.h</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="mecspointcheval_8h_source.html">bitpunch/crypto/cca2/mecspointcheval.h</a>&gt;</code><br/>
 </div>
 <p><a href="mecsctx_8c_source.html">Go to the source code of this file.</a></p>
@@ -130,6 +131,10 @@ Functions</h2></td></tr>
 <tr class="separator:a3448776b821f291c5f529078bbaa642f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f324fd22e4f039388b10af248ead6b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecsctx_8c.html#a6f324fd22e4f039388b10af248ead6b6">BPU_mecsFreeParamsGoppa</a> (<a class="el" href="mecsctx_8h.html#a3f8931a1955adced0ae404b46df35544">BPU_T_UN_Mecs_Params</a> *params)</td></tr>
 <tr class="separator:a6f324fd22e4f039388b10af248ead6b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7270797b19e4c0eca5c3fcd8a125faf9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecsctx_8c.html#a7270797b19e4c0eca5c3fcd8a125faf9">BPU_mecsInitParamsQcmdpc</a> (<a class="el" href="mecsctx_8h.html#a3f8931a1955adced0ae404b46df35544">BPU_T_UN_Mecs_Params</a> *params, const uint16_t m, const uint16_t n0, const uint16_t w, const uint16_t t)</td></tr>
+<tr class="separator:a7270797b19e4c0eca5c3fcd8a125faf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad00ea7162b81a8f3788a8432337b4d75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecsctx_8c.html#ad00ea7162b81a8f3788a8432337b4d75">BPU_mecsFreeParamsQcmdpc</a> (<a class="el" href="mecsctx_8h.html#a3f8931a1955adced0ae404b46df35544">BPU_T_UN_Mecs_Params</a> *params)</td></tr>
+<tr class="separator:ad00ea7162b81a8f3788a8432337b4d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="a8d540f95132a2ee135c0bc3663a31301"></a>
@@ -146,7 +151,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00118">118</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
+<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00158">158</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
 
 </div>
 </div>
@@ -164,7 +169,32 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00148">148</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
+<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00196">196</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad00ea7162b81a8f3788a8432337b4d75"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BPU_mecsFreeParamsQcmdpc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="mecsctx_8h.html#a3f8931a1955adced0ae404b46df35544">BPU_T_UN_Mecs_Params</a> *&#160;</td>
+          <td class="paramname"><em>params</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Free memory for params. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">params</td><td>pointer to structure </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00204">204</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
 
 </div>
 </div>
@@ -200,7 +230,7 @@ Functions</h2></td></tr>
 
 <p>Initialize (register) mecs functions for encryption, decryption and key gen based on type. </p>
 
-<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00035">35</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
+<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00037">37</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
 
 </div>
 </div>
@@ -240,7 +270,65 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00144">144</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
+<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00192">192</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7270797b19e4c0eca5c3fcd8a125faf9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int BPU_mecsInitParamsQcmdpc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="mecsctx_8h.html#a3f8931a1955adced0ae404b46df35544">BPU_T_UN_Mecs_Params</a> *&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint16_t&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint16_t&#160;</td>
+          <td class="paramname"><em>n0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint16_t&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint16_t&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Wrapper for param initialization. After work you have to free memory using call BPU_mecsFreeParamsQcmdpc </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">params</td><td>pointer to structure </td></tr>
+    <tr><td class="paramname">m</td><td>size of cyclic matrix </td></tr>
+    <tr><td class="paramname">n0</td><td>number of cyclic matrices </td></tr>
+    <tr><td class="paramname">w</td><td>weight of parity-check matrix row </td></tr>
+    <tr><td class="paramname">t</td><td>count of errors </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[description] </dd></dl>
+
+<p>Definition at line <a class="el" href="mecsctx_8c_source.html#l00200">200</a> of file <a class="el" href="mecsctx_8c_source.html">mecsctx.c</a>.</p>
 
 </div>
 </div>
@@ -250,7 +338,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_c56c2120216b9f5565d19a0879c67849.html">lib</a></li><li class="navelem"><a class="el" href="dir_36bc0d3594a53b4616e1660c5d0ae143.html">src</a></li><li class="navelem"><a class="el" href="dir_c9a0fad782ccabcfd2fb34c48555b3b8.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_63d1665b570c60b6b93baa563ecb63d4.html">crypto</a></li><li class="navelem"><a class="el" href="mecsctx_8c.html">mecsctx.c</a></li>
-    <li class="footer">Generated on Sun May 17 2015 00:18:41 for McEliece BitPunch by
+    <li class="footer">Generated on Sun May 17 2015 12:20:11 for McEliece BitPunch by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

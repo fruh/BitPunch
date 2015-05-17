@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['t',['t',['../struct___b_p_u___t___code___ctx.html#a2d03918f4f9edabaf3c9f43abcc2d85b',1,'_BPU_T_Code_Ctx::t()'],['../struct___b_p_u___t___goppa___params.html#a3636f663c6b00463f1bad29dd9617997',1,'_BPU_T_Goppa_Params::t()']]],
-  ['total',['total',['../structsha512__context.html#ab52538cebf5a65b9877c2e23197cf4c1',1,'sha512_context']]],
-  ['type',['type',['../struct___b_p_u___t___code___ctx.html#aea419acd5e0154eb416f34791ec7b19f',1,'_BPU_T_Code_Ctx::type()'],['../struct___b_p_u___t___mecs___ctx.html#a72f1d27a3b91f24c8da6d90b8cecc256',1,'_BPU_T_Mecs_Ctx::type()']]]
+  ['size',['size',['../struct___b_p_u___t___perm___vector.html#a47e7918a0a122983da20ddd3d2d150e5',1,'_BPU_T_Perm_Vector']]],
+  ['state',['state',['../structsha512__context.html#a4bbd0e20a9cf3b07a3f2e366a57ed181',1,'sha512_context']]],
+  ['support_5flen',['support_len',['../struct___b_p_u___t___goppa___spec.html#aea5f2dfb5df69cc4a2d3214402b79441',1,'_BPU_T_Goppa_Spec']]]
 ];
