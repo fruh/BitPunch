@@ -5,7 +5,7 @@ Goal of project is to create standalone McEliece implemetation in C language.
 
 Project is now only in *development version*.
 
-### Version 0.0.3:
+### Version 0.0.4:
   - see [CHANGES.txt](CHANGES.txt)
 
 ### Documentation
