@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: /home/fero/projects/BitPunch/lib/src/bitpunch/code/codectx.c File Reference</title>
+<title>BitPunch McEliece: lib/src/bitpunch/code/codectx.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,8 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="bitpunch-black-small.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">McEliece BitPunch
+   <div id="projectname">BitPunch McEliece
+   &#160;<span id="projectnumber">v0.0.4</span>
    </div>
   </td>
  </tr>
@@ -45,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -111,7 +113,9 @@ $(document).ready(function(){initNavTree('codectx_8c.html','');});
 <code>#include &lt;stdlib.h&gt;</code><br/>
 <code>#include &lt;<a class="el" href="debugio_8h_source.html">bitpunch/debugio.h</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="errorcodes_8h_source.html">bitpunch/errorcodes.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="gf2types_8h_source.html">bitpunch/math/gf2types.h</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="goppa_8h_source.html">bitpunch/code/goppa/goppa.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="qcmdpc_8h_source.html">bitpunch/code/qcmdpc/qcmdpc.h</a>&gt;</code><br/>
 </div>
 <p><a href="codectx_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -132,6 +136,10 @@ Functions</h2></td></tr>
 <tr class="memitem:aec68ceac228302dba3e1cf6550ca1bf5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="codectx_8c.html#aec68ceac228302dba3e1cf6550ca1bf5">BPU_codeFreeParamsGoppa</a> (<a class="el" href="codectx_8h.html#a6a877ced1870cf5e06e5cf3188ae8f74">BPU_T_UN_Code_Params</a> *params)</td></tr>
 <tr class="memdesc:aec68ceac228302dba3e1cf6550ca1bf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">BPU_codeFreeParamsGoppa.  <a href="#aec68ceac228302dba3e1cf6550ca1bf5">More...</a><br/></td></tr>
 <tr class="separator:aec68ceac228302dba3e1cf6550ca1bf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6992cc67a0bb8b2b3d67dc8ee8c95eff"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="codectx_8c.html#a6992cc67a0bb8b2b3d67dc8ee8c95eff">BPU_codeInitParamsQcmdpc</a> (<a class="el" href="codectx_8h.html#a6a877ced1870cf5e06e5cf3188ae8f74">BPU_T_UN_Code_Params</a> *params, const uint16_t m, const uint16_t n0, const uint16_t w, const uint16_t t)</td></tr>
+<tr class="separator:a6992cc67a0bb8b2b3d67dc8ee8c95eff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54afd25213b6e4de36fa268b6536be58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="codectx_8c.html#a54afd25213b6e4de36fa268b6536be58">BPU_codeFreeParamsQcmdpc</a> (<a class="el" href="codectx_8h.html#a6a877ced1870cf5e06e5cf3188ae8f74">BPU_T_UN_Code_Params</a> *params)</td></tr>
+<tr class="separator:a54afd25213b6e4de36fa268b6536be58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="a8ab76480c27da024714937875deaaf28"></a>
@@ -156,7 +164,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="codectx_8c_source.html#l00135">135</a> of file <a class="el" href="codectx_8c_source.html">codectx.c</a>.</p>
+<p>Definition at line <a class="el" href="codectx_8c_source.html#l00161">161</a> of file <a class="el" href="codectx_8c_source.html">codectx.c</a>.</p>
 
 </div>
 </div>
@@ -182,7 +190,32 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="codectx_8c_source.html#l00161">161</a> of file <a class="el" href="codectx_8c_source.html">codectx.c</a>.</p>
+<p>Definition at line <a class="el" href="codectx_8c_source.html#l00191">191</a> of file <a class="el" href="codectx_8c_source.html">codectx.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a54afd25213b6e4de36fa268b6536be58"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BPU_codeFreeParamsQcmdpc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="codectx_8h.html#a6a877ced1870cf5e06e5cf3188ae8f74">BPU_T_UN_Code_Params</a> *&#160;</td>
+          <td class="paramname"><em>params</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Free memory for params. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">params</td><td>pointer to structure </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="codectx_8c_source.html#l00199">199</a> of file <a class="el" href="codectx_8c_source.html">codectx.c</a>.</p>
 
 </div>
 </div>
@@ -227,7 +260,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="codectx_8c_source.html#l00028">28</a> of file <a class="el" href="codectx_8c_source.html">codectx.c</a>.</p>
+<p>Definition at line <a class="el" href="codectx_8c_source.html#l00031">31</a> of file <a class="el" href="codectx_8c_source.html">codectx.c</a>.</p>
 
 </div>
 </div>
@@ -279,7 +312,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="codectx_8c_source.html#l00100">100</a> of file <a class="el" href="codectx_8c_source.html">codectx.c</a>.</p>
+<p>Definition at line <a class="el" href="codectx_8c_source.html#l00126">126</a> of file <a class="el" href="codectx_8c_source.html">codectx.c</a>.</p>
 
 </div>
 </div>
@@ -331,7 +364,65 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="codectx_8c_source.html#l00157">157</a> of file <a class="el" href="codectx_8c_source.html">codectx.c</a>.</p>
+<p>Definition at line <a class="el" href="codectx_8c_source.html#l00187">187</a> of file <a class="el" href="codectx_8c_source.html">codectx.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6992cc67a0bb8b2b3d67dc8ee8c95eff"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int BPU_codeInitParamsQcmdpc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="codectx_8h.html#a6a877ced1870cf5e06e5cf3188ae8f74">BPU_T_UN_Code_Params</a> *&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint16_t&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint16_t&#160;</td>
+          <td class="paramname"><em>n0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint16_t&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint16_t&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Wrapper for param initialization. After work you have to free memory using call BPU_codeFreeParamsQcmdpc </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">params</td><td>pointer to structure </td></tr>
+    <tr><td class="paramname">m</td><td>size of cyclic matrix </td></tr>
+    <tr><td class="paramname">n0</td><td>number of cyclic matrices </td></tr>
+    <tr><td class="paramname">w</td><td>weight of parity-check matrix row </td></tr>
+    <tr><td class="paramname">t</td><td>count of errors </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[description] </dd></dl>
+
+<p>Definition at line <a class="el" href="codectx_8c_source.html#l00195">195</a> of file <a class="el" href="codectx_8c_source.html">codectx.c</a>.</p>
 
 </div>
 </div>
@@ -340,8 +431,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c56c2120216b9f5565d19a0879c67849.html">lib</a></li><li class="navelem"><a class="el" href="dir_36bc0d3594a53b4616e1660c5d0ae143.html">src</a></li><li class="navelem"><a class="el" href="dir_c9a0fad782ccabcfd2fb34c48555b3b8.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_aa2a5164ddfb3411dfe0cf725bdba00f.html">code</a></li><li class="navelem"><a class="el" href="codectx_8c.html">codectx.c</a></li>
-    <li class="footer">Generated on Sun May 17 2015 00:18:41 for McEliece BitPunch by
+    <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li><li class="navelem"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></li><li class="navelem"><a class="el" href="dir_0f89a311a44853eaaaf3dbdb23434ca6.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_90a961f21634eea97663dd8b93b6421e.html">code</a></li><li class="navelem"><a class="el" href="codectx_8c.html">codectx.c</a></li>
+    <li class="footer">Generated on Mon May 18 2015 12:30:13 for BitPunch McEliece by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

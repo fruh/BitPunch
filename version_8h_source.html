@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: /home/fero/projects/BitPunch/lib/src/bitpunch/version.h Source File</title>
+<title>BitPunch McEliece: lib/src/bitpunch/version.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,8 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="bitpunch-black-small.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">McEliece BitPunch
+   <div id="projectname">BitPunch McEliece
+   &#160;<span id="projectnumber">v0.0.4</span>
    </div>
   </td>
  </tr>
@@ -45,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -122,14 +124,70 @@ $(document).ready(function(){initNavTree('version_8h_source.html','');});
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> You should have received a copy of the GNU General Public License</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno"><a class="line" href="version_8h.html#a1c6d5de492ac61ad29aec7aa9a436bbf">  164</a></span>&#160;<span class="preprocessor">#define VERSION = &quot;0.0.3&quot;</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <span class="comment">// mce initialisation t = 50, m = 11</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="mecsctx_8c.html#a3448776b821f291c5f529078bbaa642f">BPU_mecsInitParamsGoppa</a>(&amp;params, 11, 50, 0)) {</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        }</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        fprintf(stderr, <span class="stringliteral">&quot;Basic GOPPA Initialisation...\n&quot;</span>);</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="mecsctx_8c.html#acab3e0bb66485a31cd4bcc258c8c2649">BPU_mecsInitCtx</a>(&amp;ctx, &amp;params, <a class="code" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344aeefa89f2a2597ec4adbe1c97875f07dd">BPU_EN_MECS_BASIC_GOPPA</a>)) {</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        }</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <a class="code" href="mecsctx_8c.html#a8d540f95132a2ee135c0bc3663a31301">BPU_mecsFreeCtx</a>(&amp;ctx);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <a class="code" href="mecsctx_8c.html#a6f324fd22e4f039388b10af248ead6b6">BPU_mecsFreeParamsGoppa</a>(&amp;params);</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <span class="keywordflow">return</span> rc;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;}</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;\endverbatim</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;We can see our registered test in the list of the tests:</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;- ./runTest -l</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;\verbatim</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;fruh@htfuws:~/projects/BitPunch$ ./runTest -l</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;Test: testMemRun                     runLevel: regular</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;Test: testFooName                    runLevel: regular</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;Test: testMemLeakWithH               runLevel: regular</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;Test: testBuild                      runLevel: express</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;Test: testMemLeakWoH                 runLevel: regular</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;Test: testLibSize                    runLevel: express</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;\endverbatim</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;We can run our dummy test <span class="keyword">using</span>:</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;         - ./runTest testFooName</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; \verbatim</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; fruh@htfuws:~/projects/BitPunch$ ./runTest testFooName</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160; Tests to run (1): testFooName</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; ======== BEGIN::testFooName ========</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; INFO: /media/fruh/data/projects/BitPunch/runtest/tests/foosuite</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; INFO: fooarg1: testFoo</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; INFO: fooarg2: fooarg2</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160; WARNING: warning message</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; INFO: cleaning build...</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; INFO: building static-lib...</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; PASSED</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160; --------   END::testFooName --------</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; ======== RESULTS ========</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; Result folder: /media/fruh/data/projects/BitPunch/runtest/results/2015-05-17T23:51:36.709632</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; FAILED: 0</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; SKIPPED: 0</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; PASSED: 1</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160; -------------------------</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; \endverbatim</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;*/</div>
+<div class="line"><a name="l00327"></a><span class="lineno"><a class="line" href="version_8h.html#a1c6d5de492ac61ad29aec7aa9a436bbf">  327</a></span>&#160;#define <a class="code" href="version_8h.html#a1c6d5de492ac61ad29aec7aa9a436bbf">VERSION</a> = <span class="stringliteral">&quot;0.0.4&quot;</span></div>
+<div class="ttc" id="version_8h_html_a1c6d5de492ac61ad29aec7aa9a436bbf"><div class="ttname"><a href="version_8h.html#a1c6d5de492ac61ad29aec7aa9a436bbf">VERSION</a></div><div class="ttdeci">#define VERSION</div><div class="ttdef"><b>Definition:</b> <a href="version_8h_source.html#l00327">version.h:327</a></div></div>
+<div class="ttc" id="mecsctx_8c_html_a3448776b821f291c5f529078bbaa642f"><div class="ttname"><a href="mecsctx_8c.html#a3448776b821f291c5f529078bbaa642f">BPU_mecsInitParamsGoppa</a></div><div class="ttdeci">int BPU_mecsInitParamsGoppa(BPU_T_UN_Mecs_Params *params, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod)</div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8c_source.html#l00192">mecsctx.c:192</a></div></div>
+<div class="ttc" id="mecsctx_8c_html_acab3e0bb66485a31cd4bcc258c8c2649"><div class="ttname"><a href="mecsctx_8c.html#acab3e0bb66485a31cd4bcc258c8c2649">BPU_mecsInitCtx</a></div><div class="ttdeci">int BPU_mecsInitCtx(BPU_T_Mecs_Ctx **ctx, const BPU_T_UN_Mecs_Params *params, const BPU_T_EN_Mecs_Types type)</div><div class="ttdoc">Initialize (register) mecs functions for encryption, decryption and key gen based on type...</div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8c_source.html#l00037">mecsctx.c:37</a></div></div>
+<div class="ttc" id="mecsctx_8h_html_a06ad3a0f013f1323a14003ecc69e1344aeefa89f2a2597ec4adbe1c97875f07dd"><div class="ttname"><a href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344aeefa89f2a2597ec4adbe1c97875f07dd">BPU_EN_MECS_BASIC_GOPPA</a></div><div class="ttdoc">basic mecs, without any conversion </div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00028">mecsctx.h:28</a></div></div>
+<div class="ttc" id="mecsctx_8c_html_a8d540f95132a2ee135c0bc3663a31301"><div class="ttname"><a href="mecsctx_8c.html#a8d540f95132a2ee135c0bc3663a31301">BPU_mecsFreeCtx</a></div><div class="ttdeci">int BPU_mecsFreeCtx(BPU_T_Mecs_Ctx **ctx)</div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8c_source.html#l00158">mecsctx.c:158</a></div></div>
+<div class="ttc" id="mecsctx_8c_html_a6f324fd22e4f039388b10af248ead6b6"><div class="ttname"><a href="mecsctx_8c.html#a6f324fd22e4f039388b10af248ead6b6">BPU_mecsFreeParamsGoppa</a></div><div class="ttdeci">void BPU_mecsFreeParamsGoppa(BPU_T_UN_Mecs_Params *params)</div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8c_source.html#l00196">mecsctx.c:196</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c56c2120216b9f5565d19a0879c67849.html">lib</a></li><li class="navelem"><a class="el" href="dir_36bc0d3594a53b4616e1660c5d0ae143.html">src</a></li><li class="navelem"><a class="el" href="dir_c9a0fad782ccabcfd2fb34c48555b3b8.html">bitpunch</a></li><li class="navelem"><a class="el" href="version_8h.html">version.h</a></li>
-    <li class="footer">Generated on Sun May 17 2015 00:18:41 for McEliece BitPunch by
+    <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li><li class="navelem"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></li><li class="navelem"><a class="el" href="dir_0f89a311a44853eaaaf3dbdb23434ca6.html">bitpunch</a></li><li class="navelem"><a class="el" href="version_8h.html">version.h</a></li>
+    <li class="footer">Generated on Mon May 18 2015 12:30:13 for BitPunch McEliece by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

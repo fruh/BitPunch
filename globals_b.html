@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: Globals</title>
+<title>BitPunch McEliece: Globals</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,8 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="bitpunch-black-small.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">McEliece BitPunch
+   <div id="projectname">BitPunch McEliece
+   &#160;<span id="projectnumber">v0.0.4</span>
    </div>
   </td>
  </tr>
@@ -45,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -198,6 +200,10 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 : <a class="el" href="codectx_8c.html#aec68ceac228302dba3e1cf6550ca1bf5">codectx.c</a>
 , <a class="el" href="codectx_8h.html#aec68ceac228302dba3e1cf6550ca1bf5">codectx.h</a>
 </li>
+<li>BPU_codeFreeParamsQcmdpc()
+: <a class="el" href="codectx_8c.html#a54afd25213b6e4de36fa268b6536be58">codectx.c</a>
+, <a class="el" href="codectx_8h.html#a54afd25213b6e4de36fa268b6536be58">codectx.h</a>
+</li>
 <li>BPU_codeInitCtx()
 : <a class="el" href="codectx_8c.html#a17a28764bb91b6c7c919174fa2702b36">codectx.c</a>
 , <a class="el" href="codectx_8h.html#a17a28764bb91b6c7c919174fa2702b36">codectx.h</a>
@@ -209,6 +215,10 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 <li>BPU_codeInitParamsGoppa()
 : <a class="el" href="codectx_8c.html#a27f422652c902cca5106a4188afc2272">codectx.c</a>
 , <a class="el" href="codectx_8h.html#a27f422652c902cca5106a4188afc2272">codectx.h</a>
+</li>
+<li>BPU_codeInitParamsQcmdpc()
+: <a class="el" href="codectx_8c.html#a6992cc67a0bb8b2b3d67dc8ee8c95eff">codectx.c</a>
+, <a class="el" href="codectx_8h.html#a6992cc67a0bb8b2b3d67dc8ee8c95eff">codectx.h</a>
 </li>
 <li>BPU_EC_CODE_PARAMS_NOT_SUPPORTED
 : <a class="el" href="errorcodes_8h.html#accd7c80743e87e6bae7f583f770a7396">errorcodes.h</a>
@@ -225,11 +235,20 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 <li>BPU_EN_CODE_GOPPA
 : <a class="el" href="codectx_8h.html#a865e8650af86b8321b9a322e591e78e7ae9d1e02e817e0993fda8a0d885cd69cd">codectx.h</a>
 </li>
+<li>BPU_EN_CODE_QCMDPC
+: <a class="el" href="codectx_8h.html#a865e8650af86b8321b9a322e591e78e7a7ae5c03141c74ba316a32207cfb1c08e">codectx.h</a>
+</li>
 <li>BPU_EN_MECS_BASIC_GOPPA
 : <a class="el" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344aeefa89f2a2597ec4adbe1c97875f07dd">mecsctx.h</a>
 </li>
+<li>BPU_EN_MECS_BASIC_QCMDPC
+: <a class="el" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344a477d698ec8d367c014d8e16827bf0021">mecsctx.h</a>
+</li>
 <li>BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA
 : <a class="el" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344a910b6afd752efc030bad1af66b003578">mecsctx.h</a>
+</li>
+<li>BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC
+: <a class="el" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344acbafe64e813835a94d52ad510540c746">mecsctx.h</a>
 </li>
 <li>BPU_getBit
 : <a class="el" href="gf2_8h.html#a3d0c2bd124ced5dcd7069d42566fe829">gf2.h</a>
@@ -313,6 +332,125 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 <li>BPU_gf2MatXorRows()
 : <a class="el" href="gf2_8c.html#a4fa8d4ac9858ec3b72e9f816ea02d391">gf2.c</a>
 , <a class="el" href="gf2_8h.html#a4fa8d4ac9858ec3b72e9f816ea02d391">gf2.h</a>
+</li>
+<li>BPU_gf2PolyAdd()
+: <a class="el" href="gf2_8c.html#ac437726cdc9b6413ebf2ac3636d68ecf">gf2.c</a>
+, <a class="el" href="gf2_8h.html#ac437726cdc9b6413ebf2ac3636d68ecf">gf2.h</a>
+</li>
+<li>BPU_gf2PolyCopy()
+: <a class="el" href="gf2_8c.html#acb612ce65752978e8988cad22fcd8530">gf2.c</a>
+, <a class="el" href="gf2_8h.html#acb612ce65752978e8988cad22fcd8530">gf2.h</a>
+</li>
+<li>BPU_gf2PolyDiv()
+: <a class="el" href="gf2_8c.html#ad4e53573c2859dceb06b7865c559e8a7">gf2.c</a>
+, <a class="el" href="gf2_8h.html#ad4e53573c2859dceb06b7865c559e8a7">gf2.h</a>
+</li>
+<li>BPU_gf2PolyExtEuclidA()
+: <a class="el" href="gf2_8c.html#a76beaac544719a669cde63e7489e17c7">gf2.c</a>
+, <a class="el" href="gf2_8h.html#a76beaac544719a669cde63e7489e17c7">gf2.h</a>
+</li>
+<li>BPU_gf2PolyFree()
+: <a class="el" href="gf2types_8c.html#a5c2017438cef1f233d3b6be397bc5459">gf2types.c</a>
+, <a class="el" href="gf2types_8h.html#a5c2017438cef1f233d3b6be397bc5459">gf2types.h</a>
+</li>
+<li>BPU_gf2PolyGetBit
+: <a class="el" href="gf2_8h.html#a7fa6f0edf8e232a73d3b1ca0cf8f90de">gf2.h</a>
+</li>
+<li>BPU_gf2PolyGetHighestBitPos()
+: <a class="el" href="gf2_8c.html#a63ce844c3f4dbea14bacc1aa3e906724">gf2.c</a>
+, <a class="el" href="gf2_8h.html#a63ce844c3f4dbea14bacc1aa3e906724">gf2.h</a>
+</li>
+<li>BPU_gf2PolyInitRand()
+: <a class="el" href="gf2_8c.html#ab5fdce0ff71d1dc1e638f9dab93dec30">gf2.c</a>
+, <a class="el" href="gf2_8h.html#ab5fdce0ff71d1dc1e638f9dab93dec30">gf2.h</a>
+</li>
+<li>BPU_gf2PolyInv()
+: <a class="el" href="gf2_8c.html#a53f2a3e83f24ea0b4bac29190921c6be">gf2.c</a>
+, <a class="el" href="gf2_8h.html#a177bfbbd72e6b30d398dde7c98a3c09c">gf2.h</a>
+</li>
+<li>BPU_gf2PolyIsZero()
+: <a class="el" href="gf2_8c.html#a235449294384d58436e7ee6f49695ea7">gf2.c</a>
+, <a class="el" href="gf2_8h.html#a235449294384d58436e7ee6f49695ea7">gf2.h</a>
+</li>
+<li>BPU_gf2PolyMalloc()
+: <a class="el" href="gf2types_8c.html#a7b221f000a260cfeee99f5cd94b2ff54">gf2types.c</a>
+, <a class="el" href="gf2types_8h.html#a7b221f000a260cfeee99f5cd94b2ff54">gf2types.h</a>
+</li>
+<li>BPU_gf2PolyMulMod()
+: <a class="el" href="gf2_8c.html#ada83f7c85315979e6f1bb1cfba1803e3">gf2.c</a>
+, <a class="el" href="gf2_8h.html#ada83f7c85315979e6f1bb1cfba1803e3">gf2.h</a>
+</li>
+<li>BPU_gf2PolyMulX()
+: <a class="el" href="gf2_8c.html#a64fee50b9ea3171e604745e43620c79a">gf2.c</a>
+, <a class="el" href="gf2_8h.html#a64fee50b9ea3171e604745e43620c79a">gf2.h</a>
+</li>
+<li>BPU_gf2PolySetDeg()
+: <a class="el" href="gf2_8c.html#a9589e5adc23788452a03e2477c7cfaa4">gf2.c</a>
+, <a class="el" href="gf2_8h.html#a9589e5adc23788452a03e2477c7cfaa4">gf2.h</a>
+</li>
+<li>BPU_gf2PolyShiftLeft()
+: <a class="el" href="gf2_8c.html#a39fb3a8d0f19cfa83881729c51ef01c4">gf2.c</a>
+, <a class="el" href="gf2_8h.html#a39fb3a8d0f19cfa83881729c51ef01c4">gf2.h</a>
+</li>
+<li>BPU_gf2PolyShiftRightOne()
+: <a class="el" href="gf2_8c.html#a0a000bea205655cbef24a33eed752b7a">gf2.c</a>
+, <a class="el" href="gf2_8h.html#a0a000bea205655cbef24a33eed752b7a">gf2.h</a>
+</li>
+<li>BPU_gf2PolyTransp()
+: <a class="el" href="gf2_8c.html#a6c348c2407fcb3182ac523bb7676aa73">gf2.c</a>
+, <a class="el" href="gf2_8h.html#a6c348c2407fcb3182ac523bb7676aa73">gf2.h</a>
+</li>
+<li>BPU_gf2QcMatrixFree()
+: <a class="el" href="gf2types_8c.html#ae53967e418fb0bce932d4bfc9eaf38b9">gf2types.c</a>
+, <a class="el" href="gf2types_8h.html#ae53967e418fb0bce932d4bfc9eaf38b9">gf2types.h</a>
+</li>
+<li>BPU_gf2QcMatrixMalloc()
+: <a class="el" href="gf2types_8h.html#a51947ad8abf21753fbd4ad8f5f200263">gf2types.h</a>
+, <a class="el" href="gf2types_8c.html#a51947ad8abf21753fbd4ad8f5f200263">gf2types.c</a>
+</li>
+<li>BPU_gf2QcMatrixToSparse()
+: <a class="el" href="gf2_8c.html#ac1949f16b7916d9bf5695ec3d2775af8">gf2.c</a>
+, <a class="el" href="gf2_8h.html#ac1949f16b7916d9bf5695ec3d2775af8">gf2.h</a>
+</li>
+<li>BPU_gf2QcMatrixTransp()
+: <a class="el" href="gf2_8c.html#ac9a818d7b3eddd6632817324b22645eb">gf2.c</a>
+, <a class="el" href="gf2_8h.html#ac9a818d7b3eddd6632817324b22645eb">gf2.h</a>
+</li>
+<li>BPU_gf2SparsePolyAdd()
+: <a class="el" href="gf2_8c.html#a9716a1014419db7cfcd9ec55bd04fe9c">gf2.c</a>
+, <a class="el" href="gf2_8h.html#a9716a1014419db7cfcd9ec55bd04fe9c">gf2.h</a>
+</li>
+<li>BPU_gf2SparsePolyAndHW()
+: <a class="el" href="gf2_8c.html#ae3e2f90e49c677adef3e6df0415f7cef">gf2.c</a>
+, <a class="el" href="gf2_8h.html#ae3e2f90e49c677adef3e6df0415f7cef">gf2.h</a>
+</li>
+<li>BPU_gf2SparsePolyCopy()
+: <a class="el" href="gf2_8c.html#aae734f6b03ab35dbe13064db1b9d3258">gf2.c</a>
+, <a class="el" href="gf2_8h.html#aae734f6b03ab35dbe13064db1b9d3258">gf2.h</a>
+</li>
+<li>BPU_gf2SparsePolyFree()
+: <a class="el" href="gf2types_8c.html#acf2ed1a796bef7d30a87d060fa1a937a">gf2types.c</a>
+, <a class="el" href="gf2types_8h.html#acf2ed1a796bef7d30a87d060fa1a937a">gf2types.h</a>
+</li>
+<li>BPU_gf2SparsePolyMalloc()
+: <a class="el" href="gf2types_8c.html#a10085fb0c788b84b6a1fd1d11793bcbf">gf2types.c</a>
+, <a class="el" href="gf2types_8h.html#a10085fb0c788b84b6a1fd1d11793bcbf">gf2types.h</a>
+</li>
+<li>BPU_gf2SparseQcMatrixFree()
+: <a class="el" href="gf2types_8c.html#a3e2d1410e63aa61c426cc9e51bd83a73">gf2types.c</a>
+, <a class="el" href="gf2types_8h.html#a3e2d1410e63aa61c426cc9e51bd83a73">gf2types.h</a>
+</li>
+<li>BPU_gf2SparseQcMatrixGetRow()
+: <a class="el" href="gf2_8c.html#a064164ad0d90a852e8395ab59fcb082b">gf2.c</a>
+, <a class="el" href="gf2_8h.html#a064164ad0d90a852e8395ab59fcb082b">gf2.h</a>
+</li>
+<li>BPU_gf2SparseQcMatrixMalloc()
+: <a class="el" href="gf2types_8c.html#a401d407cb42a0c5cbe2ca3d3cb77465b">gf2types.c</a>
+, <a class="el" href="gf2types_8h.html#a401d407cb42a0c5cbe2ca3d3cb77465b">gf2types.h</a>
+</li>
+<li>BPU_gf2SparseQcMatrixTransp()
+: <a class="el" href="gf2_8c.html#afd1f2f1f0bee1baeac6646e9f1a976ac">gf2.c</a>
+, <a class="el" href="gf2_8h.html#afd1f2f1f0bee1baeac6646e9f1a976ac">gf2.h</a>
 </li>
 <li>BPU_gf2Swap()
 : <a class="el" href="gf2_8c.html#a1dfc32fcbd88751336436dd6f893d577">gf2.c</a>
@@ -403,8 +541,8 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 , <a class="el" href="gf2x_8h.html#ae3df5fa76814005f009a204dea543990">gf2x.h</a>
 </li>
 <li>BPU_gf2xMatFindPivot()
-: <a class="el" href="gf2x_8h.html#afd624031aac67efb44becd17967354f3">gf2x.h</a>
-, <a class="el" href="gf2x_8c.html#afd624031aac67efb44becd17967354f3">gf2x.c</a>
+: <a class="el" href="gf2x_8c.html#afd624031aac67efb44becd17967354f3">gf2x.c</a>
+, <a class="el" href="gf2x_8h.html#afd624031aac67efb44becd17967354f3">gf2x.h</a>
 </li>
 <li>BPU_gf2xMatFree()
 : <a class="el" href="gf2xtypes_8c.html#a602c093bf94d9508f4aa1a844c18d5ff">gf2xtypes.c</a>
@@ -486,16 +624,16 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 , <a class="el" href="gf2xtypes_8h.html#ada638a40c6367d303e479952c9216524">gf2xtypes.h</a>
 </li>
 <li>BPU_gf2xPolyGenGoppa()
-: <a class="el" href="gf2x_8c.html#aae81fcc2edc7bc1fb106da955d06b1a7">gf2x.c</a>
-, <a class="el" href="gf2x_8h.html#aae81fcc2edc7bc1fb106da955d06b1a7">gf2x.h</a>
+: <a class="el" href="gf2x_8h.html#aae81fcc2edc7bc1fb106da955d06b1a7">gf2x.h</a>
+, <a class="el" href="gf2x_8c.html#aae81fcc2edc7bc1fb106da955d06b1a7">gf2x.c</a>
 </li>
 <li>BPU_gf2xPolyGenRandom()
 : <a class="el" href="gf2x_8c.html#a3bf99bcf5b0b2bd4506c675d5992d5b6">gf2x.c</a>
 , <a class="el" href="gf2x_8h.html#a3bf99bcf5b0b2bd4506c675d5992d5b6">gf2x.h</a>
 </li>
 <li>BPU_gf2xPolyGetDeg()
-: <a class="el" href="gf2x_8c.html#a84b8292d90a291ca7796d3079c6243d2">gf2x.c</a>
-, <a class="el" href="gf2x_8h.html#a84b8292d90a291ca7796d3079c6243d2">gf2x.h</a>
+: <a class="el" href="gf2x_8h.html#a84b8292d90a291ca7796d3079c6243d2">gf2x.h</a>
+, <a class="el" href="gf2x_8c.html#a84b8292d90a291ca7796d3079c6243d2">gf2x.c</a>
 </li>
 <li>BPU_gf2xPolyInv()
 : <a class="el" href="gf2x_8c.html#a3bd734cab0e793beb3e5f5bddd0cd6f0">gf2x.c</a>
@@ -529,8 +667,8 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 , <a class="el" href="gf2x_8h.html#ade43791fd4529c515ecf0ec2a8bbc82a">gf2x.h</a>
 </li>
 <li>BPU_gf2xPolyMulEl()
-: <a class="el" href="gf2x_8c.html#a85a39f0c060fe306b5789191d711e132">gf2x.c</a>
-, <a class="el" href="gf2x_8h.html#a85a39f0c060fe306b5789191d711e132">gf2x.h</a>
+: <a class="el" href="gf2x_8h.html#a85a39f0c060fe306b5789191d711e132">gf2x.h</a>
+, <a class="el" href="gf2x_8c.html#a85a39f0c060fe306b5789191d711e132">gf2x.c</a>
 </li>
 <li>BPU_gf2xPolyNull
 : <a class="el" href="gf2xtypes_8h.html#af503048e48bf47700131f88d59068755">gf2xtypes.h</a>
@@ -548,24 +686,24 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 , <a class="el" href="gf2x_8h.html#a0abe2d4bede48380099ebc76bdbd264f">gf2x.h</a>
 </li>
 <li>BPU_gf2xPolyShl()
-: <a class="el" href="gf2x_8h.html#a733f0c88ae097343094b75157ba81e09">gf2x.h</a>
-, <a class="el" href="gf2x_8c.html#a733f0c88ae097343094b75157ba81e09">gf2x.c</a>
+: <a class="el" href="gf2x_8c.html#a733f0c88ae097343094b75157ba81e09">gf2x.c</a>
+, <a class="el" href="gf2x_8h.html#a733f0c88ae097343094b75157ba81e09">gf2x.h</a>
 </li>
 <li>BPU_gf2xPolyShr()
 : <a class="el" href="gf2x_8c.html#a86f39d5eff692c94a5805174070bc24d">gf2x.c</a>
 , <a class="el" href="gf2x_8h.html#a86f39d5eff692c94a5805174070bc24d">gf2x.h</a>
 </li>
 <li>BPU_gf2xPolyToVec()
-: <a class="el" href="gf2x_8h.html#a13e1ae36bc67ed98f6ef1a99f2e78779">gf2x.h</a>
-, <a class="el" href="gf2x_8c.html#a13e1ae36bc67ed98f6ef1a99f2e78779">gf2x.c</a>
+: <a class="el" href="gf2x_8c.html#a13e1ae36bc67ed98f6ef1a99f2e78779">gf2x.c</a>
+, <a class="el" href="gf2x_8h.html#a13e1ae36bc67ed98f6ef1a99f2e78779">gf2x.h</a>
 </li>
 <li>BPU_gf2xPowerModT()
 : <a class="el" href="gf2x_8c.html#ad2310800ea61f75e59023549735f3f2f">gf2x.c</a>
 , <a class="el" href="gf2x_8h.html#ad2310800ea61f75e59023549735f3f2f">gf2x.h</a>
 </li>
 <li>BPU_gf2xRoot()
-: <a class="el" href="gf2x_8h.html#a916a74fd3d4ab03c7a7953ab67f134e3">gf2x.h</a>
-, <a class="el" href="gf2x_8c.html#a916a74fd3d4ab03c7a7953ab67f134e3">gf2x.c</a>
+: <a class="el" href="gf2x_8c.html#a916a74fd3d4ab03c7a7953ab67f134e3">gf2x.c</a>
+, <a class="el" href="gf2x_8h.html#a916a74fd3d4ab03c7a7953ab67f134e3">gf2x.h</a>
 </li>
 <li>BPU_gf2xSwap()
 : <a class="el" href="gf2x_8c.html#a3a54707ec87b86c7fca03bbdf942dc33">gf2x.c</a>
@@ -580,24 +718,24 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 , <a class="el" href="gf2xtypes_8h.html#ae9889c222423ce4be65bfc96843ea448">gf2xtypes.h</a>
 </li>
 <li>BPU_gf2xVecMulEl()
-: <a class="el" href="gf2x_8h.html#af15fa972d2f5df0191bc440073c490a4">gf2x.h</a>
-, <a class="el" href="gf2x_8c.html#af15fa972d2f5df0191bc440073c490a4">gf2x.c</a>
+: <a class="el" href="gf2x_8c.html#af15fa972d2f5df0191bc440073c490a4">gf2x.c</a>
+, <a class="el" href="gf2x_8h.html#af15fa972d2f5df0191bc440073c490a4">gf2x.h</a>
 </li>
 <li>BPU_gf2xVecMulMat()
 : <a class="el" href="gf2x_8c.html#a12503b00a873a968cb5bb9107ea31b16">gf2x.c</a>
 , <a class="el" href="gf2x_8h.html#a12503b00a873a968cb5bb9107ea31b16">gf2x.h</a>
 </li>
 <li>BPU_gf2xVecToPoly()
-: <a class="el" href="gf2x_8h.html#a94754ee33557f3902c001ca5027a4f77">gf2x.h</a>
-, <a class="el" href="gf2x_8c.html#a94754ee33557f3902c001ca5027a4f77">gf2x.c</a>
+: <a class="el" href="gf2x_8c.html#a94754ee33557f3902c001ca5027a4f77">gf2x.c</a>
+, <a class="el" href="gf2x_8h.html#a94754ee33557f3902c001ca5027a4f77">gf2x.h</a>
 </li>
 <li>BPU_goppaDecode()
 : <a class="el" href="goppa_8c.html#ade07f571e2d0874864461156550bcf6e">goppa.c</a>
 , <a class="el" href="goppa_8h.html#ade07f571e2d0874864461156550bcf6e">goppa.h</a>
 </li>
 <li>BPU_goppaDetSyndrome()
-: <a class="el" href="goppa_8h.html#a27b7d7a0a0e1c865387c506bd555beea">goppa.h</a>
-, <a class="el" href="goppa_8c.html#a27b7d7a0a0e1c865387c506bd555beea">goppa.c</a>
+: <a class="el" href="goppa_8c.html#a27b7d7a0a0e1c865387c506bd555beea">goppa.c</a>
+, <a class="el" href="goppa_8h.html#a27b7d7a0a0e1c865387c506bd555beea">goppa.h</a>
 </li>
 <li>BPU_goppaEncode()
 : <a class="el" href="goppa_8c.html#a06fdb1ea39ebbf77cfb8fd9d89de0090">goppa.c</a>
@@ -635,20 +773,20 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 : <a class="el" href="sha512_8h.html#ab91d129f58b7589fd1981c776d33bee8">sha512.h</a>
 </li>
 <li>BPU_isPrime()
-: <a class="el" href="int_8h.html#a759e05ee70ef26f91a2293d6ba8f69b5">int.h</a>
-, <a class="el" href="int_8c.html#a759e05ee70ef26f91a2293d6ba8f69b5">int.c</a>
+: <a class="el" href="int_8c.html#a759e05ee70ef26f91a2293d6ba8f69b5">int.c</a>
+, <a class="el" href="int_8h.html#a759e05ee70ef26f91a2293d6ba8f69b5">int.h</a>
 </li>
 <li>BPU_mathFreeCtx()
 : <a class="el" href="mathctx_8c.html#a4289a8080e15785fca4c3b32c3540511">mathctx.c</a>
 , <a class="el" href="mathctx_8h.html#a4289a8080e15785fca4c3b32c3540511">mathctx.h</a>
 </li>
 <li>BPU_mathInitCtx()
-: <a class="el" href="mathctx_8h.html#ac7e16be6b17fa9ad9fdc50d80c49b172">mathctx.h</a>
-, <a class="el" href="mathctx_8c.html#ac7e16be6b17fa9ad9fdc50d80c49b172">mathctx.c</a>
+: <a class="el" href="mathctx_8c.html#ac7e16be6b17fa9ad9fdc50d80c49b172">mathctx.c</a>
+, <a class="el" href="mathctx_8h.html#ac7e16be6b17fa9ad9fdc50d80c49b172">mathctx.h</a>
 </li>
 <li>BPU_mecsBasicDecrypt()
-: <a class="el" href="mecsbasic_8c.html#a433f6b45ab29095895c104f948964b41">mecsbasic.c</a>
-, <a class="el" href="mecsbasic_8h.html#a433f6b45ab29095895c104f948964b41">mecsbasic.h</a>
+: <a class="el" href="mecsbasic_8h.html#a433f6b45ab29095895c104f948964b41">mecsbasic.h</a>
+, <a class="el" href="mecsbasic_8c.html#a433f6b45ab29095895c104f948964b41">mecsbasic.c</a>
 </li>
 <li>BPU_mecsBasicEncrypt()
 : <a class="el" href="mecsbasic_8c.html#a3c39ab9dfab2440e89f0606c86b10c8c">mecsbasic.c</a>
@@ -659,36 +797,72 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 , <a class="el" href="mecs_8h.html#a57e9b1a3cf5d86cd2c30433452247e63">mecs.h</a>
 </li>
 <li>BPU_mecsEncrypt()
-: <a class="el" href="mecs_8h.html#a3504f010921a96ce7d0649ba4e9b238b">mecs.h</a>
-, <a class="el" href="mecs_8c.html#a3504f010921a96ce7d0649ba4e9b238b">mecs.c</a>
+: <a class="el" href="mecs_8c.html#a3504f010921a96ce7d0649ba4e9b238b">mecs.c</a>
+, <a class="el" href="mecs_8h.html#a3504f010921a96ce7d0649ba4e9b238b">mecs.h</a>
 </li>
 <li>BPU_mecsFreeCtx()
 : <a class="el" href="mecsctx_8h.html#a8d540f95132a2ee135c0bc3663a31301">mecsctx.h</a>
 , <a class="el" href="mecsctx_8c.html#a8d540f95132a2ee135c0bc3663a31301">mecsctx.c</a>
 </li>
 <li>BPU_mecsFreeParamsGoppa()
-: <a class="el" href="mecsctx_8c.html#a6f324fd22e4f039388b10af248ead6b6">mecsctx.c</a>
-, <a class="el" href="mecsctx_8h.html#a6f324fd22e4f039388b10af248ead6b6">mecsctx.h</a>
+: <a class="el" href="mecsctx_8h.html#a6f324fd22e4f039388b10af248ead6b6">mecsctx.h</a>
+, <a class="el" href="mecsctx_8c.html#a6f324fd22e4f039388b10af248ead6b6">mecsctx.c</a>
+</li>
+<li>BPU_mecsFreeParamsQcmdpc()
+: <a class="el" href="mecsctx_8c.html#ad00ea7162b81a8f3788a8432337b4d75">mecsctx.c</a>
+, <a class="el" href="mecsctx_8h.html#ad00ea7162b81a8f3788a8432337b4d75">mecsctx.h</a>
 </li>
 <li>BPU_mecsGenKeyPair()
-: <a class="el" href="mecs_8h.html#a1e25d7bd581eb8906846e74355bdb750">mecs.h</a>
-, <a class="el" href="mecs_8c.html#a1e25d7bd581eb8906846e74355bdb750">mecs.c</a>
+: <a class="el" href="mecs_8c.html#a1e25d7bd581eb8906846e74355bdb750">mecs.c</a>
+, <a class="el" href="mecs_8h.html#a1e25d7bd581eb8906846e74355bdb750">mecs.h</a>
 </li>
 <li>BPU_mecsInitCtx()
 : <a class="el" href="mecsctx_8h.html#acab3e0bb66485a31cd4bcc258c8c2649">mecsctx.h</a>
 , <a class="el" href="mecsctx_8c.html#acab3e0bb66485a31cd4bcc258c8c2649">mecsctx.c</a>
 </li>
 <li>BPU_mecsInitParamsGoppa()
-: <a class="el" href="mecsctx_8h.html#a3448776b821f291c5f529078bbaa642f">mecsctx.h</a>
-, <a class="el" href="mecsctx_8c.html#a3448776b821f291c5f529078bbaa642f">mecsctx.c</a>
+: <a class="el" href="mecsctx_8c.html#a3448776b821f291c5f529078bbaa642f">mecsctx.c</a>
+, <a class="el" href="mecsctx_8h.html#a3448776b821f291c5f529078bbaa642f">mecsctx.h</a>
+</li>
+<li>BPU_mecsInitParamsQcmdpc()
+: <a class="el" href="mecsctx_8c.html#a7270797b19e4c0eca5c3fcd8a125faf9">mecsctx.c</a>
+, <a class="el" href="mecsctx_8h.html#a7270797b19e4c0eca5c3fcd8a125faf9">mecsctx.h</a>
 </li>
 <li>BPU_mecsPointchevalCCA2Decrypt()
 : <a class="el" href="mecspointcheval_8h.html#a434904547f72d0a7d390758dc0b4360e">mecspointcheval.h</a>
 , <a class="el" href="mecspointcheval_8c.html#a434904547f72d0a7d390758dc0b4360e">mecspointcheval.c</a>
 </li>
 <li>BPU_mecsPointchevalCCA2Encrypt()
-: <a class="el" href="mecspointcheval_8h.html#a7022e252183e2b9a6004e11b620256da">mecspointcheval.h</a>
-, <a class="el" href="mecspointcheval_8c.html#a7022e252183e2b9a6004e11b620256da">mecspointcheval.c</a>
+: <a class="el" href="mecspointcheval_8c.html#a7022e252183e2b9a6004e11b620256da">mecspointcheval.c</a>
+, <a class="el" href="mecspointcheval_8h.html#a7022e252183e2b9a6004e11b620256da">mecspointcheval.h</a>
+</li>
+<li>BPU_mecsQcmdpcCalcSyndrom()
+: <a class="el" href="qcmdpc_8h.html#a39c503541ae7554e68647ac628968f7c">qcmdpc.h</a>
+, <a class="el" href="qcmdpc_8c.html#a39c503541ae7554e68647ac628968f7c">qcmdpc.c</a>
+</li>
+<li>BPU_mecsQcmdpcDecode1()
+: <a class="el" href="qcmdpc_8c.html#aca4f7d99e92d2abff183c7500680becf">qcmdpc.c</a>
+, <a class="el" href="qcmdpc_8h.html#aca4f7d99e92d2abff183c7500680becf">qcmdpc.h</a>
+</li>
+<li>BPU_mecsQcmdpcDecode2()
+: <a class="el" href="qcmdpc_8h.html#a1b6f08e68e3e6e8bb81e5057bded8236">qcmdpc.h</a>
+, <a class="el" href="qcmdpc_8c.html#a1b6f08e68e3e6e8bb81e5057bded8236">qcmdpc.c</a>
+</li>
+<li>BPU_mecsQcmdpcDecrypt()
+: <a class="el" href="qcmdpc_8h.html#a81da3b8fb9b47dfcbb180e8865342ffc">qcmdpc.h</a>
+, <a class="el" href="qcmdpc_8c.html#a81da3b8fb9b47dfcbb180e8865342ffc">qcmdpc.c</a>
+</li>
+<li>BPU_mecsQcmdpcEncode()
+: <a class="el" href="qcmdpc_8h.html#a2036e1997166e7667a4144df673ee57f">qcmdpc.h</a>
+, <a class="el" href="qcmdpc_8c.html#a2036e1997166e7667a4144df673ee57f">qcmdpc.c</a>
+</li>
+<li>BPU_mecsQcmdpcGenKeys()
+: <a class="el" href="qcmdpc_8c.html#a4ce40c33b139622b5f1f6b593c007b23">qcmdpc.c</a>
+, <a class="el" href="qcmdpc_8h.html#a4ce40c33b139622b5f1f6b593c007b23">qcmdpc.h</a>
+</li>
+<li>BPU_mecsQcmdpcTestGHmatrices()
+: <a class="el" href="qcmdpc_8h.html#a1c04ae504272ac7b9d41d299575ae0f0">qcmdpc.h</a>
+, <a class="el" href="qcmdpc_8c.html#a1c04ae504272ac7b9d41d299575ae0f0">qcmdpc.c</a>
 </li>
 <li>BPU_padAdd()
 : <a class="el" href="padding_8c.html#a958b7e1b15eb728934e02358ff4f93d5">padding.c</a>
@@ -699,16 +873,16 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 , <a class="el" href="padding_8c.html#ae55f6b9b54fea00b49c8fa2b5a12ffba">padding.c</a>
 </li>
 <li>BPU_permFree()
-: <a class="el" href="permtypes_8c.html#ad7598b058b30221e76e202d0e79815dd">permtypes.c</a>
-, <a class="el" href="permtypes_8h.html#ad7598b058b30221e76e202d0e79815dd">permtypes.h</a>
+: <a class="el" href="permtypes_8h.html#ad7598b058b30221e76e202d0e79815dd">permtypes.h</a>
+, <a class="el" href="permtypes_8c.html#ad7598b058b30221e76e202d0e79815dd">permtypes.c</a>
 </li>
 <li>BPU_permGetInv()
 : <a class="el" href="perm_8h.html#aa02d5544707cccfa2f1db9a048c6b2ca">perm.h</a>
 , <a class="el" href="perm_8c.html#aa02d5544707cccfa2f1db9a048c6b2ca">perm.c</a>
 </li>
 <li>BPU_permIsValid()
-: <a class="el" href="perm_8c.html#ad93d6ae3c0a2db60725f05a730a17419">perm.c</a>
-, <a class="el" href="perm_8h.html#ad93d6ae3c0a2db60725f05a730a17419">perm.h</a>
+: <a class="el" href="perm_8h.html#ad93d6ae3c0a2db60725f05a730a17419">perm.h</a>
+, <a class="el" href="perm_8c.html#ad93d6ae3c0a2db60725f05a730a17419">perm.c</a>
 </li>
 <li>BPU_permMalloc()
 : <a class="el" href="permtypes_8h.html#a4e18f7afa6bff3326593cfd757cbd6c2">permtypes.h</a>
@@ -734,8 +908,8 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 , <a class="el" href="gf2_8h.html#a890b031761ef0864fdf95f79bea63709">gf2.h</a>
 </li>
 <li>BPU_printBinaryLsb()
-: <a class="el" href="gf2_8c.html#a55cc8d7121b55a859e302499ff73ff39">gf2.c</a>
-, <a class="el" href="gf2_8h.html#a55cc8d7121b55a859e302499ff73ff39">gf2.h</a>
+: <a class="el" href="gf2_8h.html#a55cc8d7121b55a859e302499ff73ff39">gf2.h</a>
+, <a class="el" href="gf2_8c.html#a55cc8d7121b55a859e302499ff73ff39">gf2.c</a>
 </li>
 <li>BPU_printBinaryLsb32()
 : <a class="el" href="gf2_8c.html#aee81ed42eb0f9ca66f2f7264f989e516">gf2.c</a>
@@ -746,20 +920,20 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 , <a class="el" href="gf2_8h.html#ae96ba4da68face33a2a6c5842666b0e5">gf2.h</a>
 </li>
 <li>BPU_printBinaryMsb()
-: <a class="el" href="gf2_8c.html#ad66693342d1081bc33c0776cd84174c5">gf2.c</a>
-, <a class="el" href="gf2_8h.html#ad66693342d1081bc33c0776cd84174c5">gf2.h</a>
+: <a class="el" href="gf2_8h.html#ad66693342d1081bc33c0776cd84174c5">gf2.h</a>
+, <a class="el" href="gf2_8c.html#ad66693342d1081bc33c0776cd84174c5">gf2.c</a>
 </li>
 <li>BPU_printBinaryMsb32()
 : <a class="el" href="gf2_8h.html#a9fee94b8c15d0f99b9dacc5e8666c27d">gf2.h</a>
 , <a class="el" href="gf2_8c.html#a9fee94b8c15d0f99b9dacc5e8666c27d">gf2.c</a>
 </li>
 <li>BPU_printBinaryMsb32Ln()
-: <a class="el" href="gf2_8c.html#af96aeeecdda7ff2c6ff3247faa8e8881">gf2.c</a>
-, <a class="el" href="gf2_8h.html#af96aeeecdda7ff2c6ff3247faa8e8881">gf2.h</a>
+: <a class="el" href="gf2_8h.html#af96aeeecdda7ff2c6ff3247faa8e8881">gf2.h</a>
+, <a class="el" href="gf2_8c.html#af96aeeecdda7ff2c6ff3247faa8e8881">gf2.c</a>
 </li>
 <li>BPU_printBinaryMsbLn()
-: <a class="el" href="gf2_8h.html#a3c85f1a3b6612a26a17cc3785373f913">gf2.h</a>
-, <a class="el" href="gf2_8c.html#a3c85f1a3b6612a26a17cc3785373f913">gf2.c</a>
+: <a class="el" href="gf2_8c.html#a3c85f1a3b6612a26a17cc3785373f913">gf2.c</a>
+, <a class="el" href="gf2_8h.html#a3c85f1a3b6612a26a17cc3785373f913">gf2.h</a>
 </li>
 <li>BPU_printDebug
 : <a class="el" href="debugio_8h.html#aa607fafc1ae8a1d56a921b5e922e3579">debugio.h</a>
@@ -771,9 +945,29 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 : <a class="el" href="gf2_8c.html#ac94bdc326863a4dd723f252198dddf6c">gf2.c</a>
 , <a class="el" href="gf2_8h.html#ac94bdc326863a4dd723f252198dddf6c">gf2.h</a>
 </li>
+<li>BPU_printGf2Poly()
+: <a class="el" href="gf2_8h.html#a8528d77946968ea73791fddd72034a55">gf2.h</a>
+, <a class="el" href="gf2_8c.html#a8528d77946968ea73791fddd72034a55">gf2.c</a>
+</li>
+<li>BPU_printGf2PolyForMatrix()
+: <a class="el" href="gf2_8h.html#acac439f65bc8018df9e84a16e098c157">gf2.h</a>
+, <a class="el" href="gf2_8c.html#acac439f65bc8018df9e84a16e098c157">gf2.c</a>
+</li>
+<li>BPU_printGf2QcMatrix()
+: <a class="el" href="gf2_8c.html#a42a06667df0c0199828ab94fe12041f3">gf2.c</a>
+, <a class="el" href="gf2_8h.html#a42a06667df0c0199828ab94fe12041f3">gf2.h</a>
+</li>
+<li>BPU_printGf2SparsePoly()
+: <a class="el" href="gf2_8h.html#a130fd30b5b01a0c06927b6a325171f3a">gf2.h</a>
+, <a class="el" href="gf2_8c.html#a130fd30b5b01a0c06927b6a325171f3a">gf2.c</a>
+</li>
+<li>BPU_printGf2SparseQcMatrix()
+: <a class="el" href="gf2_8c.html#af273974f7921840f85880bff11dbf279">gf2.c</a>
+, <a class="el" href="gf2_8h.html#af273974f7921840f85880bff11dbf279">gf2.h</a>
+</li>
 <li>BPU_printGf2Vec()
-: <a class="el" href="gf2_8h.html#afa38a7cb7fbf24e34de5b081af5f8c8a">gf2.h</a>
-, <a class="el" href="gf2_8c.html#afa38a7cb7fbf24e34de5b081af5f8c8a">gf2.c</a>
+: <a class="el" href="gf2_8c.html#afa38a7cb7fbf24e34de5b081af5f8c8a">gf2.c</a>
+, <a class="el" href="gf2_8h.html#afa38a7cb7fbf24e34de5b081af5f8c8a">gf2.h</a>
 </li>
 <li>BPU_printGf2VecMsb()
 : <a class="el" href="gf2_8c.html#a5ac87e8743a61599cc9b15eec09c8a45">gf2.c</a>
@@ -784,27 +978,51 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 , <a class="el" href="gf2_8h.html#a4a2f4c8338c96a9a8aecf6ca03f44951">gf2.h</a>
 </li>
 <li>BPU_printGf2xMat()
-: <a class="el" href="gf2x_8h.html#a5ae102b335372c2f27c941a44f2b5113">gf2x.h</a>
-, <a class="el" href="gf2x_8c.html#a5ae102b335372c2f27c941a44f2b5113">gf2x.c</a>
+: <a class="el" href="gf2x_8c.html#a5ae102b335372c2f27c941a44f2b5113">gf2x.c</a>
+, <a class="el" href="gf2x_8h.html#a5ae102b335372c2f27c941a44f2b5113">gf2x.h</a>
 </li>
 <li>BPU_printGf2xPoly()
-: <a class="el" href="gf2x_8h.html#ad0e3507eb0afc292b1ba0316e992b118">gf2x.h</a>
-, <a class="el" href="gf2x_8c.html#ad0e3507eb0afc292b1ba0316e992b118">gf2x.c</a>
+: <a class="el" href="gf2x_8c.html#ad0e3507eb0afc292b1ba0316e992b118">gf2x.c</a>
+, <a class="el" href="gf2x_8h.html#ad0e3507eb0afc292b1ba0316e992b118">gf2x.h</a>
 </li>
 <li>BPU_printGf2xVec()
-: <a class="el" href="gf2x_8c.html#a2395aa9fb27048743982e65aa04637bc">gf2x.c</a>
-, <a class="el" href="gf2x_8h.html#a2395aa9fb27048743982e65aa04637bc">gf2x.h</a>
+: <a class="el" href="gf2x_8h.html#a2395aa9fb27048743982e65aa04637bc">gf2x.h</a>
+, <a class="el" href="gf2x_8c.html#a2395aa9fb27048743982e65aa04637bc">gf2x.c</a>
 </li>
 <li>BPU_printPerm()
-: <a class="el" href="perm_8h.html#a0c24e1652c436cda9fd81d4467f5cb94">perm.h</a>
-, <a class="el" href="perm_8c.html#a0c24e1652c436cda9fd81d4467f5cb94">perm.c</a>
+: <a class="el" href="perm_8c.html#a0c24e1652c436cda9fd81d4467f5cb94">perm.c</a>
+, <a class="el" href="perm_8h.html#a0c24e1652c436cda9fd81d4467f5cb94">perm.h</a>
 </li>
 <li>BPU_printWarning
 : <a class="el" href="debugio_8h.html#a0166e7149a42aa5d4bf0558c2f6bb7f1">debugio.h</a>
 </li>
 <li>BPU_prngGetRand()
-: <a class="el" href="prng_8h.html#a432cb9a0a5358d3cd39bbcf3cdf0aee6">prng.h</a>
-, <a class="el" href="prng_8c.html#a432cb9a0a5358d3cd39bbcf3cdf0aee6">prng.c</a>
+: <a class="el" href="prng_8c.html#a432cb9a0a5358d3cd39bbcf3cdf0aee6">prng.c</a>
+, <a class="el" href="prng_8h.html#a432cb9a0a5358d3cd39bbcf3cdf0aee6">prng.h</a>
+</li>
+<li>BPU_QCMDPC_MAX_B_VALUES
+: <a class="el" href="qcmdpc_8h.html#a7a69fd8959e84c9970066347bfe5cde8">qcmdpc.h</a>
+</li>
+<li>BPU_QCMDPC_PARAM_DELTA
+: <a class="el" href="qcmdpc_8h.html#a34c22bc9a7ca5c52b8d54d94720402e1">qcmdpc.h</a>
+</li>
+<li>BPU_QCMDPC_PARAM_DELTA_B
+: <a class="el" href="qcmdpc_8h.html#a636b8d736a5aea69078e11ab8e6f1f00">qcmdpc.h</a>
+</li>
+<li>BPU_QCMDPC_PARAM_MAX_ITER
+: <a class="el" href="qcmdpc_8h.html#aa5ca1c6edd41782b96fef15b295e3251">qcmdpc.h</a>
+</li>
+<li>BPU_qcmdpcFreeParams()
+: <a class="el" href="qcmdpctypes_8h.html#aeb3c3b2c71df56e12609009aebb30810">qcmdpctypes.h</a>
+, <a class="el" href="qcmdpctypes_8c.html#aeb3c3b2c71df56e12609009aebb30810">qcmdpctypes.c</a>
+</li>
+<li>BPU_qcmdpcFreeSpec()
+: <a class="el" href="qcmdpctypes_8h.html#a93cedf790d036bad3362dca0eddd0e41">qcmdpctypes.h</a>
+, <a class="el" href="qcmdpctypes_8c.html#a93cedf790d036bad3362dca0eddd0e41">qcmdpctypes.c</a>
+</li>
+<li>BPU_qcmdpcInitParams()
+: <a class="el" href="qcmdpctypes_8h.html#aec6478a062285670b4bafa7b5fe60194">qcmdpctypes.h</a>
+, <a class="el" href="qcmdpctypes_8c.html#aec6478a062285670b4bafa7b5fe60194">qcmdpctypes.c</a>
 </li>
 <li>BPU_STR_ASN1_MECS_PRI_KEY
 : <a class="el" href="asn1_8h.html#a413918db85c17f78083243bfe3d2e040">asn1.h</a>
@@ -854,6 +1072,18 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 <li>BPU_T_GF2_Matrix
 : <a class="el" href="gf2types_8h.html#a1572329998e7b3ef917dd6f8fa1afc9e">gf2types.h</a>
 </li>
+<li>BPU_T_GF2_Poly
+: <a class="el" href="gf2types_8h.html#a5dba7160af1326078b65b013de2e6b56">gf2types.h</a>
+</li>
+<li>BPU_T_GF2_QC_Matrix
+: <a class="el" href="gf2types_8h.html#acffee618c4566ec7c047e7149526294d">gf2types.h</a>
+</li>
+<li>BPU_T_GF2_Sparse_Poly
+: <a class="el" href="gf2types_8h.html#a6c840c9e68be0af8c4e041224dfe37b0">gf2types.h</a>
+</li>
+<li>BPU_T_GF2_Sparse_Qc_Matrix
+: <a class="el" href="gf2types_8h.html#a5efcc52044b5703b1dccda097b40dbd2">gf2types.h</a>
+</li>
 <li>BPU_T_GF2_Vector
 : <a class="el" href="gf2types_8h.html#a016a734f8833224b1e4e1dba70baa284">gf2types.h</a>
 </li>
@@ -875,6 +1105,12 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 <li>BPU_T_Perm_Vector
 : <a class="el" href="permtypes_8h.html#acb588e2a5e6a980f6a98479d3ab5999e">permtypes.h</a>
 </li>
+<li>BPU_T_Qcmdpc_Params
+: <a class="el" href="qcmdpctypes_8h.html#a52b65319dd8a178567ca38b6f5b48a8b">qcmdpctypes.h</a>
+</li>
+<li>BPU_T_Qcmdpc_Spec
+: <a class="el" href="qcmdpctypes_8h.html#aef7e2b4103e33ab00384f0cf0730870d">qcmdpctypes.h</a>
+</li>
 <li>BPU_T_UN_Code_Params
 : <a class="el" href="codectx_8h.html#a6a877ced1870cf5e06e5cf3188ae8f74">codectx.h</a>
 </li>
@@ -893,7 +1129,7 @@ $(document).ready(function(){initNavTree('globals_b.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 16 2015 23:37:37 for McEliece BitPunch by
+    <li class="footer">Generated on Mon May 18 2015 12:30:13 for BitPunch McEliece by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

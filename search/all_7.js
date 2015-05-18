@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['g',['g',['../struct___b_p_u___t___goppa___spec.html#a83821dd94d9ed9d003d1db7d899d0440',1,'_BPU_T_Goppa_Spec']]],
+  ['g',['G',['../struct___b_p_u___t___qcmdpc___spec.html#a4f063c680eefc944675cfd979d73da79',1,'_BPU_T_Qcmdpc_Spec::G()'],['../struct___b_p_u___t___goppa___spec.html#a83821dd94d9ed9d003d1db7d899d0440',1,'_BPU_T_Goppa_Spec::g()']]],
   ['g_5fmat',['g_mat',['../struct___b_p_u___t___goppa___spec.html#a10a921c83b0ee909e329994bd1aac465',1,'_BPU_T_Goppa_Spec']]],
   ['get_5fuint64_5fbe',['GET_UINT64_BE',['../polarssl_2sha512_8c.html#ab4b889133c0d82456128b95d0493d928',1,'sha512.c']]],
   ['gf2_2ec',['gf2.c',['../gf2_8c.html',1,'']]],
