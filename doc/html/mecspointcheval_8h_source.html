@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: /media/fruh/data/school/BitPunch/lib/src/bitpunch/crypto/cca2/mecspointcheval.h Source File</title>
+<title>BitPunch McEliece: lib/src/bitpunch/crypto/cca2/mecspointcheval.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,8 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="bitpunch-black-small.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">McEliece BitPunch
+   <div id="projectname">BitPunch McEliece
+   &#160;<span id="projectnumber">v0.0.4</span>
    </div>
   </td>
  </tr>
@@ -137,12 +138,12 @@ $(document).ready(function(){initNavTree('mecspointcheval_8h_source.html','');})
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#ifdef BPU_CONF_ENCRYPTION</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">int</span> BPU_mecsPointchevalCCA2Encrypt(<a class="code" href="struct___b_p_u___t___g_f2___vector.html">BPU_T_GF2_Vector</a> *out, <span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___g_f2___vector.html">BPU_T_GF2_Vector</a> *in, <span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___mecs___ctx.html">BPU_T_Mecs_Ctx</a> *ctx);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">int</span> <a class="code" href="mecspointcheval_8h.html#a7022e252183e2b9a6004e11b620256da">BPU_mecsPointchevalCCA2Encrypt</a>(<a class="code" href="struct___b_p_u___t___g_f2___vector.html">BPU_T_GF2_Vector</a> *out, <span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___g_f2___vector.html">BPU_T_GF2_Vector</a> *in, <span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___mecs___ctx.html">BPU_T_Mecs_Ctx</a> *ctx);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#ifdef BPU_CONF_DECRYPTION</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keywordtype">int</span> BPU_mecsPointchevalCCA2Decrypt(<a class="code" href="struct___b_p_u___t___g_f2___vector.html">BPU_T_GF2_Vector</a> *out, <span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___g_f2___vector.html">BPU_T_GF2_Vector</a> *in, <span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___mecs___ctx.html">BPU_T_Mecs_Ctx</a> *ctx);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keywordtype">int</span> <a class="code" href="mecspointcheval_8h.html#a434904547f72d0a7d390758dc0b4360e">BPU_mecsPointchevalCCA2Decrypt</a>(<a class="code" href="struct___b_p_u___t___g_f2___vector.html">BPU_T_GF2_Vector</a> *out, <span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___g_f2___vector.html">BPU_T_GF2_Vector</a> *in, <span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___mecs___ctx.html">BPU_T_Mecs_Ctx</a> *ctx);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#endif // BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA</span></div>
@@ -151,6 +152,8 @@ $(document).ready(function(){initNavTree('mecspointcheval_8h_source.html','');})
 <div class="ttc" id="struct___b_p_u___t___g_f2___vector_html"><div class="ttname"><a href="struct___b_p_u___t___g_f2___vector.html">_BPU_T_GF2_Vector</a></div><div class="ttdef"><b>Definition:</b> <a href="gf2types_8h_source.html#l00032">gf2types.h:32</a></div></div>
 <div class="ttc" id="config_8h_html"><div class="ttname"><a href="config_8h.html">config.h</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___mecs___ctx_html"><div class="ttname"><a href="struct___b_p_u___t___mecs___ctx.html">_BPU_T_Mecs_Ctx</a></div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00038">mecsctx.h:38</a></div></div>
+<div class="ttc" id="mecspointcheval_8h_html_a7022e252183e2b9a6004e11b620256da"><div class="ttname"><a href="mecspointcheval_8h.html#a7022e252183e2b9a6004e11b620256da">BPU_mecsPointchevalCCA2Encrypt</a></div><div class="ttdeci">int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx)</div><div class="ttdoc">BPU_mecsPointchevalCCA2Encrypt. </div><div class="ttdef"><b>Definition:</b> <a href="mecspointcheval_8c_source.html#l00026">mecspointcheval.c:26</a></div></div>
+<div class="ttc" id="mecspointcheval_8h_html_a434904547f72d0a7d390758dc0b4360e"><div class="ttname"><a href="mecspointcheval_8h.html#a434904547f72d0a7d390758dc0b4360e">BPU_mecsPointchevalCCA2Decrypt</a></div><div class="ttdeci">int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx)</div><div class="ttdoc">BPU_mecsPointchevalCCA2Decrypt. </div><div class="ttdef"><b>Definition:</b> <a href="mecspointcheval_8c_source.html#l00076">mecspointcheval.c:76</a></div></div>
 <div class="ttc" id="mecsctx_8h_html"><div class="ttname"><a href="mecsctx_8h.html">mecsctx.h</a></div></div>
 <div class="ttc" id="gf2types_8h_html"><div class="ttname"><a href="gf2types_8h.html">gf2types.h</a></div></div>
 <div class="ttc" id="sha512_8h_html"><div class="ttname"><a href="sha512_8h.html">sha512.h</a></div></div>
@@ -160,7 +163,7 @@ $(document).ready(function(){initNavTree('mecspointcheval_8h_source.html','');})
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li><li class="navelem"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></li><li class="navelem"><a class="el" href="dir_0f89a311a44853eaaaf3dbdb23434ca6.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_8e8c1badd115a0205c74d7c0975524ef.html">crypto</a></li><li class="navelem"><a class="el" href="dir_b96fbab0567ce50a970b833b16fe4020.html">cca2</a></li><li class="navelem"><a class="el" href="mecspointcheval_8h.html">mecspointcheval.h</a></li>
-    <li class="footer">Generated on Mon May 18 2015 00:16:43 for McEliece BitPunch by
+    <li class="footer">Generated on Mon May 18 2015 12:30:13 for BitPunch McEliece by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

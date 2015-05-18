@@ -16,11 +16,13 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
-\mainpage BitPunch McEliece v0.0.3
+\mainpage BitPunch McEliece v0.0.4
 
 \section Introduction
 	Goal of BitPunch project is to make a standalone McEliece implementation. Current version is only develompent version, it is not suitable to use in real-life implementation.
-	Our implementation of MECS uses Goppa codes.
+	Our implementation of MECS uses Goppa codes. For ASN.1 we are using libtasn1 library (tested with version 3.4-3).
+	- in Debian based distro install package:
+		- apt-get install libtasn1-6 libtasn1-6-dev
 
 	I know, there is a lot of BUGS now.
 	If you have any questions, ideas create new issue or contact me:
@@ -49,41 +51,6 @@
             - lib/src/bitpunch/code/goppa/goppa.h
                 - BPU_goppaEncode()
                 - BPU_goppaDecode()
-
-
-\section Changes
-    v0.0.3
-        - added Adapted Pointcheval's scheme
-        - implemented SHA512 from (https://polarssl.org)
-        - BPU_*Malloc - now using TYPE **pointer and also BPU_*Free
-        - implemented ASN1 key serialization using libtasn1 (external dependency) (https://www.gnu.org/software/libtasn1/) for mecs basic, Pointcheval's scheme, both with H matrix
-        - some error checks fixed
-        - added zero to support
-        - added code and mecs parameters initialization
-        - test enviroment reconfigured, now it creates snapshot of current workspace
-        - some BUGs fixed
-        - now possible to compile static or shared lib
-        - compilation w/o print functions, enc, dec or keygen, CCA2 Pointchval's scheme
-
-    v0.0.2
-        - module organization: crypto, math, code, prng
-        - convention unified see doc
-        - new context management: mecs, code and math context
-        - memory usage reduction (heap peak) from 8 MiB to ~170 KiB with params m=11 t=50 w/o H
-        - removed memory leaks
-        - removed functions which are allocating memory inside for output (suffix A)
-        - posibility to build with or w/o using H precomputed matrix by decription
-        - added basic tests
-        - removed Adapted CCA2 Pointcheval's scheme (TEMPORARLY)
-        - no external dependecies
-
-    v0.0.1
-        - Initial version - of BitPunch project
-        - contains implementation of MECS using Goppa code
-        - Patterson's alg. for decoding
-        - dependencies on OpenSSL (sha)
-        - Adapted CCA2 Pointcheval's scheme
-        - some math function over gf2, gf2x, gf2xpoly like ext. eclidean, gen. of irreducible goppa poly...
 
 \section Structure
 	Here is the basic structure overview.
@@ -121,7 +88,7 @@
 	\subsection Modules
         BitPunch has more modules, all sources are located in lib/src/bitpunch/:
             - asn1
-                - is used for searializing key using libtasn1
+				- is used for searializing key using libtasn1 (tested with version 3.4-3)
                 - it uses DER encoding
 			- math
                 - contains all arithmetic operation over GF2,  GF2x, polynomials, Matrices, Vectors, Permutations, ...
@@ -156,12 +123,53 @@
         - make shared - to build shared lib
 
     Builded libraries are located in dist/ folder. For more preprocesor options see lib/src/bitpunch/config.h file.
-	Default optimization is -O2. To set up more verbosity define -DERRORL, -DWARNING_L or DDEBUG_L, this are using functions like BPU_printError, BPU_printWarning, BPU_printDebug.
+	Default optimization is -O2. To set up more verbosity define -DERRORL, -DWARNING_L or DDEBUG_L, this are using functions like BPU_printError(), BPU_printWarning(), BPU_printDebug().
+
+\page Changes
+v0.0.4
+	- implemented QC-MDPC codes (A. Gulyas)
+	- updated test enviroment and doc for dummy test
+
+v0.0.3
+	- added Adapted Pointcheval's scheme
+	- implemented SHA512 from (https://polarssl.org)
+	- BPU_*Malloc - now using TYPE **pointer and also BPU_*Free
+	- implemented ASN1 key serialization using libtasn1 (external dependency) (https://www.gnu.org/software/libtasn1/) for mecs basic, Pointcheval's scheme, both with H matrix
+	- some error checks fixed
+	- added zero to support
+	- added code and mecs parameters initialization
+	- test enviroment reconfigured, now it creates snapshot of current workspace
+	- some BUGs fixed
+	- now possible to compile static or shared lib
+	- compilation w/o print functions, enc, dec or keygen, CCA2 Pointchval's scheme
+
+v0.0.2
+	- module organization: crypto, math, code, prng
+	- convention unified see doc
+	- new context management: mecs, code and math context
+	- memory usage reduction (heap peak) from 8 MiB to ~170 KiB with params m=11 t=50 w/o H
+	- removed memory leaks
+	- removed functions which are allocating memory inside for output (suffix A)
+	- posibility to build with or w/o using H precomputed matrix by decription
+	- added basic tests
+	- removed Adapted CCA2 Pointcheval's scheme (TEMPORARLY)
+	- no external dependecies
+
+v0.0.1
+	- Initial version - of BitPunch project
+	- contains implementation of MECS using Goppa code
+	- Patterson's alg. for decoding
+	- dependencies on OpenSSL (sha)
+	- Adapted CCA2 Pointcheval's scheme
+	- some math function over gf2, gf2x, gf2xpoly like ext. eclidean, gen. of irreducible goppa poly...
 
 \page "Test enviroment"
 
 \section Intro
-	There is implemented simple test enviroment. You can run it using ./runTest TEST_NAME, or use help: ./runTest -h to see all options.
+	There is implemented simple test enviroment. There are test which requires 'valgrind'.
+- Debian based distro: apt-get install valgrind
+
+You can run it using ./runTest TEST_NAME, or use help: ./runTest -h to see all options.
 \verbatim
 fruh@htfuws:~/projects/BitPunch$ ./runTest -h
 Usage: runTest [options]
@@ -316,4 +324,4 @@ We can run our dummy test using:
  \endverbatim
 
 */
-#define VERSION = "0.0.3"
+#define VERSION = "0.0.4"

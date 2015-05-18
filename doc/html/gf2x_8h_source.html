@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: /media/fruh/data/school/BitPunch/lib/src/bitpunch/math/gf2x.h Source File</title>
+<title>BitPunch McEliece: lib/src/bitpunch/math/gf2x.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,8 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="bitpunch-black-small.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">McEliece BitPunch
+   <div id="projectname">BitPunch McEliece
+   &#160;<span id="projectnumber">v0.0.4</span>
    </div>
   </td>
  </tr>
@@ -140,11 +141,11 @@ $(document).ready(function(){initNavTree('gf2x_8h_source.html','');});
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifdef BPU_CONF_PRINT</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"></span><span class="comment">/* ==================================== Print functions ==================================== */</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keywordtype">void</span> BPU_printGf2xMat(<span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___g_f2__16x___matrix.html">BPU_T_GF2_16x_Matrix</a> *in);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keywordtype">void</span> <a class="code" href="gf2x_8h.html#a5ae102b335372c2f27c941a44f2b5113">BPU_printGf2xMat</a>(<span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___g_f2__16x___matrix.html">BPU_T_GF2_16x_Matrix</a> *in);</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">void</span> BPU_printGf2xPoly(<span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___g_f2__16x___poly.html">BPU_T_GF2_16x_Poly</a> *p, <span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___math___ctx.html">BPU_T_Math_Ctx</a> *math_ctx);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">void</span> <a class="code" href="gf2x_8h.html#ad0e3507eb0afc292b1ba0316e992b118">BPU_printGf2xPoly</a>(<span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___g_f2__16x___poly.html">BPU_T_GF2_16x_Poly</a> *p, <span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___math___ctx.html">BPU_T_Math_Ctx</a> *math_ctx);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> BPU_printGf2xVec(<span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___g_f2__16x___vector.html">BPU_T_GF2_16x_Vector</a> *v);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> <a class="code" href="gf2x_8h.html#a2395aa9fb27048743982e65aa04637bc">BPU_printGf2xVec</a>(<span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___g_f2__16x___vector.html">BPU_T_GF2_16x_Vector</a> *v);</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">/* ------------------------------------ Print functions ------------------------------------ */</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif // BPU_CONF_PRINT</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor"></span></div>
@@ -243,6 +244,7 @@ $(document).ready(function(){initNavTree('gf2x_8h_source.html','');});
 <div class="ttc" id="gf2x_8h_html_a3bf99bcf5b0b2bd4506c675d5992d5b6"><div class="ttname"><a href="gf2x_8h.html#a3bf99bcf5b0b2bd4506c675d5992d5b6">BPU_gf2xPolyGenRandom</a></div><div class="ttdeci">void BPU_gf2xPolyGenRandom(BPU_T_GF2_16x_Poly *p, int t, const BPU_T_Math_Ctx *math_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00923">gf2x.c:923</a></div></div>
 <div class="ttc" id="gf2x_8h_html_aed617f67b2e6daae840028d2e18fcb1a"><div class="ttname"><a href="gf2x_8h.html#aed617f67b2e6daae840028d2e18fcb1a">BPU_gf2xPolyEval</a></div><div class="ttdeci">BPU_T_GF2_16x BPU_gf2xPolyEval(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x x, const BPU_T_Math_Ctx *math_ctx)</div><div class="ttdoc">Evaluate polynomial over GF2^m with x. </div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00634">gf2x.c:634</a></div></div>
 <div class="ttc" id="gf2x_8h_html_a3bd734cab0e793beb3e5f5bddd0cd6f0"><div class="ttname"><a href="gf2x_8h.html#a3bd734cab0e793beb3e5f5bddd0cd6f0">BPU_gf2xPolyInv</a></div><div class="ttdeci">void BPU_gf2xPolyInv(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx)</div><div class="ttdoc">Get inverse polynomial over GF2_16x. </div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00770">gf2x.c:770</a></div></div>
+<div class="ttc" id="gf2x_8h_html_ad0e3507eb0afc292b1ba0316e992b118"><div class="ttname"><a href="gf2x_8h.html#ad0e3507eb0afc292b1ba0316e992b118">BPU_printGf2xPoly</a></div><div class="ttdeci">void BPU_printGf2xPoly(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *math_ctx)</div><div class="ttdoc">BPU_printGf2xPoly print GF2x polynomial. </div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00047">gf2x.c:47</a></div></div>
 <div class="ttc" id="gf2x_8h_html_a5744f4310ba95b748179b11bb1f433ce"><div class="ttname"><a href="gf2x_8h.html#a5744f4310ba95b748179b11bb1f433ce">BPU_gf2xMatSwapRows</a></div><div class="ttdeci">void BPU_gf2xMatSwapRows(BPU_T_GF2_16x_Matrix *mat, int i, int j)</div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00845">gf2x.c:845</a></div></div>
 <div class="ttc" id="gf2x_8h_html_abf11f0c4c1897f4e326cfe7ee903ce85"><div class="ttname"><a href="gf2x_8h.html#abf11f0c4c1897f4e326cfe7ee903ce85">BPU_gf2xPolyAdd</a></div><div class="ttdeci">void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b)</div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00161">gf2x.c:161</a></div></div>
 <div class="ttc" id="config_8h_html"><div class="ttname"><a href="config_8h.html">config.h</a></div></div>
@@ -283,17 +285,19 @@ $(document).ready(function(){initNavTree('gf2x_8h_source.html','');});
 <div class="ttc" id="struct___b_p_u___t___g_f2__16x___poly_html"><div class="ttname"><a href="struct___b_p_u___t___g_f2__16x___poly.html">_BPU_T_GF2_16x_Poly</a></div><div class="ttdef"><b>Definition:</b> <a href="gf2xtypes_8h_source.html#l00053">gf2xtypes.h:53</a></div></div>
 <div class="ttc" id="gf2x_8h_html_a91cbc4f7d6d3898f3ca300b44df4f1f5"><div class="ttname"><a href="gf2x_8h.html#a91cbc4f7d6d3898f3ca300b44df4f1f5">BPU_gf2xPolyCopy</a></div><div class="ttdeci">void BPU_gf2xPolyCopy(BPU_T_GF2_16x_Poly *dest, const BPU_T_GF2_16x_Poly *src)</div><div class="ttdoc">Copy Polynomial. </div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00757">gf2x.c:757</a></div></div>
 <div class="ttc" id="gf2x_8h_html_a94754ee33557f3902c001ca5027a4f77"><div class="ttname"><a href="gf2x_8h.html#a94754ee33557f3902c001ca5027a4f77">BPU_gf2xVecToPoly</a></div><div class="ttdeci">void BPU_gf2xVecToPoly(BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x_Vector *vec)</div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00829">gf2x.c:829</a></div></div>
+<div class="ttc" id="gf2x_8h_html_a2395aa9fb27048743982e65aa04637bc"><div class="ttname"><a href="gf2x_8h.html#a2395aa9fb27048743982e65aa04637bc">BPU_printGf2xVec</a></div><div class="ttdeci">void BPU_printGf2xVec(const BPU_T_GF2_16x_Vector *v)</div><div class="ttdoc">BPU_printGf2xVec print GF2x vector. </div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00068">gf2x.c:68</a></div></div>
 <div class="ttc" id="gf2x_8h_html_afec808f029a1239261c641ddabc13139"><div class="ttname"><a href="gf2x_8h.html#afec808f029a1239261c641ddabc13139">BPU_gf2xPolyPower</a></div><div class="ttdeci">void BPU_gf2xPolyPower(BPU_T_GF2_16x_Poly *a, int e, const BPU_T_Math_Ctx *math_ctx)</div><div class="ttdoc">Calculate power of polynomial. </div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00296">gf2x.c:296</a></div></div>
 <div class="ttc" id="gf2x_8h_html_a741d360c433366dcaf0eba5e6ec2dbec"><div class="ttname"><a href="gf2x_8h.html#a741d360c433366dcaf0eba5e6ec2dbec">BPU_gf2xMatRoot</a></div><div class="ttdeci">void BPU_gf2xMatRoot(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00382">gf2x.c:382</a></div></div>
 <div class="ttc" id="mathctx_8h_html"><div class="ttname"><a href="mathctx_8h.html">mathctx.h</a></div></div>
 <div class="ttc" id="gf2x_8h_html_a651eaaf2ed43caa0c3d7718772c7f2a7"><div class="ttname"><a href="gf2x_8h.html#a651eaaf2ed43caa0c3d7718772c7f2a7">BPU_gf2xPolyIrredTest</a></div><div class="ttdeci">int BPU_gf2xPolyIrredTest(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *math_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00658">gf2x.c:658</a></div></div>
+<div class="ttc" id="gf2x_8h_html_a5ae102b335372c2f27c941a44f2b5113"><div class="ttname"><a href="gf2x_8h.html#a5ae102b335372c2f27c941a44f2b5113">BPU_printGf2xMat</a></div><div class="ttdeci">void BPU_printGf2xMat(const BPU_T_GF2_16x_Matrix *in)</div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00033">gf2x.c:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li><li class="navelem"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></li><li class="navelem"><a class="el" href="dir_0f89a311a44853eaaaf3dbdb23434ca6.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_b9c9d5f7d81b3b29ba2924b8b369188e.html">math</a></li><li class="navelem"><a class="el" href="gf2x_8h.html">gf2x.h</a></li>
-    <li class="footer">Generated on Mon May 18 2015 00:16:43 for McEliece BitPunch by
+    <li class="footer">Generated on Mon May 18 2015 12:30:13 for BitPunch McEliece by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: /media/fruh/data/school/BitPunch/lib/src/bitpunch/crypto/mecsctx.h File Reference</title>
+<title>BitPunch McEliece: lib/src/bitpunch/crypto/mecsctx.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,8 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="bitpunch-black-small.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">McEliece BitPunch
+   <div id="projectname">BitPunch McEliece
+   &#160;<span id="projectnumber">v0.0.4</span>
    </div>
   </td>
  </tr>
@@ -135,7 +136,9 @@ Typedefs</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a06ad3a0f013f1323a14003ecc69e1344"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344">_BPU_T_EN_Mecs_Types</a> { <a class="el" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344aeefa89f2a2597ec4adbe1c97875f07dd">BPU_EN_MECS_BASIC_GOPPA</a> = 1, 
-<a class="el" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344a477d698ec8d367c014d8e16827bf0021">BPU_EN_MECS_BASIC_QCMDPC</a>
+<a class="el" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344a910b6afd752efc030bad1af66b003578">BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA</a>, 
+<a class="el" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344a477d698ec8d367c014d8e16827bf0021">BPU_EN_MECS_BASIC_QCMDPC</a>, 
+<a class="el" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344acbafe64e813835a94d52ad510540c746">BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC</a>
  }</td></tr>
 <tr class="memdesc:a06ad3a0f013f1323a14003ecc69e1344"><td class="mdescLeft">&#160;</td><td class="mdescRight">Possible types of MECS.  <a href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344">More...</a><br/></td></tr>
 <tr class="separator:a06ad3a0f013f1323a14003ecc69e1344"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,8 +216,14 @@ Functions</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a06ad3a0f013f1323a14003ecc69e1344aeefa89f2a2597ec4adbe1c97875f07dd"></a>BPU_EN_MECS_BASIC_GOPPA</em>&#160;</td><td class="fielddoc">
 <p>basic mecs, without any conversion </p>
 </td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a06ad3a0f013f1323a14003ecc69e1344a910b6afd752efc030bad1af66b003578"></a>BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA</em>&#160;</td><td class="fielddoc">
+<p>adapted Pointcheval's cca2 conversion </p>
+</td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="a06ad3a0f013f1323a14003ecc69e1344a477d698ec8d367c014d8e16827bf0021"></a>BPU_EN_MECS_BASIC_QCMDPC</em>&#160;</td><td class="fielddoc">
 <p>basic qc-mdpc mecs, without any conversion </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a06ad3a0f013f1323a14003ecc69e1344acbafe64e813835a94d52ad510540c746"></a>BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC</em>&#160;</td><td class="fielddoc">
+<p>adapted Pointcheval's cca2 conversion for qcmdpc </p>
 </td></tr>
 </table>
 
@@ -424,7 +433,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li><li class="navelem"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></li><li class="navelem"><a class="el" href="dir_0f89a311a44853eaaaf3dbdb23434ca6.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_8e8c1badd115a0205c74d7c0975524ef.html">crypto</a></li><li class="navelem"><a class="el" href="mecsctx_8h.html">mecsctx.h</a></li>
-    <li class="footer">Generated on Mon May 18 2015 00:16:43 for McEliece BitPunch by
+    <li class="footer">Generated on Mon May 18 2015 12:30:13 for BitPunch McEliece by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

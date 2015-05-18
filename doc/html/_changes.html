@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>BitPunch McEliece: lib Directory Reference</title>
+<title>BitPunch McEliece: $title</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -46,7 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -79,7 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('dir_c0a6ce8c1f069492245798e85b7debda.html','');});
+$(document).ready(function(){initNavTree('_changes.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -96,23 +96,53 @@ $(document).ready(function(){initNavTree('dir_c0a6ce8c1f069492245798e85b7debda.h
 </iframe>
 </div>
 
-<div class="header">
-  <div class="headertitle">
-<div class="title">lib Directory Reference</div>  </div>
-</div><!--header-->
 <div class="contents">
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="subdirs"></a>
-Directories</h2></td></tr>
-<tr class="memitem:dir_10208272a9fb367e0d5d445e8a6533b6"><td class="memItemLeft" align="right" valign="top">directory &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-</div><!-- contents -->
+<div class="textblock"><p>v0.0.4</p>
+<ul>
+<li>implemented QC-MDPC codes (A. Gulyas)</li>
+<li>updated test enviroment and doc for dummy test</li>
+</ul>
+<p>v0.0.3</p>
+<ul>
+<li>added Adapted Pointcheval's scheme</li>
+<li>implemented SHA512 from (<a href="https://polarssl.org">https://polarssl.org</a>)</li>
+<li>BPU_*Malloc - now using TYPE **pointer and also BPU_*Free</li>
+<li>implemented ASN1 key serialization using libtasn1 (external dependency) (<a href="https://www.gnu.org/software/libtasn1/">https://www.gnu.org/software/libtasn1/</a>) for mecs basic, Pointcheval's scheme, both with H matrix</li>
+<li>some error checks fixed</li>
+<li>added zero to support</li>
+<li>added code and mecs parameters initialization</li>
+<li>test enviroment reconfigured, now it creates snapshot of current workspace</li>
+<li>some BUGs fixed</li>
+<li>now possible to compile static or shared lib</li>
+<li>compilation w/o print functions, enc, dec or keygen, CCA2 Pointchval's scheme</li>
+</ul>
+<p>v0.0.2</p>
+<ul>
+<li>module organization: crypto, math, code, prng</li>
+<li>convention unified see doc</li>
+<li>new context management: mecs, code and math context</li>
+<li>memory usage reduction (heap peak) from 8 MiB to ~170 KiB with params m=11 t=50 w/o H</li>
+<li>removed memory leaks</li>
+<li>removed functions which are allocating memory inside for output (suffix A)</li>
+<li>posibility to build with or w/o using H precomputed matrix by decription</li>
+<li>added basic tests</li>
+<li>removed Adapted CCA2 Pointcheval's scheme (TEMPORARLY)</li>
+<li>no external dependecies</li>
+</ul>
+<p>v0.0.1</p>
+<ul>
+<li>Initial version - of BitPunch project</li>
+<li>contains implementation of MECS using Goppa code</li>
+<li>Patterson's alg. for decoding</li>
+<li>dependencies on OpenSSL (sha)</li>
+<li>Adapted CCA2 Pointcheval's scheme</li>
+<li>some math function over gf2, gf2x, gf2xpoly like ext. eclidean, gen. of irreducible goppa poly... </li>
+</ul>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li>
     <li class="footer">Generated on Mon May 18 2015 12:30:13 for BitPunch McEliece by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>

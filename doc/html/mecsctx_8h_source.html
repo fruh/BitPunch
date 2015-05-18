@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: /media/fruh/data/school/BitPunch/lib/src/bitpunch/crypto/mecsctx.h Source File</title>
+<title>BitPunch McEliece: lib/src/bitpunch/crypto/mecsctx.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,8 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="bitpunch-black-small.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">McEliece BitPunch
+   <div id="projectname">BitPunch McEliece
+   &#160;<span id="projectnumber">v0.0.4</span>
    </div>
   </td>
  </tr>
@@ -134,11 +135,11 @@ $(document).ready(function(){initNavTree('mecsctx_8h_source.html','');});
 <div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344">   27</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344">_BPU_T_EN_Mecs_Types</a> {</div>
 <div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344aeefa89f2a2597ec4adbe1c97875f07dd">   28</a></span>&#160;    <a class="code" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344aeefa89f2a2597ec4adbe1c97875f07dd">BPU_EN_MECS_BASIC_GOPPA</a> = 1, </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span>        BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA, </div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344a910b6afd752efc030bad1af66b003578">   30</a></span>&#160;<span class="preprocessor"></span>        <a class="code" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344a910b6afd752efc030bad1af66b003578">BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA</a>, </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344a477d698ec8d367c014d8e16827bf0021">   32</a></span>&#160;<span class="preprocessor"></span>        <a class="code" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344a477d698ec8d367c014d8e16827bf0021">BPU_EN_MECS_BASIC_QCMDPC</a>, </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"></span>        BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC, </div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344acbafe64e813835a94d52ad510540c746">   34</a></span>&#160;<span class="preprocessor"></span>        <a class="code" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344acbafe64e813835a94d52ad510540c746">BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC</a>, </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor"></span>}<a class="code" href="mecsctx_8h.html#a46cf236ede287ac0f540379be0d567e2">BPU_T_EN_Mecs_Types</a>;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
@@ -191,9 +192,11 @@ $(document).ready(function(){initNavTree('mecsctx_8h_source.html','');});
 <div class="ttc" id="struct___b_p_u___t___mecs___ctx_html"><div class="ttname"><a href="struct___b_p_u___t___mecs___ctx.html">_BPU_T_Mecs_Ctx</a></div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00038">mecsctx.h:38</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___mecs___ctx_html_a05792759b5254db63ac3eb6fb7b17a01"><div class="ttname"><a href="struct___b_p_u___t___mecs___ctx.html#a05792759b5254db63ac3eb6fb7b17a01">_BPU_T_Mecs_Ctx::ct_len</a></div><div class="ttdeci">uint16_t ct_len</div><div class="ttdoc">CT len in bits. </div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00046">mecsctx.h:46</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___code___ctx_html"><div class="ttname"><a href="struct___b_p_u___t___code___ctx.html">_BPU_T_Code_Ctx</a></div><div class="ttdef"><b>Definition:</b> <a href="codectx_8h_source.html#l00053">codectx.h:53</a></div></div>
+<div class="ttc" id="mecsctx_8h_html_a06ad3a0f013f1323a14003ecc69e1344a910b6afd752efc030bad1af66b003578"><div class="ttname"><a href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344a910b6afd752efc030bad1af66b003578">BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA</a></div><div class="ttdoc">adapted Pointcheval&#39;s cca2 conversion </div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00030">mecsctx.h:30</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___mecs___ctx_html_a72f1d27a3b91f24c8da6d90b8cecc256"><div class="ttname"><a href="struct___b_p_u___t___mecs___ctx.html#a72f1d27a3b91f24c8da6d90b8cecc256">_BPU_T_Mecs_Ctx::type</a></div><div class="ttdeci">BPU_T_EN_Mecs_Types type</div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00039">mecsctx.h:39</a></div></div>
 <div class="ttc" id="codectx_8h_html"><div class="ttname"><a href="codectx_8h.html">codectx.h</a></div></div>
 <div class="ttc" id="mecsctx_8h_html_a6f324fd22e4f039388b10af248ead6b6"><div class="ttname"><a href="mecsctx_8h.html#a6f324fd22e4f039388b10af248ead6b6">BPU_mecsFreeParamsGoppa</a></div><div class="ttdeci">void BPU_mecsFreeParamsGoppa(BPU_T_UN_Mecs_Params *params)</div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8c_source.html#l00196">mecsctx.c:196</a></div></div>
+<div class="ttc" id="mecsctx_8h_html_a06ad3a0f013f1323a14003ecc69e1344acbafe64e813835a94d52ad510540c746"><div class="ttname"><a href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344acbafe64e813835a94d52ad510540c746">BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC</a></div><div class="ttdoc">adapted Pointcheval&#39;s cca2 conversion for qcmdpc </div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00034">mecsctx.h:34</a></div></div>
 <div class="ttc" id="mecsctx_8h_html_a7270797b19e4c0eca5c3fcd8a125faf9"><div class="ttname"><a href="mecsctx_8h.html#a7270797b19e4c0eca5c3fcd8a125faf9">BPU_mecsInitParamsQcmdpc</a></div><div class="ttdeci">int BPU_mecsInitParamsQcmdpc(BPU_T_UN_Mecs_Params *params, const uint16_t m, const uint16_t n0, const uint16_t w, const uint16_t t)</div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8c_source.html#l00200">mecsctx.c:200</a></div></div>
 <div class="ttc" id="mecsctx_8h_html_a06ad3a0f013f1323a14003ecc69e1344"><div class="ttname"><a href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344">_BPU_T_EN_Mecs_Types</a></div><div class="ttdeci">_BPU_T_EN_Mecs_Types</div><div class="ttdoc">Possible types of MECS. </div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00027">mecsctx.h:27</a></div></div>
 <div class="ttc" id="mecsctx_8h_html_a041a961782849e83e63d38baaf93d6e9"><div class="ttname"><a href="mecsctx_8h.html#a041a961782849e83e63d38baaf93d6e9">BPU_T_Mecs_Ctx</a></div><div class="ttdeci">struct _BPU_T_Mecs_Ctx BPU_T_Mecs_Ctx</div></div>
@@ -203,7 +206,7 @@ $(document).ready(function(){initNavTree('mecsctx_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li><li class="navelem"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></li><li class="navelem"><a class="el" href="dir_0f89a311a44853eaaaf3dbdb23434ca6.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_8e8c1badd115a0205c74d7c0975524ef.html">crypto</a></li><li class="navelem"><a class="el" href="mecsctx_8h.html">mecsctx.h</a></li>
-    <li class="footer">Generated on Mon May 18 2015 00:16:43 for McEliece BitPunch by
+    <li class="footer">Generated on Mon May 18 2015 12:30:13 for BitPunch McEliece by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

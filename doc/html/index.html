@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: BitPunch McEliece v0.0.3</title>
+<title>BitPunch McEliece: BitPunch McEliece v0.0.4</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,8 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="bitpunch-black-small.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">McEliece BitPunch
+   <div id="projectname">BitPunch McEliece
+   &#160;<span id="projectnumber">v0.0.4</span>
    </div>
   </td>
  </tr>
@@ -97,12 +98,18 @@ $(document).ready(function(){initNavTree('index.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">BitPunch McEliece v0.0.3 </div>  </div>
+<div class="title">BitPunch McEliece v0.0.4 </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="Introduction"></a>
 Introduction</h1>
-<p>Goal of BitPunch project is to make a standalone McEliece implementation. Current version is only develompent version, it is not suitable to use in real-life implementation. Our implementation of MECS uses Goppa codes.</p>
+<p>Goal of BitPunch project is to make a standalone McEliece implementation. Current version is only develompent version, it is not suitable to use in real-life implementation. Our implementation of MECS uses Goppa codes. For ASN.1 we are using libtasn1 library (tested with version 3.4-3).</p>
+<ul>
+<li>in Debian based distro install package:<ul>
+<li>apt-get install libtasn1-6 libtasn1-6-dev</li>
+</ul>
+</li>
+</ul>
 <p>I know, there is a lot of BUGS now. If you have any questions, ideas create new issue or contact me:</p>
 <ul>
 <li>xuhreckyf [ you know what to put here ] stuba.sk</li>
@@ -120,70 +127,32 @@ Introduction</h1>
 </li>
 <li>Encryption/Decryption:<ul>
 <li><a class="el" href="mecsbasic_8h.html">lib/src/bitpunch/crypto/mecsbasic/mecsbasic.h</a><ul>
-<li>BPU_mecsBasicEncrypt()</li>
-<li>BPU_mecsBasicDecrypt()</li>
+<li><a class="el" href="mecsbasic_8c.html#a3c39ab9dfab2440e89f0606c86b10c8c">BPU_mecsBasicEncrypt()</a></li>
+<li><a class="el" href="mecsbasic_8c.html#a433f6b45ab29095895c104f948964b41">BPU_mecsBasicDecrypt()</a></li>
 </ul>
 </li>
 <li><a class="el" href="mecspointcheval_8h.html">lib/src/bitpunch/crypto/cca2/mecspointcheval.h</a><ul>
-<li>BPU_mecsPointchevalCCA2Encrypt()</li>
-<li>BPU_mecsPointchevalCCA2Decrypt()</li>
+<li><a class="el" href="mecspointcheval_8c.html#a7022e252183e2b9a6004e11b620256da" title="BPU_mecsPointchevalCCA2Encrypt. ">BPU_mecsPointchevalCCA2Encrypt()</a></li>
+<li><a class="el" href="mecspointcheval_8c.html#a434904547f72d0a7d390758dc0b4360e" title="BPU_mecsPointchevalCCA2Decrypt. ">BPU_mecsPointchevalCCA2Decrypt()</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li>KeyGen:<ul>
 <li><a class="el" href="goppa_8h.html">lib/src/bitpunch/code/goppa/goppa.h</a><ul>
-<li>BPU_goppaGenCode()</li>
+<li><a class="el" href="goppa_8c.html#a657f8a008c261eca5a14d1703efe138d" title="BPU_goppaGenCode Generate random code based on params. ">BPU_goppaGenCode()</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li>Encode/Decode:<ul>
 <li><a class="el" href="goppa_8h.html">lib/src/bitpunch/code/goppa/goppa.h</a><ul>
-<li>BPU_goppaEncode()</li>
-<li>BPU_goppaDecode()</li>
+<li><a class="el" href="goppa_8c.html#a06fdb1ea39ebbf77cfb8fd9d89de0090" title="BPU_goppaEncode Encode message using goppa code. ">BPU_goppaEncode()</a></li>
+<li><a class="el" href="goppa_8c.html#ade07f571e2d0874864461156550bcf6e">BPU_goppaDecode()</a></li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-<h1><a class="anchor" id="Changes"></a>
-Changes</h1>
-<p>v0.0.3</p>
-<ul>
-<li>added Adapted Pointcheval's scheme</li>
-<li>implemented SHA512 from (<a href="https://polarssl.org">https://polarssl.org</a>)</li>
-<li>BPU_*Malloc - now using TYPE **pointer and also BPU_*Free</li>
-<li>implemented ASN1 key serialization using libtasn1 (external dependency) (<a href="https://www.gnu.org/software/libtasn1/">https://www.gnu.org/software/libtasn1/</a>) for mecs basic, Pointcheval's scheme, both with H matrix</li>
-<li>some error checks fixed</li>
-<li>added zero to support</li>
-<li>added code and mecs parameters initialization</li>
-<li>test enviroment reconfigured, now it creates snapshot of current workspace</li>
-<li>some BUGs fixed</li>
-<li>now possible to compile static or shared lib</li>
-<li>compilation w/o print functions, enc, dec or keygen, CCA2 Pointchval's scheme</li>
-</ul>
-<p>v0.0.2</p>
-<ul>
-<li>module organization: crypto, math, code, prng</li>
-<li>convention unified see doc</li>
-<li>new context management: mecs, code and math context</li>
-<li>memory usage reduction (heap peak) from 8 MiB to ~170 KiB with params m=11 t=50 w/o H</li>
-<li>removed memory leaks</li>
-<li>removed functions which are allocating memory inside for output (suffix A)</li>
-<li>posibility to build with or w/o using H precomputed matrix by decription</li>
-<li>added basic tests</li>
-<li>removed Adapted CCA2 Pointcheval's scheme (TEMPORARLY)</li>
-<li>no external dependecies</li>
-</ul>
-<p>v0.0.1</p>
-<ul>
-<li>Initial version - of BitPunch project</li>
-<li>contains implementation of MECS using Goppa code</li>
-<li>Patterson's alg. for decoding</li>
-<li>dependencies on OpenSSL (sha)</li>
-<li>Adapted CCA2 Pointcheval's scheme</li>
-<li>some math function over gf2, gf2x, gf2xpoly like ext. eclidean, gen. of irreducible goppa poly...</li>
 </ul>
 <h1><a class="anchor" id="Structure"></a>
 Structure</h1>
@@ -231,30 +200,30 @@ Modules</h2>
 <p>BitPunch has more modules, all sources are located in lib/src/bitpunch/:</p>
 <ul>
 <li>asn1<ul>
-<li>is used for searializing key using libtasn1</li>
-<li>it uses DER encoding<ul>
+<li>is used for searializing key using libtasn1 (tested with version 3.4-3)</li>
+</ul>
+</li>
+</ul>
+<p>it uses DER encoding</p>
+<ul>
 <li>math</li>
 </ul>
-</li>
-<li>contains all arithmetic operation over GF2, GF2x, polynomials, Matrices, Vectors, Permutations, ...<ul>
+<p>contains all arithmetic operation over GF2, GF2x, polynomials, Matrices, Vectors, Permutations, ...</p>
+<ul>
 <li>code</li>
 </ul>
-</li>
-<li>implements code matters, here you can specify your own codes<ul>
+<p>implements code matters, here you can specify your own codes</p>
+<ul>
 <li>goppa</li>
 </ul>
-</li>
-</ul>
-</li>
-<li>crypto<ul>
+<p>crypto</p>
+<ul>
 <li>implements cryptosystem matters</li>
 <li>mecsbasic, padding</li>
 </ul>
-</li>
-<li>prng<ul>
+<p>prng</p>
+<ul>
 <li>interface for PRNG</li>
-</ul>
-</li>
 </ul>
 <h2><a class="anchor" id="Contexts"></a>
 Contexts</h2>
@@ -286,13 +255,13 @@ Build</h1>
 <li>make static - to build static lib</li>
 <li>make shared - to build shared lib</li>
 </ul>
-<p>Builded libraries are located in dist/ folder. For more preprocesor options see <a class="el" href="config_8h.html">lib/src/bitpunch/config.h</a> file. Default optimization is -O2. To set up more verbosity define -DERRORL, -DWARNING_L or DDEBUG_L, this are using functions like BPU_printError, BPU_printWarning, BPU_printDebug. </p>
+<p>Builded libraries are located in dist/ folder. For more preprocesor options see <a class="el" href="config_8h.html">lib/src/bitpunch/config.h</a> file. Default optimization is -O2. To set up more verbosity define -DERRORL, -DWARNING_L or DDEBUG_L, this are using functions like <a class="el" href="debugio_8h.html#a6bbce215c376a75d91b96a77cb759923" title="print error message with filename, line ">BPU_printError()</a>, <a class="el" href="debugio_8h.html#a0166e7149a42aa5d4bf0558c2f6bb7f1" title="print warning message with filename, line ">BPU_printWarning()</a>, <a class="el" href="debugio_8h.html#aa607fafc1ae8a1d56a921b5e922e3579" title="print debug message with filename, line ">BPU_printDebug()</a>. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon May 18 2015 00:16:43 for McEliece BitPunch by
+    <li class="footer">Generated on Mon May 18 2015 12:30:13 for BitPunch McEliece by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

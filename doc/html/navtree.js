@@ -1,9 +1,8 @@
 var NAVTREE =
 [
-  [ "McEliece BitPunch", "index.html", [
-    [ "BitPunch McEliece v0.0.3", "index.html", [
+  [ "BitPunch McEliece", "index.html", [
+    [ "BitPunch McEliece v0.0.4", "index.html", [
       [ "Introduction", "index.html#Introduction", null ],
-      [ "Changes", "index.html#Changes", null ],
       [ "Structure", "index.html#Structure", [
         [ "Convention", "index.html#Convention", null ],
         [ "Modules", "index.html#Modules", null ],
@@ -11,6 +10,7 @@ var NAVTREE =
       ] ],
       [ "Build", "index.html#Build", null ]
     ] ],
+    [ "Changes", "_changes.html", null ],
     [ "Test enviroment", "_test_01enviroment.html", [
       [ "Intro", "_test_01enviroment.html#Intro", null ],
       [ "Example", "_test_01enviroment.html#Example", null ]
@@ -39,9 +39,10 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_test_01enviroment.html",
-"gf2x_8c.html#afec808f029a1239261c641ddabc13139",
-"polarssl_2sha512_8c.html#afc6a7362c0f0c9cfa8fc76b3281e2b37"
+"_changes.html",
+"gf2types_8c.html#a8636158235b392dc134a1c0db244fb33",
+"mecsbasic_8c.html#a3c39ab9dfab2440e89f0606c86b10c8c",
+"test-speed_8c.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

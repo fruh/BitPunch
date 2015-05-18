@@ -1,3 +1,7 @@
+v0.0.4
+	- implemented QC-MDPC codes (A. Gulyas)
+	- updated test enviroment and doc for dummy test
+
 v0.0.3
 	- added Adapted Pointcheval's scheme
 	- implemented SHA512 from (https://polarssl.org)

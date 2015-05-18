@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: /media/fruh/data/school/BitPunch/lib/src/main.c Source File</title>
+<title>BitPunch McEliece: lib/src/main.c Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,8 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="bitpunch-black-small.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">McEliece BitPunch
+   <div id="projectname">BitPunch McEliece
+   &#160;<span id="projectnumber">v0.0.4</span>
    </div>
   </td>
  </tr>
@@ -312,7 +313,7 @@ $(document).ready(function(){initNavTree('main_8c_source.html','');});
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;}</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="preprocessor">#ifdef BPU_CONF_ASN1</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="preprocessor"></span><span class="keywordtype">int</span> testKeyGenAsn1() {</div>
+<div class="line"><a name="l00207"></a><span class="lineno"><a class="line" href="main_8c.html#a31868b82fa223a80c168d6bf8dd1b255">  207</a></span>&#160;<span class="preprocessor"></span><span class="keywordtype">int</span> <a class="code" href="main_8c.html#a31868b82fa223a80c168d6bf8dd1b255">testKeyGenAsn1</a>() {</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordtype">int</span> rc = 0;</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="comment">// MUST BE NULL</span></div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <a class="code" href="struct___b_p_u___t___mecs___ctx.html">BPU_T_Mecs_Ctx</a> *ctx = NULL;</div>
@@ -338,11 +339,11 @@ $(document).ready(function(){initNavTree('main_8c_source.html','');});
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    }</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    rc = BPU_asn1SaveKeyPair(ctx, <span class="stringliteral">&quot;prikey.der&quot;</span>, <span class="stringliteral">&quot;pubkey.der&quot;</span>);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    rc = <a class="code" href="asn1_8c.html#a6a79284e9191da9d6b79b4cc50b8014f">BPU_asn1SaveKeyPair</a>(ctx, <span class="stringliteral">&quot;prikey.der&quot;</span>, <span class="stringliteral">&quot;pubkey.der&quot;</span>);</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keywordflow">if</span> (rc) {</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        asn1_perror(rc);</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    }</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    rc = BPU_asn1LoadKeyPair(&amp;ctx_2, <span class="stringliteral">&quot;prikey.der&quot;</span>, <span class="stringliteral">&quot;pubkey.der&quot;</span>);</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    rc = <a class="code" href="asn1_8c.html#af2ca13ff644c42b36b3c6e67d52ca329">BPU_asn1LoadKeyPair</a>(&amp;ctx_2, <span class="stringliteral">&quot;prikey.der&quot;</span>, <span class="stringliteral">&quot;pubkey.der&quot;</span>);</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordflow">if</span> (rc) {</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        asn1_perror(rc);</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    }</div>
@@ -362,7 +363,7 @@ $(document).ready(function(){initNavTree('main_8c_source.html','');});
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        srand(time(NULL));</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="preprocessor">#if !defined(BPU_CONF_GOPPA_WO_H) &amp;&amp; defined(BPU_CONF_ASN1)</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="preprocessor"></span>        testKeyGenAsn1();</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="preprocessor"></span>        <a class="code" href="main_8c.html#a31868b82fa223a80c168d6bf8dd1b255">testKeyGenAsn1</a>();</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="comment">//  /***************************************/</span></div>
@@ -379,7 +380,7 @@ $(document).ready(function(){initNavTree('main_8c_source.html','');});
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="preprocessor">#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA</span></div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="preprocessor"></span>    fprintf(stderr, <span class="stringliteral">&quot;\nCCA2 Pointcheval GOPPA Initialisation...\n&quot;</span>);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="mecsctx_8c.html#acab3e0bb66485a31cd4bcc258c8c2649">BPU_mecsInitCtx</a>(&amp;ctx, &amp;params, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="mecsctx_8c.html#acab3e0bb66485a31cd4bcc258c8c2649">BPU_mecsInitCtx</a>(&amp;ctx, &amp;params, <a class="code" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344a910b6afd752efc030bad1af66b003578">BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA</a>)) {</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    }</div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    rc += <a class="code" href="main_8c.html#af4b0fe021269f6a91c01c5755865169c">testKeyGenEncDec</a>(ctx);</div>
@@ -405,7 +406,7 @@ $(document).ready(function(){initNavTree('main_8c_source.html','');});
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;     <span class="keywordflow">if</span> (<a class="code" href="mecsctx_8c.html#a7270797b19e4c0eca5c3fcd8a125faf9">BPU_mecsInitParamsQcmdpc</a>(&amp;params, 4801, 2, 90, 84)) {</div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;         <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;     }</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;     <span class="keywordflow">if</span> (<a class="code" href="mecsctx_8c.html#acab3e0bb66485a31cd4bcc258c8c2649">BPU_mecsInitCtx</a>(&amp;ctx, &amp;params, BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC)) {</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;     <span class="keywordflow">if</span> (<a class="code" href="mecsctx_8c.html#acab3e0bb66485a31cd4bcc258c8c2649">BPU_mecsInitCtx</a>(&amp;ctx, &amp;params, <a class="code" href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344acbafe64e813835a94d52ad510540c746">BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC</a>)) {</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;         <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;     }</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;     rc += <a class="code" href="main_8c.html#af4b0fe021269f6a91c01c5755865169c">testKeyGenEncDec</a>(ctx);</div>
@@ -428,6 +429,7 @@ $(document).ready(function(){initNavTree('main_8c_source.html','');});
 <div class="ttc" id="gf2_8c_html_ab933717eceee63b5c45a94c136219e95"><div class="ttname"><a href="gf2_8c.html#ab933717eceee63b5c45a94c136219e95">BPU_gf2VecRand</a></div><div class="ttdeci">int BPU_gf2VecRand(BPU_T_GF2_Vector *out, int w)</div><div class="ttdef"><b>Definition:</b> <a href="gf2_8c_source.html#l00240">gf2.c:240</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___goppa___spec_html_abe5bf04ec05c99aa4cf4a88d81f5e2b9"><div class="ttname"><a href="struct___b_p_u___t___goppa___spec.html#abe5bf04ec05c99aa4cf4a88d81f5e2b9">_BPU_T_Goppa_Spec::permutation</a></div><div class="ttdeci">BPU_T_Perm_Vector * permutation</div><div class="ttdoc">permutation &quot;matrix&quot; </div><div class="ttdef"><b>Definition:</b> <a href="goppatypes_8h_source.html#l00031">goppatypes.h:31</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___g_f2___matrix_html_add07759efe05f19128ee6ac5cc5633e9"><div class="ttname"><a href="struct___b_p_u___t___g_f2___matrix.html#add07759efe05f19128ee6ac5cc5633e9">_BPU_T_GF2_Matrix::k</a></div><div class="ttdeci">uint32_t k</div><div class="ttdoc">rows </div><div class="ttdef"><b>Definition:</b> <a href="gf2types_8h_source.html#l00047">gf2types.h:47</a></div></div>
+<div class="ttc" id="main_8c_html_a31868b82fa223a80c168d6bf8dd1b255"><div class="ttname"><a href="main_8c.html#a31868b82fa223a80c168d6bf8dd1b255">testKeyGenAsn1</a></div><div class="ttdeci">int testKeyGenAsn1()</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00207">main.c:207</a></div></div>
 <div class="ttc" id="main_8c_html_a47af39ba468cb4b953513cfdc51b7347"><div class="ttname"><a href="main_8c.html#a47af39ba468cb4b953513cfdc51b7347">testCmpMecsCtx</a></div><div class="ttdeci">int testCmpMecsCtx(const BPU_T_Mecs_Ctx *ctx1, const BPU_T_Mecs_Ctx *ctx2)</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00028">main.c:28</a></div></div>
 <div class="ttc" id="gf2_8c_html_abe5d9c9eddad7fdd22d5cdd56f1f44fd"><div class="ttname"><a href="gf2_8c.html#abe5d9c9eddad7fdd22d5cdd56f1f44fd">BPU_gf2VecCmp</a></div><div class="ttdeci">int BPU_gf2VecCmp(const BPU_T_GF2_Vector *v1, const BPU_T_GF2_Vector *v2)</div><div class="ttdoc">BPU_gf2VecCmp Compare two vectors. </div><div class="ttdef"><b>Definition:</b> <a href="gf2_8c_source.html#l00467">gf2.c:467</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___goppa___spec_html_a457de3ba6f413950a464da8ba96eb7e7"><div class="ttname"><a href="struct___b_p_u___t___goppa___spec.html#a457de3ba6f413950a464da8ba96eb7e7">_BPU_T_Goppa_Spec::h_mat</a></div><div class="ttdeci">BPU_T_GF2_16x_Matrix * h_mat</div><div class="ttdoc">Control matrix H. </div><div class="ttdef"><b>Definition:</b> <a href="goppatypes_8h_source.html#l00029">goppatypes.h:29</a></div></div>
@@ -448,6 +450,7 @@ $(document).ready(function(){initNavTree('main_8c_source.html','');});
 <div class="ttc" id="struct___b_p_u___t___code___ctx_html_a91e9c912d392344d058b89eff2749e6b"><div class="ttname"><a href="struct___b_p_u___t___code___ctx.html#a91e9c912d392344d058b89eff2749e6b">_BPU_T_Code_Ctx::e</a></div><div class="ttdeci">BPU_T_GF2_Vector * e</div><div class="ttdoc">Error vector. </div><div class="ttdef"><b>Definition:</b> <a href="codectx_8h_source.html#l00058">codectx.h:58</a></div></div>
 <div class="ttc" id="mecsctx_8c_html_a8d540f95132a2ee135c0bc3663a31301"><div class="ttname"><a href="mecsctx_8c.html#a8d540f95132a2ee135c0bc3663a31301">BPU_mecsFreeCtx</a></div><div class="ttdeci">int BPU_mecsFreeCtx(BPU_T_Mecs_Ctx **ctx)</div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8c_source.html#l00158">mecsctx.c:158</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___code___ctx_html_aaa217c865f2068b74c3d91b9fe945aad"><div class="ttname"><a href="struct___b_p_u___t___code___ctx.html#aaa217c865f2068b74c3d91b9fe945aad">_BPU_T_Code_Ctx::_decode</a></div><div class="ttdeci">int(* _decode)(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx)</div><div class="ttdoc">This is reference to decode function. It will be set in BPU_codeInitCtx. </div><div class="ttdef"><b>Definition:</b> <a href="codectx_8h_source.html#l00056">codectx.h:56</a></div></div>
+<div class="ttc" id="asn1_8c_html_a6a79284e9191da9d6b79b4cc50b8014f"><div class="ttname"><a href="asn1_8c.html#a6a79284e9191da9d6b79b4cc50b8014f">BPU_asn1SaveKeyPair</a></div><div class="ttdeci">int BPU_asn1SaveKeyPair(const BPU_T_Mecs_Ctx *ctx, const char *pri_key_file, const char *pub_key_file)</div><div class="ttdef"><b>Definition:</b> <a href="asn1_8c_source.html#l00561">asn1.c:561</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___mecs___ctx_html_a5463cc6f700dd49be9faaa5c9f25265d"><div class="ttname"><a href="struct___b_p_u___t___mecs___ctx.html#a5463cc6f700dd49be9faaa5c9f25265d">_BPU_T_Mecs_Ctx::_decrypt</a></div><div class="ttdeci">int(* _decrypt)(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Mecs_Ctx *ctx)</div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00041">mecsctx.h:41</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___mecs___ctx_html"><div class="ttname"><a href="struct___b_p_u___t___mecs___ctx.html">_BPU_T_Mecs_Ctx</a></div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00038">mecsctx.h:38</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___mecs___ctx_html_a05792759b5254db63ac3eb6fb7b17a01"><div class="ttname"><a href="struct___b_p_u___t___mecs___ctx.html#a05792759b5254db63ac3eb6fb7b17a01">_BPU_T_Mecs_Ctx::ct_len</a></div><div class="ttdeci">uint16_t ct_len</div><div class="ttdoc">CT len in bits. </div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00046">mecsctx.h:46</a></div></div>
@@ -458,12 +461,15 @@ $(document).ready(function(){initNavTree('main_8c_source.html','');});
 <div class="ttc" id="struct___b_p_u___t___g_f2___matrix_html_a3d8a9527a2ee4a7ebf59175650142e75"><div class="ttname"><a href="struct___b_p_u___t___g_f2___matrix.html#a3d8a9527a2ee4a7ebf59175650142e75">_BPU_T_GF2_Matrix::n</a></div><div class="ttdeci">uint32_t n</div><div class="ttdoc">cols </div><div class="ttdef"><b>Definition:</b> <a href="gf2types_8h_source.html#l00048">gf2types.h:48</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___code___ctx_html_aea419acd5e0154eb416f34791ec7b19f"><div class="ttname"><a href="struct___b_p_u___t___code___ctx.html#aea419acd5e0154eb416f34791ec7b19f">_BPU_T_Code_Ctx::type</a></div><div class="ttdeci">BPU_T_EN_Code_Types type</div><div class="ttdef"><b>Definition:</b> <a href="codectx_8h_source.html#l00054">codectx.h:54</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___g_f2__16x___matrix_html_a0a079030ddf01045984049d505b8cf78"><div class="ttname"><a href="struct___b_p_u___t___g_f2__16x___matrix.html#a0a079030ddf01045984049d505b8cf78">_BPU_T_GF2_16x_Matrix::k</a></div><div class="ttdeci">uint16_t k</div><div class="ttdoc">rows </div><div class="ttdef"><b>Definition:</b> <a href="gf2xtypes_8h_source.html#l00046">gf2xtypes.h:46</a></div></div>
+<div class="ttc" id="asn1_8c_html_af2ca13ff644c42b36b3c6e67d52ca329"><div class="ttname"><a href="asn1_8c.html#af2ca13ff644c42b36b3c6e67d52ca329">BPU_asn1LoadKeyPair</a></div><div class="ttdeci">int BPU_asn1LoadKeyPair(BPU_T_Mecs_Ctx **ctx, const char *pri_key_file, const char *pub_key_file)</div><div class="ttdef"><b>Definition:</b> <a href="asn1_8c_source.html#l00519">asn1.c:519</a></div></div>
 <div class="ttc" id="gf2x_8c_html_a38a9c87fdd4007d55b15b5cbf974b04d"><div class="ttname"><a href="gf2x_8c.html#a38a9c87fdd4007d55b15b5cbf974b04d">BPU_gf2xPolyCmp</a></div><div class="ttdeci">int BPU_gf2xPolyCmp(const BPU_T_GF2_16x_Poly *p1, const BPU_T_GF2_16x_Poly *p2)</div><div class="ttdef"><b>Definition:</b> <a href="gf2x_8c_source.html#l00645">gf2x.c:645</a></div></div>
+<div class="ttc" id="mecsctx_8h_html_a06ad3a0f013f1323a14003ecc69e1344a910b6afd752efc030bad1af66b003578"><div class="ttname"><a href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344a910b6afd752efc030bad1af66b003578">BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA</a></div><div class="ttdoc">adapted Pointcheval&#39;s cca2 conversion </div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00030">mecsctx.h:30</a></div></div>
 <div class="ttc" id="mecs_8c_html_a1e25d7bd581eb8906846e74355bdb750"><div class="ttname"><a href="mecs_8c.html#a1e25d7bd581eb8906846e74355bdb750">BPU_mecsGenKeyPair</a></div><div class="ttdeci">int BPU_mecsGenKeyPair(BPU_T_Mecs_Ctx *ctx)</div><div class="ttdoc">Key generation, first must be initialized context using BPU_mecsInitCtx(). </div><div class="ttdef"><b>Definition:</b> <a href="mecs_8c_source.html#l00055">mecs.c:55</a></div></div>
 <div class="ttc" id="mecs_8c_html_a3504f010921a96ce7d0649ba4e9b238b"><div class="ttname"><a href="mecs_8c.html#a3504f010921a96ce7d0649ba4e9b238b">BPU_mecsEncrypt</a></div><div class="ttdeci">int BPU_mecsEncrypt(BPU_T_GF2_Vector *ct, const BPU_T_GF2_Vector *pt, const BPU_T_Mecs_Ctx *ctx)</div><div class="ttdoc">Encrypt plaintext (pt) and save it to cipher text. </div><div class="ttdef"><b>Definition:</b> <a href="mecs_8c_source.html#l00033">mecs.c:33</a></div></div>
 <div class="ttc" id="sha512_8h_html"><div class="ttname"><a href="sha512_8h.html">sha512.h</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___g_f2___vector_html_a96bbf959016e4411c9e6b9812a8be60a"><div class="ttname"><a href="struct___b_p_u___t___g_f2___vector.html#a96bbf959016e4411c9e6b9812a8be60a">_BPU_T_GF2_Vector::len</a></div><div class="ttdeci">uint32_t len</div><div class="ttdoc">cols </div><div class="ttdef"><b>Definition:</b> <a href="gf2types_8h_source.html#l00036">gf2types.h:36</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___mecs___ctx_html_a72f1d27a3b91f24c8da6d90b8cecc256"><div class="ttname"><a href="struct___b_p_u___t___mecs___ctx.html#a72f1d27a3b91f24c8da6d90b8cecc256">_BPU_T_Mecs_Ctx::type</a></div><div class="ttdeci">BPU_T_EN_Mecs_Types type</div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00039">mecsctx.h:39</a></div></div>
+<div class="ttc" id="mecsctx_8h_html_a06ad3a0f013f1323a14003ecc69e1344acbafe64e813835a94d52ad510540c746"><div class="ttname"><a href="mecsctx_8h.html#a06ad3a0f013f1323a14003ecc69e1344acbafe64e813835a94d52ad510540c746">BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC</a></div><div class="ttdoc">adapted Pointcheval&#39;s cca2 conversion for qcmdpc </div><div class="ttdef"><b>Definition:</b> <a href="mecsctx_8h_source.html#l00034">mecsctx.h:34</a></div></div>
 <div class="ttc" id="main_8c_html_af4b0fe021269f6a91c01c5755865169c"><div class="ttname"><a href="main_8c.html#af4b0fe021269f6a91c01c5755865169c">testKeyGenEncDec</a></div><div class="ttdeci">int testKeyGenEncDec(BPU_T_Mecs_Ctx *ctx)</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00126">main.c:126</a></div></div>
 <div class="ttc" id="union___b_p_u___t___u_n___code___spec_html_acd4f4270ece50c8d52cfb1779d668cbc"><div class="ttname"><a href="union___b_p_u___t___u_n___code___spec.html#acd4f4270ece50c8d52cfb1779d668cbc">_BPU_T_UN_Code_Spec::goppa</a></div><div class="ttdeci">BPU_T_Goppa_Spec * goppa</div><div class="ttdef"><b>Definition:</b> <a href="codectx_8h_source.html#l00042">codectx.h:42</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___code___ctx_html_a2d03918f4f9edabaf3c9f43abcc2d85b"><div class="ttname"><a href="struct___b_p_u___t___code___ctx.html#a2d03918f4f9edabaf3c9f43abcc2d85b">_BPU_T_Code_Ctx::t</a></div><div class="ttdeci">uint8_t t</div><div class="ttdoc">Error code correction capability. </div><div class="ttdef"><b>Definition:</b> <a href="codectx_8h_source.html#l00063">codectx.h:63</a></div></div>
@@ -478,7 +484,7 @@ $(document).ready(function(){initNavTree('main_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li><li class="navelem"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></li><li class="navelem"><a class="el" href="main_8c.html">main.c</a></li>
-    <li class="footer">Generated on Mon May 18 2015 00:16:43 for McEliece BitPunch by
+    <li class="footer">Generated on Mon May 18 2015 12:30:13 for BitPunch McEliece by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

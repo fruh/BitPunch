@@ -19,10 +19,10 @@
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #*/
-# $@ - ciel pravidla
-# $< - meno prveho zdroja
-# $^ - vsetky zdroje
-# $? - nazvy zdrojov, ktore su novsie ako ciel
+# $@ - target of rule
+# $< - name f first source
+# $^ - all sources
+# $? - names of sources, which are newer than target
 
 PREFIX_SRC = src
 INCLUDE_PATH = -Isrc/
@@ -31,17 +31,15 @@ ifndef CFLAGS
 	CFLAGS += -O2 -Wall -DBPU_CONF_FULL -DERROR_L
 endif
 
-# ifeq ($(BT), debug)
-# 	CFLAGS += -ggdb -DDEBUG_L
-# else ifeq ($(BT), profile)
-# 	CFLAGS += -O2 -pg
-# endif
-
 # get libtasn1 path
 ARCH = $(shell uname -m)
+ifeq ($(ARCH), i686)
+	ARCH =i386
+else ifeq ($(ARCH), i586)
+	ARCH =i386
+endif
 
 LIBTASN1 = $(shell dirname `ldconfig -p | grep libtasn1 | grep ${ARCH} | head -n 1 | cut -d '>' -f 2`)/libtasn1.a
-
 
 # compiler
 CC = gcc $(INCLUDE_PATH)
@@ -72,7 +70,6 @@ OBJS := $(patsubst %.c, %.c.o, $(C_FILES))
 PICS := $(patsubst %.c, %.c.o.pic, $(C_FILES))
 
 ######################################## TARGETS ###############################################
-# default: test-with-h print-info
 default: test print-info
 
 test: prepare-dir static-lib
@@ -148,10 +145,6 @@ help:
 	@echo "Default build makes test binary:"
 	@echo "\tSource file: $(CWD)/$(PREFIX_SRC)/main.c"
 	@echo "\tApplication: $(TEST_DIR)/BitPunch"
-	@echo "\tStatic library: $(DIST_DIR)/libbpumecs or $(DIST_DIR)/libbpumecs"
+	@echo "\tLibraries: $(DIST_DIR)/libbpumecs.so or $(DIST_DIR)/libbpumecs.a"
 	@echo ""
 	@echo "It is possible to build library which has H matrix precomputed or not."
-#	@echo "It will build files 'libbpumecs.so' or for debug 'libbpumecsd.so' or 'libbpumecsd.a', then you can link it to your project."
-#	@echo "Output will be in dist/static/ or dist/shared/"
-#	@echo ""
-#	@echo "You can also build a test run: \n\t'make test-*'\nWhere * can be static, shared, static-debug, shared-debug, output will be in dist/test/ or dist-debug/test/."

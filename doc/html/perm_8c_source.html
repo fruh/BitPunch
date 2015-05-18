@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>McEliece BitPunch: /media/fruh/data/school/BitPunch/lib/src/bitpunch/math/perm.c Source File</title>
+<title>BitPunch McEliece: lib/src/bitpunch/math/perm.c Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,8 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="bitpunch-black-small.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">McEliece BitPunch
+   <div id="projectname">BitPunch McEliece
+   &#160;<span id="projectnumber">v0.0.4</span>
    </div>
   </td>
  </tr>
@@ -137,7 +138,7 @@ $(document).ready(function(){initNavTree('perm_8c_source.html','');});
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="debugio_8h.html">bitpunch/debugio.h</a>&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifdef BPU_CONF_PRINT</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span><span class="keywordtype">void</span> BPU_printPerm(<span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___perm___vector.html">BPU_T_Perm_Vector</a> *permutation) {</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="perm_8h.html#a0c24e1652c436cda9fd81d4467f5cb94">   32</a></span>&#160;<span class="preprocessor"></span><span class="keywordtype">void</span> <a class="code" href="perm_8c.html#a0c24e1652c436cda9fd81d4467f5cb94">BPU_printPerm</a>(<span class="keyword">const</span> <a class="code" href="struct___b_p_u___t___perm___vector.html">BPU_T_Perm_Vector</a> *permutation) {</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordtype">int</span> i;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        fprintf(stderr, <span class="stringliteral">&quot;Perm (%4d): &quot;</span>, permutation-&gt;<a class="code" href="struct___b_p_u___t___perm___vector.html#a47e7918a0a122983da20ddd3d2d150e5">size</a>);</div>
@@ -217,7 +218,7 @@ $(document).ready(function(){initNavTree('perm_8c_source.html','');});
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                        <span class="keywordflow">if</span> (i != j &amp;&amp; p-&gt;<a class="code" href="struct___b_p_u___t___perm___vector.html#af4db288838ec383d882de07ef2a7a71d">elements</a>[i] == p-&gt;<a class="code" href="struct___b_p_u___t___perm___vector.html#af4db288838ec383d882de07ef2a7a71d">elements</a>[j]) {</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                                <a class="code" href="debugio_8h.html#a6bbce215c376a75d91b96a77cb759923">BPU_printError</a>(<span class="stringliteral">&quot;permutation is not valid&quot;</span>);</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#ifdef BPU_CONF_PRINT</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor"></span>                                BPU_printPerm(p);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor"></span>                                <a class="code" href="perm_8c.html#a0c24e1652c436cda9fd81d4467f5cb94">BPU_printPerm</a>(p);</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor"></span>                                <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                        }</div>
@@ -233,6 +234,7 @@ $(document).ready(function(){initNavTree('perm_8c_source.html','');});
 <div class="ttc" id="prng_8c_html_a432cb9a0a5358d3cd39bbcf3cdf0aee6"><div class="ttname"><a href="prng_8c.html#a432cb9a0a5358d3cd39bbcf3cdf0aee6">BPU_prngGetRand</a></div><div class="ttdeci">uint32_t BPU_prngGetRand(int from, int to)</div><div class="ttdoc">Get random unsigned int 32 value from given range (from &lt;= return &lt;= to) </div><div class="ttdef"><b>Definition:</b> <a href="prng_8c_source.html#l00028">prng.c:28</a></div></div>
 <div class="ttc" id="perm_8c_html_af1c460c7794c1be08417c50b0503858c"><div class="ttname"><a href="perm_8c.html#af1c460c7794c1be08417c50b0503858c">BPU_permRandomize</a></div><div class="ttdeci">int BPU_permRandomize(BPU_T_Perm_Vector *permutation)</div><div class="ttdef"><b>Definition:</b> <a href="perm_8c_source.html#l00043">perm.c:43</a></div></div>
 <div class="ttc" id="debugio_8h_html_a6bbce215c376a75d91b96a77cb759923"><div class="ttname"><a href="debugio_8h.html#a6bbce215c376a75d91b96a77cb759923">BPU_printError</a></div><div class="ttdeci">#define BPU_printError(fmt,...)</div><div class="ttdoc">print error message with filename, line </div><div class="ttdef"><b>Definition:</b> <a href="debugio_8h_source.html#l00047">debugio.h:47</a></div></div>
+<div class="ttc" id="perm_8c_html_a0c24e1652c436cda9fd81d4467f5cb94"><div class="ttname"><a href="perm_8c.html#a0c24e1652c436cda9fd81d4467f5cb94">BPU_printPerm</a></div><div class="ttdeci">void BPU_printPerm(const BPU_T_Perm_Vector *permutation)</div><div class="ttdef"><b>Definition:</b> <a href="perm_8c_source.html#l00032">perm.c:32</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___perm___vector_html_a47e7918a0a122983da20ddd3d2d150e5"><div class="ttname"><a href="struct___b_p_u___t___perm___vector.html#a47e7918a0a122983da20ddd3d2d150e5">_BPU_T_Perm_Vector::size</a></div><div class="ttdeci">BPU_T_Perm_Element size</div><div class="ttdoc">permutation size </div><div class="ttdef"><b>Definition:</b> <a href="permtypes_8h_source.html#l00033">permtypes.h:33</a></div></div>
 <div class="ttc" id="perm_8c_html_aa02d5544707cccfa2f1db9a048c6b2ca"><div class="ttname"><a href="perm_8c.html#aa02d5544707cccfa2f1db9a048c6b2ca">BPU_permGetInv</a></div><div class="ttdeci">int BPU_permGetInv(BPU_T_Perm_Vector *out, const BPU_T_Perm_Vector *in)</div><div class="ttdef"><b>Definition:</b> <a href="perm_8c_source.html#l00064">perm.c:64</a></div></div>
 <div class="ttc" id="struct___b_p_u___t___perm___vector_html"><div class="ttname"><a href="struct___b_p_u___t___perm___vector.html">_BPU_T_Perm_Vector</a></div><div class="ttdef"><b>Definition:</b> <a href="permtypes_8h_source.html#l00031">permtypes.h:31</a></div></div>
@@ -248,7 +250,7 @@ $(document).ready(function(){initNavTree('perm_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_c0a6ce8c1f069492245798e85b7debda.html">lib</a></li><li class="navelem"><a class="el" href="dir_10208272a9fb367e0d5d445e8a6533b6.html">src</a></li><li class="navelem"><a class="el" href="dir_0f89a311a44853eaaaf3dbdb23434ca6.html">bitpunch</a></li><li class="navelem"><a class="el" href="dir_b9c9d5f7d81b3b29ba2924b8b369188e.html">math</a></li><li class="navelem"><a class="el" href="perm_8c.html">perm.c</a></li>
-    <li class="footer">Generated on Mon May 18 2015 00:16:43 for McEliece BitPunch by
+    <li class="footer">Generated on Mon May 18 2015 12:30:13 for BitPunch McEliece by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
