@@ -10,10 +10,10 @@ var NAVTREE =
       ] ],
       [ "Build", "index.html#Build", null ]
     ] ],
-    [ "Changes", "_changes.html", null ],
-    [ "Test enviroment", "_test_01enviroment.html", [
-      [ "Intro", "_test_01enviroment.html#Intro", null ],
-      [ "Example", "_test_01enviroment.html#Example", null ]
+    [ "Changes", "changes.html", null ],
+    [ "Test enviroment", "test_01enviroment.html", [
+      [ "Intro", "test_01enviroment.html#Intro", null ],
+      [ "Example", "test_01enviroment.html#Example", null ]
     ] ],
     [ "Data Structures", null, [
       [ "Data Structures", "annotated.html", "annotated" ],
@@ -39,7 +39,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_changes.html",
+"changes.html",
 "gf2types_8c.html#a8636158235b392dc134a1c0db244fb33",
 "mecsbasic_8c.html#a3c39ab9dfab2440e89f0606c86b10c8c",
 "test-speed_8c.html"
