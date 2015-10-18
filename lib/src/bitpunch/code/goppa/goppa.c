@@ -147,12 +147,10 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 	else {
         BPU_gf2VecNull(error);
 	}
+	sigma->deg = ctx->t;
 	for (l = 0; l < ctx->code_spec->goppa->support_len; l++) {
         tmp_eval = BPU_gf2xPolyEval(sigma, ctx->math_ctx->exp_table[l], ctx->math_ctx);
-
-		if (tmp_eval == 0) {
-            BPU_gf2VecSetBit(error, l, 1);
-		}
+		BPU_gf2VecSetBit(error, l, !tmp_eval);
 	}
 	// permute error vector
     BPU_gf2VecPermute(error, ctx->code_spec->goppa->permutation);

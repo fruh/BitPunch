@@ -99,12 +99,30 @@ BPU_T_GF2_16x BPU_gf2xMulMod(BPU_T_GF2_16x a, BPU_T_GF2_16x b, BPU_T_GF2_16x mod
 	return tmp;
 }
 
-//BPU_T_GF2_16x BPU_gf2xMulModT(const BPU_T_GF2_16x a, const BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx) {
-//	if (a == 0 || b == 0) {
-//		return 0;
-//	}
-//	// look into tables
-//	return math_ctx->exp_table[(math_ctx->log_table[a] + math_ctx->log_table[b]) % math_ctx->ord];
+BPU_T_GF2_16x BPU_gf2xMulModT(const BPU_T_GF2_16x a, const BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx) {
+	BPU_T_GF2_32x condition;
+	BPU_T_GF2_16x candidate;
+	candidate = math_ctx->exp_table[(math_ctx->log_table[a] + math_ctx->log_table[b]) % math_ctx->ord];
+	if ((condition = (a * b)))
+	  return candidate;
+	return condition;
+}
+
+
+//not possible to apply on cryptosystem where parameter $n \neq 2^m$
+//BPU_T_GF2_16x BPU_gf2xMulModT(BPU_T_GF2_16x a, BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx) {
+//  BPU_T_GF2_16x candidate;
+//  BPU_T_GF2_16x exp, bit, carry_mask = 1 << math_ctx->mod_deg;
+//  BPU_T_GF2_32x condition;
+//  exp = math_ctx->log_table[a] + math_ctx->log_table[b];
+//  exp = exp + 1;
+//  bit = (exp & carry_mask);
+//  exp = (exp & math_ctx->ord);
+//  exp = (exp & math_ctx->ord) - !bit;
+//  candidate = math_ctx->exp_table[exp];
+//  if (condition = (a * b))
+//    return candidate;
+//  return condition;
 //}
 
 BPU_T_GF2_16x BPU_gf2xPowerModT(BPU_T_GF2_16x a, int e, const BPU_T_Math_Ctx *math_ctx) {
@@ -633,11 +651,10 @@ int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF
 
 BPU_T_GF2_16x BPU_gf2xPolyEval(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x x, const BPU_T_Math_Ctx *math_ctx) {
 	int i;
-	BPU_T_GF2_16x ret = 0;
-	ret = poly->coef[0];
+	BPU_T_GF2_16x ret = poly->coef[poly->deg];
 
-	for (i = 1; i <= poly->deg; i++) {
-		ret = ret ^ BPU_gf2xMulModT(poly->coef[i], BPU_gf2xPowerModT(x, i, math_ctx), math_ctx);
+	for (i = poly->deg; i > 0; i--) {
+	ret = BPU_gf2xMulModT(ret, x, math_ctx) ^ poly->coef[i-1];
 	}
 	return ret;
 }
