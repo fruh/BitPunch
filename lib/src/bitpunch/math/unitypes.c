@@ -1,10 +1,7 @@
 /*
 This file is part of BitPunch
-Copyright (C) 2013-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
-Copyright (C) 2013-2014 Andrej Gulyas <andrej.guly[what here]gmail.com>
-Copyright (C) 2013-2014 Marek Klein  <kleinmrk[what here]gmail.com>
-Copyright (C) 2013-2014 Filip Machovec  <filipmachovec[what here]yahoo.com>
-Copyright (C) 2013-2014 Jozef Kudlac <jozef[what here]kudlac.sk>
+Copyright (C) 2013-2016 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+Copyright (C) 2013-2016 Marek Klein  <kleinmrk[what here]gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

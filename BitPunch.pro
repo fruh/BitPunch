@@ -54,7 +54,8 @@ SOURCES += \
     lib/src/bitpunch/asn1/asn1.c \
     lib/src/bitpunch/code/qcmdpc/qcmdpc.c \
     lib/src/bitpunch/code/qcmdpc/qcmdpctypes.c \
-    lib/src/bitpunch/math/bigint.c
+    lib/src/bitpunch/math/bigint.c \
+    lib/src/bitpunch/math/unitypes.c
 
 #include(deployment.pri)
 #qtcAddDeployment()
