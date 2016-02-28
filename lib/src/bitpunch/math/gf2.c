@@ -101,8 +101,8 @@ void BPU_printGf2Vec(const BPU_T_GF2_Vector* v) {
 	int j, bits_to_print;
 
 	fprintf(stderr, "Vec (%4d): ", v->len);
-	for (j = 0; j <= v->elements_in_row - 1; j++) {
-		if (j == v->elements_in_row-1) {
+    for (j = 0; j <= v->array_length - 1; j++) {
+        if (j == v->array_length-1) {
 			if (v->len % (v->element_bit_size) != 0) {
 				bits_to_print = v->len % v->element_bit_size;
 			}
@@ -123,8 +123,8 @@ void BPU_printGf2VecMsb(const BPU_T_GF2_Vector* v) {
 	int j, bits_to_print;
 
 	fprintf(stderr, "Vec (%4d): ", v->len);
-	for (j = 0; j <= v->elements_in_row - 1; j++) {
-		if (j == v->elements_in_row-1) {
+    for (j = 0; j <= v->array_length - 1; j++) {
+        if (j == v->array_length-1) {
 			if (v->len % (v->element_bit_size) != 0) {
 				bits_to_print = v->len % v->element_bit_size;
 			}
@@ -165,8 +165,8 @@ void BPU_printGf2SparsePoly (const BPU_T_GF2_Sparse_Poly *v) {
 void BPU_printGf2PolyForMatrix(const BPU_T_GF2_Poly* v) {
   int j, bits_to_print;
 
-  for (j = 0; j < v->elements_in_row; j++) {
-    if (j == v->elements_in_row-1) {
+  for (j = 0; j < v->array_length; j++) {
+    if (j == v->array_length-1) {
       if (v->len % (v->element_bit_size) != 0) {
         bits_to_print = v->len % v->element_bit_size;
       }
@@ -185,8 +185,8 @@ void BPU_printGf2Poly(const BPU_T_GF2_Poly* v) {
   int j, bits_to_print;
 
   fprintf(stderr, "Poly (%4d): ", v->len-1);
-  for (j = v->elements_in_row - 1; j >= 0; j--) {
-    if (j == v->elements_in_row-1) {
+  for (j = v->array_length - 1; j >= 0; j--) {
+    if (j == v->array_length-1) {
       if (v->len % (v->element_bit_size) != 0) {
         bits_to_print = v->len % v->element_bit_size;
       }
@@ -453,13 +453,13 @@ int BPU_gf2MatGetRowAsGf2Vec(BPU_T_GF2_Vector *out, const BPU_T_GF2_Matrix *in, 
 
 void BPU_gf2VecCopy(BPU_T_GF2_Vector *dest, const BPU_T_GF2_Vector *src) {
 	// if there is not enough space resize
-	if (dest->elements_in_row < src->elements_in_row) {
-        BPU_gf2VecResize(dest, src->elements_in_row * src->element_bit_size * sizeof(BPU_T_GF2));
+    if (dest->array_length < src->array_length) {
+        BPU_gf2VecResize(dest, src->array_length * src->element_bit_size * sizeof(BPU_T_GF2));
 	}
 	else {
 		BPU_gf2VecNull(dest);
 	}
-	memcpy((void *) (dest->elements), (void *) (src->elements), sizeof(BPU_T_GF2) * (src->elements_in_row));
+    memcpy((void *) (dest->elements), (void *) (src->elements), sizeof(BPU_T_GF2) * (src->array_length));
 	
 	dest->len = src->len;
 }
@@ -482,11 +482,11 @@ int BPU_gf2VecXor(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in) {
 	int i;
 
 	if (out->len != in->len) {
-		BPU_printError("BPU_gf2VecXor: length error (el. in row) %d != %d, len %d != %d", out->elements_in_row, in->elements_in_row, out->len, in->len);
+        BPU_printError("BPU_gf2VecXor: length error (el. in row) %d != %d, len %d != %d", out->array_length, in->array_length, out->len, in->len);
 
 		return -1;
 	}
-	for (i = 0; i < out->elements_in_row; i++) {
+    for (i = 0; i < out->array_length; i++) {
 		out->elements[i] ^= in->elements[i];
 	}
 	return 0;
@@ -507,7 +507,7 @@ int BPU_gf2VecMulMat(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *v, const BPU
 	for (i = 0; i < v->len; i++) {
 		if (BPU_gf2VecGetBit(v, i)) {
 			// xor rows
-			for (j = 0; j < out->elements_in_row; j++) {
+            for (j = 0; j < out->array_length; j++) {
 				out->elements[j] ^= b->elements[i][j];
 			}
 		}
@@ -556,7 +556,7 @@ int BPU_gf2MatCrop(BPU_T_GF2_Matrix *m, uint16_t width) {
 	length = m->elements_in_row * (m->element_bit_size / 8);
     BPU_gf2VecMalloc(&row, m->n);
     BPU_gf2VecMalloc(&cropped_row, width);
-	new_length = cropped_row->elements_in_row * (m->element_bit_size / 8);
+    new_length = cropped_row->array_length * (m->element_bit_size / 8);
 	for (i = 0; i < m->k; i++) {
 		memcpy(row->elements, m->elements[i], length);
 		BPU_gf2VecCrop(cropped_row, row, m->k, width);
@@ -565,7 +565,7 @@ int BPU_gf2MatCrop(BPU_T_GF2_Matrix *m, uint16_t width) {
 		memcpy(m->elements[i], cropped_row->elements, new_length);
 	}
 	m->n = cropped_row->len;
-	m->elements_in_row = cropped_row->elements_in_row;
+    m->elements_in_row = cropped_row->array_length;
 
     BPU_gf2VecFree(&row);
     BPU_gf2VecFree(&cropped_row);
@@ -591,7 +591,7 @@ void BPU_gf2PolyCopy(BPU_T_GF2_Poly *out, const BPU_T_GF2_Poly *in) {
   
   // copy all elements
   if (in->len != 0)
-    for (i = 0; i < in->elements_in_row; i++) {
+    for (i = 0; i < in->array_length; i++) {
       out->elements[i] = in->elements[i];
     }
 }
@@ -693,7 +693,7 @@ void BPU_gf2PolyShiftLeft(BPU_T_GF2_Poly *a, int shift_count) {
 
   start = diff;
   // shift elements
-  for (i = a->elements_in_row-1; i >= start; i--) {
+  for (i = a->array_length-1; i >= start; i--) {
     // not the first element, concat two elements
     if (i-start != 0) {
 
@@ -708,7 +708,7 @@ void BPU_gf2PolyShiftLeft(BPU_T_GF2_Poly *a, int shift_count) {
       }
 
       // get second element
-      if ((i-start) >= a->elements_in_row) {
+      if ((i-start) >= a->array_length) {
         ele2 = 0ul;
         shift_left = 0;
       }
@@ -734,7 +734,7 @@ int BPU_gf2PolyGetHighestBitPos(BPU_T_GF2_Poly *a) {
   int ele;
 
   // scan all elements and found highest non zero element
-  for (ele = a->elements_in_row-1; ele >= 0; ele--) {
+  for (ele = a->array_length-1; ele >= 0; ele--) {
     if (a->elements[ele] != 0ul)
       // find highest bit in highest non zero element
       return msb32(a->elements[ele], 1, a->element_bit_size, a->element_bit_size) + ele*a->element_bit_size;
@@ -745,7 +745,7 @@ int BPU_gf2PolyGetHighestBitPos(BPU_T_GF2_Poly *a) {
 }
 
 void BPU_gf2PolySetDeg(BPU_T_GF2_Poly *a, int deg) {
-  int j, orig_elements_in_row = a->elements_in_row;
+  int j, orig_elements_in_row = a->array_length;
 
   // find max degree
   if (deg == -1) {
@@ -755,17 +755,17 @@ void BPU_gf2PolySetDeg(BPU_T_GF2_Poly *a, int deg) {
   if (deg != -1) {
     // set degree and element count
     a->len = deg;
-    a->elements_in_row = a->len / a->element_bit_size + ((a->len % a->element_bit_size) != 0 ? 1 : 0);
+    a->array_length = a->len / a->element_bit_size + ((a->len % a->element_bit_size) != 0 ? 1 : 0);
     // reallocate elements
-    a->elements = (BPU_T_GF2*) realloc(a->elements, sizeof(BPU_T_GF2) * a->elements_in_row);
+    a->elements = (BPU_T_GF2*) realloc(a->elements, sizeof(BPU_T_GF2) * a->array_length);
     // null new elements
-    for (j = orig_elements_in_row; j < a->elements_in_row; j++)
+    for (j = orig_elements_in_row; j < a->array_length; j++)
       a->elements[j] = 0ul;
   }
   // poly is zero
   else {
     a->len = 0;
-    a->elements_in_row = 0;
+    a->array_length = 0;
   }
 }
 
@@ -779,7 +779,7 @@ void BPU_gf2PolyMulX(BPU_T_GF2_Poly *a) {
   BPU_gf2VecSetBit(a, a->len-1, 0ul);
 
   // for all elements
-  for (ele = a->elements_in_row-1; ele >= 1; ele--) {
+  for (ele = a->array_length-1; ele >= 1; ele--) {
     a->elements[ele] = (a->elements[ele] << 1) ^ (a->elements[ele-1] >> shift);
   }
 
@@ -793,13 +793,13 @@ void BPU_gf2PolyShiftRightOne(BPU_T_GF2_Poly *a) {
   int i;
 
   // for all elements
-  for (i = 0; i < a->elements_in_row-1; i++) {
+  for (i = 0; i < a->array_length-1; i++) {
     // shift right by one and add lowest bit from next element
     a->elements[i] = (a->elements[i] >> 1) ^ ((a->elements[i+1] & 1ul) << (a->element_bit_size-1));
   }
 
   // last element just shift
-  a->elements[a->elements_in_row-1] >>= 1;
+  a->elements[a->array_length-1] >>= 1;
 
 }
 
@@ -818,7 +818,7 @@ void BPU_gf2PolyAdd(BPU_T_GF2_Poly *out, const BPU_T_GF2_Poly *in, int crop) {
       // set degree
       BPU_gf2PolySetDeg(out, in->len);
     // make add
-    for (i = 0; i < in->elements_in_row; i++)
+    for (i = 0; i < in->array_length; i++)
       out->elements[i] ^= in->elements[i];
   }
 
@@ -1088,7 +1088,7 @@ int BPU_gf2PolyIsZero(const BPU_T_GF2_Poly *a) {
   int i;
 
   // scan all elements
-  for (i = 0; i < a->elements_in_row; i++)
+  for (i = 0; i < a->array_length; i++)
     // if there is non zero element, poly is not zero
     if (a->elements[i] != 0ul)
       return 0;

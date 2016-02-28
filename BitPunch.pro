@@ -53,7 +53,8 @@ SOURCES += \
     lib/src/bitpunch/crypto/cca2/mecspointcheval.c \
     lib/src/bitpunch/asn1/asn1.c \
     lib/src/bitpunch/code/qcmdpc/qcmdpc.c \
-    lib/src/bitpunch/code/qcmdpc/qcmdpctypes.c
+    lib/src/bitpunch/code/qcmdpc/qcmdpctypes.c \
+    lib/src/bitpunch/math/bigint.c
 
 #include(deployment.pri)
 #qtcAddDeployment()
@@ -87,7 +88,10 @@ HEADERS += \
     lib/src/bitpunch/crypto/cca2/mecspointcheval.h \
     lib/src/bitpunch/asn1/asn1.h \
     lib/src/bitpunch/code/qcmdpc/qcmdpc.h \
-    lib/src/bitpunch/code/qcmdpc/qcmdpctypes.h
+    lib/src/bitpunch/code/qcmdpc/qcmdpctypes.h \
+    lib/src/bitpunch/math/bigint.h \
+    lib/src/bitpunch/math/biginttypes.h \
+    lib/src/bitpunch/math/unitypes.h
 
 OTHER_FILES += \
     lib/makefile

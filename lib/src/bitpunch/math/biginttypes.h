@@ -1,0 +1,4 @@
+#ifndef BIGINTTYPES_H
+#define BIGINTTYPES_H
+
+#endif // BIGINTTYPES_H

@@ -26,7 +26,7 @@ int BPU_mecsQcmdpcEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, cons
   int ele, bit, i, bit_in_msg = 0;
 
   // copy message into cipher text
-  for (i = 0; i < in->elements_in_row; i++)
+  for (i = 0; i < in->array_length; i++)
   	out->elements[i] = in->elements[i];
   
   // prolong ciphertext
@@ -42,7 +42,7 @@ int BPU_mecsQcmdpcEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, cons
     for (bit = 0; bit < ctx->code_spec->qcmdpc->G.element_size; bit++) {
       // if is set bit in message
       if (BPU_gf2PolyGetBit(in, bit_in_msg)) {
-        for (i = 0; i < temp_rot_row.elements_in_row; i++)
+        for (i = 0; i < temp_rot_row.array_length; i++)
           temp_ct.elements[i] ^= temp_rot_row.elements[i];
       }
       bit_in_msg++;
@@ -95,11 +95,11 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, con
   // if decoded, get message from first param_m bits
   if (ret == 0) {
     // decrypt message
-    for (i = 0; i < out->elements_in_row; i++)
+    for (i = 0; i < out->array_length; i++)
       out->elements[i] = ctx->e->elements[i] ^ in->elements[i];
     // crop last element
-    out->elements[out->elements_in_row-1] <<= out->element_bit_size - (out->len % out->element_bit_size); 
-    out->elements[out->elements_in_row-1] >>= out->element_bit_size - (out->len % out->element_bit_size); 
+    out->elements[out->array_length-1] <<= out->element_bit_size - (out->len % out->element_bit_size);
+    out->elements[out->array_length-1] >>= out->element_bit_size - (out->len % out->element_bit_size);
   }
   else
     BPU_gf2VecNull(ctx->e);
@@ -432,7 +432,7 @@ int BPU_mecsQcmdpcTestGHmatrices(const BPU_T_GF2_QC_Matrix *G, const BPU_T_GF2_S
     }
   }
   // check result poly
-  for (i = 0; i < temp.elements_in_row; i++) {
+  for (i = 0; i < temp.array_length; i++) {
     if (temp.elements[i] != 0ul) {
       err++;
       break;

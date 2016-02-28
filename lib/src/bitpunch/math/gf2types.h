@@ -19,22 +19,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define BPUT_GF2TYPES_H
 
 #include <stdint.h>
+#include "unitypes.h"
 
 /**
 * Binary representation GF2
 */
-typedef uint32_t BPU_T_GF2;
+typedef uint16_t BPU_T_GF2;
 
 /**
  * Row vector GF2 representation.
  * Every element is one bit.
  */
-typedef struct _BPU_T_GF2_Vector {
-	BPU_T_GF2 *elements; ///< all element of matrix
-	uint8_t element_bit_size; ///< element size, is sizeof(BPU_T_GF2) i.e. 64 bits
-	uint16_t elements_in_row; ///< number of elements in one row
-	uint32_t len; ///< cols
-}BPU_T_GF2_Vector;
+//typedef struct _BPU_T_GF2_Vector {
+//	BPU_T_GF2 *elements; ///< all element of matrix
+//	uint8_t element_bit_size; ///< element size, is sizeof(BPU_T_GF2) i.e. 64 bits
+//	uint16_t elements_in_row; ///< number of elements in one row
+//	uint32_t len; ///< cols
+//}BPU_T_GF2_Vector;
+
+typedef BPU_T_Element_Array BPU_T_GF2_Vector;
 
 /**
 * Matrix representation over GF2.
@@ -109,7 +112,7 @@ typedef struct _BPU_T_GF2_Sparse_Qc_Matrix {
  * @param[out]  v_pointer pointer to GF2 vector
  */
 /// Null GF2 vector.
-#define BPU_gf2VecNull(v_pointer) memset((void *) ((v_pointer)->elements), 0, (v_pointer)->element_bit_size / 8 * (v_pointer)->elements_in_row)
+#define BPU_gf2VecNull(v_pointer) memset((void *) ((v_pointer)->elements), 0, (v_pointer)->element_bit_size / 8 * (v_pointer)->array_length)
 
 /**
  * Free dynamically or statically allocated matrix GF2. 

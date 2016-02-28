@@ -124,10 +124,10 @@ int BPU_gf2VecMallocElements(BPU_T_GF2_Vector *v, int len) {
     if ( len % v->element_bit_size > 0) {
         modul = 1;
     }
-    v->elements_in_row = len / v->element_bit_size + modul;
+    v->array_length = len / v->element_bit_size + modul;
 
     // allocate elemtens
-    v->elements = (BPU_T_GF2*) calloc(1, sizeof(BPU_T_GF2) * v->elements_in_row);
+    v->elements = (BPU_T_GF2*) calloc(1, sizeof(BPU_T_GF2) * v->array_length);
 
     if (!v->elements) {
         BPU_printError("can not allocate memory for vector of len %d", len);
@@ -205,10 +205,10 @@ int BPU_gf2PolyMalloc(BPU_T_GF2_Poly *p, int len) {
   if ( len % p->element_bit_size > 0) {
     modul = 1;
   }
-  p->elements_in_row = len / p->element_bit_size + modul;
+  p->array_length = len / p->element_bit_size + modul;
 
   // allocate elemtens
-  p->elements = (BPU_T_GF2*) calloc(1, sizeof(BPU_T_GF2) * p->elements_in_row);
+  p->elements = (BPU_T_GF2*) calloc(1, sizeof(BPU_T_GF2) * p->array_length);
 
   if (!p->elements) {
     BPU_printError("can not allocate memory for vector of len %d", len);
