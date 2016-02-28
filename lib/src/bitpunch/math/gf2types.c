@@ -42,15 +42,6 @@ void BPU_gf2MatFree(BPU_T_GF2_Matrix **m) {
     *m = NULL;
 }
 
-void BPU_gf2VecFree(BPU_T_GF2_Vector **v) {
-    if (!*v) {
-        return;
-    }
-    free((*v)->elements);
-    free(*v);
-    *v = NULL;
-}
-
 int BPU_gf2MatMalloc(BPU_T_GF2_Matrix **m, int rows, int cols) {
 	int i;
 
@@ -92,49 +83,6 @@ int BPU_gf2MatMalloc(BPU_T_GF2_Matrix **m, int rows, int cols) {
         }
 	}
 	return 0;
-}
-
-int BPU_gf2VecMalloc(BPU_T_GF2_Vector **v, int len) {
-    *v = (BPU_T_GF2_Vector *) calloc(sizeof(BPU_T_GF2_Vector), 1);
-
-    if (!*v) {
-        BPU_printError("allocation error");
-        return -1;
-    }
-    return BPU_gf2VecMallocElements(*v, len);
-}
-
-int BPU_gf2VecResize(BPU_T_GF2_Vector *v, int len) {
-    if (v->elements) {
-        free(v->elements);
-    }
-    return BPU_gf2VecMallocElements(v, len);
-}
-
-int BPU_gf2VecMallocElements(BPU_T_GF2_Vector *v, int len) {
-    // element size in bits
-    v->element_bit_size = sizeof(BPU_T_GF2) * 8;
-
-    // len
-    v->len = len;
-
-    // calc how many elements of set size will be in one row
-    int modul = 0;
-
-    if ( len % v->element_bit_size > 0) {
-        modul = 1;
-    }
-    v->array_length = len / v->element_bit_size + modul;
-
-    // allocate elemtens
-    v->elements = (BPU_T_GF2*) calloc(1, sizeof(BPU_T_GF2) * v->array_length);
-
-    if (!v->elements) {
-        BPU_printError("can not allocate memory for vector of len %d", len);
-
-        return -1;
-    }
-    return 0;
 }
 
 void BPU_gf2SparsePolyMalloc(BPU_T_GF2_Sparse_Poly *p, int weight) {

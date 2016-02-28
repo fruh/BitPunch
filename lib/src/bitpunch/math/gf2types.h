@@ -24,19 +24,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /**
 * Binary representation GF2
 */
-typedef uint16_t BPU_T_GF2;
+typedef BPU_T_Element BPU_T_GF2;
 
 /**
  * Row vector GF2 representation.
  * Every element is one bit.
  */
-//typedef struct _BPU_T_GF2_Vector {
-//	BPU_T_GF2 *elements; ///< all element of matrix
-//	uint8_t element_bit_size; ///< element size, is sizeof(BPU_T_GF2) i.e. 64 bits
-//	uint16_t elements_in_row; ///< number of elements in one row
-//	uint32_t len; ///< cols
-//}BPU_T_GF2_Vector;
-
 typedef BPU_T_Element_Array BPU_T_GF2_Vector;
 
 /**
@@ -112,7 +105,7 @@ typedef struct _BPU_T_GF2_Sparse_Qc_Matrix {
  * @param[out]  v_pointer pointer to GF2 vector
  */
 /// Null GF2 vector.
-#define BPU_gf2VecNull(v_pointer) memset((void *) ((v_pointer)->elements), 0, (v_pointer)->element_bit_size / 8 * (v_pointer)->array_length)
+#define BPU_gf2VecNull(v_pointer) BPU_elementArrayNull(v_pointer)
 
 /**
  * Free dynamically or statically allocated matrix GF2. 
@@ -126,7 +119,7 @@ void BPU_gf2MatFree(BPU_T_GF2_Matrix **m);
  * @param[out] *m address of vector object
  */
 /// Free dynamically or statically allocated vector
-void BPU_gf2VecFree(BPU_T_GF2_Vector **v);
+#define BPU_gf2VecFree(v_double_pointer) BPU_elementArrayFree(v_double_pointer)
 
 /**
  * Allocate memory for matrix GF2. It also nulls new matrix. After work you have to free memory using call BPU_freeMatGF2
@@ -141,7 +134,7 @@ int BPU_gf2MatMalloc(BPU_T_GF2_Matrix **m, int rows, int cols);
  * @param len len of vector
  * @return on succes 0, else error
  */
-int BPU_gf2VecMalloc(BPU_T_GF2_Vector **v, int len);
+#define BPU_gf2VecMalloc(v_double_pointer, len) BPU_elementArrayMalloc(v_double_pointer, len)
 
 /**
  * @brief BPU_gf2VecResize Resize vecor.
@@ -149,16 +142,7 @@ int BPU_gf2VecMalloc(BPU_T_GF2_Vector **v, int len);
  * @param len
  * @return
  */
-int BPU_gf2VecResize(BPU_T_GF2_Vector *v, int len);
-
-/**
- * @brief BPU_gf2VecMallocElements Malloc vector elements and set to zero.
- * @param v
- * @param len
- * @return
- */
-int BPU_gf2VecMallocElements(BPU_T_GF2_Vector *v, int len);
-
+#define BPU_gf2VecResize(v_pointer, len) BPU_elementArrayResize(v_pointer, len)
 
 /**********************************************************
 gf2 POLY
