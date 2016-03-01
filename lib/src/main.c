@@ -318,6 +318,13 @@ int main(int argc, char **argv) {
     BPU_printElementArray(c);
 #endif
 
+    BPU_bigintAdd(c, a, b);
+#ifdef BPU_CONF_PRINT
+    BPU_printElementArray(a);
+    BPU_printElementArray(b);
+    BPU_printElementArray(c);
+#endif
+
     BPU_bigintFree(&a);
     BPU_bigintFree(&b);
     BPU_bigintFree(&c);

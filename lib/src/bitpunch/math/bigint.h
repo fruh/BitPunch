@@ -21,6 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 int BPU_bigintMultiply(BPU_T_Bigint *out, BPU_T_Bigint *a, BPU_T_Bigint *b);
 
+int BPU_bigintAdd(BPU_T_Bigint *out, BPU_T_Bigint *a, BPU_T_Bigint *b);
+
 #define BPU_bigintNull(b_pointer) BPU_elementArrayNull(b_pointer)
 
 #define BPU_bigintMalloc(b_double_pointer, len) BPU_elementArrayMalloc(b_double_pointer, len)

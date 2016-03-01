@@ -42,3 +42,39 @@ int BPU_bigintMultiply(BPU_T_Bigint *out, BPU_T_Bigint *a, BPU_T_Bigint *b) {
     }
     return 0;
 }
+
+int BPU_bigintAdd(BPU_T_Bigint *out, BPU_T_Bigint *a, BPU_T_Bigint *b) {
+    uint32_t tmp, carry;
+    uint32_t i, j;
+    uint32_t tmplen = (a->len > b->len) ? a->len : b->len;
+    uint16_t array_len = (a->array_length > b->array_length) ? a->array_length : b->array_length;
+
+    tmplen++;
+
+    if (tmplen > out->len) {
+        BPU_printDebug("Resizing big int output to %d", tmplen);
+
+        BPU_bigintResize(out, tmplen);
+    }
+    else {
+        BPU_bigintNull(out);
+    }
+
+    carry = 0;
+    for(i = 0; i < array_len; i++) {
+        tmp = carry;
+
+        if (i < a->array_length) {
+            tmp += a->elements[i];
+        }
+        if (i < b->array_length) {
+            tmp += b->elements[i];
+        }
+        carry = tmp >> a->element_bit_size;
+        out->elements[i] = tmp;
+    }
+    if (carry) {
+        out->elements[i] = carry;
+    }
+    return 0;
+}
