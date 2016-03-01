@@ -40,6 +40,38 @@ void BPU_printPerm(const BPU_T_Perm_Vector *permutation) {
 }
 #endif // BPU_CONF_PRINT
 
+void BPU_permFree(BPU_T_Perm_Vector **p) {
+    if (!*p) {
+        return;
+    }
+    free((*p)->elements);
+    free(*p);
+}
+
+int BPU_permMalloc(BPU_T_Perm_Vector **p, int size) {
+    // allocate memory
+    int i;
+    *p = (BPU_T_Perm_Vector *) calloc(sizeof(BPU_T_Perm_Vector), 1);
+
+    if (!*p) {
+        BPU_printError("allocation error");
+        return -1;
+    }
+
+    (*p)->size = size;
+    (*p)->elements = (BPU_T_Perm_Element*) malloc(sizeof(BPU_T_Perm_Element) * size);
+
+    if (!(*p)->elements) {
+        BPU_printError("BPU_mallocPerm: can not allocate permutation vector");
+
+        return -1;
+    }
+    for (i = 0; i < (*p)->size; i++) {
+        (*p)->elements[i] = i;
+    }
+    return 0;
+}
+
 int BPU_permRandomize(BPU_T_Perm_Vector* permutation) {
 	int i;
 	uint32_t rand_value;

@@ -1,6 +1,6 @@
 /*
 This file is part of BitPunch
-Copyright (C) 2013-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+Copyright (C) 2013-2016 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 Copyright (C) 2013-2014 Andrej Gulyas <andrej.guly[what here]gmail.com>
 Copyright (C) 2013-2014 Marek Klein  <kleinmrk[what here]gmail.com>
 Copyright (C) 2013-2014 Filip Machovec  <filipmachovec[what here]yahoo.com>
@@ -33,6 +33,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 void BPU_printPerm(const BPU_T_Perm_Vector *permutation);
 #endif // BPU_CONF_PRINT
+
+/**
+ * Free dynamically or statically alocated permutation vector.
+ * @param p      permutation to free
+ * @param is_dyn 0 - staticaly allocated BPU_T_Perm_Vector object or 1 when dynamically
+ */
+/// Free dynamically or statically alocated permutation vector.
+void BPU_permFree(BPU_T_Perm_Vector **p);
+
+/**
+ * Allocate permutation vector elements of size size using malloc.  After work you have to free memory using call BPU_freePerm(p)
+ * @param  p    vector to be allocated
+ * @param  size size, permutation len
+ * @return      on succes 0 else error
+ */
+/// Allocate permutation vector elements of size size.
+int BPU_permMalloc(BPU_T_Perm_Vector **p, int size);
+
 /**
  * Generate random permutation.
  * @param permutation pointer to structure BPU_T_Perm_Vector 

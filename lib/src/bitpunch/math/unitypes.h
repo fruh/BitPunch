@@ -38,42 +38,4 @@ typedef struct _BPU_T_Element_Array {
     uint32_t len; ///< bit length of the element
 }BPU_T_Element_Array;
 
-/**
- * Null element array.
- * @param[out]  a_pointer pointer to element array
- */
-/// Null element array.
-#define BPU_elementArrayNull(a_pointer) memset((void *) ((a_pointer)->elements), 0, (a_pointer)->element_bit_size / 8 * (a_pointer)->array_length)
-
-/**
- * Free dynamically element array.
- * @param[out] *m address of vector object
- */
-/// Free dynamically or statically allocated element array
-void BPU_elementArrayFree(BPU_T_Element_Array **a);
-
-/**
- * Allocate memory for element array. It also nulls array.
- * @param len len of vector
- * @return on succes 0, else error
- */
-int BPU_elementArrayMalloc(BPU_T_Element_Array **a, int len);
-
-/**
- * @brief Resize element array.
- * @param v
- * @param len
- * @return
- */
-int BPU_elementArrayResize(BPU_T_Element_Array *a, int len);
-
-/**
- * @brief Malloc array elements and set to zero.
- * @param v
- * @param len
- * @return
- */
-int BPU_elementArrayMallocElements(BPU_T_Element_Array *a, int len);
-
-
 #endif // UNITYPES_H

@@ -55,6 +55,77 @@ void BPU_printGf2xVec(const BPU_T_GF2_16x_Vector *v);
 #endif // BPU_CONF_PRINT
 
 /**
+ * Set Polynomial values to 0.
+ * @param d_pointer[out] pointer to GF2_16x polynomial
+ */
+ /// Copy Polynomial.
+#define BPU_gf2xPolyNull(d_pointer) memset((void *) ((d_pointer)->coef), 0, sizeof(BPU_T_GF2_16x)*((d_pointer)->max_deg + 1));\
+  (d_pointer)->deg = -1
+
+void BPU_gf2xMatNull(BPU_T_GF2_16x_Matrix *mat);
+
+/**
+ * Allocate memory for matrix. After work you have to free memory using call BPU_freeMat.
+ * @param[out] m matrix to be allocated
+ * @param[in] rows rows
+ * @param[in] cols cols
+ * @return on succes 0, else error
+ */
+ /// Allocate memory for matrix.
+int BPU_gf2xMatMalloc(BPU_T_GF2_16x_Matrix **m, int rows, int cols);
+
+/**
+ * @brief BPU_gf2xVecMalloc Malloc vector structure.
+ * @param vec
+ * @param size
+ * @return
+ */
+int BPU_gf2xVecMalloc(BPU_T_GF2_16x_Vector **vec, int size);
+
+/**
+ * @brief BPU_gf2xVecFree Free vector structure.
+ * @param vec
+ */
+void BPU_gf2xVecFree(BPU_T_GF2_16x_Vector **vec);
+
+/**
+ * Free dynamically or statically allocated matrix.
+ * @param[out] *m address of matrix object
+ */
+/// Free dynamically or statically allocated matrix
+void BPU_gf2xMatFree(BPU_T_GF2_16x_Matrix **m);
+
+/**
+ * Malloc memory for polynomial and zero-initialize
+ * @param  p representation of polynomial (every element is one coeficient)
+ * @param  max_deg max degree of polynomial
+ * @return
+ */
+int BPU_gf2xPolyMalloc(BPU_T_GF2_16x_Poly **p, int16_t max_deg);
+
+/**
+ * @brief BPU_gf2xPolyResize Resize polynomial, increase max deg.
+ * @param p
+ * @param max_deg
+ * @return
+ */
+int BPU_gf2xPolyResize(BPU_T_GF2_16x_Poly *p, int16_t max_deg);
+
+/**
+ * @brief BPU_gf2xPolyMallocCoef Malloc internal coeficients for polynomial.
+ * @param p
+ * @param max_deg
+ * @return
+ */
+int BPU_gf2xPolyMallocCoef(BPU_T_GF2_16x_Poly *p, int16_t max_deg);
+
+/**
+ * dealloc memory
+ * @param p
+ */
+void BPU_gf2xPolyFree(BPU_T_GF2_16x_Poly **p);
+
+/**
  * Get inverse element of galois field.
  * @param  gf2_16x_e find inverse element to this element
  * @param  math_ctx_p pointer to BPU_T_Math_Ctx structure

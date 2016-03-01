@@ -34,13 +34,10 @@ SOURCES += \
     lib/src/bitpunch/math/int.c \
     lib/src/bitpunch/math/mathctx.c \
     lib/src/bitpunch/math/perm.c \
-    lib/src/bitpunch/math/permtypes.c \
     lib/src/bitpunch/debugio.c \
     lib/src/bitpunch/code/codectx.c \
     lib/src/bitpunch/crypto/mecsctx.c \
     lib/src/bitpunch/prng/prng.c \
-    lib/src/bitpunch/math/gf2types.c \
-    lib/src/bitpunch/math/gf2xtypes.c \
     lib/src/bitpunch/code/goppa/goppa.c \
     lib/src/bitpunch/crypto/mecsbasic/mecsbasic.c \
     lib/src/bitpunch/crypto/padding/padding.c \
@@ -55,7 +52,7 @@ SOURCES += \
     lib/src/bitpunch/code/qcmdpc/qcmdpc.c \
     lib/src/bitpunch/code/qcmdpc/qcmdpctypes.c \
     lib/src/bitpunch/math/bigint.c \
-    lib/src/bitpunch/math/unitypes.c
+    lib/src/bitpunch/math/uni.c
 
 #include(deployment.pri)
 #qtcAddDeployment()
@@ -92,7 +89,8 @@ HEADERS += \
     lib/src/bitpunch/code/qcmdpc/qcmdpctypes.h \
     lib/src/bitpunch/math/bigint.h \
     lib/src/bitpunch/math/biginttypes.h \
-    lib/src/bitpunch/math/unitypes.h
+    lib/src/bitpunch/math/unitypes.h \
+    lib/src/bitpunch/math/uni.h
 
 OTHER_FILES += \
     lib/makefile

@@ -39,7 +39,8 @@ else ifeq ($(ARCH), i586)
 	ARCH =i386
 endif
 
-LIBTASN1 = $(shell dirname `ldconfig -p | grep libtasn1 | grep ${ARCH} | head -n 1 | cut -d '>' -f 2`)/libtasn1.a
+LIBTASN1 = $(shell dirname `locate libtasn1.a | grep ${ARCH} | head -n 1 | cut -d '>' -f 2`)/libtasn1.a
+#LIBTASN1 = /usr/lib/x86_64-linux-gnu/libtasn1.a
 
 # compiler
 CC = gcc $(INCLUDE_PATH)

@@ -25,7 +25,7 @@
 #include <bitpunch/crypto/hash/sha512.h>
 #include <bitpunch/asn1/asn1.h>
 #include <bitpunch/math/bigint.h>
-#include <bitpunch/math/biginttypes.h>
+#include <bitpunch/math/uni.h>
 
 int testCmpMecsCtx(const BPU_T_Mecs_Ctx *ctx1, const BPU_T_Mecs_Ctx *ctx2) {
     int i, j, rc = 0;
@@ -314,7 +314,13 @@ int main(int argc, char **argv) {
     a->elements[0] = 65535;
     b->elements[0] = 65535;
     BPU_bigintMultiply(c, a, b);
-    BPU_printGf2Vec(c);
+#ifdef BPU_CONF_PRINT
+    BPU_printElementArray(c);
+#endif
+
+    BPU_bigintFree(&a);
+    BPU_bigintFree(&b);
+    BPU_bigintFree(&c);
 
 	return rc;
 }

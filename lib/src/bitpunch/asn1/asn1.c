@@ -19,6 +19,7 @@
 
 #ifdef BPU_CONF_ASN1
 #include <bitpunch/debugio.h>
+#include <bitpunch/math/perm.h>
 
 #include <libtasn1.h>
 #include <stdlib.h>
