@@ -31,10 +31,10 @@ int BPU_bigintMultiply(BPU_T_Bigint *out, BPU_T_Bigint *a, BPU_T_Bigint *b) {
     else {
         BPU_bigintNull(out);
     }
+    carry = 0;
 
-    for(i = 0; i < a->array_length; i++) {
-        carry = 0;
-        for(j = 0; j < b->array_length; j++) {
+    for(i = 0; i < out->array_length; i++) {
+        for(j = 0; j < out->array_length; j++) {
             tmp = (a->elements[j] * b->elements[i]) + out->elements[i + j] + carry;
             carry = tmp >> a->element_bit_size;
             out->elements[i + j] = tmp;
@@ -45,7 +45,7 @@ int BPU_bigintMultiply(BPU_T_Bigint *out, BPU_T_Bigint *a, BPU_T_Bigint *b) {
 
 int BPU_bigintAdd(BPU_T_Bigint *out, BPU_T_Bigint *a, BPU_T_Bigint *b) {
     uint32_t tmp, carry;
-    uint32_t i, j;
+    uint32_t i;
     uint32_t tmplen = (a->len > b->len) ? a->len : b->len;
     uint16_t array_len = (a->array_length > b->array_length) ? a->array_length : b->array_length;
 
