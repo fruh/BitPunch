@@ -28,7 +28,7 @@ PREFIX_SRC = src
 INCLUDE_PATH = -Isrc/
 
 ifndef CFLAGS
-	CFLAGS += -O2 -Wall -DBPU_CONF_FULL -DERROR_L
+	CFLAGS += -g -Wall -DBPU_CONF_FULL -DERROR_L
 endif
 
 # get libtasn1 path
