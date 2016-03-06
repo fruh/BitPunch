@@ -93,7 +93,7 @@ HEADERS += \
     lib/src/bitpunch/math/uni.h
 
 OTHER_FILES += \
-    lib/makefile
+    lib/Makefile
 
 DISTFILES += \
     lib/asn1/MecsPriKey.asn \
