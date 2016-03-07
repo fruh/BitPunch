@@ -33,11 +33,12 @@ int BPU_bigintMultiply(BPU_T_Bigint *out, BPU_T_Bigint *a, BPU_T_Bigint *b) {
     }
     carry = 0;
 
-    for(i = 0; i < out->array_length; i++) {
-        for(j = 0; j < out->array_length; j++) {
-            tmp = (a->elements[j] * b->elements[i]) + out->elements[i + j] + carry;
+    for(i = 0; i < b->array_length; i++) {
+        for(j = 0; j < a->array_length; j++) {
+            tmp = (a->elements[j] * b->elements[i]) + out->elements[i + j];
             carry = tmp >> a->element_bit_size;
-            out->elements[i + j] = tmp;
+            out->elements[i + j] = (BPU_T_Element)tmp;
+            out->elements[i + j + 1] += (BPU_T_Element)carry;
         }
     }
     return 0;
