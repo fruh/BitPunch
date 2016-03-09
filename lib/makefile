@@ -25,7 +25,7 @@
 # $? - names of sources, which are newer than target
 
 PREFIX_SRC = src
-INCLUDE_PATH = -Isrc/
+INCLUDE_PATH = -Isrc/ -I/Users/momo/Desktop/Skolka/DIPLOMKA/libtasn1-4.5/lib/
 
 ifndef CFLAGS
 	CFLAGS += -O2 -Wall -DBPU_CONF_FULL -DERROR_L
@@ -39,7 +39,7 @@ else ifeq ($(ARCH), i586)
 	ARCH =i386
 endif
 
-LIBTASN1 = $(shell dirname `ldconfig -p | grep libtasn1 | grep ${ARCH} | head -n 1 | cut -d '>' -f 2`)/libtasn1.a
+LIBTASN1 = /usr/local/lib/libtasn1.a
 
 # compiler
 CC = gcc $(INCLUDE_PATH)

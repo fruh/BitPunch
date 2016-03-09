@@ -53,7 +53,22 @@ SOURCES += \
     lib/src/bitpunch/crypto/cca2/mecspointcheval.c \
     lib/src/bitpunch/asn1/asn1.c \
     lib/src/bitpunch/code/qcmdpc/qcmdpc.c \
-    lib/src/bitpunch/code/qcmdpc/qcmdpctypes.c
+    lib/src/bitpunch/code/qcmdpc/qcmdpctypes.c \
+    lib/src/bitpunch/crypto/cca2/mecskobaraimai.c \
+    lib/src/bitpunch/crypto/aes/mbedtls/aes.c \
+    lib/src/bitpunch/crypto/aes/aes.c \
+    lib/src/bitpunch/crypto/hash/mbedtls/md.c \
+    lib/src/bitpunch/crypto/hash/mbedtls/mbedtls/md.c \
+    lib/src/bitpunch/crypto/hash/mbedtls/md.c \
+    lib/src/bitpunch/crypto/kdf/mbedtls/pbkdf2.c \
+    lib/src/bitpunch/crypto/kdf/pbkdf2.c \
+    lib/src/bitpunch/crypto/kdf/mbedtls/pbkdf2.c \
+    lib/src/bitpunch/asn1/mbedtls/asn1parse.c \
+    lib/src/bitpunch/crypto/kdf/mbedtls/pkcs5.c \
+    lib/src/bitpunch/crypto/kdf/mbedtls/mbedtls/cipher.c \
+    lib/src/bitpunch/crypto/kdf/mbedtls/mbedtls/oid.c \
+    lib/src/bitpunch/crypto/kdf/mbedtls/mbedtls/pk.c \
+    lib/src/bitpunch/crypto/kdf/pbkdf2.c
 
 #include(deployment.pri)
 #qtcAddDeployment()
@@ -87,7 +102,22 @@ HEADERS += \
     lib/src/bitpunch/crypto/cca2/mecspointcheval.h \
     lib/src/bitpunch/asn1/asn1.h \
     lib/src/bitpunch/code/qcmdpc/qcmdpc.h \
-    lib/src/bitpunch/code/qcmdpc/qcmdpctypes.h
+    lib/src/bitpunch/code/qcmdpc/qcmdpctypes.h \
+    lib/src/bitpunch/crypto/aes/mbedtls/mbedtls/aes.h \
+    lib/src/bitpunch/crypto/aes/aes.h \
+    lib/src/bitpunch/crypto/cca2/mecskobaraimai.h \
+    lib/src/bitpunch/crypto/hash/mbedtls/md.h \
+    lib/src/bitpunch/crypto/hash/mbedtls/mbedtls/md.h \
+    lib/src/bitpunch/crypto/hash/mbedtls/mbedtls/md_internal.h \
+    lib/src/bitpunch/crypto/kdf/mbedtls/pbkdf2.h \
+    lib/src/bitpunch/crypto/kdf/mbedtls/mbedtls/pkcs5.h \
+    lib/src/bitpunch/asn1/mbedtls/asn1.h \
+    lib/src/bitpunch/crypto/kdf/mbedtls/mbedtls/cipher.h \
+    lib/src/bitpunch/crypto/kdf/mbedtls/mbedtls/oid.h \
+    lib/src/bitpunch/crypto/kdf/mbedtls/mbedtls/cipher_internal.h \
+    lib/src/bitpunch/crypto/kdf/mbedtls/mbedtls/pk.h \
+    lib/src/bitpunch/crypto/kdf/mbedtls/mbedtls/pk_internal.h \
+    lib/src/bitpunch/crypto/kdf/pbkdf2.h
 
 OTHER_FILES += \
     lib/makefile

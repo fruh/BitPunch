@@ -121,17 +121,15 @@ int BPU_gf2VecMallocElements(BPU_T_GF2_Vector *v, int len) {
     // calc how many elements of set size will be in one row
     int modul = 0;
 
-    if ( len % v->element_bit_size > 0) {
-        modul = 1;
-    }
-    v->elements_in_row = len / v->element_bit_size + modul;
+    v->elements_in_row = len / v->element_bit_size;
+    if ( len % v->element_bit_size > 0)
+        v->elements_in_row++;
 
     // allocate elemtens
     v->elements = (BPU_T_GF2*) calloc(1, sizeof(BPU_T_GF2) * v->elements_in_row);
 
     if (!v->elements) {
         BPU_printError("can not allocate memory for vector of len %d", len);
-
         return -1;
     }
     return 0;

@@ -24,6 +24,47 @@
 
 #include <bitpunch/crypto/hash/sha512.h>
 #include <bitpunch/asn1/asn1.h>
+#include <bitpunch/crypto/aes/aes.h>
+#include <bitpunch/crypto/kdf/pbkdf2.h>
+
+int testKDF(){
+    BPU_T_GF2_Vector *out, *in;
+    BPU_gf2VecMalloc(&in,384);
+    //pomocny
+    BPU_gf2VecMalloc(&out,384);
+    BPU_gf2VecKDF(out,in);
+
+    return 0;
+}
+
+int testAesEncDec(){
+    int rc = 0;
+    fprintf(stderr, "Aes - ENC/DEC testing...\n");
+    BPU_T_GF2_Vector *pt, *ct,*key,*iv,*tmp, *ivOrig;
+    //Testing plaintext vector - lenght 384 bit ()
+    BPU_gf2VecMalloc(&pt,512);
+    //pomocny
+    BPU_gf2VecMalloc(&tmp,512);
+    BPU_gf2VecCopy(tmp,pt);
+    BPU_gf2VecMalloc(&ct,512);
+    //Testing iv vector, must be 16 bytes
+    BPU_gf2VecMalloc(&iv,16*8);
+    BPU_gf2VecRand(iv,3);
+    BPU_gf2VecMalloc(&ivOrig,16*8);
+    BPU_gf2VecCopy(ivOrig,iv);
+    //Testing key vector, must be 32 bytes
+    BPU_gf2VecMalloc(&key,32*8);
+    BPU_gf2VecRand(key,3);
+    
+    rc += BPU_gf2VecAesEnc(ct,pt,key,iv);
+    BPU_gf2VecCopy(iv,ivOrig);
+    rc += BPU_gf2VecAesDec(pt,ct,key,iv);
+
+    if (BPU_gf2VecCmp(pt,tmp) == 0)
+        fprintf(stderr, "PARADNE.\n");
+    return rc;
+}
+
 
 int testCmpMecsCtx(const BPU_T_Mecs_Ctx *ctx1, const BPU_T_Mecs_Ctx *ctx2) {
     int i, j, rc = 0;
@@ -246,6 +287,7 @@ int testKeyGenAsn1() {
     return rc;
 }
 #endif
+
 int main(int argc, char **argv) {
 	int rc = 0;
     // MUST BE NULL
@@ -279,6 +321,16 @@ int main(int argc, char **argv) {
     BPU_mecsFreeParamsGoppa(&params);
 #endif
 
+/*#ifdef BPU_CONF_MECS_CCA2_KOBARA_IMAI_GOPPA
+    fprintf(stderr, "\nCCA2 Kobara-IMAI GOPPA Initialisation...\n");
+    if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_CCA2_KOBARA_IMAI_GOPPA)) {
+        return 1;
+    }
+    rc += testKeyGenEncDec(ctx);
+    BPU_mecsFreeCtx(&ctx);
+    BPU_mecsFreeParamsGoppa(&params);
+#endif*/
+
 // 	/***************************************/
 //     mce initialisation of 80-bit security
      fprintf(stderr, "Basic QC-MDPC Initialisation...\n");
@@ -303,6 +355,11 @@ int main(int argc, char **argv) {
      rc += testKeyGenEncDec(ctx);
      BPU_mecsFreeCtx(&ctx);
      BPU_mecsFreeParamsQcmdpc(&params);
+ #endif
+
+ #ifdef BPU_CONF_MECS_HYBRID
+     rc += testAesEncDec();
+     rc += testKDF();
  #endif
 
 	return rc;

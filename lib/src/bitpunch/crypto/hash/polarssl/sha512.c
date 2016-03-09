@@ -27,7 +27,8 @@
  */
 #define POLARSSL_SHA512_C
 
-#if defined(POLARSSL_SHA512_C)
+
+#if defined(POLARSSL_SHA512_C) || defined(MBEDTLS_SHA512_C)
 
 #include "polarssl/sha512.h"
 

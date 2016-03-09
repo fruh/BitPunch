@@ -46,7 +46,7 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const BPU_T_UN_Code_Params *params, co
 		BPU_printError("Can not malloc BPU_T_UN_Code_Spec");
 
 		return BPU_EC_MALLOC_ERROR;
-	}
+	}    
 	switch (type) {
 	case BPU_EN_CODE_GOPPA:
 #ifdef BPU_CONF_ENCRYPTION

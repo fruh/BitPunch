@@ -54,6 +54,12 @@ int BPU_asn1EncodePriKey(char **buffer, int *size, const BPU_T_Mecs_Ctx *ctx) {
         rc = asn1_write_value(asn1_element, "oid", BPU_STR_ASN1_OID_MECS_CCA2_POINTCHEVAL_GOPPA, strlen(BPU_STR_ASN1_OID_MECS_CCA2_POINTCHEVAL_GOPPA));
     }
 #endif
+    //Include Kobara-Imai
+#ifdef BPU_CONF_MECS_CCA2_KOBARA_IMAI_GOPPA
+    if (ctx->type == BPU_EN_MECS_CCA2_KOBARA_IMAI_GOPPA) {
+        rc = asn1_write_value(asn1_element, "oid", BPU_STR_ASN1_OID_MECS_CCA2_KOBARA_IMAI_GOPPA, strlen(BPU_STR_ASN1_OID_MECS_CCA2_KOBARA_IMAI_GOPPA));
+    }
+#endif
     if (rc != ASN1_SUCCESS) {
         BPU_printError("asn1_write_value(): oid %d", rc);
         return rc;
@@ -265,6 +271,12 @@ int BPU_asn1EncodePubKey(char **buffer, int *size, const BPU_T_Mecs_Ctx *ctx) {
         rc = asn1_write_value(asn1_element, "oid", BPU_STR_ASN1_OID_MECS_CCA2_POINTCHEVAL_GOPPA, strlen(BPU_STR_ASN1_OID_MECS_CCA2_POINTCHEVAL_GOPPA));
     }
 #endif
+    //Include Kobara-Imai
+#ifdef BPU_CONF_MECS_CCA2_KOBARA_IMAI_GOPPA
+    if (ctx->type == BPU_EN_MECS_CCA2_KOBARA_IMAI_GOPPA) {
+        rc = asn1_write_value(asn1_element, "oid", BPU_STR_ASN1_OID_MECS_CCA2_KOBARA_IMAI_GOPPA, strlen(BPU_STR_ASN1_OID_MECS_CCA2_KOBARA_IMAI_GOPPA));
+    }
+#endif
     if (rc != ASN1_SUCCESS) {
         BPU_printError("asn1_write_value(): oid %d", rc);
         return rc;
@@ -373,8 +385,8 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx **ctx, const char *buffer, const int siz
     t = *(uint8_t *) tmp_buf;
     free(tmp_buf);
 
-    // init mecs context without mod
-	if (type == BPU_EN_MECS_BASIC_GOPPA || type == BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA) {
+    // init mecs context without mod || Include Kobara-Imai
+    if (type == BPU_EN_MECS_BASIC_GOPPA || type == BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA || type == BPU_EN_MECS_CCA2_KOBARA_IMAI_GOPPA) {
 		if (BPU_mecsInitParamsGoppa(&params, m, t, -1)) {
 			return -1;
 		}
@@ -442,6 +454,12 @@ BPU_T_EN_Mecs_Types BPU_asn1GetMecsTypeFromOid(asn1_node node) {
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     else if (!strcmp(tmp_buf, BPU_STR_ASN1_OID_MECS_CCA2_POINTCHEVAL_GOPPA)) {
         rc = BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA;
+    }
+#endif
+    //Include Kobara-Imai
+#ifdef BPU_CONF_MECS_CCA2_KOBARA_IMAI_GOPPA
+    else if (!strcmp(tmp_buf, BPU_STR_ASN1_OID_MECS_CCA2_KOBARA_IMAI_GOPPA)) {
+        rc = BPU_EN_MECS_CCA2_KOBARA_IMAI_GOPPA;
     }
 #endif
     else {

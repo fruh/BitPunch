@@ -1,0 +1,21 @@
+\select@language {english}
+\thispagestyle {empty}
+\contentsline {section}{Introduction}{11}{section*.2}
+\contentsline {section}{\numberline {1}Preliminaries}{12}{section.3}
+\contentsline {subsection}{\numberline {1.1}Notation}{12}{subsection.4}
+\contentsline {subsection}{\numberline {1.2}McElice cryptosystem}{12}{subsection.5}
+\contentsline {paragraph}{Key generation algorithm}{12}{subsection.5}
+\contentsline {subsection}{\numberline {1.3}CCA security}{14}{subsection.20}
+\contentsline {subsection}{\numberline {1.4}Key encapsulation}{15}{subsection.27}
+\contentsline {section}{\numberline {2}Analysis}{16}{section.28}
+\contentsline {subsection}{\numberline {2.1}Bitpunch library}{16}{subsection.29}
+\contentsline {subsubsection}{\numberline {2.1.1}Modular architecture}{16}{subsubsection.30}
+\contentsline {subsubsection}{\numberline {2.1.2}CCA conversions}{17}{subsubsection.33}
+\contentsline {paragraph}{Variant of Pointcheval CCA2 conversion}{17}{subsubsection.33}
+\contentsline {section}{\numberline {3}Our contribution}{20}{section.57}
+\contentsline {section}{Conclusion}{21}{section*.73}
+\contentsline {section}{Resum\'{e}}{22}{section*.74}
+\contentsline {section}{Bibliography}{23}{section*.75}
+\contentsline {section}{Appendix}{I}{section*.76}
+\contentsline {section}{\numberline {A} Structure of attached medium}{II}{section.78}
+\contentsline {section}{\numberline {B} Algoritmus}{III}{section.81}

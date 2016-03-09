@@ -35,6 +35,9 @@
 #define BPU_STR_ASN1_OID_MECS_BASIC_GOPPA "1.3.6.1.4.1.8301.3.1.3.4.1"
 /// src: http://www.hrz.tu-darmstadt.de/itsicherheit/object_identifier/oids_der_informatik__cdc/oids_des_fachgebietes_cdc_der_informatik.de.jsp
 #define BPU_STR_ASN1_OID_MECS_CCA2_POINTCHEVAL_GOPPA "1.3.6.1.4.1.8301.3.1.3.4.2.2"
+/// src: http://www.hrz.tu-darmstadt.de/itsicherheit/object_identifier/oids_der_informatik__cdc/oids_des_fachgebietes_cdc_der_informatik.de.jsp
+#define BPU_STR_ASN1_OID_MECS_CCA2_KOBARA_IMAI_GOPPA "1.3.6.1.4.1.8301.3.1.3.4.2.3"
+
 
 /**
  * @brief BPU_asn1EncodePriKey dsadsad

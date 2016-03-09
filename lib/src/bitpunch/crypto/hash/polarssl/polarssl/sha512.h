@@ -24,6 +24,7 @@
  */
 #ifndef POLARSSL_SHA512_H
 #define POLARSSL_SHA512_H
+#define MBEDTLS_SHA512_C
 
 #include <string.h>
 

@@ -1,0 +1,14 @@
+BPU_ASN1 { }
+
+DEFINITIONS IMPLICIT TAGS ::=
+
+BEGIN
+
+MecsPubKey ::= SEQUENCE {
+	oid OBJECT IDENTIFIER, -- OID
+	m INTEGER, -- degree of field polynomial
+	t INTEGER, -- error capability of code, degree of goppa polynomial
+	g_mat OCTET STRING -- generator matrix GF2
+}
+
+END

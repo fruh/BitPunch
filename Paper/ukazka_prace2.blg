@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: ukazka_prace2.aux
+The style file: FEIstyle.bst
+Database file #1: includes/bibliography.bib
+You've used 1 entry,
+            2234 wiz_defined-function locations,
+            532 strings with 4028 characters,
+and the built_in function-call counts, 313 in all, are:
+= -- 31
+> -- 7
+< -- 0
++ -- 4
+- -- 2
+* -- 27
+:= -- 55
+add.period$ -- 3
+call.type$ -- 1
+change.case$ -- 4
+chr.to.int$ -- 0
+cite$ -- 1
+duplicate$ -- 9
+empty$ -- 28
+format.name$ -- 2
+if$ -- 61
+int.to.chr$ -- 0
+int.to.str$ -- 1
+missing$ -- 1
+newline$ -- 8
+num.names$ -- 2
+pop$ -- 2
+preamble$ -- 1
+purify$ -- 3
+quote$ -- 0
+skip$ -- 5
+stack$ -- 0
+substring$ -- 31
+swap$ -- 2
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 4
+warning$ -- 0
+while$ -- 4
+width$ -- 2
+write$ -- 12
