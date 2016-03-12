@@ -27,9 +27,48 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/config.h>
 
 #include "gf2.h"
-#include "gf2xtypes.h"
 #include "mathctx.h"
 
+/**
+ * @brief prototype of math context BPU_T_Math_Ctx
+ */
+typedef struct _BPU_T_Math_Ctx BPU_T_Math_Ctx;
+
+/**
+* Polynomial representation over GF2, max deg f < 16
+*/
+typedef uint16_t BPU_T_GF2_16x;
+
+/**
+* Polynomial representation over GF2, max deg f < 32
+*/
+typedef uint32_t BPU_T_GF2_32x;
+
+/**
+ * GF2_16x Vector representation
+ */
+typedef struct _BPU_T_GF2_16x_Vector {
+  BPU_T_GF2_16x *elements;
+  uint8_t len; ///< number of elements
+}BPU_T_GF2_16x_Vector;
+
+/**
+* Matrix representation over GF2_16x.
+*/
+typedef struct _BPU_T_GF2_16x_Matrix {
+  BPU_T_GF2_16x **elements; ///< all element of matrix
+  uint16_t k; ///< rows
+  uint16_t n; ///< cols
+}BPU_T_GF2_16x_Matrix;
+
+/**
+* Representation of polynomial.
+*/
+typedef struct _BPU_T_GF2_16x_Poly{
+  BPU_T_GF2_16x *coef; ///< Polynomial over GF2m
+  int16_t deg; ///< degree
+  int16_t max_deg; ///< degree
+}BPU_T_GF2_16x_Poly;
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
 /**

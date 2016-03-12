@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef BPU_MATHCTX_H
 #define BPU_MATHCTX_H
 
-#include "gf2xtypes.h"
+#include "gf2x.h"
 
 // polynomials in format BPU_GF2_POLY_DEG_m where 'm' is mceliece param m
 #define BPU_GF2_POLY_DEG_5 0x3b
@@ -27,14 +27,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define BPU_GF2_POLY_DEG_11 0x805
 
 /**
+ * @brief prototype of BPU_T_GF2_16x
+ */
+//TODO: maybe there is better way how to avoid
+// circular dependencies. BPU_T_GF2_16x should be defined in gf2x.h
+typedef uint16_t BPU_T_GF2_16x;
+
+/**
 * Representation of aritmetics data.
 */
 typedef struct _BPU_T_Math_Ctx {
-	BPU_T_GF2_16x *exp_table; ///< there are all elements referenced by i, so at i-th index is g^i element, g - generator
-  	BPU_T_GF2_16x *log_table; ///< there are all indexes referenced by element, so alpha elemnet (g^i) -> i
-  	BPU_T_GF2_16x mod; ///< polynomial modulus
+    BPU_T_GF2_16x *exp_table; ///< there are all elements referenced by i, so at i-th index is g^i element, g - generator
+    BPU_T_GF2_16x *log_table; ///< there are all indexes referenced by element, so alpha elemnet (g^i) -> i
+    BPU_T_GF2_16x mod; ///< polynomial modulus
     uint8_t mod_deg; ///< modulo degree, galois finite field GF(2^m)
-  	int ord; ///< group ord, number of elements
+    int ord; ///< group ord, number of elements
 }BPU_T_Math_Ctx;
 
 /**

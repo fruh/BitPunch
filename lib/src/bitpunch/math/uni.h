@@ -38,7 +38,7 @@ typedef struct _BPU_T_Element_Array {
 
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
-// TODO: Be enable to turn off print function, to not compile in in code
+// TODO: Possibility of turning off print functions - do not compile
 /**
 * Print number as binary string in big endian so msb is first printed. Do not print new line at the end.
 * Example: number 21 -> 0001 0101

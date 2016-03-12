@@ -63,7 +63,6 @@ HEADERS += \
     lib/src/bitpunch/crypto/prng.h \
     lib/src/bitpunch/math/gf2.h \
     lib/src/bitpunch/math/gf2x.h \
-    lib/src/bitpunch/math/gf2xtypes.h \
     lib/src/bitpunch/math/int.h \
     lib/src/bitpunch/math/mathctx.h \
     lib/src/bitpunch/math/perm.h \
