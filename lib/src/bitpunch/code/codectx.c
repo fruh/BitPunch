@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <bitpunch/debugio.h>
 #include <bitpunch/errorcodes.h>
-#include <bitpunch/math/gf2types.h>
+#include <bitpunch/math/gf2.h>
 
 // additional codes
 #include <bitpunch/code/goppa/goppa.h>

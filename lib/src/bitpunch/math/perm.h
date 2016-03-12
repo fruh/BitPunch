@@ -24,7 +24,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <bitpunch/config.h>
 
-#include "permtypes.h"
+#include <stdint.h>
+
+/// Definition of permutation element type.
+typedef uint16_t BPU_T_Perm_Element;
+
+/**
+* Representation of permutation.
+* Elements are numbers from 0 to size-1.
+* Size corresponds to count of columns in matrix.
+*/
+typedef struct _BPU_T_Perm_Vector {
+    BPU_T_Perm_Element *elements; ///< permutation vector
+    BPU_T_Perm_Element size; ///< permutation size
+}BPU_T_Perm_Vector;
 
 #ifdef BPU_CONF_PRINT
 /**

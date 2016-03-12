@@ -17,7 +17,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "uni.h"
-#include "biginttypes.h"
+
+typedef BPU_T_Element_Array BPU_T_Bigint;
 
 int BPU_bigintMultiply(BPU_T_Bigint *out, BPU_T_Bigint *a, BPU_T_Bigint *b);
 

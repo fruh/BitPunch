@@ -19,11 +19,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef BPU_UNI_H
 #define BPU_UNI_H
 
-#include "unitypes.h"
-
 #include <bitpunch/config.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
+
+typedef uint16_t BPU_T_Element;
+
+/**
+ * Represents elements bigger than standard C types.
+ */
+typedef struct _BPU_T_Element_Array {
+    BPU_T_Element *elements; ///< element stored in the array
+    uint8_t element_bit_size; ///< element size e.g., 16 bits
+    uint16_t array_length; ///< number of elements in the array
+    uint32_t len; ///< bit length of the element
+}BPU_T_Element_Array;
 
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */

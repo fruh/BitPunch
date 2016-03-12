@@ -17,9 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef GOPPATYPES_H
 #define GOPPATYPES_H
-#include <bitpunch/math/gf2types.h>
+#include <bitpunch/math/gf2.h>
 #include <bitpunch/math/gf2xtypes.h>
-#include <bitpunch/math/permtypes.h>
+#include <bitpunch/math/perm.h>
 
 /**
   Internal Goppa code structure.

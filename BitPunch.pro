@@ -62,13 +62,11 @@ HEADERS += \
     lib/src/bitpunch/crypto/mecs.h \
     lib/src/bitpunch/crypto/prng.h \
     lib/src/bitpunch/math/gf2.h \
-    lib/src/bitpunch/math/gf2types.h \
     lib/src/bitpunch/math/gf2x.h \
     lib/src/bitpunch/math/gf2xtypes.h \
     lib/src/bitpunch/math/int.h \
     lib/src/bitpunch/math/mathctx.h \
     lib/src/bitpunch/math/perm.h \
-    lib/src/bitpunch/math/permtypes.h \
     lib/src/bitpunch/debugio.h \
     lib/src/bitpunch/crypto/mecsctx.h \
     lib/src/bitpunch/code/goppatypes.h \
@@ -88,8 +86,6 @@ HEADERS += \
     lib/src/bitpunch/code/qcmdpc/qcmdpc.h \
     lib/src/bitpunch/code/qcmdpc/qcmdpctypes.h \
     lib/src/bitpunch/math/bigint.h \
-    lib/src/bitpunch/math/biginttypes.h \
-    lib/src/bitpunch/math/unitypes.h \
     lib/src/bitpunch/math/uni.h
 
 OTHER_FILES += \
