@@ -24,7 +24,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/config.h>
 #include <bitpunch/math/gf2.h>
 #include <bitpunch/math/gf2x.h>
-#include <bitpunch/math/mathctx.h>
 
 // addiotional codes
 #include <bitpunch/code/goppa/goppatypes.h>

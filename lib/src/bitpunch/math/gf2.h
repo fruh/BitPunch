@@ -105,7 +105,7 @@ typedef struct _BPU_T_GF2_Sparse_Qc_Matrix {
 
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
-// TODO: Be enable to turn off print function, to not compile in in code
+// TODO: add possibility of turning off print functions, do not compile
 /**
 * Print matrix GF2 with new lines.
 * @param m matrix

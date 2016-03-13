@@ -19,13 +19,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include<math.h>
 #include "int.h"
- 
+
 int BPU_isPrime(int n) {
   int i;
+
   if (n == 2)
     return 1;
-  for (i = 2; i <= n/2.0; i++) {   //TODO: import math.h and use sqrt(n)
+  for (i = 2; i <= sqrt((double)n); i++) {
     if (n % i == 0)
       return 0;
   }

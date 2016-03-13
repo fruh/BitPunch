@@ -26,7 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "gf2x.h"
 #include "int.h"
-#include "mathctx.h"
 
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */

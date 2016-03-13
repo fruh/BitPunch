@@ -64,7 +64,6 @@ HEADERS += \
     lib/src/bitpunch/math/gf2.h \
     lib/src/bitpunch/math/gf2x.h \
     lib/src/bitpunch/math/int.h \
-    lib/src/bitpunch/math/mathctx.h \
     lib/src/bitpunch/math/perm.h \
     lib/src/bitpunch/debugio.h \
     lib/src/bitpunch/crypto/mecsctx.h \

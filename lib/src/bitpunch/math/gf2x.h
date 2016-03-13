@@ -27,12 +27,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/config.h>
 
 #include "gf2.h"
-#include "mathctx.h"
+
 
 /**
  * @brief prototype of math context BPU_T_Math_Ctx
  */
-typedef struct _BPU_T_Math_Ctx BPU_T_Math_Ctx;
 
 /**
 * Polynomial representation over GF2, max deg f < 16
@@ -43,6 +42,40 @@ typedef uint16_t BPU_T_GF2_16x;
 * Polynomial representation over GF2, max deg f < 32
 */
 typedef uint32_t BPU_T_GF2_32x;
+
+// polynomials in format BPU_GF2_POLY_DEG_m where 'm' is mceliece param m
+#define BPU_GF2_POLY_DEG_5 0x3b
+#define BPU_GF2_POLY_DEG_6 0x43
+#define BPU_GF2_POLY_DEG_10 0x71d
+#define BPU_GF2_POLY_DEG_11 0x805
+
+/**
+* Representation of aritmetics data.
+*/
+typedef struct _BPU_T_Math_Ctx {
+    BPU_T_GF2_16x *exp_table; ///< there are all elements referenced by i, so at i-th index is g^i element, g - generator
+    BPU_T_GF2_16x *log_table; ///< there are all indexes referenced by element, so alpha elemnet (g^i) -> i
+    BPU_T_GF2_16x mod; ///< polynomial modulus
+    uint8_t mod_deg; ///< modulo degree, galois finite field GF(2^m)
+    int ord; ///< group ord, number of elements
+}BPU_T_Math_Ctx;
+
+/**
+* Precalculate logaritmic and exponencial tables and initialize structure Aritmetic_Data
+* @param g is a group generator
+* @param mod modulus, ireducible polynomial
+* @return number of elements or < 0 means error
+*/
+/// Precalculate logaritmic and exponencial tables and initialize structure Aritmetic_Data
+int BPU_mathInitCtx(BPU_T_Math_Ctx **ctx, const BPU_T_GF2_16x g, const BPU_T_GF2_16x mod);
+
+/**
+ * Free dynamiccaly or statically allocated Aritmetic_Data structure.
+ * @param a      aaddress of Aritmetic_Data structure
+ * @param is_dyn 0 - staticaly allocated Aritmetic_Data object or 1 when dynamically
+ */
+/// Free dynamiccaly or statically allocated Aritmetic_Data structure.
+void BPU_mathFreeCtx(BPU_T_Math_Ctx **ctx);
 
 /**
  * GF2_16x Vector representation

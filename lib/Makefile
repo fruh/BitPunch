@@ -45,7 +45,7 @@ LIBTASN1 = $(shell dirname `locate libtasn1.a | grep ${ARCH} | head -n 1 | cut -
 # compiler
 CC = gcc $(INCLUDE_PATH)
 
-LDFLAGS = -ltasn1
+LDFLAGS = -ltasn1 -lm
 #-fstack-protector-all
 
 # curent working directory
@@ -74,7 +74,7 @@ PICS := $(patsubst %.c, %.c.o.pic, $(C_FILES))
 default: test print-info
 
 test: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 test-debug: CFLAGS = -Wall -DBPU_CONF_FULL -ggdb -DDEBUG_L
 test-debug: prepare-dir static-lib
