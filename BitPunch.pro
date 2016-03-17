@@ -34,13 +34,10 @@ SOURCES += \
     lib/src/bitpunch/math/int.c \
     lib/src/bitpunch/math/mathctx.c \
     lib/src/bitpunch/math/perm.c \
-    lib/src/bitpunch/math/permtypes.c \
     lib/src/bitpunch/debugio.c \
     lib/src/bitpunch/code/codectx.c \
     lib/src/bitpunch/crypto/mecsctx.c \
     lib/src/bitpunch/prng/prng.c \
-    lib/src/bitpunch/math/gf2types.c \
-    lib/src/bitpunch/math/gf2xtypes.c \
     lib/src/bitpunch/code/goppa/goppa.c \
     lib/src/bitpunch/crypto/mecsbasic/mecsbasic.c \
     lib/src/bitpunch/crypto/padding/padding.c \
@@ -53,7 +50,9 @@ SOURCES += \
     lib/src/bitpunch/crypto/cca2/mecspointcheval.c \
     lib/src/bitpunch/asn1/asn1.c \
     lib/src/bitpunch/code/qcmdpc/qcmdpc.c \
-    lib/src/bitpunch/code/qcmdpc/qcmdpctypes.c
+    lib/src/bitpunch/code/qcmdpc/qcmdpctypes.c \
+    lib/src/bitpunch/math/bigint.c \
+    lib/src/bitpunch/math/uni.c
 
 #include(deployment.pri)
 #qtcAddDeployment()
@@ -63,13 +62,9 @@ HEADERS += \
     lib/src/bitpunch/crypto/mecs.h \
     lib/src/bitpunch/crypto/prng.h \
     lib/src/bitpunch/math/gf2.h \
-    lib/src/bitpunch/math/gf2types.h \
     lib/src/bitpunch/math/gf2x.h \
-    lib/src/bitpunch/math/gf2xtypes.h \
     lib/src/bitpunch/math/int.h \
-    lib/src/bitpunch/math/mathctx.h \
     lib/src/bitpunch/math/perm.h \
-    lib/src/bitpunch/math/permtypes.h \
     lib/src/bitpunch/debugio.h \
     lib/src/bitpunch/crypto/mecsctx.h \
     lib/src/bitpunch/code/goppatypes.h \
@@ -87,10 +82,12 @@ HEADERS += \
     lib/src/bitpunch/crypto/cca2/mecspointcheval.h \
     lib/src/bitpunch/asn1/asn1.h \
     lib/src/bitpunch/code/qcmdpc/qcmdpc.h \
-    lib/src/bitpunch/code/qcmdpc/qcmdpctypes.h
+    lib/src/bitpunch/code/qcmdpc/qcmdpctypes.h \
+    lib/src/bitpunch/math/bigint.h \
+    lib/src/bitpunch/math/uni.h
 
 OTHER_FILES += \
-    lib/makefile
+    lib/Makefile
 
 DISTFILES += \
     lib/asn1/MecsPriKey.asn \

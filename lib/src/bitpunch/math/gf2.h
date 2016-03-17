@@ -1,6 +1,6 @@
 /*
 This file is part of BitPunch
-Copyright (C) 2013-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+Copyright (C) 2013-2016 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 Copyright (C) 2013-2015 Andrej Gulyas <andrej.guly[what here]gmail.com>
 Copyright (C) 2013-2014 Marek Klein  <kleinmrk[what here]gmail.com>
 Copyright (C) 2013-2014 Filip Machovec  <filipmachovec[what here]yahoo.com>
@@ -26,85 +26,86 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 
 #include <bitpunch/config.h>
-#include "permtypes.h"
-#include "gf2types.h"
+#include "perm.h"
+#include "gf2.h"
 #include "int.h"
+#include "uni.h"
+
+
+/**
+* Binary representation GF2
+*/
+typedef BPU_T_Element BPU_T_GF2;
+
+/**
+ * Row vector GF2 representation.
+ * Every element is one bit.
+ */
+typedef BPU_T_Element_Array BPU_T_GF2_Vector;
+
+/**
+* Matrix representation over GF2.
+* Every element is one bit.
+*/
+typedef struct _BPU_T_GF2_Matrix {
+    BPU_T_GF2 **elements; ///< all element of matrix
+    uint8_t element_bit_size; ///< element size, is sizeof(BPU_T_GF2) i.e. 64 bits
+    uint16_t elements_in_row; ///< number of elements in one row
+    uint32_t k; ///< rows
+    uint32_t n; ///< cols
+}BPU_T_GF2_Matrix;
+
+/**
+ * Polynomial over GF2, represented as Vector.
+ * Indexes are stored in elements, degree of polynomial is len - 1
+ */
+typedef BPU_T_GF2_Vector BPU_T_GF2_Poly;
+
+/**
+ * Sparse polynomial over GF2.
+ * More effective than BPU_T_GF2_Poly for low weight polynomials.
+ * Every set coefficient is stored in array of indexes.
+ */
+typedef struct _BPU_T_GF2_Sparse_Poly {
+  uint32_t *index; ///<indexes of set coefficients. 0 is coefficient for x^0
+  uint32_t weight; ///<weight of polynomial
+}BPU_T_GF2_Sparse_Poly;
+
+/**
+ * Quasi-cyclic matrix over GF2.
+ * Cyclic matrices are stored as polynomials.
+ * Matrix can have multiple cyclic matrices (but just one in row and more in columns, or in reverse)
+ * The orientation of is set in isVertical.
+ * For appended identity matrix in left set is_I_appended to 1.
+ */
+typedef struct _BPU_T_GF2_QC_Matrix {
+  BPU_T_GF2_Poly *matrices; ///< all cyclic matrices of matrix
+  uint16_t element_count; ///< number of cyclic matrices
+  uint32_t element_size; ///< size of cyclic matrix
+  uint8_t isVertical; ///< if 1, elements are in vertical orientation, if 0 horizontal orientation
+  uint32_t n; ///< cols of whole matrix
+  uint32_t k; ///< rows of whole matrix
+  uint8_t is_I_appended; ///< if matrix has identity matrix on left
+}BPU_T_GF2_QC_Matrix;
+
+/**
+ * Quasi-cyclic matrix over GF2 with sparse cyclic matrices.
+ * More effective than BPU_T_QC_Matrix_GF2 for low weight cyclic matrices.
+ * Matrix can have multiple cyclic matrices (but just one in row and more in columns, or in reverse)
+ * The orientation of is set in isVertical.
+ */
+typedef struct _BPU_T_GF2_Sparse_Qc_Matrix {
+  BPU_T_GF2_Sparse_Poly *matrices; ///< all cyclic matrices of matrix
+  uint16_t element_count; ///< number of cyclic matrices
+  uint32_t element_size; ///< size of cyclic matrix
+  uint8_t isVertical; ///< if 1, elements are in vertical orientation, if 0 horizontal orientation
+  uint32_t n; ///< cols of whole matrix
+  uint32_t k; ///< rows of whole matrix
+}BPU_T_GF2_Sparse_Qc_Matrix;
 
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
-// TODO: Be enable to turn off print function, to not compile in in code
-/**
-* Print number as binary string in big endian so msb is first printed. Do not print new line at the end.
-* Example: number 21 -> 0001 0101
-* @param in input of max 64 bits
-* @param len print len
-*/
-/// Print number as binary string in big endian so msb is first printed.
-void BPU_printBinaryMsb(uint32_t in, int len);
-
-/**
-* Print number as binary string in big endian so msb is first printed. Print also new line at the end.
-* Example: number 21 -> 0001 0101
-* @param in input of max 64 bits
-* @param len print len
-*/
-/// Print number as binary string in big endian so msb is first printed.
-void BPU_printBinaryMsbLn(uint32_t in, int len);
-
-/**
-* Print number as binary string in big endian so msb is first printed. Do not print new line at the end.
-* Example: number 21 -> 0001 0101
-* It will be padded to 64 bits.
-* @param in input of max 64 bits
-*/
-/// Print number as binary string in big endian so msb is first printed.
-void BPU_printBinaryMsb32(uint32_t in);
-
-/**
-* Print number as binary string in big endian so msb is first printed. Print also new line at the end.
-* Example: number 21 -> 0001 0101
-* It will be padded 64 bits.
-* @param in input of max 64 bits
-*/
-/// Print number as binary string in big endian so msb is first printed.
-void BPU_printBinaryMsb32Ln(uint32_t in);
-
-/**
-* Print number as binary string in little endian so lsb is first printed. Do not print new line at the end.
-* Example: number 21 -> 1010 1000
-* @param in input of max 64 bits
-* @param len print len
-*/
-/// Print number as binary string in little endian so lsb is first printed.
-void BPU_printBinaryLsb(uint32_t in, int len);
-
-/**
-* Print number as binary string in little endian so lsb is first printed. Print also new line at the end.
-* Example: number 21 -> 1010 1000
-* @param in input of max 64 bits
-* @param len print len
-*/
-/// Print number as binary string in little endian so lsb is first printed.
-void BPU_printBinaryLsbLn(uint32_t in, int len);
-
-/**
-* Print number as binary string in little endian so lsb is first printed. Do not print new line at the end.
-* Example: number 21 -> 1010 1000
-* It will be padded to 64 bits.
-* @param in input of max 64 bits
-*/
-/// Print number as binary string in little endian so lsb is first printed.
-void BPU_printBinaryLsb32(uint32_t in);
-
-/**
-* Print number as binary string in little endian so lsb is first printed. Print also new line at the end.
-* Example: number 21 -> 1010 1000
-* It will be padded 64 bits.
-* @param in input of max 64 bits
-*/
-/// Print number as binary string in little endian so lsb is first printed.
-void BPU_printBinary32LsbLn(uint32_t in);
-
+// TODO: add possibility of turning off print functions, do not compile
 /**
 * Print matrix GF2 with new lines.
 * @param m matrix
@@ -115,19 +116,19 @@ void BPU_printGf2Mat(const BPU_T_GF2_Matrix *m);
 * Print vector GF2 with new line.
 * @param v vector
 */
-void BPU_printGf2Vec(const BPU_T_GF2_Vector *v);
+#define BPU_printGf2Vec(v) BPU_printElementArray(v)
 
 /**
  * @brief BPU_printGf2VecMsb Most significant bit is printed first.
  * @param v
  */
-void BPU_printGf2VecMsb(const BPU_T_GF2_Vector* v);
+#define BPU_printGf2VecMsb(v) BPU_printElementArrayMsb(v)
 
 /**
  * @brief BPU_printGf2VecOnes Print only ones.
  * @param vec
  */
-void BPU_printGf2VecOnes(const BPU_T_GF2_Vector *vec);
+#define BPU_printGf2VecOnes(v) BPU_printElementArrayOnes(v)
 
 
 /**
@@ -163,6 +164,142 @@ void BPU_printGf2SparseQcMatrix(const BPU_T_GF2_Sparse_Qc_Matrix *v);
 
 /* ------------------------------------ Print functions ------------------------------------ */
 #endif // BPU_CONF_PRINT
+
+/**
+ * Null GF2 matrix row.
+ * @param[out]  m_pointer pointer to GF2 matrix
+ * @param[in]  row       row to null
+ */
+/// Null GF2 matrix row.
+#define BPU_gf2MatNullRow(m_pointer, row) memset((void *) ((m_pointer)->elements[row]), 0, (m_pointer)->element_bit_size / 8 * (m_pointer)->elements_in_row)
+
+/**
+ * Null GF2 vector.
+ * @param[out]  v_pointer pointer to GF2 vector
+ */
+/// Null GF2 vector.
+#define BPU_gf2VecNull(v_pointer) BPU_elementArrayNull(v_pointer)
+
+/**
+ * Free dynamically or statically allocated matrix GF2.
+ * @param[out] *m address of matrix object
+ */
+/// Free dynamically or statically allocated matrix
+void BPU_gf2MatFree(BPU_T_GF2_Matrix **m);
+
+/**
+ * Free dynamically or statically allocated vector GF2.
+ * @param[out] *m address of vector object
+ */
+/// Free dynamically or statically allocated vector
+#define BPU_gf2VecFree(v_double_pointer) BPU_elementArrayFree(v_double_pointer)
+
+/**
+ * Allocate memory for matrix GF2. It also nulls new matrix. After work you have to free memory using call BPU_freeMatGF2
+ * @param rows rows
+ * @param cols cols
+ * @return on succes 0, else error
+ */
+int BPU_gf2MatMalloc(BPU_T_GF2_Matrix **m, int rows, int cols);
+
+/**
+ * Allocate memory for vector GF2. It also null vector. After work you have to free memory using call BPU_freeVecGF2.
+ * @param len len of vector
+ * @return on succes 0, else error
+ */
+#define BPU_gf2VecMalloc(v_double_pointer, len) BPU_elementArrayMalloc(v_double_pointer, len)
+
+/**
+ * @brief BPU_gf2VecResize Resize vecor.
+ * @param v
+ * @param len
+ * @return
+ */
+#define BPU_gf2VecResize(v_pointer, len) BPU_elementArrayResize(v_pointer, len)
+
+/**********************************************************
+gf2 POLY
+**********************************************************/
+
+/**
+ * Allocate memory for polynomial over GF2. Allocate memory, so after work it has to be freed by using call BPU_gf2PolyFree.
+ * @param p polynomial to allocate
+ * @param len length of polynomial (length - 1 = degree of polynomial)
+ * @return on succes 0, else error
+ */
+int BPU_gf2PolyMalloc(BPU_T_GF2_Poly *p, int len);
+
+/**
+ * Free dynamically or statically allocated polynomial over GF2.
+ * @param p polynomial to free
+ * @param is_dyn boolean param, if 0 do not free object self, else free also object
+ */
+void BPU_gf2PolyFree(BPU_T_GF2_Poly *p, int is_dyn);
+
+
+/**********************************************************
+gf2 SPARSE POLY
+**********************************************************/
+
+/**
+ * Allocate memory for sparse polynomial over GF2. Allocate memory, so after work it has to be freed by using call BPU_gf2SparsePolyFree.
+ * @param p sparse polynomial to allocate
+ * @param weight weight of sparse polynomial
+ */
+void BPU_gf2SparsePolyMalloc(BPU_T_GF2_Sparse_Poly *p, int weight);
+
+/**
+ * Free dynamically or statically allocated sparse polynomial over GF2.
+ * @param p sparse polynomial to free
+ * @param is_dyn boolean param, if 0 do not free object self, else free also object
+ */
+void BPU_gf2SparsePolyFree(BPU_T_GF2_Sparse_Poly *p, int is_dyn);
+
+
+/**********************************************************
+gf2 QUASI-CYCLIC MATRIX
+**********************************************************/
+
+/**
+ * Allocate memory for quasi-cyclic matrix over GF2. Allocate memory, so after work it has to be freed by using call BPU_gf2QcMatrixFree.
+ * @param v quasi-cyclic matrix
+ * @param element_count count of cyclic elements
+ * @param element_size size of one cyclic element
+ * @param isVertical boolean, if 1, elements are in vertical orientation, if 0 horizontal orientation
+ * @param is_I_appended boolean, if 1, identity matrix is appended to the left, if 0, no identity matrix
+ * @return 0 - succes, else error
+ */
+int BPU_gf2QcMatrixMalloc(BPU_T_GF2_QC_Matrix *v, int element_count, int element_size, int isVertical, int is_I_appended);
+
+/**
+ * Free dynamically or statically allocated quasi-cyclic matrix over GF2.
+ * @param v quasi-cyclic matrix
+ * @param is_dyn boolean param, if 0 do not free object self, else free also object
+ */
+void BPU_gf2QcMatrixFree(BPU_T_GF2_QC_Matrix *v, int is_dyn);
+
+
+/**********************************************************
+gf2 SPARSE QUASI-CYCLIC MATRIX
+**********************************************************/
+
+/**
+ * Allocate memory for sparse quasi-cyclic matrix over GF2. Allocate memory, so after work it has to be freed by using call BPU_gf2SparseQcMatrixFree.
+ * @param v sparse quasi-cyclic matrix
+ * @param element_count count of cyclic elements
+ * @param element_size size of one cyclic element
+ * @param isVertical boolean, if 1, elements are in vertical orientation, if 0 horizontal orientation
+ */
+void BPU_gf2SparseQcMatrixMalloc(BPU_T_GF2_Sparse_Qc_Matrix *v, int element_count, int element_size, int isVertical);
+
+
+/**
+ * Free dynamically or statically allocated sparse quasi-cyclic matrix over GF2.
+ * @param v sparse quasi-cyclic matrix
+ * @param is_dyn boolean param, if 0 do not free object self, else free also object
+ */
+void BPU_gf2SparseQcMatrixFree(BPU_T_GF2_Sparse_Qc_Matrix *v, int is_dyn);
+
 /**
  * Check if is set bit at n-th index makro.
  * @param w bit word to check
@@ -189,7 +326,7 @@ void BPU_printGf2SparseQcMatrix(const BPU_T_GF2_Sparse_Qc_Matrix *v);
 * @return 1 - is set, else zero
 */
 /// Check if is set bit at i-th position in vector.
-#define BPU_gf2VecGetBit(v_pointer, i) (BPU_getBit((v_pointer)->elements[(i) / (v_pointer)->element_bit_size], (i) % (v_pointer)->element_bit_size))
+#define BPU_gf2VecGetBit(v_pointer, i) BPU_elementArrayGetBit(v_pointer, i)
 
 /**
  * Set bit in matrix GF2 at index s, t
@@ -212,8 +349,8 @@ void BPU_printGf2SparseQcMatrix(const BPU_T_GF2_Sparse_Qc_Matrix *v);
  * @param  i         col index
  * @param  bit       bit value 0 or 1
  */
-#define BPU_gf2VecSetBit(v_pointer, i, bit)  (v_pointer)->elements[(i) / (v_pointer)->element_bit_size] &= ((BPU_T_GF2) (0xFFFFFFFFu)) ^ (((BPU_T_GF2) 1) << ((i) % (v_pointer)->element_bit_size));\
-											(v_pointer)->elements[(i) / (v_pointer)->element_bit_size] |= ((BPU_T_GF2) bit) << ((i) % (v_pointer)->element_bit_size);
+#define BPU_gf2VecSetBit(v_pointer, i, bit)  BPU_elementArraySetBit(v_pointer, i, bit)
+
 /**
  * Copy Matrix GF2 row to Vector GF2.
  * @param v_pointer[out] pointer to GF2 vector  
@@ -221,7 +358,7 @@ void BPU_printGf2SparseQcMatrix(const BPU_T_GF2_Sparse_Qc_Matrix *v);
  * @param row[in] row index
  */
  /// Copy Matrix GF2 row to Vector GF2.
-#define BPU_gf2MatCopyRowToVec(v_pointer, m_pointer, row) memcpy((void *) ((v_pointer)->elements), (void *) ((m_pointer)->elements[row]), (v_pointer)->element_bit_size / 8 * (v_pointer)->elements_in_row)
+#define BPU_gf2MatCopyRowToVec(v_pointer, m_pointer, row) memcpy((void *) ((v_pointer)->elements), (void *) ((m_pointer)->elements[row]), (v_pointer)->element_bit_size / 8 * (v_pointer)->array_length)
 
 /**
  * Check if is set coeff with index bit in poly.

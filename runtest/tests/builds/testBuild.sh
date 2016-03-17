@@ -9,7 +9,7 @@ cd "$1"
 if [ "$2" = "" ]; then
 	# for each target
 	a=0
-	for target in $(grep -E '^[A-Za-z\-]*:' makefile | cut -d ':' -f 1 | sort | uniq); do
+	for target in $(grep -E '^[A-Za-z\-]*:' Makefile | cut -d ':' -f 1 | sort | uniq); do
 		let a=a+1
 		echo "INFO: cleaning build..."
 		make clean

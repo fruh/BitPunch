@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef QCMDPCTYPES_H
 #define QCMDPCTYPES_H
-#include <bitpunch/math/gf2types.h>
+#include <bitpunch/math/gf2.h>
 #include <bitpunch/debugio.h>
 #include <stdlib.h>
 

@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 #include <bitpunch/errorcodes.h>
 #include <bitpunch/code/codectx.h>
-#include <bitpunch/math/mathctx.h>
+#include <bitpunch/math/gf2x.h>
 
 // additional encryption schemes
 #include <bitpunch/crypto/mecsbasic/mecsbasic.h>

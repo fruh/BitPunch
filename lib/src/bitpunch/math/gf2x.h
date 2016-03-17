@@ -27,9 +27,81 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/config.h>
 
 #include "gf2.h"
-#include "gf2xtypes.h"
-#include "mathctx.h"
 
+
+/**
+ * @brief prototype of math context BPU_T_Math_Ctx
+ */
+
+/**
+* Polynomial representation over GF2, max deg f < 16
+*/
+typedef uint16_t BPU_T_GF2_16x;
+
+/**
+* Polynomial representation over GF2, max deg f < 32
+*/
+typedef uint32_t BPU_T_GF2_32x;
+
+// polynomials in format BPU_GF2_POLY_DEG_m where 'm' is mceliece param m
+#define BPU_GF2_POLY_DEG_5 0x3b
+#define BPU_GF2_POLY_DEG_6 0x43
+#define BPU_GF2_POLY_DEG_10 0x71d
+#define BPU_GF2_POLY_DEG_11 0x805
+
+/**
+* Representation of aritmetics data.
+*/
+typedef struct _BPU_T_Math_Ctx {
+    BPU_T_GF2_16x *exp_table; ///< there are all elements referenced by i, so at i-th index is g^i element, g - generator
+    BPU_T_GF2_16x *log_table; ///< there are all indexes referenced by element, so alpha elemnet (g^i) -> i
+    BPU_T_GF2_16x mod; ///< polynomial modulus
+    uint8_t mod_deg; ///< modulo degree, galois finite field GF(2^m)
+    int ord; ///< group ord, number of elements
+}BPU_T_Math_Ctx;
+
+/**
+* Precalculate logaritmic and exponencial tables and initialize structure Aritmetic_Data
+* @param g is a group generator
+* @param mod modulus, ireducible polynomial
+* @return number of elements or < 0 means error
+*/
+/// Precalculate logaritmic and exponencial tables and initialize structure Aritmetic_Data
+int BPU_mathInitCtx(BPU_T_Math_Ctx **ctx, const BPU_T_GF2_16x g, const BPU_T_GF2_16x mod);
+
+/**
+ * Free dynamiccaly or statically allocated Aritmetic_Data structure.
+ * @param a      aaddress of Aritmetic_Data structure
+ * @param is_dyn 0 - staticaly allocated Aritmetic_Data object or 1 when dynamically
+ */
+/// Free dynamiccaly or statically allocated Aritmetic_Data structure.
+void BPU_mathFreeCtx(BPU_T_Math_Ctx **ctx);
+
+/**
+ * GF2_16x Vector representation
+ */
+typedef struct _BPU_T_GF2_16x_Vector {
+  BPU_T_GF2_16x *elements;
+  uint8_t len; ///< number of elements
+}BPU_T_GF2_16x_Vector;
+
+/**
+* Matrix representation over GF2_16x.
+*/
+typedef struct _BPU_T_GF2_16x_Matrix {
+  BPU_T_GF2_16x **elements; ///< all element of matrix
+  uint16_t k; ///< rows
+  uint16_t n; ///< cols
+}BPU_T_GF2_16x_Matrix;
+
+/**
+* Representation of polynomial.
+*/
+typedef struct _BPU_T_GF2_16x_Poly{
+  BPU_T_GF2_16x *coef; ///< Polynomial over GF2m
+  int16_t deg; ///< degree
+  int16_t max_deg; ///< degree
+}BPU_T_GF2_16x_Poly;
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
 /**
@@ -53,6 +125,77 @@ void BPU_printGf2xPoly(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *math_c
 void BPU_printGf2xVec(const BPU_T_GF2_16x_Vector *v);
 /* ------------------------------------ Print functions ------------------------------------ */
 #endif // BPU_CONF_PRINT
+
+/**
+ * Set Polynomial values to 0.
+ * @param d_pointer[out] pointer to GF2_16x polynomial
+ */
+ /// Copy Polynomial.
+#define BPU_gf2xPolyNull(d_pointer) memset((void *) ((d_pointer)->coef), 0, sizeof(BPU_T_GF2_16x)*((d_pointer)->max_deg + 1));\
+  (d_pointer)->deg = -1
+
+void BPU_gf2xMatNull(BPU_T_GF2_16x_Matrix *mat);
+
+/**
+ * Allocate memory for matrix. After work you have to free memory using call BPU_freeMat.
+ * @param[out] m matrix to be allocated
+ * @param[in] rows rows
+ * @param[in] cols cols
+ * @return on succes 0, else error
+ */
+ /// Allocate memory for matrix.
+int BPU_gf2xMatMalloc(BPU_T_GF2_16x_Matrix **m, int rows, int cols);
+
+/**
+ * @brief BPU_gf2xVecMalloc Malloc vector structure.
+ * @param vec
+ * @param size
+ * @return
+ */
+int BPU_gf2xVecMalloc(BPU_T_GF2_16x_Vector **vec, int size);
+
+/**
+ * @brief BPU_gf2xVecFree Free vector structure.
+ * @param vec
+ */
+void BPU_gf2xVecFree(BPU_T_GF2_16x_Vector **vec);
+
+/**
+ * Free dynamically or statically allocated matrix.
+ * @param[out] *m address of matrix object
+ */
+/// Free dynamically or statically allocated matrix
+void BPU_gf2xMatFree(BPU_T_GF2_16x_Matrix **m);
+
+/**
+ * Malloc memory for polynomial and zero-initialize
+ * @param  p representation of polynomial (every element is one coeficient)
+ * @param  max_deg max degree of polynomial
+ * @return
+ */
+int BPU_gf2xPolyMalloc(BPU_T_GF2_16x_Poly **p, int16_t max_deg);
+
+/**
+ * @brief BPU_gf2xPolyResize Resize polynomial, increase max deg.
+ * @param p
+ * @param max_deg
+ * @return
+ */
+int BPU_gf2xPolyResize(BPU_T_GF2_16x_Poly *p, int16_t max_deg);
+
+/**
+ * @brief BPU_gf2xPolyMallocCoef Malloc internal coeficients for polynomial.
+ * @param p
+ * @param max_deg
+ * @return
+ */
+int BPU_gf2xPolyMallocCoef(BPU_T_GF2_16x_Poly *p, int16_t max_deg);
+
+/**
+ * dealloc memory
+ * @param p
+ */
+void BPU_gf2xPolyFree(BPU_T_GF2_16x_Poly **p);
 
 /**
  * Get inverse element of galois field.

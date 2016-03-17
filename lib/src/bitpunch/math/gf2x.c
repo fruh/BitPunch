@@ -1,6 +1,6 @@
 /*
 This file is part of BitPunch
-Copyright (C) 2013-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+Copyright (C) 2013-2016 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 Copyright (C) 2013-2014 Andrej Gulyas <andrej.guly[what here]gmail.com>
 Copyright (C) 2013-2014 Marek Klein  <kleinmrk[what here]gmail.com>
 Copyright (C) 2013-2014 Filip Machovec  <filipmachovec[what here]yahoo.com>
@@ -26,7 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "gf2x.h"
 #include "int.h"
-#include "mathctx.h"
 
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
@@ -74,6 +73,135 @@ void BPU_printGf2xVec(const BPU_T_GF2_16x_Vector *v) {
 }
 /* ------------------------------------ Print functions ------------------------------------ */
 #endif
+
+int BPU_gf2xMatMalloc(BPU_T_GF2_16x_Matrix **m, int rows, int cols) {
+    int i;
+    *m = (BPU_T_GF2_16x_Matrix *) calloc(sizeof(BPU_T_GF2_16x_Matrix), 1);
+
+    if (!*m) {
+        BPU_printError("allocation error");
+        return -1;
+    }
+    // rows
+    (*m)->k = rows;
+    // cols
+    (*m)->n = cols;
+    // allocate rows
+    (*m)->elements = (BPU_T_GF2_16x **) malloc(sizeof(BPU_T_GF2_16x*) * (*m)->k);
+
+    if (!(*m)->elements) {
+        BPU_printError("BPU_mallocMatrix: can not allocate memory for matrix rows");
+
+        return 1;
+    }
+    // allocate cols
+    for (i = 0; i < (*m)->k; i++) {
+        (*m)->elements[i] = (BPU_T_GF2_16x*) calloc(1, sizeof(BPU_T_GF2_16x) * (*m)->n);
+
+        if (!(*m)->elements[i]) {
+            BPU_printError("allocation error");
+            return -2;
+        }
+    }
+    return 0;
+}
+
+int BPU_gf2xVecMalloc(BPU_T_GF2_16x_Vector **vec, int size) {
+    *vec = (BPU_T_GF2_16x_Vector *) calloc(sizeof(BPU_T_GF2_16x_Vector), 1);
+
+    if (!*vec) {
+        BPU_printError("allocation error");
+        return -1;
+    }
+    (*vec)->len = size;
+    (*vec)->elements = (BPU_T_GF2_16x*)calloc(size, sizeof(BPU_T_GF2_16x));
+
+    if (!(*vec)->elements) {
+        BPU_printError("allocation error");
+        return -2;
+    }
+    return 0;
+}
+
+void BPU_gf2xVecFree(BPU_T_GF2_16x_Vector **vec) {
+    if (!*vec) {
+        return;
+    }
+    free((*vec)->elements);
+    free(*vec);
+    *vec = NULL;
+}
+
+void BPU_gf2xMatFree(BPU_T_GF2_16x_Matrix **m) {
+    int i;
+
+    if (!*m) {
+        return;
+    }
+    // first free cols
+    for (i = 0; i < (*m)->k; i++) {
+        free((*m)->elements[i]);
+    }
+    // then free rows
+    free((*m)->elements);
+    free((*m));
+    *m = NULL;
+}
+
+void BPU_gf2xPolyFree(BPU_T_GF2_16x_Poly **p) {
+    if (!*p) {
+        return;
+    }
+    free((*p)->coef);
+    free(*p);
+    *p = NULL;
+}
+
+int BPU_gf2xPolyMalloc(BPU_T_GF2_16x_Poly **p, int16_t max_deg) {
+    *p = (BPU_T_GF2_16x_Poly *) calloc(sizeof(BPU_T_GF2_16x_Poly), 1);
+
+    if (!*p) {
+        BPU_printError("allocation error");
+        return -1;
+    }
+    return BPU_gf2xPolyMallocCoef(*p, max_deg);
+}
+
+int BPU_gf2xPolyResize(BPU_T_GF2_16x_Poly *p, int16_t max_deg) {
+    if (p->coef) {
+        free(p->coef);
+    }
+    return BPU_gf2xPolyMallocCoef(p, max_deg);
+}
+
+int BPU_gf2xPolyMallocCoef(BPU_T_GF2_16x_Poly *p, int16_t max_deg) {
+    // allocate memory
+    p->deg = -1;
+    p->max_deg = max_deg;
+
+    if (p->max_deg < 0) {
+        BPU_printError("BPU_mallocPoly: max_deg must be at least 0");
+
+        return -1;
+    }
+    p->coef = (BPU_T_GF2_16x*) calloc(max_deg + 1, sizeof(BPU_T_GF2_16x));
+
+    if (!p->coef) {
+        BPU_printError("BPU_mallocPoly: can not allocate polynomial");
+
+        return -1;
+    }
+    return 0;
+}
+
+void BPU_gf2xMatNull(BPU_T_GF2_16x_Matrix *mat) {
+    int i, j;
+    for (i = 0; i < mat->k; i++) {
+        for (j = 0; j < mat->n; j++) {
+            mat->elements[i][j] = 0;
+        }
+    }
+}
 
 BPU_T_GF2_16x BPU_gf2xMulMod(BPU_T_GF2_16x a, BPU_T_GF2_16x b, BPU_T_GF2_16x mod) {
 	BPU_T_GF2_16x tmp, tmp2;

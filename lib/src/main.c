@@ -24,6 +24,8 @@
 
 #include <bitpunch/crypto/hash/sha512.h>
 #include <bitpunch/asn1/asn1.h>
+#include <bitpunch/math/bigint.h>
+#include <bitpunch/math/uni.h>
 
 int testCmpMecsCtx(const BPU_T_Mecs_Ctx *ctx1, const BPU_T_Mecs_Ctx *ctx2) {
     int i, j, rc = 0;
@@ -281,29 +283,54 @@ int main(int argc, char **argv) {
 
 // 	/***************************************/
 //     mce initialisation of 80-bit security
-     fprintf(stderr, "Basic QC-MDPC Initialisation...\n");
-     if (BPU_mecsInitParamsQcmdpc(&params, 4801, 2, 90, 84)) {
-         return 1;
-     }
-     if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_QCMDPC)) {
-         return 1;
-     }
-     rc += testKeyGenEncDec(ctx);
-     BPU_mecsFreeCtx(&ctx);
-     BPU_mecsFreeParamsQcmdpc(&params);
+    fprintf(stderr, "Basic QC-MDPC Initialisation...\n");
+    if (BPU_mecsInitParamsQcmdpc(&params, 4801, 2, 90, 84)) {
+        return 1;
+    }
+    if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_QCMDPC)) {
+        return 1;
+    }
+    rc += testKeyGenEncDec(ctx);
+    BPU_mecsFreeCtx(&ctx);
+    BPU_mecsFreeParamsQcmdpc(&params);
 
  #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
-     fprintf(stderr, "\nCCA2 Pointcheval QC-MDPC Initialisation...\n");
-     if (BPU_mecsInitParamsQcmdpc(&params, 4801, 2, 90, 84)) {
-         return 1;
-     }
-     if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC)) {
-         return 1;
-     }
-     rc += testKeyGenEncDec(ctx);
-     BPU_mecsFreeCtx(&ctx);
-     BPU_mecsFreeParamsQcmdpc(&params);
+    fprintf(stderr, "\nCCA2 Pointcheval QC-MDPC Initialisation...\n");
+    if (BPU_mecsInitParamsQcmdpc(&params, 4801, 2, 90, 84)) {
+        return 1;
+    }
+    if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC)) {
+        return 1;
+    }
+    rc += testKeyGenEncDec(ctx);
+    BPU_mecsFreeCtx(&ctx);
+    BPU_mecsFreeParamsQcmdpc(&params);
  #endif
+    BPU_T_Bigint *a, *b, *c;
+    BPU_bigintMalloc(&a, 32);
+    BPU_bigintMalloc(&b, 16);
+    BPU_bigintMalloc(&c, 32);
+
+    a->elements[0] = 65535;
+    a->elements[1] = 65535;
+    b->elements[0] = 65535;
+    BPU_bigintMultiply(c, a, b);
+#ifdef BPU_CONF_PRINT
+    BPU_printElementArray(a);
+    BPU_printElementArray(b);
+    BPU_printElementArray(c);
+#endif
+
+    BPU_bigintAdd(c, a, b);
+#ifdef BPU_CONF_PRINT
+    BPU_printElementArray(a);
+    BPU_printElementArray(b);
+    BPU_printElementArray(c);
+#endif
+
+    BPU_bigintFree(&a);
+    BPU_bigintFree(&b);
+    BPU_bigintFree(&c);
 
 	return rc;
 }

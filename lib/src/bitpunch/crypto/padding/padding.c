@@ -32,7 +32,7 @@ int BPU_padAdd(BPU_T_GF2_Vector *padded_message, const BPU_T_GF2_Vector *message
 		return -1;
 	}
 	// copy message into padded message
-	for (i = 0; i < message->elements_in_row; i++){
+    for (i = 0; i < message->array_length; i++){
 		padded_message->elements[i] = message->elements[i];
 	}
 	// add padding - first padded bit set to 1, rest keep 0
@@ -68,11 +68,11 @@ int BPU_padDel(BPU_T_GF2_Vector *message, const BPU_T_GF2_Vector *padded_message
 	message->len = message_size;
 
 	// copy n-1 elements of padded message into message
-	for (i = 0; i < padded_message->elements_in_row - 1; i++){
+    for (i = 0; i < padded_message->array_length - 1; i++){
 		message->elements[i] = padded_message->elements[i];
 	}
 	// copy the rest of message
-	for (i = (padded_message->elements_in_row - 1) * padded_message->element_bit_size; i < message->len; i++){
+    for (i = (padded_message->array_length - 1) * padded_message->element_bit_size; i < message->len; i++){
 		BPU_gf2VecSetBit(message, i, BPU_gf2VecGetBit(padded_message, i));
 	}
 	return 0;

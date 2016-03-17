@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef PADDING_H
 #define PADDING_H
 
-#include <bitpunch/math/gf2types.h>
+#include <bitpunch/math/gf2.h>
 
 /**
  * Add padding to message. Padding begins with 1.
