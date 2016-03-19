@@ -23,7 +23,7 @@ measure() {
 	else
 		make static-lib || exit 1
 	fi
-	gcc -Isrc/ $TESTFILE_DIR/testMemRun.c ./dist/libbpumecs.a -o $APP || exit 1
+	gcc -Isrc/ $TESTFILE_DIR/testMemRun.c ./dist/libbpumecs.a -o $APP -lm || exit 1
 
 	echo "INFO: running valgrind 'valgrind --tool=massif --massif-out-file=$2.out $APP'"
 	valgrind --tool=massif --massif-out-file=$2.out $APP && echo "" && echo -n "INFO: Mem usage (B): " && cat $2.out | grep mem_heap_B | sed -e 's/mem_heap_B=\(.*\)/\1/' | sort -g | tail -n 1 2> $TMP_FILE || rc=$?

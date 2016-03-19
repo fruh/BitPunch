@@ -78,19 +78,19 @@ test: prepare-dir static-lib
 
 test-debug: CFLAGS = -Wall -DBPU_CONF_FULL -ggdb -DDEBUG_L
 test-debug: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 test-wo-h: CFLAGS += -DBPU_CONF_GOPPA_WO_H
 test-wo-h: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 test-wo-h-debug: CFLAGS = -Wall -DBPU_CONF_FULL -ggdb -DDEBUG_L -DBPU_CONF_GOPPA_WO_H
 test-wo-h-debug: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 speed-test: CFLAGS += -O3 -Wall -DBPU_CONF_FULL -DERROR_L
 speed-test: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/test-speed.c $(DIST_DIR)/libbpumecs.a
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/test-speed.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 profile: prepare-dir static-lib
 	$(CC) $(CFLAGS_PROF) $(C_FILES) src/main.c -o $(TEST_DIR)/BitPunch $(LDFLAGS)
