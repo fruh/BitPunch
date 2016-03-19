@@ -917,11 +917,13 @@ void BPU_gf2PolyAdd(BPU_T_GF2_Poly *out, const BPU_T_GF2_Poly *in, int crop) {
 // operation add with binary polynomials with high degree
 void BPU_gf2SparsePolyAdd(BPU_T_GF2_Poly *out, const BPU_T_GF2_Sparse_Poly *in) {
   int i;
+  uint8_t bit;
 
   // for all coefficients
   for (i = 0; i < in->weight; i++)
   {
-      BPU_gf2VecSetBit(out, in->index[i], BPU_gf2VecGetBit(out, in->index[i]) ^ 1ul);
+      bit = BPU_gf2VecGetBit(out, in->index[i]) ^ 1ul;
+      BPU_gf2VecSetBit(out, in->index[i], bit);
   }
 }
 

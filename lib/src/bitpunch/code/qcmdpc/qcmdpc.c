@@ -111,7 +111,8 @@ int BPU_mecsQcmdpcDecode1(BPU_T_GF2_Vector *error_vec, const BPU_T_GF2_Vector *c
   BPU_T_GF2_Poly syndrom;
   BPU_T_GF2_Sparse_Poly row;
   int iter = -1, max, bit, upc, upc_counts[cipher_text->len], isSyndromZero = 0;
-  int flipped_bits = 0, flipped_bits_iter = 0;
+  int flipped_bits_iter = 0;
+  uint8_t bit_value;
 
   // allocate output error vector
   // BPU_gf2PolyMalloc(error_vec, cipher_text->len);
@@ -144,9 +145,10 @@ int BPU_mecsQcmdpcDecode1(BPU_T_GF2_Vector *error_vec, const BPU_T_GF2_Vector *c
       // check which bits to flip
       for (bit = 0; bit < error_vec->len; bit++) {
         if (upc_counts[bit] > 0 && upc_counts[bit] >= (max-delta)) {
-          flipped_bits++; flipped_bits_iter++;
+          flipped_bits_iter++;
           // flip bit
-          BPU_gf2VecSetBit(error_vec, bit, !BPU_gf2VecGetBit(error_vec, bit));
+          bit_value = !BPU_gf2VecGetBit(error_vec, bit);
+          BPU_gf2VecSetBit(error_vec, bit, bit_value);
           // update syndrom
           BPU_gf2SparseQcMatrixGetRow(&row, &ctx->code_spec->qcmdpc->H, bit);
           BPU_gf2SparsePolyAdd(&syndrom, &row);
@@ -176,8 +178,9 @@ int BPU_mecsQcmdpcDecode2(BPU_T_GF2_Vector *error_vec, const BPU_T_GF2_Vector *c
   BPU_T_GF2_Poly syndrom;
   BPU_T_GF2_Sparse_Poly row;
   int iter = -1, bit, upc, isSyndromZero = 0;
-  int flipped_bits = 0, flipped_bits_iter = 0;
+  int flipped_bits_iter = 0;
   const uint16_t B_store[BPU_QCMDPC_MAX_B_VALUES]={28,26,24,22,20};
+  uint8_t bit_value;
 
   // calc the syndrom
   BPU_mecsQcmdpcCalcSyndrom(&syndrom, cipher_text, ctx);
@@ -195,9 +198,10 @@ int BPU_mecsQcmdpcDecode2(BPU_T_GF2_Vector *error_vec, const BPU_T_GF2_Vector *c
 
         // check which bits to flip
         if (upc > 0 && upc >= B_store[iter < BPU_QCMDPC_MAX_B_VALUES ? iter : (BPU_QCMDPC_MAX_B_VALUES-1)]-BPU_QCMDPC_PARAM_DELTA_B) {
-          flipped_bits++; flipped_bits_iter++;
+          flipped_bits_iter++;
           // flip bit
-          BPU_gf2VecSetBit(error_vec, bit, !BPU_gf2VecGetBit(error_vec, bit));
+          bit_value = !BPU_gf2VecGetBit(error_vec, bit);
+          BPU_gf2VecSetBit(error_vec, bit, bit_value);
           // update syndrom
           BPU_gf2SparsePolyAdd(&syndrom, &row);
           // check the syndrom
