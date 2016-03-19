@@ -110,7 +110,7 @@ typedef struct _BPU_T_GF2_Sparse_Qc_Matrix {
 * Print matrix GF2 with new lines.
 * @param m matrix
 */
-void BPU_printGf2Mat (const BPU_T_GF2_Matrix * m);
+void BPU_printGf2Mat(const BPU_T_GF2_Matrix * m);
 
 /**
 * Print vector GF2 with new line.
@@ -135,32 +135,32 @@ void BPU_printGf2Mat (const BPU_T_GF2_Matrix * m);
  * Print sparse polynomial.
  * @param v sparse polynomial to print
  */
-void BPU_printGf2SparsePoly (const BPU_T_GF2_Sparse_Poly * v);
+void BPU_printGf2SparsePoly(const BPU_T_GF2_Sparse_Poly * v);
 
 /**
  * Print polynomial over GF2 for matrix.
  * Without header and new line.
  * @param v polynomial to print
  */
-void BPU_printGf2PolyForMatrix (const BPU_T_GF2_Poly * v);
+void BPU_printGf2PolyForMatrix(const BPU_T_GF2_Poly * v);
 
 /**
  * Print polynomial.
  * @param v polynomial to print
  */
-void BPU_printGf2Poly (const BPU_T_GF2_Poly * v);
+void BPU_printGf2Poly(const BPU_T_GF2_Poly * v);
 
 /**
  * Print quasi-cyclic matrix.
  * @param v quasi-cyclic matrix to print
  */
-void BPU_printGf2QcMatrix (const BPU_T_GF2_QC_Matrix * v);
+void BPU_printGf2QcMatrix(const BPU_T_GF2_QC_Matrix * v);
 
 /**
  * Print sparse quasi-cyclic matrix.
  * @param v sparse quasi-cyclic matrix to print
  */
-void BPU_printGf2SparseQcMatrix (const BPU_T_GF2_Sparse_Qc_Matrix * v);
+void BPU_printGf2SparseQcMatrix(const BPU_T_GF2_Sparse_Qc_Matrix * v);
 
 /* ------------------------------------ Print functions ------------------------------------ */
 #endif // BPU_CONF_PRINT
@@ -185,7 +185,7 @@ void BPU_printGf2SparseQcMatrix (const BPU_T_GF2_Sparse_Qc_Matrix * v);
  * @param[out] *m address of matrix object
  */
 /// Free dynamically or statically allocated matrix
-void BPU_gf2MatFree (BPU_T_GF2_Matrix ** m);
+void BPU_gf2MatFree(BPU_T_GF2_Matrix ** m);
 
 /**
  * Free dynamically or statically allocated vector GF2.
@@ -200,7 +200,7 @@ void BPU_gf2MatFree (BPU_T_GF2_Matrix ** m);
  * @param cols cols
  * @return on succes 0, else error
  */
-int BPU_gf2MatMalloc (BPU_T_GF2_Matrix ** m, int rows, int cols);
+int BPU_gf2MatMalloc(BPU_T_GF2_Matrix ** m, int rows, int cols);
 
 /**
  * Allocate memory for vector GF2. It also null vector. After work you have to free memory using call BPU_freeVecGF2.
@@ -227,14 +227,14 @@ gf2 POLY
  * @param len length of polynomial (length - 1 = degree of polynomial)
  * @return on succes 0, else error
  */
-int BPU_gf2PolyMalloc (BPU_T_GF2_Poly * p, int len);
+int BPU_gf2PolyMalloc(BPU_T_GF2_Poly * p, int len);
 
 /**
  * Free dynamically or statically allocated polynomial over GF2.
  * @param p polynomial to free
  * @param is_dyn boolean param, if 0 do not free object self, else free also object
  */
-void BPU_gf2PolyFree (BPU_T_GF2_Poly * p, int is_dyn);
+void BPU_gf2PolyFree(BPU_T_GF2_Poly * p, int is_dyn);
 
 
 /**********************************************************
@@ -246,14 +246,14 @@ gf2 SPARSE POLY
  * @param p sparse polynomial to allocate
  * @param weight weight of sparse polynomial
  */
-void BPU_gf2SparsePolyMalloc (BPU_T_GF2_Sparse_Poly * p, int weight);
+void BPU_gf2SparsePolyMalloc(BPU_T_GF2_Sparse_Poly * p, int weight);
 
 /**
  * Free dynamically or statically allocated sparse polynomial over GF2.
  * @param p sparse polynomial to free
  * @param is_dyn boolean param, if 0 do not free object self, else free also object
  */
-void BPU_gf2SparsePolyFree (BPU_T_GF2_Sparse_Poly * p, int is_dyn);
+void BPU_gf2SparsePolyFree(BPU_T_GF2_Sparse_Poly * p, int is_dyn);
 
 
 /**********************************************************
@@ -269,15 +269,15 @@ gf2 QUASI-CYCLIC MATRIX
  * @param is_I_appended boolean, if 1, identity matrix is appended to the left, if 0, no identity matrix
  * @return 0 - succes, else error
  */
-int BPU_gf2QcMatrixMalloc (BPU_T_GF2_QC_Matrix * v, int element_count,
-                           int element_size, int isVertical, int is_I_appended);
+int BPU_gf2QcMatrixMalloc(BPU_T_GF2_QC_Matrix * v, int element_count,
+                          int element_size, int isVertical, int is_I_appended);
 
 /**
  * Free dynamically or statically allocated quasi-cyclic matrix over GF2.
  * @param v quasi-cyclic matrix
  * @param is_dyn boolean param, if 0 do not free object self, else free also object
  */
-void BPU_gf2QcMatrixFree (BPU_T_GF2_QC_Matrix * v, int is_dyn);
+void BPU_gf2QcMatrixFree(BPU_T_GF2_QC_Matrix * v, int is_dyn);
 
 
 /**********************************************************
@@ -291,9 +291,9 @@ gf2 SPARSE QUASI-CYCLIC MATRIX
  * @param element_size size of one cyclic element
  * @param isVertical boolean, if 1, elements are in vertical orientation, if 0 horizontal orientation
  */
-void BPU_gf2SparseQcMatrixMalloc (BPU_T_GF2_Sparse_Qc_Matrix * v,
-                                  int element_count, int element_size,
-                                  int isVertical);
+void BPU_gf2SparseQcMatrixMalloc(BPU_T_GF2_Sparse_Qc_Matrix * v,
+                                 int element_count, int element_size,
+                                 int isVertical);
 
 
 /**
@@ -301,7 +301,7 @@ void BPU_gf2SparseQcMatrixMalloc (BPU_T_GF2_Sparse_Qc_Matrix * v,
  * @param v sparse quasi-cyclic matrix
  * @param is_dyn boolean param, if 0 do not free object self, else free also object
  */
-void BPU_gf2SparseQcMatrixFree (BPU_T_GF2_Sparse_Qc_Matrix * v, int is_dyn);
+void BPU_gf2SparseQcMatrixFree(BPU_T_GF2_Sparse_Qc_Matrix * v, int is_dyn);
 
 /**
  * Check if is set bit at n-th index makro.
@@ -377,7 +377,7 @@ void BPU_gf2SparseQcMatrixFree (BPU_T_GF2_Sparse_Qc_Matrix * v, int is_dyn);
  * @param in
  * @return
  */
-int BPU_gf2MatCopy (BPU_T_GF2_Matrix * out, const BPU_T_GF2_Matrix * in);
+int BPU_gf2MatCopy(BPU_T_GF2_Matrix * out, const BPU_T_GF2_Matrix * in);
 
 /**
  * Permute matrix GF2 with permutation.
@@ -385,7 +385,7 @@ int BPU_gf2MatCopy (BPU_T_GF2_Matrix * out, const BPU_T_GF2_Matrix * in);
  * @param permutation permutation vector
  * @return on succes 0, on size error -1, on allocation error -2
  */
-int BPU_gf2MatPermute (BPU_T_GF2_Matrix * m, BPU_T_Perm_Vector * permutation);
+int BPU_gf2MatPermute(BPU_T_GF2_Matrix * m, BPU_T_Perm_Vector * permutation);
 
 /**
  * Permute vector GF2 with permutation.
@@ -393,8 +393,8 @@ int BPU_gf2MatPermute (BPU_T_GF2_Matrix * m, BPU_T_Perm_Vector * permutation);
  * @param permutation permutation vector
  * @return on succes 0, on size error -1, on allocation error -2
  */
-int BPU_gf2VecPermute (BPU_T_GF2_Vector * vec,
-                       const BPU_T_Perm_Vector * permutation);
+int BPU_gf2VecPermute(BPU_T_GF2_Vector * vec,
+                      const BPU_T_Perm_Vector * permutation);
 
 /**
  * Get masked bit from exact row of Matrix GF2
@@ -403,8 +403,8 @@ int BPU_gf2VecPermute (BPU_T_GF2_Vector * vec,
  * @param bit bit
  * @return masked bit
  */
-BPU_T_GF2 BPU_gf2MatGetMaskedBit (const BPU_T_GF2_Matrix * m, uint32_t row,
-                                  uint32_t bit);
+BPU_T_GF2 BPU_gf2MatGetMaskedBit(const BPU_T_GF2_Matrix * m, uint32_t row,
+                                 uint32_t bit);
 
 /**
  * Get masked bit from Vector GF2
@@ -412,7 +412,7 @@ BPU_T_GF2 BPU_gf2MatGetMaskedBit (const BPU_T_GF2_Matrix * m, uint32_t row,
  * @param bit bit
  * @return masked bit
  */
-BPU_T_GF2 BPU_gf2VecGetMaskedBit (const BPU_T_GF2_Vector * vec, uint32_t bit);
+BPU_T_GF2 BPU_gf2VecGetMaskedBit(const BPU_T_GF2_Vector * vec, uint32_t bit);
 
 /**
  * Transpose GF2 Matrix.
@@ -420,7 +420,7 @@ BPU_T_GF2 BPU_gf2VecGetMaskedBit (const BPU_T_GF2_Vector * vec, uint32_t bit);
  * @param  in  matrix to transpose
  * @return     on success 0, else error
  */
-int BPU_gf2MatTransp (BPU_T_GF2_Matrix * out, const BPU_T_GF2_Matrix * in);
+int BPU_gf2MatTransp(BPU_T_GF2_Matrix * out, const BPU_T_GF2_Matrix * in);
 
 /**
  * Swaps GF2 elements.
@@ -428,7 +428,7 @@ int BPU_gf2MatTransp (BPU_T_GF2_Matrix * out, const BPU_T_GF2_Matrix * in);
  * @param b pointer to GF2 element 
  * @return
  */
-void BPU_gf2Swap (BPU_T_GF2 * a, BPU_T_GF2 * b);
+void BPU_gf2Swap(BPU_T_GF2 * a, BPU_T_GF2 * b);
 
 /**
  * It swaps i-th and j-th rows of Matrix GF2.
@@ -437,7 +437,7 @@ void BPU_gf2Swap (BPU_T_GF2 * a, BPU_T_GF2 * b);
  * @param  int j
  * @return permutation needed for equivalent codes
  */
-void BPU_gf2MatSwapRows (BPU_T_GF2_Matrix * mat, int i, int j);
+void BPU_gf2MatSwapRows(BPU_T_GF2_Matrix * mat, int i, int j);
 
 /**
  * Finds row in Matrix GF2 where 1 is at i-th position (from left). Looking for row starts at start_index.
@@ -446,7 +446,7 @@ void BPU_gf2MatSwapRows (BPU_T_GF2_Matrix * mat, int i, int j);
  * @param  start_index int
  * @return number of row on success, else -1 
  */
-int BPU_gf2MatFindRow (const BPU_T_GF2_Matrix * mat, int i, int start_index);
+int BPU_gf2MatFindRow(const BPU_T_GF2_Matrix * mat, int i, int start_index);
 
 /**
  * Finds column in Matrix GF2 where 1 is at i-th position (from top). Looking for column starts at start_index.
@@ -455,7 +455,7 @@ int BPU_gf2MatFindRow (const BPU_T_GF2_Matrix * mat, int i, int start_index);
  * @param  start_index int
  * @return number of row on success, else -1 
  */
-int BPU_gf2MatFindCol (const BPU_T_GF2_Matrix * mat, int i, int start_index);
+int BPU_gf2MatFindCol(const BPU_T_GF2_Matrix * mat, int i, int start_index);
 
 /**
  * It brings Matrix GF2 into the systematic form -> with I on the left side. After work, return value should be freed, it is allocated dynamically.
@@ -463,7 +463,7 @@ int BPU_gf2MatFindCol (const BPU_T_GF2_Matrix * mat, int i, int start_index);
  * @return       on success pointer to BPU_T_Perm_Vector
  */
 /// It brings Matrix GF2 into the systematic form -> with I on the left side.
-int BPU_gf2MatMakeSystematic (BPU_T_GF2_Matrix * inout);
+int BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix * inout);
 
 /**
  * Concats two vectors without allocation ouput.
@@ -473,8 +473,8 @@ int BPU_gf2MatMakeSystematic (BPU_T_GF2_Matrix * inout);
  * @return    0 - succes, else error
  */
 /// Concats two vectors without allocation ouput.
-int BPU_gf2VecConcat (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * vec1,
-                      const BPU_T_GF2_Vector * vec2);
+int BPU_gf2VecConcat(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * vec1,
+                     const BPU_T_GF2_Vector * vec2);
 
 /**
  * Crop the vector
@@ -484,8 +484,8 @@ int BPU_gf2VecConcat (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * vec1,
  * @param  length count of bits of cropped vector
  * @return    0 - succes, else error
  */
-int BPU_gf2VecCrop (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
-                    const int start, const int length);
+int BPU_gf2VecCrop(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+                   const int start, const int length);
 
 /**
  * Get matrix GF2 row as vector gf2. You can set alloc param, to allocate it dynamically inside function, or use allocated vector yet. When set alloc, after work call BPU_freeVecGF2
@@ -495,8 +495,8 @@ int BPU_gf2VecCrop (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
  * @param  alloc if set to 0, jsut copy row to allocated vector yet, or also allocate output vector
  * @return       0 - success, else error
  */
-int BPU_gf2MatGetRowAsGf2Vec (BPU_T_GF2_Vector * out,
-                              const BPU_T_GF2_Matrix * in, int row);
+int BPU_gf2MatGetRowAsGf2Vec(BPU_T_GF2_Vector * out,
+                             const BPU_T_GF2_Matrix * in, int row);
 
 /**
  * Copy VectorGF2.
@@ -504,7 +504,7 @@ int BPU_gf2MatGetRowAsGf2Vec (BPU_T_GF2_Vector * out,
  * @param src[in] pointer to VectorGF2  
  */
  /// Copy VectorGF2.
-void BPU_gf2VecCopy (BPU_T_GF2_Vector * dest, const BPU_T_GF2_Vector * src);
+void BPU_gf2VecCopy(BPU_T_GF2_Vector * dest, const BPU_T_GF2_Vector * src);
 
 /**
  * @brief BPU_gf2VecCmp Compare two vectors.
@@ -512,7 +512,7 @@ void BPU_gf2VecCopy (BPU_T_GF2_Vector * dest, const BPU_T_GF2_Vector * src);
  * @param v2
  * @return 0 - same, -1 - len differs, > 0 (index + 1) of first difference
  */
-int BPU_gf2VecCmp (const BPU_T_GF2_Vector * v1, const BPU_T_GF2_Vector * v2);
+int BPU_gf2VecCmp(const BPU_T_GF2_Vector * v1, const BPU_T_GF2_Vector * v2);
 
 /**
  * XOR operation on rows of Matrix GF2. row[i] = row[i] ^ row[j]
@@ -521,7 +521,7 @@ int BPU_gf2VecCmp (const BPU_T_GF2_Vector * v1, const BPU_T_GF2_Vector * v2);
  * @param  int j
  * @return
  */
-void BPU_gf2MatXorRows (BPU_T_GF2_Matrix * mat, int i, int j);
+void BPU_gf2MatXorRows(BPU_T_GF2_Matrix * mat, int i, int j);
 
 /**
  * Xor two Vectors GF2 and store result in first vector.
@@ -530,7 +530,7 @@ void BPU_gf2MatXorRows (BPU_T_GF2_Matrix * mat, int i, int j);
  * @return 0 - successm else error
  */
 /// Xor two Vectors GF2 and store result in first vector.
-int BPU_gf2VecXor (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in);
+int BPU_gf2VecXor(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in);
 
 /**
  * Create a binary vector of required length and weight. After work call BPU_freeVecGF2
@@ -538,7 +538,7 @@ int BPU_gf2VecXor (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in);
  * @param  w weight of vector, if 0 weight is random
  * @return     0 - succes, else error
  */
-int BPU_gf2VecRand (BPU_T_GF2_Vector * out, int w);
+int BPU_gf2VecRand(BPU_T_GF2_Vector * out, int w);
 
 /**
 * Vector and matrix multiplication over GF2.
@@ -548,8 +548,8 @@ int BPU_gf2VecRand (BPU_T_GF2_Vector * out, int w);
 * @param[in] b matrix GF2
 * @return on succes 0, on size error -1, on allocation error -2
 */
-int BPU_gf2VecMulMat (BPU_T_GF2_Vector * x, const BPU_T_GF2_Vector * v,
-                      const BPU_T_GF2_Matrix * b);
+int BPU_gf2VecMulMat(BPU_T_GF2_Vector * x, const BPU_T_GF2_Vector * v,
+                     const BPU_T_GF2_Matrix * b);
 
 /**
  * Crop matrix GF2 from left.
@@ -559,14 +559,14 @@ int BPU_gf2VecMulMat (BPU_T_GF2_Vector * x, const BPU_T_GF2_Vector * v,
  * @return on succes 0, on higher or equal width as actual width of in matrix -1, on allocation of new matrix error -2
  */
 /// Crop matrix GF2 from left.
-int BPU_gf2MatCrop (BPU_T_GF2_Matrix * m, uint16_t width);
+int BPU_gf2MatCrop(BPU_T_GF2_Matrix * m, uint16_t width);
 
 /**
  * @brief BPU_getParity Get parity of word.
  * @param dword
  * @return
  */
-uint8_t BPU_getParity (BPU_T_GF2 dword);
+uint8_t BPU_getParity(BPU_T_GF2 dword);
 
 /************************************************
 POLYNOMIAL UTILS
@@ -577,7 +577,7 @@ POLYNOMIAL UTILS
  * @param  a poly
  * @return   if 1, poly is zero, else 0
  */
-int BPU_gf2PolyIsZero (const BPU_T_GF2_Poly * a);
+int BPU_gf2PolyIsZero(const BPU_T_GF2_Poly * a);
 
 /**
  * Find highest coefficient in polynomial and set degree.
@@ -585,34 +585,34 @@ int BPU_gf2PolyIsZero (const BPU_T_GF2_Poly * a);
  * @param a   poly
  * @param deg if -1, set degree = max poly degree, else set given degree
  */
-void BPU_gf2PolySetDeg (BPU_T_GF2_Poly * a, int deg);
+void BPU_gf2PolySetDeg(BPU_T_GF2_Poly * a, int deg);
 
 /**
  * Returns highest set coefficient in polynomial.
  * @param  a poly
  * @return   Index of highest set coefficient in polynomial.
  */
-int BPU_gf2PolyGetHighestBitPos (BPU_T_GF2_Poly * a);
+int BPU_gf2PolyGetHighestBitPos(BPU_T_GF2_Poly * a);
 
 /**
  * Shift polynomial left by given positions.
  * @param a           polynomial to be shifted
  * @param shift_count count of shiftes to do
  */
-void BPU_gf2PolyShiftLeft (BPU_T_GF2_Poly * a, int shift_count);
+void BPU_gf2PolyShiftLeft(BPU_T_GF2_Poly * a, int shift_count);
 
 /**
  * Shift polynomial right by one.
  * @param  a polynomial to be shifted
  */
-void BPU_gf2PolyShiftRightOne (BPU_T_GF2_Poly * a);
+void BPU_gf2PolyShiftRightOne(BPU_T_GF2_Poly * a);
 
 /**
  * Transpose polynomial.
  * @param out transposed output polynomial
  * @param in  input polynomial
  */
-void BPU_gf2PolyTransp (BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in);
+void BPU_gf2PolyTransp(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in);
 
 
 /************************************************
@@ -623,7 +623,7 @@ POLYNOMIAL MATH
  * Multiplicate polynomial by x.
  * @param a input / output polynomial
  */
-void BPU_gf2PolyMulX (BPU_T_GF2_Poly * a);
+void BPU_gf2PolyMulX(BPU_T_GF2_Poly * a);
 
 /**
  * Polynomial add.
@@ -634,7 +634,7 @@ void BPU_gf2PolyMulX (BPU_T_GF2_Poly * a);
  * @param in   intput polynomial
  * @param crop boolean, if set actual degree of output
  */
-void BPU_gf2PolyAdd (BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in, int crop);
+void BPU_gf2PolyAdd(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in, int crop);
 
 /**
  * Polynomial multiplication modulo.
@@ -647,8 +647,8 @@ void BPU_gf2PolyAdd (BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in, int crop);
  * @param m    modulo
  * @param crop boolean, if set actual degree of output
  */
-void BPU_gf2PolyMulMod (const BPU_T_GF2_Poly * a, const BPU_T_GF2_Poly * b,
-                        BPU_T_GF2_Poly * c, const BPU_T_GF2_Poly * m, int crop);
+void BPU_gf2PolyMulMod(const BPU_T_GF2_Poly * a, const BPU_T_GF2_Poly * b,
+                       BPU_T_GF2_Poly * c, const BPU_T_GF2_Poly * m, int crop);
 
 /**
  * Polynomial division.
@@ -659,8 +659,8 @@ void BPU_gf2PolyMulMod (const BPU_T_GF2_Poly * a, const BPU_T_GF2_Poly * b,
  * @param a dividend
  * @param b divisor
  */
-void BPU_gf2PolyDiv (BPU_T_GF2_Poly * q, BPU_T_GF2_Poly * r,
-                     const BPU_T_GF2_Poly * a, const BPU_T_GF2_Poly * b);
+void BPU_gf2PolyDiv(BPU_T_GF2_Poly * q, BPU_T_GF2_Poly * r,
+                    const BPU_T_GF2_Poly * a, const BPU_T_GF2_Poly * b);
 
 /**
  * Extended Euclidean algorithm (XGCD).
@@ -672,9 +672,9 @@ void BPU_gf2PolyDiv (BPU_T_GF2_Poly * q, BPU_T_GF2_Poly * r,
  * @param  b poly b
  * @param  m modulo
  */
-void BPU_gf2PolyExtEuclidA (BPU_T_GF2_Poly * d, BPU_T_GF2_Poly * s,
-                            BPU_T_GF2_Poly * t, const BPU_T_GF2_Poly * a,
-                            const BPU_T_GF2_Poly * b, const BPU_T_GF2_Poly * m);
+void BPU_gf2PolyExtEuclidA(BPU_T_GF2_Poly * d, BPU_T_GF2_Poly * s,
+                           BPU_T_GF2_Poly * t, const BPU_T_GF2_Poly * a,
+                           const BPU_T_GF2_Poly * b, const BPU_T_GF2_Poly * m);
 
 /**
  * Calc inversion polynomial.
@@ -684,8 +684,8 @@ void BPU_gf2PolyExtEuclidA (BPU_T_GF2_Poly * d, BPU_T_GF2_Poly * s,
  * @param  m   modulo
  * @return     1 if found, else not found
  */
-int BPU_gf2PolyInv (BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * a,
-                    const BPU_T_GF2_Poly * mod);
+int BPU_gf2PolyInv(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * a,
+                   const BPU_T_GF2_Poly * mod);
 
 
 /************************************************
@@ -697,15 +697,15 @@ SPARSE POLYNOMIAL UTILS
  * @param out output sparse polynomial
  * @param in input sparse polynomial 
  */
-void BPU_gf2SparsePolyCopy (BPU_T_GF2_Sparse_Poly * out,
-                            const BPU_T_GF2_Sparse_Poly * in);
+void BPU_gf2SparsePolyCopy(BPU_T_GF2_Sparse_Poly * out,
+                           const BPU_T_GF2_Sparse_Poly * in);
 
 /**
  * Copy polynomial. After work you have to free memory using call BPU_gf2PolyFree.
  * @param out output polynomial
  * @param in input polynomial 
  */
-void BPU_gf2PolyCopy (BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in);
+void BPU_gf2PolyCopy(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in);
 
 /**
  * Initialize random polynomial. After work you have to free memory using call BPU_gf2PolyFree.
@@ -715,7 +715,7 @@ void BPU_gf2PolyCopy (BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in);
  * @param set_deg boolean param, if 1, it will crop polynomial to the actual degree and reallocate it
  * @return 0 - succes, else error
  */
-int BPU_gf2PolyInitRand (BPU_T_GF2_Poly * out, int l, int w, int set_deg);
+int BPU_gf2PolyInitRand(BPU_T_GF2_Poly * out, int l, int w, int set_deg);
 
 
 /************************************************
@@ -728,8 +728,8 @@ SPARSE POLYNOMIAL MATH
  * @param out  input / output polynomial
  * @param in   intput sparse polynomial
  */
-void BPU_gf2SparsePolyAdd (BPU_T_GF2_Poly * out,
-                           const BPU_T_GF2_Sparse_Poly * in);
+void BPU_gf2SparsePolyAdd(BPU_T_GF2_Poly * out,
+                          const BPU_T_GF2_Sparse_Poly * in);
 
 /**
  * Polynomial and sparse polynomial, returns hamming weight of result.
@@ -738,8 +738,8 @@ void BPU_gf2SparsePolyAdd (BPU_T_GF2_Poly * out,
  * @param  b sparse polynomial
  * @return   hamming weight of result of and operation
  */
-int BPU_gf2SparsePolyAndHW (const BPU_T_GF2_Poly * a,
-                            const BPU_T_GF2_Sparse_Poly * b);
+int BPU_gf2SparsePolyAndHW(const BPU_T_GF2_Poly * a,
+                           const BPU_T_GF2_Sparse_Poly * b);
 
 
 /************************************************
@@ -751,8 +751,8 @@ QUASI-CYCLIC MATRIX UTILS
  * @param out output transposed matrix
  * @param in  input matrix
  */
-void BPU_gf2QcMatrixTransp (BPU_T_GF2_QC_Matrix * out,
-                            const BPU_T_GF2_QC_Matrix * in);
+void BPU_gf2QcMatrixTransp(BPU_T_GF2_QC_Matrix * out,
+                           const BPU_T_GF2_QC_Matrix * in);
 
 /**
  * Convert quasi-cyclic matrix into sparse quasi-cyclic matrix. Allocate memory, so after work it has to be freed by using call BPU_gf2SparseQcMatrixFree.
@@ -761,8 +761,8 @@ void BPU_gf2QcMatrixTransp (BPU_T_GF2_QC_Matrix * out,
  * @param wi weights of cyclic elements in input matrix
  * @return
  */
-int BPU_gf2QcMatrixToSparse (BPU_T_GF2_Sparse_Qc_Matrix * out,
-                             const BPU_T_GF2_QC_Matrix * in, const int wi[]);
+int BPU_gf2QcMatrixToSparse(BPU_T_GF2_Sparse_Qc_Matrix * out,
+                            const BPU_T_GF2_QC_Matrix * in, const int wi[]);
 
 
 /************************************************
@@ -775,16 +775,16 @@ SPARSE QUASI-CYCLIC MATRIX UTILS
  * @param p       output row
  * @param row_num index of row to get
  */
-void BPU_gf2SparseQcMatrixGetRow (BPU_T_GF2_Sparse_Poly * p,
-                                  const BPU_T_GF2_Sparse_Qc_Matrix * m,
-                                  int row_num);
+void BPU_gf2SparseQcMatrixGetRow(BPU_T_GF2_Sparse_Poly * p,
+                                 const BPU_T_GF2_Sparse_Qc_Matrix * m,
+                                 int row_num);
 
 /**
  * Transpose sparse quasi-cyclic matrix.
  * @param  out output transposed matrix
  * @param  in  input matrix
  */
-void BPU_gf2SparseQcMatrixTransp (BPU_T_GF2_Sparse_Qc_Matrix * out,
-                                  const BPU_T_GF2_Sparse_Qc_Matrix * in);
+void BPU_gf2SparseQcMatrixTransp(BPU_T_GF2_Sparse_Qc_Matrix * out,
+                                 const BPU_T_GF2_Sparse_Qc_Matrix * in);
 
 #endif // BPU_GF2_H

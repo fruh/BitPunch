@@ -20,9 +20,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 typedef BPU_T_Element_Array BPU_T_Bigint;
 
-int BPU_bigintMultiply (BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b);
+int BPU_bigintMultiply(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b);
 
-int BPU_bigintAdd (BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b);
+int BPU_bigintAdd(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b);
 
 #define BPU_bigintNull(b_pointer) BPU_elementArrayNull(b_pointer)
 

@@ -29,13 +29,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * @param  ctx  McEliece context
  * @return     0 - succes, else error
  */
-int BPU_mecsBasicEncrypt (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
-                          const BPU_T_Mecs_Ctx * ctx);
+int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+                         const BPU_T_Mecs_Ctx * ctx);
 #endif
 
 #ifdef BPU_CONF_DECRYPTION
-int BPU_mecsBasicDecrypt (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
-                          const BPU_T_Mecs_Ctx * ctx);
+int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+                         const BPU_T_Mecs_Ctx * ctx);
 #endif
 
 #endif // MECSBASIC_H

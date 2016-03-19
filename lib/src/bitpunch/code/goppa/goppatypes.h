@@ -45,7 +45,7 @@ typedef struct _BPU_T_Goppa_Params {
  * @brief BPU_goppaFreeSpec Free Goppa code internal structure.
  * @param spec
  */
-void BPU_goppaFreeSpec (BPU_T_Goppa_Spec * spec);
+void BPU_goppaFreeSpec(BPU_T_Goppa_Spec * spec);
 
 /**
  * @brief BPU_goppaInitParams Initi Goppa code params.
@@ -55,13 +55,13 @@ void BPU_goppaFreeSpec (BPU_T_Goppa_Spec * spec);
  * @param mod
  * @return
  */
-int BPU_goppaInitParams (BPU_T_Goppa_Params ** params, const uint16_t m,
-                         const uint16_t t, const BPU_T_GF2_16x mod);
+int BPU_goppaInitParams(BPU_T_Goppa_Params ** params, const uint16_t m,
+                        const uint16_t t, const BPU_T_GF2_16x mod);
 
 /**
  * @brief BPU_goppaFreeParams Free goppa code params.
  * @param params
  */
-void BPU_goppaFreeParams (BPU_T_Goppa_Params ** params);
+void BPU_goppaFreeParams(BPU_T_Goppa_Params ** params);
 
 #endif // GOPPATYPES_H

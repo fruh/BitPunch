@@ -19,19 +19,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "qcmdpctypes.h"
 #include <bitpunch/math/gf2.h>
 
-void BPU_qcmdpcFreeSpec (BPU_T_Qcmdpc_Spec * spec) {
-    BPU_gf2QcMatrixFree (&spec->G, 0);
-    BPU_gf2SparseQcMatrixFree (&spec->H, 0);
-    free (spec);
+void BPU_qcmdpcFreeSpec(BPU_T_Qcmdpc_Spec * spec) {
+    BPU_gf2QcMatrixFree(&spec->G, 0);
+    BPU_gf2SparseQcMatrixFree(&spec->H, 0);
+    free(spec);
 }
 
-int BPU_qcmdpcInitParams (BPU_T_Qcmdpc_Params ** params, const uint16_t m,
-                          const uint16_t n0, const uint16_t w,
-                          const uint16_t t) {
-    *params = (BPU_T_Qcmdpc_Params *) calloc (sizeof (BPU_T_Qcmdpc_Params), 1);
+int BPU_qcmdpcInitParams(BPU_T_Qcmdpc_Params ** params, const uint16_t m,
+                         const uint16_t n0, const uint16_t w,
+                         const uint16_t t) {
+    *params = (BPU_T_Qcmdpc_Params *) calloc(sizeof(BPU_T_Qcmdpc_Params), 1);
 
     if (!params) {
-        BPU_printError ("Can't init Code params");
+        BPU_printError("Can't init Code params");
 
         return -1;
     }
@@ -43,9 +43,9 @@ int BPU_qcmdpcInitParams (BPU_T_Qcmdpc_Params ** params, const uint16_t m,
     return 0;
 }
 
-void BPU_qcmdpcFreeParams (BPU_T_Qcmdpc_Params ** params) {
+void BPU_qcmdpcFreeParams(BPU_T_Qcmdpc_Params ** params) {
     if (*params) {
-        free (*params);
+        free(*params);
     }
     *params = NULL;
 }

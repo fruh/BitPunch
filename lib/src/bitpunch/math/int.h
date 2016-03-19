@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * @param  n [description]
  * @return   [description]
  */
-int BPU_isPrime (int n);
+int BPU_isPrime(int n);
 
 /**
  * Get recursively index of highest set bit in unsigned integer.
@@ -39,6 +39,6 @@ int BPU_isPrime (int n);
  * @param  ele_size size of integer
  * @return          index of highest set bit
  */
-int msb32 (uint32_t x, int start, int len, int ele_size);
+int msb32(uint32_t x, int start, int len, int ele_size);
 
 #endif // BPU_INT_H

@@ -22,52 +22,52 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
-void BPU_printBinaryMsb (uint32_t in, int len) {
+void BPU_printBinaryMsb(uint32_t in, int len) {
     if (len > 0) {
-        BPU_printBinaryMsb (in >> 1, len - 1);
+        BPU_printBinaryMsb(in >> 1, len - 1);
 
-        fprintf (stderr, "%d", (int) (in & (0x1u)));
+        fprintf(stderr, "%d", (int) (in & (0x1u)));
     }
 }
 
-void BPU_printBinaryMsbLn (uint32_t in, int len) {
-    BPU_printBinaryMsb (in, len);
-    fprintf (stderr, "\n");
+void BPU_printBinaryMsbLn(uint32_t in, int len) {
+    BPU_printBinaryMsb(in, len);
+    fprintf(stderr, "\n");
 }
 
-void BPU_printBinaryMsb32 (uint32_t in) {
-    BPU_printBinaryMsb (in, 32);
+void BPU_printBinaryMsb32(uint32_t in) {
+    BPU_printBinaryMsb(in, 32);
 }
 
-void BPU_printBinaryMsb32Ln (uint32_t in) {
-    BPU_printBinaryMsbLn (in, 32);
+void BPU_printBinaryMsb32Ln(uint32_t in) {
+    BPU_printBinaryMsbLn(in, 32);
 }
 
-void BPU_printBinaryLsb (uint32_t in, int len) {
+void BPU_printBinaryLsb(uint32_t in, int len) {
     if (len > 0) {
-        fprintf (stderr, "%d", (int) (in & (0x1u)));
+        fprintf(stderr, "%d", (int) (in & (0x1u)));
 
-        BPU_printBinaryLsb (in >> 1, len - 1);
+        BPU_printBinaryLsb(in >> 1, len - 1);
     }
 }
 
-void BPU_printBinaryLsbLn (uint32_t in, int len) {
-    BPU_printBinaryLsb (in, len);
-    fprintf (stderr, "\n");
+void BPU_printBinaryLsbLn(uint32_t in, int len) {
+    BPU_printBinaryLsb(in, len);
+    fprintf(stderr, "\n");
 }
 
-void BPU_printBinaryLsb32 (uint32_t in) {
-    BPU_printBinaryLsb (in, 32);
+void BPU_printBinaryLsb32(uint32_t in) {
+    BPU_printBinaryLsb(in, 32);
 }
 
-void BPU_printBinary32LsbLn (uint32_t in) {
-    BPU_printBinaryLsbLn (in, 32);
+void BPU_printBinary32LsbLn(uint32_t in) {
+    BPU_printBinaryLsbLn(in, 32);
 }
 
-void BPU_printElementArray (const BPU_T_Element_Array * a) {
+void BPU_printElementArray(const BPU_T_Element_Array * a) {
     int j, bits_to_print;
 
-    fprintf (stderr, "Vec (%4d): ", a->len);
+    fprintf(stderr, "Vec (%4d): ", a->len);
     for (j = 0; j <= a->array_length - 1; j++) {
         if (j == a->array_length - 1) {
             if (a->len % (a->element_bit_size) != 0) {
@@ -80,16 +80,16 @@ void BPU_printElementArray (const BPU_T_Element_Array * a) {
         else {
             bits_to_print = a->element_bit_size;
         }
-        BPU_printBinaryLsb (a->elements[j], bits_to_print);
-        fprintf (stderr, " ");
+        BPU_printBinaryLsb(a->elements[j], bits_to_print);
+        fprintf(stderr, " ");
     }
-    fprintf (stderr, "\n");
+    fprintf(stderr, "\n");
 }
 
-void BPU_printElementArrayMsb (const BPU_T_Element_Array * a) {
+void BPU_printElementArrayMsb(const BPU_T_Element_Array * a) {
     int j, bits_to_print;
 
-    fprintf (stderr, "Vec (%4d): ", a->len);
+    fprintf(stderr, "Vec (%4d): ", a->len);
     for (j = 0; j <= a->array_length - 1; j++) {
         if (j == a->array_length - 1) {
             if (a->len % (a->element_bit_size) != 0) {
@@ -102,55 +102,55 @@ void BPU_printElementArrayMsb (const BPU_T_Element_Array * a) {
         else {
             bits_to_print = a->element_bit_size;
         }
-        BPU_printBinaryMsbLn (a->elements[j], bits_to_print);
-        fprintf (stderr, " ");
+        BPU_printBinaryMsbLn(a->elements[j], bits_to_print);
+        fprintf(stderr, " ");
     }
-    fprintf (stderr, "\n");
+    fprintf(stderr, "\n");
 }
 
-void BPU_printElementArrayOnes (const BPU_T_Element_Array * a) {
+void BPU_printElementArrayOnes(const BPU_T_Element_Array * a) {
     int i;
 
     for (i = 0; i < a->len; ++i) {
-        if (BPU_elementArrayGetBit (a, i)) {
-            fprintf (stderr, "%d ", i);
+        if (BPU_elementArrayGetBit(a, i)) {
+            fprintf(stderr, "%d ", i);
         }
     }
-    fprintf (stderr, "\n");
+    fprintf(stderr, "\n");
 }
 
 /* ------------------------------------ Print functions ------------------------------------ */
 #endif // BPU_CONF_PRINT
 
-void BPU_elementArrayFree (BPU_T_Element_Array ** a) {
+void BPU_elementArrayFree(BPU_T_Element_Array ** a) {
     if (!*a) {
         return;
     }
-    free ((*a)->elements);
-    free (*a);
+    free((*a)->elements);
+    free(*a);
     *a = NULL;
 }
 
-int BPU_elementArrayMalloc (BPU_T_Element_Array ** a, int len) {
-    *a = (BPU_T_Element_Array *) calloc (sizeof (BPU_T_Element_Array), 1);
+int BPU_elementArrayMalloc(BPU_T_Element_Array ** a, int len) {
+    *a = (BPU_T_Element_Array *) calloc(sizeof(BPU_T_Element_Array), 1);
 
     if (!*a) {
-        BPU_printError ("allocation error");
+        BPU_printError("allocation error");
         return -1;
     }
-    return BPU_elementArrayMallocElements (*a, len);
+    return BPU_elementArrayMallocElements(*a, len);
 }
 
-int BPU_elementArrayResize (BPU_T_Element_Array * a, int len) {
+int BPU_elementArrayResize(BPU_T_Element_Array * a, int len) {
     if (a->elements) {
-        free (a->elements);
+        free(a->elements);
     }
-    return BPU_elementArrayMallocElements (a, len);
+    return BPU_elementArrayMallocElements(a, len);
 }
 
-int BPU_elementArrayMallocElements (BPU_T_Element_Array * a, int len) {
+int BPU_elementArrayMallocElements(BPU_T_Element_Array * a, int len) {
     // element size in bits
-    a->element_bit_size = sizeof (BPU_T_Element) * 8;
+    a->element_bit_size = sizeof(BPU_T_Element) * 8;
 
     // len
     a->len = len;
@@ -165,10 +165,10 @@ int BPU_elementArrayMallocElements (BPU_T_Element_Array * a, int len) {
 
     // allocate elemtens
     a->elements =
-        (BPU_T_Element *) calloc (1, sizeof (BPU_T_Element) * a->array_length);
+        (BPU_T_Element *) calloc(1, sizeof(BPU_T_Element) * a->array_length);
 
     if (!a->elements) {
-        BPU_printError ("can not allocate memory for vector of len %d", len);
+        BPU_printError("can not allocate memory for vector of len %d", len);
 
         return -1;
     }

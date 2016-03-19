@@ -44,7 +44,7 @@ typedef struct _BPU_T_Perm_Vector {
 * Print permutation.
 * @param permutation permutation
 */
-void BPU_printPerm (const BPU_T_Perm_Vector * permutation);
+void BPU_printPerm(const BPU_T_Perm_Vector * permutation);
 #endif // BPU_CONF_PRINT
 
 /**
@@ -53,7 +53,7 @@ void BPU_printPerm (const BPU_T_Perm_Vector * permutation);
  * @param is_dyn 0 - staticaly allocated BPU_T_Perm_Vector object or 1 when dynamically
  */
 /// Free dynamically or statically alocated permutation vector.
-void BPU_permFree (BPU_T_Perm_Vector ** p);
+void BPU_permFree(BPU_T_Perm_Vector ** p);
 
 /**
  * Allocate permutation vector elements of size size using malloc.  After work you have to free memory using call BPU_freePerm(p)
@@ -62,7 +62,7 @@ void BPU_permFree (BPU_T_Perm_Vector ** p);
  * @return      on succes 0 else error
  */
 /// Allocate permutation vector elements of size size.
-int BPU_permMalloc (BPU_T_Perm_Vector ** p, int size);
+int BPU_permMalloc(BPU_T_Perm_Vector ** p, int size);
 
 /**
  * Generate random permutation.
@@ -70,14 +70,14 @@ int BPU_permMalloc (BPU_T_Perm_Vector ** p, int size);
  * @param size size of permutation vector
  * @return on succes 0, else error
  */
-int BPU_permRandomize (BPU_T_Perm_Vector * permutation);
+int BPU_permRandomize(BPU_T_Perm_Vector * permutation);
 
 /**
  * @brief BPU_swap
  * @param a
  * @param b
  */
-void BPU_permSwap (BPU_T_Perm_Element * a, BPU_T_Perm_Element * b);
+void BPU_permSwap(BPU_T_Perm_Element * a, BPU_T_Perm_Element * b);
 
 /**
  * Get inverse permutation to permutation.
@@ -85,7 +85,7 @@ void BPU_permSwap (BPU_T_Perm_Element * a, BPU_T_Perm_Element * b);
  * @param  in  permutation
  * @return     on succes 0, else error
  */
-int BPU_permGetInv (BPU_T_Perm_Vector * out, const BPU_T_Perm_Vector * in);
+int BPU_permGetInv(BPU_T_Perm_Vector * out, const BPU_T_Perm_Vector * in);
 
 /**
  * Compose permutations.
@@ -93,14 +93,14 @@ int BPU_permGetInv (BPU_T_Perm_Vector * out, const BPU_T_Perm_Vector * in);
  * @param  permutation
  * @return 0 success, -1 when size of vectors is not the same, -2 on memory allocation error 
  */
-int BPU_permPermute (BPU_T_Perm_Vector * to_permute,
-                     const BPU_T_Perm_Vector * permutation);
+int BPU_permPermute(BPU_T_Perm_Vector * to_permute,
+                    const BPU_T_Perm_Vector * permutation);
 
 /**
  * @brief BPU_permIsValid Check wheter is permutaion valid.
  * @param p
  * @return on succes 0, else error
  */
-int BPU_permIsValid (const BPU_T_Perm_Vector * p);
+int BPU_permIsValid(const BPU_T_Perm_Vector * p);
 
 #endif // BPU_PERM_H

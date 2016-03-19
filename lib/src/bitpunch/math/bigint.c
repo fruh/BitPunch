@@ -19,17 +19,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "bigint.h"
 #include <bitpunch/debugio.h>
 
-int BPU_bigintMultiply (BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b) {
+int BPU_bigintMultiply(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b) {
     uint32_t tmp, carry;
     uint32_t i, j;
 
     if ((a->len + b->len) > out->len) {
-        BPU_printDebug ("Resizing big int output to %d", a->len + b->len);
+        BPU_printDebug("Resizing big int output to %d", a->len + b->len);
 
-        BPU_bigintResize (out, a->len + b->len);
+        BPU_bigintResize(out, a->len + b->len);
     }
     else {
-        BPU_bigintNull (out);
+        BPU_bigintNull(out);
     }
     carry = 0;
 
@@ -44,7 +44,7 @@ int BPU_bigintMultiply (BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b) 
     return 0;
 }
 
-int BPU_bigintAdd (BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b) {
+int BPU_bigintAdd(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b) {
     uint32_t tmp, carry;
     uint32_t i;
     uint32_t tmplen = (a->len > b->len) ? a->len : b->len;
@@ -54,12 +54,12 @@ int BPU_bigintAdd (BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b) {
     tmplen++;
 
     if (tmplen > out->len) {
-        BPU_printDebug ("Resizing big int output to %d", tmplen);
+        BPU_printDebug("Resizing big int output to %d", tmplen);
 
-        BPU_bigintResize (out, tmplen);
+        BPU_bigintResize(out, tmplen);
     }
     else {
-        BPU_bigintNull (out);
+        BPU_bigintNull(out);
     }
 
     carry = 0;

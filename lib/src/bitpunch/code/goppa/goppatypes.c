@@ -24,21 +24,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/math/gf2x.h>
 #include <bitpunch/math/perm.h>
 
-void BPU_goppaFreeSpec (BPU_T_Goppa_Spec * spec) {
-    BPU_gf2xPolyFree (&spec->g);
-    BPU_gf2MatFree (&spec->g_mat);
+void BPU_goppaFreeSpec(BPU_T_Goppa_Spec * spec) {
+    BPU_gf2xPolyFree(&spec->g);
+    BPU_gf2MatFree(&spec->g_mat);
 #ifndef BPU_CONF_GOPPA_WO_H
-    BPU_gf2xMatFree (&spec->h_mat);
+    BPU_gf2xMatFree(&spec->h_mat);
 #endif
-    BPU_permFree (&spec->permutation);
+    BPU_permFree(&spec->permutation);
 }
 
-int BPU_goppaInitParams (BPU_T_Goppa_Params ** params, const uint16_t m,
-                         const uint16_t t, const BPU_T_GF2_16x mod) {
-    *params = (BPU_T_Goppa_Params *) calloc (sizeof (BPU_T_Goppa_Params), 1);
+int BPU_goppaInitParams(BPU_T_Goppa_Params ** params, const uint16_t m,
+                        const uint16_t t, const BPU_T_GF2_16x mod) {
+    *params = (BPU_T_Goppa_Params *) calloc(sizeof(BPU_T_Goppa_Params), 1);
 
     if (!params) {
-        BPU_printError ("Can't init Code params");
+        BPU_printError("Can't init Code params");
 
         return -1;
     }
@@ -49,9 +49,9 @@ int BPU_goppaInitParams (BPU_T_Goppa_Params ** params, const uint16_t m,
     return 0;
 }
 
-void BPU_goppaFreeParams (BPU_T_Goppa_Params ** params) {
+void BPU_goppaFreeParams(BPU_T_Goppa_Params ** params) {
     if (*params) {
-        free (*params);
+        free(*params);
     }
     *params = NULL;
 }

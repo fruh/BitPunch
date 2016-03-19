@@ -34,21 +34,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/crypto/cca2/mecspointcheval.h>
 #endif
 
-int BPU_mecsInitCtx (BPU_T_Mecs_Ctx ** ctx, const BPU_T_UN_Mecs_Params * params,
-                     const BPU_T_EN_Mecs_Types type) {
+int BPU_mecsInitCtx(BPU_T_Mecs_Ctx ** ctx, const BPU_T_UN_Mecs_Params * params,
+                    const BPU_T_EN_Mecs_Types type) {
     int rc = 0;
     BPU_T_Mecs_Ctx *ctx_p;
 
     if (!*ctx) {
-        *ctx = (BPU_T_Mecs_Ctx *) calloc (sizeof (BPU_T_Mecs_Ctx), 1);
+        *ctx = (BPU_T_Mecs_Ctx *) calloc(sizeof(BPU_T_Mecs_Ctx), 1);
 
         if (!*ctx) {
-            BPU_printError ("can not alloc Mecs ctx");
+            BPU_printError("can not alloc Mecs ctx");
             return -1;
         }
     }
     else {
-        BPU_printDebug ("Already initialized");
+        BPU_printDebug("Already initialized");
         return 0;
     }
     ctx_p = *ctx;
@@ -65,8 +65,8 @@ int BPU_mecsInitCtx (BPU_T_Mecs_Ctx ** ctx, const BPU_T_UN_Mecs_Params * params,
 #ifdef BPU_CONF_KEY_GEN
         ctx_p->_genKeyPair = BPU_goppaGenCode;
 #endif
-        rc = BPU_codeInitCtx (&ctx_p->code_ctx, (BPU_T_UN_Code_Params *) params,
-                              BPU_EN_CODE_GOPPA);
+        rc = BPU_codeInitCtx(&ctx_p->code_ctx, (BPU_T_UN_Code_Params *) params,
+                             BPU_EN_CODE_GOPPA);
         if (rc) {
             return rc;
         }
@@ -85,8 +85,8 @@ int BPU_mecsInitCtx (BPU_T_Mecs_Ctx ** ctx, const BPU_T_UN_Mecs_Params * params,
 #ifdef BPU_CONF_KEY_GEN
         ctx_p->_genKeyPair = BPU_goppaGenCode;
 #endif
-        rc = BPU_codeInitCtx (&ctx_p->code_ctx, (BPU_T_UN_Code_Params *) params,
-                              BPU_EN_CODE_GOPPA);
+        rc = BPU_codeInitCtx(&ctx_p->code_ctx, (BPU_T_UN_Code_Params *) params,
+                             BPU_EN_CODE_GOPPA);
         if (rc) {
             return rc;
         }
@@ -108,8 +108,8 @@ int BPU_mecsInitCtx (BPU_T_Mecs_Ctx ** ctx, const BPU_T_UN_Mecs_Params * params,
 #ifdef BPU_CONF_KEY_GEN
         ctx_p->_genKeyPair = BPU_mecsQcmdpcGenKeys;
 #endif
-        rc = BPU_codeInitCtx (&ctx_p->code_ctx, (BPU_T_UN_Code_Params *) params,
-                              BPU_EN_CODE_QCMDPC);
+        rc = BPU_codeInitCtx(&ctx_p->code_ctx, (BPU_T_UN_Code_Params *) params,
+                             BPU_EN_CODE_QCMDPC);
         if (rc) {
             return rc;
         }
@@ -128,8 +128,8 @@ int BPU_mecsInitCtx (BPU_T_Mecs_Ctx ** ctx, const BPU_T_UN_Mecs_Params * params,
 #ifdef BPU_CONF_KEY_GEN
         ctx_p->_genKeyPair = BPU_mecsQcmdpcGenKeys;
 #endif
-        rc = BPU_codeInitCtx (&ctx_p->code_ctx, (BPU_T_UN_Code_Params *) params,
-                              BPU_EN_CODE_QCMDPC);
+        rc = BPU_codeInitCtx(&ctx_p->code_ctx, (BPU_T_UN_Code_Params *) params,
+                             BPU_EN_CODE_QCMDPC);
         if (rc) {
             return rc;
         }
@@ -160,13 +160,13 @@ int BPU_mecsInitCtx (BPU_T_Mecs_Ctx ** ctx, const BPU_T_UN_Mecs_Params * params,
            break;
          */
     default:
-        BPU_printError ("MECS type not supported: %d", type);
+        BPU_printError("MECS type not supported: %d", type);
         return BPU_EC_MECS_TYPE_NOT_SUPPORTED;
     }
     return rc;
 }
 
-int BPU_mecsFreeCtx (BPU_T_Mecs_Ctx ** ctx) {
+int BPU_mecsFreeCtx(BPU_T_Mecs_Ctx ** ctx) {
     BPU_T_Mecs_Ctx *ctx_p = *ctx;
 
     if (!ctx_p) {
@@ -190,32 +190,32 @@ int BPU_mecsFreeCtx (BPU_T_Mecs_Ctx ** ctx) {
         ctx_p->_genKeyPair = NULL;
         break;
     default:
-        BPU_printError ("MECS type not supported: %d", ctx_p->type);
+        BPU_printError("MECS type not supported: %d", ctx_p->type);
         return BPU_EC_MECS_TYPE_NOT_SUPPORTED;
     }
-    BPU_codeFreeCtx (&ctx_p->code_ctx);
-    free (ctx_p);
+    BPU_codeFreeCtx(&ctx_p->code_ctx);
+    free(ctx_p);
     *ctx = NULL;
 
     return 0;
 }
 
-int BPU_mecsInitParamsGoppa (BPU_T_UN_Mecs_Params * params, const uint16_t m,
-                             const uint16_t t, const BPU_T_GF2_16x mod) {
-    return BPU_codeInitParamsGoppa ((BPU_T_UN_Code_Params *) params, m, t, mod);
+int BPU_mecsInitParamsGoppa(BPU_T_UN_Mecs_Params * params, const uint16_t m,
+                            const uint16_t t, const BPU_T_GF2_16x mod) {
+    return BPU_codeInitParamsGoppa((BPU_T_UN_Code_Params *) params, m, t, mod);
 }
 
-void BPU_mecsFreeParamsGoppa (BPU_T_UN_Mecs_Params * params) {
-    BPU_codeFreeParamsGoppa ((BPU_T_UN_Code_Params *) params);
+void BPU_mecsFreeParamsGoppa(BPU_T_UN_Mecs_Params * params) {
+    BPU_codeFreeParamsGoppa((BPU_T_UN_Code_Params *) params);
 }
 
-int BPU_mecsInitParamsQcmdpc (BPU_T_UN_Mecs_Params * params, const uint16_t m,
-                              const uint16_t n0, const uint16_t w,
-                              const uint16_t t) {
-    return BPU_codeInitParamsQcmdpc ((BPU_T_UN_Code_Params *) params, m, n0, w,
-                                     t);
+int BPU_mecsInitParamsQcmdpc(BPU_T_UN_Mecs_Params * params, const uint16_t m,
+                             const uint16_t n0, const uint16_t w,
+                             const uint16_t t) {
+    return BPU_codeInitParamsQcmdpc((BPU_T_UN_Code_Params *) params, m, n0, w,
+                                    t);
 }
 
-void BPU_mecsFreeParamsQcmdpc (BPU_T_UN_Mecs_Params * params) {
-    BPU_codeFreeParamsQcmdpc ((BPU_T_UN_Code_Params *) params);
+void BPU_mecsFreeParamsQcmdpc(BPU_T_UN_Mecs_Params * params) {
+    BPU_codeFreeParamsQcmdpc((BPU_T_UN_Code_Params *) params);
 }

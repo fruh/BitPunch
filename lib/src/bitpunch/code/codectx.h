@@ -69,8 +69,8 @@ typedef struct _BPU_T_Code_Ctx {
  * @param type
  * @return
  */
-int BPU_codeInitCtx (BPU_T_Code_Ctx ** ctx, const BPU_T_UN_Code_Params * params,
-                     const BPU_T_EN_Code_Types type);
+int BPU_codeInitCtx(BPU_T_Code_Ctx ** ctx, const BPU_T_UN_Code_Params * params,
+                    const BPU_T_EN_Code_Types type);
 
 /**
  * @brief BPU_codeInitMathCtx
@@ -80,14 +80,14 @@ int BPU_codeInitCtx (BPU_T_Code_Ctx ** ctx, const BPU_T_UN_Code_Params * params,
  * @param mod
  * @return
  */
-int BPU_codeInitMathCtx (BPU_T_Math_Ctx ** ctx, const uint16_t m,
-                         const uint16_t t, const BPU_T_GF2_16x mod);
+int BPU_codeInitMathCtx(BPU_T_Math_Ctx ** ctx, const uint16_t m,
+                        const uint16_t t, const BPU_T_GF2_16x mod);
 
 /**
  * @brief BPU_codeFreeCtx
  * @param ctx
  */
-void BPU_codeFreeCtx (BPU_T_Code_Ctx ** ctx);
+void BPU_codeFreeCtx(BPU_T_Code_Ctx ** ctx);
 
 // Available init params for all codes, it is only wrapper for code params init
 /**
@@ -98,14 +98,14 @@ void BPU_codeFreeCtx (BPU_T_Code_Ctx ** ctx);
  * @param mod
  * @return
  */
-int BPU_codeInitParamsGoppa (BPU_T_UN_Code_Params * params, const uint16_t m,
-                             const uint16_t t, const BPU_T_GF2_16x mod);
+int BPU_codeInitParamsGoppa(BPU_T_UN_Code_Params * params, const uint16_t m,
+                            const uint16_t t, const BPU_T_GF2_16x mod);
 
 /**
  * @brief BPU_codeFreeParamsGoppa
  * @param params
  */
-void BPU_codeFreeParamsGoppa (BPU_T_UN_Code_Params * params);
+void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params * params);
 
 /**
  * Wrapper for param initialization. After work you have to free memory using call BPU_codeFreeParamsQcmdpc
@@ -116,15 +116,15 @@ void BPU_codeFreeParamsGoppa (BPU_T_UN_Code_Params * params);
  * @param  t      count of errors
  * @return        [description]
  */
-int BPU_codeInitParamsQcmdpc (BPU_T_UN_Code_Params * params, const uint16_t m,
-                              const uint16_t n0, const uint16_t w,
-                              const uint16_t t);
+int BPU_codeInitParamsQcmdpc(BPU_T_UN_Code_Params * params, const uint16_t m,
+                             const uint16_t n0, const uint16_t w,
+                             const uint16_t t);
 
 /**
  * Free memory for params.
  * @param params pointer to structure
  */
-void BPU_codeFreeParamsQcmdpc (BPU_T_UN_Code_Params * params);
+void BPU_codeFreeParamsQcmdpc(BPU_T_UN_Code_Params * params);
 
 // add yours additional params if needed
 #endif // BPU_CODECTX_H
