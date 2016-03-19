@@ -31,6 +31,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * @return random value
  */
 /// Get random unsigned int 32 value from given range (from <= return <= to)
-uint32_t BPU_prngGetRand(int from, int to);
+uint32_t BPU_prngGetRand (int from, int to);
 
 #endif // BPU_PRNG_H

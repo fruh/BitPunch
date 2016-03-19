@@ -37,7 +37,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * @param ctx
  * @return
  */
-int BPU_goppaEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
+int BPU_goppaEncode (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+                     const struct _BPU_T_Code_Ctx *ctx);
 #endif
 
 #ifdef BPU_CONF_DECRYPTION
@@ -49,7 +50,8 @@ int BPU_goppaEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const str
  *
  * @return still 0
  */
-int BPU_goppaDecode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
+int BPU_goppaDecode (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+                     const struct _BPU_T_Code_Ctx *ctx);
 
 /**
  * Get error vector Patterson alg.
@@ -59,7 +61,9 @@ int BPU_goppaDecode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const str
  *
  * @return still 0
  */
-int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, const BPU_T_Code_Ctx *ctx);
+int BPU_goppaGetError (BPU_T_GF2_Vector * error,
+                       const BPU_T_GF2_Vector * encoded,
+                       const BPU_T_Code_Ctx * ctx);
 
 /**
  * Find polynomials a, b of degree <= (t div 2). We are using GCD to find them, gcd(tau, mod) = a, so: a = tau * b + mod * (some s***s). Out a and b are allocated inside, after use must be freed using BPU_freePoly().
@@ -70,7 +74,10 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
  * @param math_ctx[in] [description]
  */
 /// Find polynomials a, b of degree <= (t div 2)
-void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU_T_GF2_16x_Poly *tau, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
+void BPU_goppaFindPolyAB (BPU_T_GF2_16x_Poly * a, BPU_T_GF2_16x_Poly * b,
+                          const BPU_T_GF2_16x_Poly * tau,
+                          const BPU_T_GF2_16x_Poly * mod,
+                          const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * @brief BPU_goppaDetSyndrome
@@ -78,7 +85,9 @@ void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU
  * @param z
  * @param ctx
  */
-void BPU_goppaDetSyndrome(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_Code_Ctx *ctx);
+void BPU_goppaDetSyndrome (BPU_T_GF2_16x_Poly * syndrome,
+                           const BPU_T_GF2_Vector * z,
+                           const BPU_T_Code_Ctx * ctx);
 #endif
 
 #ifdef BPU_CONF_KEY_GEN
@@ -87,7 +96,7 @@ void BPU_goppaDetSyndrome(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *
  * @param ctx
  * @return
  */
-int BPU_goppaGenCode(BPU_T_Code_Ctx *ctx);
+int BPU_goppaGenCode (BPU_T_Code_Ctx * ctx);
 
 /**
  * @brief BPU_goppaInitMatH2 Initialize control matrix.
@@ -96,7 +105,8 @@ int BPU_goppaGenCode(BPU_T_Code_Ctx *ctx);
  * @param ctx
  * @return
  */
-int BPU_goppaInitMatH2(BPU_T_GF2_Matrix *h2, BPU_T_GF2_16x_Matrix *hx, const BPU_T_Code_Ctx *ctx);
+int BPU_goppaInitMatH2 (BPU_T_GF2_Matrix * h2, BPU_T_GF2_16x_Matrix * hx,
+                        const BPU_T_Code_Ctx * ctx);
 #endif
 
 #endif // BPU_GOPPA_H

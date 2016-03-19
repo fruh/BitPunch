@@ -30,11 +30,11 @@ typedef uint16_t BPU_T_Element;
  * Represents elements bigger than standard C types.
  */
 typedef struct _BPU_T_Element_Array {
-    BPU_T_Element *elements; ///< element stored in the array
-    uint8_t element_bit_size; ///< element size e.g., 16 bits
-    uint16_t array_length; ///< number of elements in the array
-    uint32_t len; ///< bit length of the element
-}BPU_T_Element_Array;
+    BPU_T_Element *elements;    ///< element stored in the array
+    uint8_t element_bit_size;   ///< element size e.g., 16 bits
+    uint16_t array_length;      ///< number of elements in the array
+    uint32_t len;               ///< bit length of the element
+} BPU_T_Element_Array;
 
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
@@ -46,7 +46,7 @@ typedef struct _BPU_T_Element_Array {
 * @param len print len
 */
 /// Print number as binary string in big endian so msb is first printed.
-void BPU_printBinaryMsb(uint32_t in, int len);
+void BPU_printBinaryMsb (uint32_t in, int len);
 
 /**
 * Print number as binary string in big endian so msb is first printed. Print also new line at the end.
@@ -55,7 +55,7 @@ void BPU_printBinaryMsb(uint32_t in, int len);
 * @param len print len
 */
 /// Print number as binary string in big endian so msb is first printed.
-void BPU_printBinaryMsbLn(uint32_t in, int len);
+void BPU_printBinaryMsbLn (uint32_t in, int len);
 
 /**
 * Print number as binary string in big endian so msb is first printed. Do not print new line at the end.
@@ -64,7 +64,7 @@ void BPU_printBinaryMsbLn(uint32_t in, int len);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in big endian so msb is first printed.
-void BPU_printBinaryMsb32(uint32_t in);
+void BPU_printBinaryMsb32 (uint32_t in);
 
 /**
 * Print number as binary string in big endian so msb is first printed. Print also new line at the end.
@@ -73,7 +73,7 @@ void BPU_printBinaryMsb32(uint32_t in);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in big endian so msb is first printed.
-void BPU_printBinaryMsb32Ln(uint32_t in);
+void BPU_printBinaryMsb32Ln (uint32_t in);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Do not print new line at the end.
@@ -82,7 +82,7 @@ void BPU_printBinaryMsb32Ln(uint32_t in);
 * @param len print len
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void BPU_printBinaryLsb(uint32_t in, int len);
+void BPU_printBinaryLsb (uint32_t in, int len);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Print also new line at the end.
@@ -91,7 +91,7 @@ void BPU_printBinaryLsb(uint32_t in, int len);
 * @param len print len
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void BPU_printBinaryLsbLn(uint32_t in, int len);
+void BPU_printBinaryLsbLn (uint32_t in, int len);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Do not print new line at the end.
@@ -100,7 +100,7 @@ void BPU_printBinaryLsbLn(uint32_t in, int len);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void BPU_printBinaryLsb32(uint32_t in);
+void BPU_printBinaryLsb32 (uint32_t in);
 
 /**
 * Print number as binary string in little endian so lsb is first printed. Print also new line at the end.
@@ -109,25 +109,25 @@ void BPU_printBinaryLsb32(uint32_t in);
 * @param in input of max 64 bits
 */
 /// Print number as binary string in little endian so lsb is first printed.
-void BPU_printBinary32LsbLn(uint32_t in);
+void BPU_printBinary32LsbLn (uint32_t in);
 
 /**
 * Print vector GF2 with new line.
 * @param v vector
 */
-void BPU_printElementArray(const BPU_T_Element_Array *a);
+void BPU_printElementArray (const BPU_T_Element_Array * a);
 
 /**
  * @brief BPU_printElementArrayMsb Most significant bit is printed first.
  * @param v
  */
-void BPU_printElementArrayMsb(const BPU_T_Element_Array* a);
+void BPU_printElementArrayMsb (const BPU_T_Element_Array * a);
 
 /**
  * @brief BPU_printElementArrayOnes Print only ones.
  * @param vec
  */
-void BPU_printElementArrayOnes(const BPU_T_Element_Array *a);
+void BPU_printElementArrayOnes (const BPU_T_Element_Array * a);
 
 /* ------------------------------------ Print functions ------------------------------------ */
 #endif // BPU_CONF_PRINT
@@ -176,14 +176,14 @@ void BPU_printElementArrayOnes(const BPU_T_Element_Array *a);
  * @param[out] *m address of vector object
  */
 /// Free dynamically or statically allocated element array
-void BPU_elementArrayFree(BPU_T_Element_Array **a);
+void BPU_elementArrayFree (BPU_T_Element_Array ** a);
 
 /**
  * Allocate memory for element array. It also nulls array.
  * @param len len of vector
  * @return on succes 0, else error
  */
-int BPU_elementArrayMalloc(BPU_T_Element_Array **a, int len);
+int BPU_elementArrayMalloc (BPU_T_Element_Array ** a, int len);
 
 /**
  * @brief Resize element array.
@@ -191,7 +191,7 @@ int BPU_elementArrayMalloc(BPU_T_Element_Array **a, int len);
  * @param len
  * @return
  */
-int BPU_elementArrayResize(BPU_T_Element_Array *a, int len);
+int BPU_elementArrayResize (BPU_T_Element_Array * a, int len);
 
 /**
  * @brief Malloc array elements and set to zero.
@@ -199,6 +199,6 @@ int BPU_elementArrayResize(BPU_T_Element_Array *a, int len);
  * @param len
  * @return
  */
-int BPU_elementArrayMallocElements(BPU_T_Element_Array *a, int len);
+int BPU_elementArrayMallocElements (BPU_T_Element_Array * a, int len);
 
 #endif // BPU_UNI_H

@@ -53,12 +53,12 @@ typedef uint32_t BPU_T_GF2_32x;
 * Representation of aritmetics data.
 */
 typedef struct _BPU_T_Math_Ctx {
-    BPU_T_GF2_16x *exp_table; ///< there are all elements referenced by i, so at i-th index is g^i element, g - generator
-    BPU_T_GF2_16x *log_table; ///< there are all indexes referenced by element, so alpha elemnet (g^i) -> i
-    BPU_T_GF2_16x mod; ///< polynomial modulus
-    uint8_t mod_deg; ///< modulo degree, galois finite field GF(2^m)
-    int ord; ///< group ord, number of elements
-}BPU_T_Math_Ctx;
+    BPU_T_GF2_16x *exp_table;   ///< there are all elements referenced by i, so at i-th index is g^i element, g - generator
+    BPU_T_GF2_16x *log_table;   ///< there are all indexes referenced by element, so alpha elemnet (g^i) -> i
+    BPU_T_GF2_16x mod;          ///< polynomial modulus
+    uint8_t mod_deg;            ///< modulo degree, galois finite field GF(2^m)
+    int ord;                    ///< group ord, number of elements
+} BPU_T_Math_Ctx;
 
 /**
 * Precalculate logaritmic and exponencial tables and initialize structure Aritmetic_Data
@@ -67,7 +67,8 @@ typedef struct _BPU_T_Math_Ctx {
 * @return number of elements or < 0 means error
 */
 /// Precalculate logaritmic and exponencial tables and initialize structure Aritmetic_Data
-int BPU_mathInitCtx(BPU_T_Math_Ctx **ctx, const BPU_T_GF2_16x g, const BPU_T_GF2_16x mod);
+int BPU_mathInitCtx (BPU_T_Math_Ctx ** ctx, const BPU_T_GF2_16x g,
+                     const BPU_T_GF2_16x mod);
 
 /**
  * Free dynamiccaly or statically allocated Aritmetic_Data structure.
@@ -75,33 +76,34 @@ int BPU_mathInitCtx(BPU_T_Math_Ctx **ctx, const BPU_T_GF2_16x g, const BPU_T_GF2
  * @param is_dyn 0 - staticaly allocated Aritmetic_Data object or 1 when dynamically
  */
 /// Free dynamiccaly or statically allocated Aritmetic_Data structure.
-void BPU_mathFreeCtx(BPU_T_Math_Ctx **ctx);
+void BPU_mathFreeCtx (BPU_T_Math_Ctx ** ctx);
 
 /**
  * GF2_16x Vector representation
  */
 typedef struct _BPU_T_GF2_16x_Vector {
-  BPU_T_GF2_16x *elements;
-  uint8_t len; ///< number of elements
-}BPU_T_GF2_16x_Vector;
+    BPU_T_GF2_16x *elements;
+    uint8_t len;                ///< number of elements
+} BPU_T_GF2_16x_Vector;
 
 /**
 * Matrix representation over GF2_16x.
 */
 typedef struct _BPU_T_GF2_16x_Matrix {
-  BPU_T_GF2_16x **elements; ///< all element of matrix
-  uint16_t k; ///< rows
-  uint16_t n; ///< cols
-}BPU_T_GF2_16x_Matrix;
+    BPU_T_GF2_16x **elements;   ///< all element of matrix
+    uint16_t k;                 ///< rows
+    uint16_t n;                 ///< cols
+} BPU_T_GF2_16x_Matrix;
 
 /**
 * Representation of polynomial.
 */
-typedef struct _BPU_T_GF2_16x_Poly{
-  BPU_T_GF2_16x *coef; ///< Polynomial over GF2m
-  int16_t deg; ///< degree
-  int16_t max_deg; ///< degree
-}BPU_T_GF2_16x_Poly;
+typedef struct _BPU_T_GF2_16x_Poly {
+    BPU_T_GF2_16x *coef;        ///< Polynomial over GF2m
+    int16_t deg;                ///< degree
+    int16_t max_deg;            ///< degree
+} BPU_T_GF2_16x_Poly;
+
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
 /**
@@ -109,20 +111,22 @@ typedef struct _BPU_T_GF2_16x_Poly{
 * It will be padded 64 bits.
 * @param in input of max 64 bits
 */
-void BPU_printGf2xMat(const BPU_T_GF2_16x_Matrix *in);
+void BPU_printGf2xMat (const BPU_T_GF2_16x_Matrix * in);
 
 /**
  * @brief BPU_printGf2xPoly print GF2x polynomial.
  * @param p
  * @param math_ctx
  */
-void BPU_printGf2xPoly(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *math_ctx);
+void BPU_printGf2xPoly (const BPU_T_GF2_16x_Poly * p,
+                        const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * @brief BPU_printGf2xVec print GF2x vector.
  * @param v
  */
-void BPU_printGf2xVec(const BPU_T_GF2_16x_Vector *v);
+void BPU_printGf2xVec (const BPU_T_GF2_16x_Vector * v);
+
 /* ------------------------------------ Print functions ------------------------------------ */
 #endif // BPU_CONF_PRINT
 
@@ -134,7 +138,7 @@ void BPU_printGf2xVec(const BPU_T_GF2_16x_Vector *v);
 #define BPU_gf2xPolyNull(d_pointer) memset((void *) ((d_pointer)->coef), 0, sizeof(BPU_T_GF2_16x)*((d_pointer)->max_deg + 1));\
   (d_pointer)->deg = -1
 
-void BPU_gf2xMatNull(BPU_T_GF2_16x_Matrix *mat);
+void BPU_gf2xMatNull (BPU_T_GF2_16x_Matrix * mat);
 
 /**
  * Allocate memory for matrix. After work you have to free memory using call BPU_freeMat.
@@ -144,7 +148,7 @@ void BPU_gf2xMatNull(BPU_T_GF2_16x_Matrix *mat);
  * @return on succes 0, else error
  */
  /// Allocate memory for matrix.
-int BPU_gf2xMatMalloc(BPU_T_GF2_16x_Matrix **m, int rows, int cols);
+int BPU_gf2xMatMalloc (BPU_T_GF2_16x_Matrix ** m, int rows, int cols);
 
 /**
  * @brief BPU_gf2xVecMalloc Malloc vector structure.
@@ -152,20 +156,20 @@ int BPU_gf2xMatMalloc(BPU_T_GF2_16x_Matrix **m, int rows, int cols);
  * @param size
  * @return
  */
-int BPU_gf2xVecMalloc(BPU_T_GF2_16x_Vector **vec, int size);
+int BPU_gf2xVecMalloc (BPU_T_GF2_16x_Vector ** vec, int size);
 
 /**
  * @brief BPU_gf2xVecFree Free vector structure.
  * @param vec
  */
-void BPU_gf2xVecFree(BPU_T_GF2_16x_Vector **vec);
+void BPU_gf2xVecFree (BPU_T_GF2_16x_Vector ** vec);
 
 /**
  * Free dynamically or statically allocated matrix.
  * @param[out] *m address of matrix object
  */
 /// Free dynamically or statically allocated matrix
-void BPU_gf2xMatFree(BPU_T_GF2_16x_Matrix **m);
+void BPU_gf2xMatFree (BPU_T_GF2_16x_Matrix ** m);
 
 /**
  * Malloc memory for polynomial and zero-initialize
@@ -173,7 +177,7 @@ void BPU_gf2xMatFree(BPU_T_GF2_16x_Matrix **m);
  * @param  max_deg max degree of polynomial
  * @return
  */
-int BPU_gf2xPolyMalloc(BPU_T_GF2_16x_Poly **p, int16_t max_deg);
+int BPU_gf2xPolyMalloc (BPU_T_GF2_16x_Poly ** p, int16_t max_deg);
 
 /**
  * @brief BPU_gf2xPolyResize Resize polynomial, increase max deg.
@@ -181,7 +185,7 @@ int BPU_gf2xPolyMalloc(BPU_T_GF2_16x_Poly **p, int16_t max_deg);
  * @param max_deg
  * @return
  */
-int BPU_gf2xPolyResize(BPU_T_GF2_16x_Poly *p, int16_t max_deg);
+int BPU_gf2xPolyResize (BPU_T_GF2_16x_Poly * p, int16_t max_deg);
 
 /**
  * @brief BPU_gf2xPolyMallocCoef Malloc internal coeficients for polynomial.
@@ -189,13 +193,13 @@ int BPU_gf2xPolyResize(BPU_T_GF2_16x_Poly *p, int16_t max_deg);
  * @param max_deg
  * @return
  */
-int BPU_gf2xPolyMallocCoef(BPU_T_GF2_16x_Poly *p, int16_t max_deg);
+int BPU_gf2xPolyMallocCoef (BPU_T_GF2_16x_Poly * p, int16_t max_deg);
 
 /**
  * dealloc memory
  * @param p
  */
-void BPU_gf2xPolyFree(BPU_T_GF2_16x_Poly **p);
+void BPU_gf2xPolyFree (BPU_T_GF2_16x_Poly ** p);
 
 /**
  * Get inverse element of galois field.
@@ -222,7 +226,8 @@ void BPU_gf2xPolyFree(BPU_T_GF2_16x_Poly **p);
 * @return a*b mod mod
 */
 /// Multiplication over Galois field, modulus mod.
-BPU_T_GF2_16x BPU_gf2xMulMod(BPU_T_GF2_16x a, BPU_T_GF2_16x b, BPU_T_GF2_16x mod);
+BPU_T_GF2_16x BPU_gf2xMulMod (BPU_T_GF2_16x a, BPU_T_GF2_16x b,
+                              BPU_T_GF2_16x mod);
 
 /**
 * Multiplication over Galois field, modulus mod.
@@ -233,7 +238,8 @@ BPU_T_GF2_16x BPU_gf2xMulMod(BPU_T_GF2_16x a, BPU_T_GF2_16x b, BPU_T_GF2_16x mod
 * @return result
 */
 /// Multiplication over Galois field, modulus mod.
-BPU_T_GF2_16x BPU_gf2xMulModT(const BPU_T_GF2_16x a, const BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx);
+BPU_T_GF2_16x BPU_gf2xMulModT (const BPU_T_GF2_16x a, const BPU_T_GF2_16x b,
+                               const BPU_T_Math_Ctx * math_ctx);
 
 //side channel
 //#define BPU_gf2xMulModT(a, b, math_ctx) (((a) == 0 || (b) == 0) ? 0 : (math_ctx)->exp_table[((math_ctx)->log_table[(a)] + (math_ctx)->log_table[(b)]) % (math_ctx)->ord])
@@ -246,7 +252,8 @@ BPU_T_GF2_16x BPU_gf2xMulModT(const BPU_T_GF2_16x a, const BPU_T_GF2_16x b, cons
 * @return result
 */
 /// E-th power of a. It uses precomputed log and exp tables
-BPU_T_GF2_16x BPU_gf2xPowerModT(BPU_T_GF2_16x a, int e, const BPU_T_Math_Ctx *math_ctx);
+BPU_T_GF2_16x BPU_gf2xPowerModT (BPU_T_GF2_16x a, int e,
+                                 const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Matrix multiplication over finite field..
@@ -256,7 +263,9 @@ BPU_T_GF2_16x BPU_gf2xPowerModT(BPU_T_GF2_16x a, int e, const BPU_T_Math_Ctx *ma
  * @param[in] b matrix GF2^m
  * @return on succes 0, on size error -1, on allocation error -2
  */
-int BPU_gf2xMatMul(BPU_T_GF2_16x_Matrix *x, const BPU_T_GF2_16x_Matrix *a, const BPU_T_GF2_16x_Matrix *b, const BPU_T_Math_Ctx *math_ctx);
+int BPU_gf2xMatMul (BPU_T_GF2_16x_Matrix * x, const BPU_T_GF2_16x_Matrix * a,
+                    const BPU_T_GF2_16x_Matrix * b,
+                    const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * out = x * M over finite field
@@ -264,7 +273,10 @@ int BPU_gf2xMatMul(BPU_T_GF2_16x_Matrix *x, const BPU_T_GF2_16x_Matrix *a, const
  * @param mat [description]
  * @param out [description]
  */
-void BPU_gf2xVecMulMat(BPU_T_GF2_16x_Vector *out, const BPU_T_GF2_16x_Vector *x, const BPU_T_GF2_16x_Matrix *mat, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xVecMulMat (BPU_T_GF2_16x_Vector * out,
+                        const BPU_T_GF2_16x_Vector * x,
+                        const BPU_T_GF2_16x_Matrix * mat,
+                        const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Plus operation on polynomials (out = a + b). All argumets must be allocated before using BPU_mallocPoly().
@@ -272,7 +284,8 @@ void BPU_gf2xVecMulMat(BPU_T_GF2_16x_Vector *out, const BPU_T_GF2_16x_Vector *x,
  * @param a   [description]
  * @param b   [description]
  */
-void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b);
+void BPU_gf2xPolyAdd (BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
+                      const BPU_T_GF2_16x_Poly * b);
 
 /**
  * Divide two polynomials. All argumets must be allocated before using BPU_mallocPoly().
@@ -281,7 +294,10 @@ void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
  * @param a [in] input polynomial
  * @param b [in] input polynomial
  */
-void BPU_gf2xPolyDiv(BPU_T_GF2_16x_Poly *q, BPU_T_GF2_16x_Poly *r, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xPolyDiv (BPU_T_GF2_16x_Poly * q, BPU_T_GF2_16x_Poly * r,
+                      const BPU_T_GF2_16x_Poly * a,
+                      const BPU_T_GF2_16x_Poly * b,
+                      const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Multiplicate two polynomials. All argumets must be allocated before using BPU_mallocPoly().
@@ -290,7 +306,9 @@ void BPU_gf2xPolyDiv(BPU_T_GF2_16x_Poly *q, BPU_T_GF2_16x_Poly *r, const BPU_T_G
  * @param out [out] output polynomial
  * @param math_ctx log and exp table needed for multiplication of elements in GF2^m
  */
-void BPU_gf2xPolyMul(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xPolyMul (BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
+                      const BPU_T_GF2_16x_Poly * b,
+                      const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Shift polynomial right, it is like a div x^n.
@@ -298,7 +316,7 @@ void BPU_gf2xPolyMul(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
  * @param n[in] shift
  */
 /// Shift polynomial right, it is like a div x^n.
-void BPU_gf2xPolyShr(BPU_T_GF2_16x_Poly *a, int n);
+void BPU_gf2xPolyShr (BPU_T_GF2_16x_Poly * a, int n);
 
 /**
  * Shift polynomial left, it is like a mul 1/x^n.
@@ -306,7 +324,7 @@ void BPU_gf2xPolyShr(BPU_T_GF2_16x_Poly *a, int n);
  * @param n[in] shift
  */
 /// Shift polynomial left, it is like a mul 1/x^n.
-void BPU_gf2xPolyShl(BPU_T_GF2_16x_Poly *a, int n);
+void BPU_gf2xPolyShl (BPU_T_GF2_16x_Poly * a, int n);
 
 /**
  * Calculate power of polynomial.
@@ -315,7 +333,8 @@ void BPU_gf2xPolyShl(BPU_T_GF2_16x_Poly *a, int n);
  * @param math_ctx aitmetic data structure.
  */
 /// Calculate power of polynomial.
-void BPU_gf2xPolyPower(BPU_T_GF2_16x_Poly *a, int e, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xPolyPower (BPU_T_GF2_16x_Poly * a, int e,
+                        const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Multiplication polynomial over GF2_16x and element from GF2_16x. It is like multiplication of polynomials
@@ -324,7 +343,8 @@ void BPU_gf2xPolyPower(BPU_T_GF2_16x_Poly *a, int e, const BPU_T_Math_Ctx *math_
  * @param math_ctx arithmetic data structure
  */
 /// Multiplication polynomial over GF2_16x and element from GF2_16x.
-void BPU_gf2xPolyMulEl(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x el, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xPolyMulEl (BPU_T_GF2_16x_Poly * a, BPU_T_GF2_16x el,
+                        const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Calculate reminder of a. Example a mod b = reminder. ALl arguments must be allocated before use.
@@ -334,7 +354,9 @@ void BPU_gf2xPolyMulEl(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x el, const BPU_T_Math
  * @param math_ctx[in] aritmetics data structure
  */
 /// Calculate reminder of a. Example a mod b = reminder.
-void BPU_gf2xPolyMod(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xPolyMod (BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
+                      const BPU_T_GF2_16x_Poly * mod,
+                      const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Compute root of polynomial poly modulo polynomial mod and save result to polynomial out.
@@ -344,7 +366,9 @@ void BPU_gf2xPolyMod(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
  * @param out    [description]
  * @param math_ctx [description]
  */
-void BPU_gf2xMatRoot(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xMatRoot (BPU_T_GF2_16x_Matrix * out,
+                      const BPU_T_GF2_16x_Poly * mod,
+                      const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Function returns sqrt(element)
@@ -352,7 +376,8 @@ void BPU_gf2xMatRoot(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Poly *mod, c
  * @param  math_ctx  [description]
  * @return         [description]
  */
-BPU_T_GF2_16x BPU_gf2xRoot(BPU_T_GF2_16x element, const BPU_T_Math_Ctx *math_ctx);
+BPU_T_GF2_16x BPU_gf2xRoot (BPU_T_GF2_16x element,
+                            const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * @brief BPU_gf2xPolyRoot calculate root of given polynomial over GF2x.
@@ -361,7 +386,10 @@ BPU_T_GF2_16x BPU_gf2xRoot(BPU_T_GF2_16x element, const BPU_T_Math_Ctx *math_ctx
  * @param mod
  * @param math_ctx
  */
-void BPU_gf2xPolyRoot(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xPolyRoot (BPU_T_GF2_16x_Poly * out,
+                       const BPU_T_GF2_16x_Poly * poly,
+                       const BPU_T_GF2_16x_Poly * mod,
+                       const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Copy Polynomial.
@@ -369,7 +397,8 @@ void BPU_gf2xPolyRoot(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *poly, c
  * @param src[in] pointer to GF2_16x polynomial 
  */
  /// Copy Polynomial.
-void BPU_gf2xPolyCopy(BPU_T_GF2_16x_Poly *dest, const BPU_T_GF2_16x_Poly *src);
+void BPU_gf2xPolyCopy (BPU_T_GF2_16x_Poly * dest,
+                       const BPU_T_GF2_16x_Poly * src);
 
 /**
 * Get degree of polynomial over GF2.
@@ -377,7 +406,7 @@ void BPU_gf2xPolyCopy(BPU_T_GF2_16x_Poly *dest, const BPU_T_GF2_16x_Poly *src);
 * @return degree of pol or -1 if it is pol = 0
 */
 /// Get degree of polynomial over GF2
-int BPU_gf2xGetDeg(BPU_T_GF2_32x pol);
+int BPU_gf2xGetDeg (BPU_T_GF2_32x pol);
 
 /**
 * Get degree of polynomial over GF2x.
@@ -385,7 +414,7 @@ int BPU_gf2xGetDeg(BPU_T_GF2_32x pol);
 * @return degree of pol or -1 if it is pol = 0
 */
 /// Get degree of polynomial over GF2x
-int BPU_gf2xPolyGetDeg(BPU_T_GF2_16x_Poly *poly);
+int BPU_gf2xPolyGetDeg (BPU_T_GF2_16x_Poly * poly);
 
 /**
  * Permute matrix GF2^m with permutation.
@@ -393,7 +422,9 @@ int BPU_gf2xPolyGetDeg(BPU_T_GF2_16x_Poly *poly);
  * @param permutation permutation vector
  * @return on succes 0, on size error -1, on allocation error -2
  */
-int BPU_gf2xMatPermute(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Matrix *m, const BPU_T_Perm_Vector *permutation);
+int BPU_gf2xMatPermute (BPU_T_GF2_16x_Matrix * out,
+                        const BPU_T_GF2_16x_Matrix * m,
+                        const BPU_T_Perm_Vector * permutation);
 
 /**
  * Converts matrix GF2m to matrix GF2.
@@ -402,7 +433,8 @@ int BPU_gf2xMatPermute(BPU_T_GF2_16x_Matrix *out, const BPU_T_GF2_16x_Matrix *m,
  * @param out output matrix GF2
  * @return on succes 0, else error
  */
-int BPU_gf2xMatConvertToGf2Mat(BPU_T_GF2_Matrix *out, const BPU_T_GF2_16x_Matrix *m, int deg);
+int BPU_gf2xMatConvertToGf2Mat (BPU_T_GF2_Matrix * out,
+                                const BPU_T_GF2_16x_Matrix * m, int deg);
 
 /**
  * Evaluate polynomial over GF2^m with x.
@@ -412,7 +444,9 @@ int BPU_gf2xMatConvertToGf2Mat(BPU_T_GF2_Matrix *out, const BPU_T_GF2_16x_Matrix
  * @return evaluated polynomial, GF2x element
  */
 /// Evaluate polynomial over GF2^m with x.
-BPU_T_GF2_16x BPU_gf2xPolyEval(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x x, const BPU_T_Math_Ctx *math_ctx);
+BPU_T_GF2_16x BPU_gf2xPolyEval (const BPU_T_GF2_16x_Poly * poly,
+                                const BPU_T_GF2_16x x,
+                                const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Extended euclidian to find greatest common divisor and Bézout coefficients s, t, where gcd(a, b) = d = a*s + b*t.
@@ -427,7 +461,10 @@ BPU_T_GF2_16x BPU_gf2xPolyEval(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_1
  * @return  0
  */
 /// Extended Euclidean to find greatest common divisor and Bézout coefficients s, t, where gcd(a, b) = d = a*s + b*t.
-int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF2_16x_Poly *t, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, int end_deg, const BPU_T_Math_Ctx *math_ctx);
+int BPU_gf2xPolyExtEuclid (BPU_T_GF2_16x_Poly * d, BPU_T_GF2_16x_Poly * s,
+                           BPU_T_GF2_16x_Poly * t, const BPU_T_GF2_16x_Poly * a,
+                           const BPU_T_GF2_16x_Poly * b, int end_deg,
+                           const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Function compares two polynomials
@@ -435,7 +472,8 @@ int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF
  * @param  p2 [description]
  * @return    0 if are same, -1 when deg differs, >0 index of first diff result is index + 1
  */
-int BPU_gf2xPolyCmp(const BPU_T_GF2_16x_Poly *p1, const BPU_T_GF2_16x_Poly *p2);
+int BPU_gf2xPolyCmp (const BPU_T_GF2_16x_Poly * p1,
+                     const BPU_T_GF2_16x_Poly * p2);
 
 /**
  * Function tests if polynomial is irreducible or not.
@@ -443,7 +481,8 @@ int BPU_gf2xPolyCmp(const BPU_T_GF2_16x_Poly *p1, const BPU_T_GF2_16x_Poly *p2);
  * @param  math_ctx [description]
  * @return        [description]
  */
-int BPU_gf2xPolyIrredTest(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *math_ctx);
+int BPU_gf2xPolyIrredTest (const BPU_T_GF2_16x_Poly * p,
+                           const BPU_T_Math_Ctx * math_ctx);
 /**
  * Get inverse polynomial over GF2_16x. It is using Extended Euclidean alg.
  * @param a[in]    input polynomial
@@ -452,7 +491,9 @@ int BPU_gf2xPolyIrredTest(const BPU_T_GF2_16x_Poly *p, const BPU_T_Math_Ctx *mat
  * @param math_ctx[in] arithmetic data structure
  */
 /// Get inverse polynomial over GF2_16x.
-void BPU_gf2xPolyInv(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xPolyInv (BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
+                      const BPU_T_GF2_16x_Poly * mod,
+                      const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Make from polynomial monic polynomial. It means that it will be multiplicated with (leading coef)^-1. It will change source polynomial.
@@ -461,7 +502,8 @@ void BPU_gf2xPolyInv(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
  * @return        inverse leading coefitient or 0
  */
 /// Make from polynomial monic polynomial.
-BPU_T_GF2_16x BPU_gf2xPolyMakeMonic(BPU_T_GF2_16x_Poly *a, const BPU_T_Math_Ctx *math_ctx);
+BPU_T_GF2_16x BPU_gf2xPolyMakeMonic (BPU_T_GF2_16x_Poly * a,
+                                     const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Insert coefitients from poly into matrix mat to i-th row
@@ -469,28 +511,31 @@ BPU_T_GF2_16x BPU_gf2xPolyMakeMonic(BPU_T_GF2_16x_Poly *a, const BPU_T_Math_Ctx 
  * @param mat  [description]
  * @param i    [description]
  */
-void BPU_gf2xMatInsertPoly(BPU_T_GF2_16x_Matrix *mat, const BPU_T_GF2_16x_Poly *poly, int i);
+void BPU_gf2xMatInsertPoly (BPU_T_GF2_16x_Matrix * mat,
+                            const BPU_T_GF2_16x_Poly * poly, int i);
 
 /**
  * save poly coefitients to vector, it allocates vec inside function. After use use BPU_freeVectorGF2_16x
  * @param poly [description]
  * @param vec  [description]
  */
-void BPU_gf2xPolyToVec(BPU_T_GF2_16x_Vector *vec, const BPU_T_GF2_16x_Poly *poly, int len);
+void BPU_gf2xPolyToVec (BPU_T_GF2_16x_Vector * vec,
+                        const BPU_T_GF2_16x_Poly * poly, int len);
 
 /**
  * GEM applied on matrix with coefitients from GF2^m
  * @param mat    [description]
  * @param math_ctx [description]
  */
-void BPU_gf2xMatGEM(BPU_T_GF2_16x_Matrix *mat, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xMatGEM (BPU_T_GF2_16x_Matrix * mat,
+                     const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Swap
  * @param a [description]
  * @param b [description]
  */
-void BPU_gf2xSwap(BPU_T_GF2_16x *a, BPU_T_GF2_16x *b);
+void BPU_gf2xSwap (BPU_T_GF2_16x * a, BPU_T_GF2_16x * b);
 
 /**
  * in matrix mat swap rows i and j
@@ -498,7 +543,7 @@ void BPU_gf2xSwap(BPU_T_GF2_16x *a, BPU_T_GF2_16x *b);
  * @param i   [description]
  * @param j   [description]
  */
-void BPU_gf2xMatSwapRows(BPU_T_GF2_16x_Matrix *mat, int i, int j);
+void BPU_gf2xMatSwapRows (BPU_T_GF2_16x_Matrix * mat, int i, int j);
 
 /**
  * Multiply whole row of matrix mat by element from finite field
@@ -507,7 +552,9 @@ void BPU_gf2xMatSwapRows(BPU_T_GF2_16x_Matrix *mat, int i, int j);
  * @param i       [description]
  * @param math_ctx  [description]
  */
-void BPU_gf2xMatMulElRow(BPU_T_GF2_16x_Matrix *mat, const BPU_T_GF2_16x element, int i, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xMatMulElRow (BPU_T_GF2_16x_Matrix * mat,
+                          const BPU_T_GF2_16x element, int i,
+                          const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * find row where pivot is at index index
@@ -515,7 +562,7 @@ void BPU_gf2xMatMulElRow(BPU_T_GF2_16x_Matrix *mat, const BPU_T_GF2_16x element,
  * @param  index [description]
  * @return       [description]
  */
-int BPU_gf2xMatFindPivot(const BPU_T_GF2_16x_Matrix *mat, int index);
+int BPU_gf2xMatFindPivot (const BPU_T_GF2_16x_Matrix * mat, int index);
 
 /**
  * Get GF2_16x element which is a * return = res.
@@ -524,7 +571,9 @@ int BPU_gf2xMatFindPivot(const BPU_T_GF2_16x_Matrix *mat, int index);
  * @return     element a * return = res
  */
 /// Get GF2_16x element which is a * return = res.
-BPU_T_GF2_16x BPU_gf2xGetPseudoInv(const BPU_T_GF2_16x a, const BPU_T_GF2_16x res, const BPU_T_Math_Ctx *math_ctx);
+BPU_T_GF2_16x BPU_gf2xGetPseudoInv (const BPU_T_GF2_16x a,
+                                    const BPU_T_GF2_16x res,
+                                    const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * If at mat->elements[j][index] is not zero, then
@@ -533,7 +582,8 @@ BPU_T_GF2_16x BPU_gf2xGetPseudoInv(const BPU_T_GF2_16x a, const BPU_T_GF2_16x re
  * @param index   [description]
  * @param j   [description]
  */
-void BPU_gf2xMatXorRows(BPU_T_GF2_16x_Matrix *mat, int index, int j, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xMatXorRows (BPU_T_GF2_16x_Matrix * mat, int index, int j,
+                         const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * vec = element*vec
@@ -541,11 +591,14 @@ void BPU_gf2xMatXorRows(BPU_T_GF2_16x_Matrix *mat, int index, int j, const BPU_T
  * @param element [description]
  * @param math_ctx  [description]
  */
-void BPU_gf2xVecMulEl(BPU_T_GF2_16x_Vector *vec, BPU_T_GF2_16x element, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xVecMulEl (BPU_T_GF2_16x_Vector * vec, BPU_T_GF2_16x element,
+                       const BPU_T_Math_Ctx * math_ctx);
 
-void BPU_gf2xVecToPoly(BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x_Vector *vec);
+void BPU_gf2xVecToPoly (BPU_T_GF2_16x_Poly * poly,
+                        const BPU_T_GF2_16x_Vector * vec);
 
-void BPU_gf2xMatClearCol(BPU_T_GF2_16x_Matrix *mat, int index, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xMatClearCol (BPU_T_GF2_16x_Matrix * mat, int index,
+                          const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Generate monic polynomial of degree t and with non-zero coefficient a_0
@@ -553,7 +606,8 @@ void BPU_gf2xMatClearCol(BPU_T_GF2_16x_Matrix *mat, int index, const BPU_T_Math_
  * @param t      [description]
  * @param math_ctx [description]
  */
-void BPU_gf2xPolyGenRandom(BPU_T_GF2_16x_Poly *p, int t, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xPolyGenRandom (BPU_T_GF2_16x_Poly * p, int t,
+                            const BPU_T_Math_Ctx * math_ctx);
 
 /**
  * Generate monic irreducible polynopmial of degree t.
@@ -561,6 +615,7 @@ void BPU_gf2xPolyGenRandom(BPU_T_GF2_16x_Poly *p, int t, const BPU_T_Math_Ctx *m
  * @param t      [description]
  * @param math_ctx [description]
  */
-void BPU_gf2xPolyGenGoppa(BPU_T_GF2_16x_Poly *p, int t, const BPU_T_Math_Ctx *math_ctx);
+void BPU_gf2xPolyGenGoppa (BPU_T_GF2_16x_Poly * p, int t,
+                           const BPU_T_Math_Ctx * math_ctx);
 
 #endif // BPU_GF2X_H

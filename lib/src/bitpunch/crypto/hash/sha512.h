@@ -27,9 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define BPU_HASH_LEN 64
 
-int BPU_gf2VecHash(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in);
+int BPU_gf2VecHash (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in);
 
 #endif // BPU_CONF_SHA_512
 
 #endif // SHA512_H
-

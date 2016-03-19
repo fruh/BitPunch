@@ -24,27 +24,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
- 
-uint32_t BPU_prngGetRand(int from, int to) {
-//	uint32_t tmp;
-//	FILE *fp;
 
-//	if (from <= to){
-//		fp = fopen("/dev/urandom", "rb");
+uint32_t BPU_prngGetRand (int from, int to) {
+//      uint32_t tmp;
+//      FILE *fp;
 
-//		if (!fp) {
-//			fprintf(stderr, "dsadsa\n");
-//			tmp = rand();
-//		}
-//		else {
-//			fread(&tmp, sizeof(uint32_t), 1, fp);
-//			fclose(fp);
-//		}
-//		return (uint32_t) (tmp % (to - from) + from);
-//	}
-//	return 0;
-	if (from <= to){
-		return rand() % (to - from) + from;
-	}
+//      if (from <= to){
+//              fp = fopen("/dev/urandom", "rb");
+
+//              if (!fp) {
+//                      fprintf(stderr, "dsadsa\n");
+//                      tmp = rand();
+//              }
+//              else {
+//                      fread(&tmp, sizeof(uint32_t), 1, fp);
+//                      fclose(fp);
+//              }
+//              return (uint32_t) (tmp % (to - from) + from);
+//      }
+//      return 0;
+    if (from <= to) {
+        return rand () % (to - from) + from;
+    }
     return 0;
 }

@@ -28,39 +28,39 @@
 #include <stdio.h>
 
 #ifndef _WIN32
-  #include <inttypes.h>
+#include <inttypes.h>
 
   /// print macro for 64bit data types
-  #define BPU_PRINT_U_64 PRIu64
+#define BPU_PRINT_U_64 PRIu64
 #else
-  #define BPU_PRINT_U_64 "I64u"
+#define BPU_PRINT_U_64 "I64u"
 #endif
 
 #if defined(DEBUG_L) || defined(WARNING_L) || defined(ERROR_L)
-  #include <stdlib.h>
-  #include <errno.h>
+#include <stdlib.h>
+#include <errno.h>
 
   /// print error message with filename, line
 #define BPU_printError(fmt, ...) fprintf(stderr, "ERROR::%s::%s::%d: "fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); if (errno) {perror("ERROR MSG:"); errno = 0;}
 #else
   /// print error message with filename, line
-  #define BPU_printError(fmt, ...)
+#define BPU_printError(fmt, ...)
 #endif
 
 #if defined(DEBUG_L) || defined(WARNING_L)
   /// print warning message with filename, line
-  #define BPU_printWarning(fmt, ...) fprintf(stderr, "WARNING::%s::%s::%d: "fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); if (errno) {perror("ERROR MSG:"); errno = 0;}
+#define BPU_printWarning(fmt, ...) fprintf(stderr, "WARNING::%s::%s::%d: "fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); if (errno) {perror("ERROR MSG:"); errno = 0;}
 #else
   /// print warning message with filename, line
-  #define BPU_printWarning(fmt, ...)
+#define BPU_printWarning(fmt, ...)
 #endif
 
 #if defined(DEBUG_L)
   /// print debug message with filename, line
-  #define BPU_printDebug(fmt, ...) fprintf(stderr, "DEBUG::%s::%s::%d: "fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+#define BPU_printDebug(fmt, ...) fprintf(stderr, "DEBUG::%s::%s::%d: "fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 #else
   /// print debug message with filename, line
-  #define BPU_printDebug(fmt, ...)
+#define BPU_printDebug(fmt, ...)
 #endif
 
 #endif // DEBUGIO_H

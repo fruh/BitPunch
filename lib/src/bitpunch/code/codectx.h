@@ -31,36 +31,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /// Possible types of codes
 typedef enum _BPU_T_EN_Code_Types {
-	BPU_EN_CODE_GOPPA,
-	BPU_EN_CODE_QCMDPC
-	// HERE you can add your code type
-}BPU_T_EN_Code_Types;
+    BPU_EN_CODE_GOPPA,
+    BPU_EN_CODE_QCMDPC
+        // HERE you can add your code type
+} BPU_T_EN_Code_Types;
 
 /// Code specifics union type
-typedef union _BPU_T_UN_Code_Spec{
-	BPU_T_Goppa_Spec *goppa;
-	BPU_T_Qcmdpc_Spec *qcmdpc;
-	// HERE you add your code spec structure
-}BPU_T_UN_Code_Spec;
+typedef union _BPU_T_UN_Code_Spec {
+    BPU_T_Goppa_Spec *goppa;
+    BPU_T_Qcmdpc_Spec *qcmdpc;
+    // HERE you add your code spec structure
+} BPU_T_UN_Code_Spec;
 
-typedef union _BPU_T_UN_Code_Params{
-	BPU_T_Goppa_Params *goppa;
-	BPU_T_Qcmdpc_Params *qcmdpc;
-	// HERE you add your code spec structure
-}BPU_T_UN_Code_Params;
+typedef union _BPU_T_UN_Code_Params {
+    BPU_T_Goppa_Params *goppa;
+    BPU_T_Qcmdpc_Params *qcmdpc;
+    // HERE you add your code spec structure
+} BPU_T_UN_Code_Params;
 
 typedef struct _BPU_T_Code_Ctx {
-	BPU_T_EN_Code_Types type;
-	int (* _encode)(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx); ///< This is reference to encode function. It will be set in BPU_codeInitCtx
-	int (* _decode)(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx); ///< This is reference to decode function. It will be set in BPU_codeInitCtx
-	BPU_T_Math_Ctx *math_ctx; ///< Math context
-	BPU_T_GF2_Vector *e; ///< Error vector
-	BPU_T_UN_Code_Spec *code_spec; ///< Code specific structure, like generator matrix, control matrix, gen. poly ...
+    BPU_T_EN_Code_Types type;
+    int (*_encode) (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in, const struct _BPU_T_Code_Ctx * ctx);   ///< This is reference to encode function. It will be set in BPU_codeInitCtx
+    int (*_decode) (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in, const struct _BPU_T_Code_Ctx * ctx);   ///< This is reference to decode function. It will be set in BPU_codeInitCtx
+    BPU_T_Math_Ctx *math_ctx;   ///< Math context
+    BPU_T_GF2_Vector *e;        ///< Error vector
+    BPU_T_UN_Code_Spec *code_spec;      ///< Code specific structure, like generator matrix, control matrix, gen. poly ...
 
-	uint16_t code_len; ///< Code len
-	uint16_t msg_len; ///< Code dimenzion
-	uint8_t t; ///< Error code correction capability
-}BPU_T_Code_Ctx;
+    uint16_t code_len;          ///< Code len
+    uint16_t msg_len;           ///< Code dimenzion
+    uint8_t t;                  ///< Error code correction capability
+} BPU_T_Code_Ctx;
 
 /**
  * @brief BPU_codeInitCtx Initialize (register) code functions encode, decode and code spec structure based on code type.
@@ -69,7 +69,8 @@ typedef struct _BPU_T_Code_Ctx {
  * @param type
  * @return
  */
-int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const BPU_T_UN_Code_Params *params, const BPU_T_EN_Code_Types type);
+int BPU_codeInitCtx (BPU_T_Code_Ctx ** ctx, const BPU_T_UN_Code_Params * params,
+                     const BPU_T_EN_Code_Types type);
 
 /**
  * @brief BPU_codeInitMathCtx
@@ -79,13 +80,14 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx **ctx, const BPU_T_UN_Code_Params *params, co
  * @param mod
  * @return
  */
-int BPU_codeInitMathCtx(BPU_T_Math_Ctx **ctx, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod);
+int BPU_codeInitMathCtx (BPU_T_Math_Ctx ** ctx, const uint16_t m,
+                         const uint16_t t, const BPU_T_GF2_16x mod);
 
 /**
  * @brief BPU_codeFreeCtx
  * @param ctx
  */
-void BPU_codeFreeCtx(BPU_T_Code_Ctx **ctx);
+void BPU_codeFreeCtx (BPU_T_Code_Ctx ** ctx);
 
 // Available init params for all codes, it is only wrapper for code params init
 /**
@@ -96,13 +98,14 @@ void BPU_codeFreeCtx(BPU_T_Code_Ctx **ctx);
  * @param mod
  * @return
  */
-int BPU_codeInitParamsGoppa(BPU_T_UN_Code_Params *params, const uint16_t m, const uint16_t t, const BPU_T_GF2_16x mod);
+int BPU_codeInitParamsGoppa (BPU_T_UN_Code_Params * params, const uint16_t m,
+                             const uint16_t t, const BPU_T_GF2_16x mod);
 
 /**
  * @brief BPU_codeFreeParamsGoppa
  * @param params
  */
-void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params *params);
+void BPU_codeFreeParamsGoppa (BPU_T_UN_Code_Params * params);
 
 /**
  * Wrapper for param initialization. After work you have to free memory using call BPU_codeFreeParamsQcmdpc
@@ -113,13 +116,15 @@ void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params *params);
  * @param  t      count of errors
  * @return        [description]
  */
-int BPU_codeInitParamsQcmdpc(BPU_T_UN_Code_Params *params, const uint16_t m, const uint16_t n0, const uint16_t w, const uint16_t t);
+int BPU_codeInitParamsQcmdpc (BPU_T_UN_Code_Params * params, const uint16_t m,
+                              const uint16_t n0, const uint16_t w,
+                              const uint16_t t);
 
 /**
  * Free memory for params.
  * @param params pointer to structure
  */
-void BPU_codeFreeParamsQcmdpc(BPU_T_UN_Code_Params *params);
+void BPU_codeFreeParamsQcmdpc (BPU_T_UN_Code_Params * params);
 
 // add yours additional params if needed
 #endif // BPU_CODECTX_H

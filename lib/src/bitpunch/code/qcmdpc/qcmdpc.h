@@ -30,14 +30,14 @@ DECODE PARAMS
 ************************************************/
 
 // universal
-#define BPU_QCMDPC_PARAM_MAX_ITER 10 ///< maximum count of iterations in decoding
+#define BPU_QCMDPC_PARAM_MAX_ITER 10    ///< maximum count of iterations in decoding
 
 // decode1 alg
-#define BPU_QCMDPC_PARAM_DELTA 5 ///< starting param delta (threshold) for decode1 algorithm
+#define BPU_QCMDPC_PARAM_DELTA 5        ///< starting param delta (threshold) for decode1 algorithm
 
 // decode2 alg
-#define BPU_QCMDPC_PARAM_DELTA_B 0 ///< threshold for decode2
-#define BPU_QCMDPC_MAX_B_VALUES 5 ///< count of precalculated values for decode2 algorithm
+#define BPU_QCMDPC_PARAM_DELTA_B 0      ///< threshold for decode2
+#define BPU_QCMDPC_MAX_B_VALUES 5       ///< count of precalculated values for decode2 algorithm
 
 #ifdef BPU_CONF_ENCRYPTION
 /**
@@ -47,7 +47,8 @@ DECODE PARAMS
  * @param  ctx 			QC-MDPC McEliece context
  * @return             	0 if OK, else error
  */
-int BPU_mecsQcmdpcEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
+int BPU_mecsQcmdpcEncode (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+                          const struct _BPU_T_Code_Ctx *ctx);
 #endif
 
 #ifdef BPU_CONF_DECRYPTION
@@ -58,7 +59,8 @@ int BPU_mecsQcmdpcEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, cons
  * @param  ctx 			QC-MDPC McEliece context
  * @return              0 if OK, else error
  */
-int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx);
+int BPU_mecsQcmdpcDecrypt (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+                           const struct _BPU_T_Code_Ctx *ctx);
 
 /**
  * Decoding algorithm 1 for QC-MDPC codes capable of correct param_t errors.
@@ -72,7 +74,9 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, con
  * @param  ctx 		   QC-MDPC McEliece context
  * @return             0 if OK, else error
  */
-int BPU_mecsQcmdpcDecode1(BPU_T_GF2_Vector *error_vec, const BPU_T_GF2_Vector *cipher_text, int delta, const struct _BPU_T_Code_Ctx *ctx);
+int BPU_mecsQcmdpcDecode1 (BPU_T_GF2_Vector * error_vec,
+                           const BPU_T_GF2_Vector * cipher_text, int delta,
+                           const struct _BPU_T_Code_Ctx *ctx);
 
 /**
  * Decoding algorithm 2 for QC-MDPC codes capable of correct param_t errors.
@@ -85,7 +89,9 @@ int BPU_mecsQcmdpcDecode1(BPU_T_GF2_Vector *error_vec, const BPU_T_GF2_Vector *c
  * @param  ctx 		   QC-MDPC McEliece context
  * @return             0 if OK, else error
  */
-int BPU_mecsQcmdpcDecode2(BPU_T_GF2_Vector *error_vec, const BPU_T_GF2_Vector *cipher_text, const struct _BPU_T_Code_Ctx *ctx);
+int BPU_mecsQcmdpcDecode2 (BPU_T_GF2_Vector * error_vec,
+                           const BPU_T_GF2_Vector * cipher_text,
+                           const struct _BPU_T_Code_Ctx *ctx);
 
 /**
  * Calc syndrom of cipher_text.
@@ -94,7 +100,9 @@ int BPU_mecsQcmdpcDecode2(BPU_T_GF2_Vector *error_vec, const BPU_T_GF2_Vector *c
  * @param ctx 		  QC-MDPC McEliece context
  * 
  */
-void BPU_mecsQcmdpcCalcSyndrom(BPU_T_GF2_Vector *syndrom, const BPU_T_GF2_Vector *cipher_text, const struct _BPU_T_Code_Ctx *ctx);
+void BPU_mecsQcmdpcCalcSyndrom (BPU_T_GF2_Vector * syndrom,
+                                const BPU_T_GF2_Vector * cipher_text,
+                                const struct _BPU_T_Code_Ctx *ctx);
 #endif
 
 #ifdef BPU_CONF_KEY_GEN
@@ -104,7 +112,8 @@ void BPU_mecsQcmdpcCalcSyndrom(BPU_T_GF2_Vector *syndrom, const BPU_T_GF2_Vector
  * @param  H     parity-check matrix of code
  * @return       0 if OK, 1 if error
  */
-int BPU_mecsQcmdpcTestGHmatrices(const BPU_T_GF2_QC_Matrix *G, const BPU_T_GF2_Sparse_Qc_Matrix *H);
+int BPU_mecsQcmdpcTestGHmatrices (const BPU_T_GF2_QC_Matrix * G,
+                                  const BPU_T_GF2_Sparse_Qc_Matrix * H);
 
 /**
  * Generate key pair of QC-MDPC code for McEliece cryptosystem.
@@ -114,7 +123,7 @@ int BPU_mecsQcmdpcTestGHmatrices(const BPU_T_GF2_QC_Matrix *G, const BPU_T_GF2_S
  * @param ctx 		QC-MDPC McEliece context
  * @return          0 if OK, else error
  */
-int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx *ctx);
+int BPU_mecsQcmdpcGenKeys (BPU_T_Code_Ctx * ctx);
 #endif
 
 #endif // BPU_QCMDPC_H

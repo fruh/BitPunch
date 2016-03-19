@@ -25,7 +25,7 @@ massif.*
 # QtCreator files
 *.c.*
 *.h.*
-*.pro.user
+*.pro.user*
 *.pri
 *.config
 *.creator
@@ -61,3 +61,5 @@ build
 dist
 tmp
 
+# indent files
+*~
