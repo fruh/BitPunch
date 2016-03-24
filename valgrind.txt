@@ -1,4 +1,4 @@
-#!/bon/bash
+#!/bin/bash
 Memory peak:
 	valgrind --tool=massif PROGRAM
 	valgrind --tool=massif --massif-out-file=massif.out ./dist/test/BitPunch; echo ""; echo -n "Mem usage: "; cat massif.out | grep mem_heap_B | sed -e 's/mem_heap_B=\(.*\)/\1/' | sort -g | tail -n 1

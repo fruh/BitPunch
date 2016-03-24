@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "qcmdpc.h"
+#include <bitpunch/code/qcmdpc/qcmdpc.h>
 
 #ifdef BPU_CONF_ENCRYPTION
 int BPU_mecsQcmdpcEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,

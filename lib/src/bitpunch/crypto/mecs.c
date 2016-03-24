@@ -19,8 +19,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "mecs.h"
-#include "mecsctx.h"
+#include <bitpunch/crypto/mecs.h>
+#include <bitpunch/crypto/mecsctx.h>
 
 /**
  * Encrypt plaintext (pt) and save it to cipher text. All strctures must be allocated before use.

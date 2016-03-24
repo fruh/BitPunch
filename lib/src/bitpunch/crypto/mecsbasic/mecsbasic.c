@@ -15,7 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "mecsbasic.h"
+#include <bitpunch/crypto/mecsbasic/mecsbasic.h>
 
 #include <bitpunch/math/gf2.h>
 #include <bitpunch/debugio.h>

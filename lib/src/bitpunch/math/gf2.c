@@ -19,9 +19,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "gf2.h"
-#include "perm.h"
-#include "uni.h"
+#include <bitpunch/math/gf2.h>
+#include <bitpunch/math/perm.h>
+#include <bitpunch/math/uni.h>
 
 #include <stdlib.h>
 #include <bitpunch/debugio.h>

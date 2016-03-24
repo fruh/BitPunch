@@ -15,10 +15,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "sha512.h"
+#include <bitpunch/crypto/hash/sha512.h>
 
 #ifdef BPU_CONF_SHA_512
-#include "polarssl/polarssl/sha512.h"
+#include <bitpunch/crypto/hash/polarssl/polarssl/sha512.h>
 
 #include <bitpunch/debugio.h>
 #include <bitpunch/math/gf2.h>

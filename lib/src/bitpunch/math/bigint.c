@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "bigint.h"
+#include <bitpunch/math/bigint.h>
 #include <bitpunch/debugio.h>
 
 int BPU_bigintMultiply(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b) {

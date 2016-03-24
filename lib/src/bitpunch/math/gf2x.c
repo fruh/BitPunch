@@ -24,8 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 #include <bitpunch/prng/prng.h>
 
-#include "gf2x.h"
-#include "int.h"
+#include <bitpunch/math/gf2x.h>
+#include <bitpunch/math/int.h>
 
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */

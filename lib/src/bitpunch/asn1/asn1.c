@@ -15,7 +15,7 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "asn1.h"
+#include <bitpunch/asn1/asn1.h>
 
 #ifdef BPU_CONF_ASN1
 #include <bitpunch/debugio.h>
