@@ -52,7 +52,8 @@ SOURCES += \
     lib/src/bitpunch/code/qcmdpc/qcmdpctypes.c \
     lib/src/bitpunch/math/bigint.c \
     lib/src/bitpunch/math/uni.c \
-    apps/main.c
+    apps/main.c \
+    apps/bigint.c
 
 #include(deployment.pri)
 #qtcAddDeployment()
