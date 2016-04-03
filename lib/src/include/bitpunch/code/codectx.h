@@ -29,24 +29,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/code/goppa/goppatypes.h>
 #include <bitpunch/code/qcmdpc/qcmdpctypes.h>
 
-/// Possible types of codes
+/// Available types of codes
 typedef enum _BPU_T_EN_Code_Types {
     BPU_EN_CODE_GOPPA,
     BPU_EN_CODE_QCMDPC
-        // HERE you can add your code type
+    // add your code type HERE
 } BPU_T_EN_Code_Types;
 
 /// Code specifics union type
 typedef union _BPU_T_UN_Code_Spec {
     BPU_T_Goppa_Spec *goppa;
     BPU_T_Qcmdpc_Spec *qcmdpc;
-    // HERE you add your code spec structure
+    // add your code specific structure HERE
 } BPU_T_UN_Code_Spec;
 
+/// Code specific parameters
 typedef union _BPU_T_UN_Code_Params {
     BPU_T_Goppa_Params *goppa;
     BPU_T_Qcmdpc_Params *qcmdpc;
-    // HERE you add your code spec structure
+    // you can add your code specific parameters HERE
 } BPU_T_UN_Code_Params;
 
 typedef struct _BPU_T_Code_Ctx {
@@ -54,11 +55,11 @@ typedef struct _BPU_T_Code_Ctx {
     int (*_encode) (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in, const struct _BPU_T_Code_Ctx * ctx);   ///< This is reference to encode function. It will be set in BPU_codeInitCtx
     int (*_decode) (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in, const struct _BPU_T_Code_Ctx * ctx);   ///< This is reference to decode function. It will be set in BPU_codeInitCtx
     BPU_T_Math_Ctx *math_ctx;   ///< Math context
-    BPU_T_GF2_Vector *e;        ///< Error vector
+    BPU_T_GF2_Vector *e;        ///< Error vector TODO: Error vector should not be here
     BPU_T_UN_Code_Spec *code_spec;      ///< Code specific structure, like generator matrix, control matrix, gen. poly ...
 
-    uint16_t code_len;          ///< Code len
-    uint16_t msg_len;           ///< Code dimenzion
+    uint16_t code_len;          ///< Code length
+    uint16_t msg_len;           ///< Code dimension
     uint8_t t;                  ///< Error code correction capability
 } BPU_T_Code_Ctx;
 
@@ -126,5 +127,4 @@ int BPU_codeInitParamsQcmdpc(BPU_T_UN_Code_Params * params, const uint16_t m,
  */
 void BPU_codeFreeParamsQcmdpc(BPU_T_UN_Code_Params * params);
 
-// add yours additional params if needed
 #endif // BPU_CODECTX_H

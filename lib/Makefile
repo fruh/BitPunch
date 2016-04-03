@@ -26,9 +26,9 @@
 
 PREFIX_SRC = src
 INCLUDE_PATH = -Isrc/include
-APPS = apps
+DEMOS = demos
 ifndef CFLAGS
-	CFLAGS += -g -Wall -DBPU_CONF_FULL_MECS -DERROR_L
+	CFLAGS += -g -Wall -DBPU_CONF_FULL_MECS -DERROR_L -DBPU_CONF_PRINT
 endif
 
 # compiler
@@ -54,29 +54,31 @@ OBJS := $(patsubst %.c, %.c.o, $(C_FILES))
 PICS := $(patsubst %.c, %.c.o.pic, $(C_FILES))
 
 ######################################## TARGETS ###############################################
-default: test print-info
+default: demos print-info
 
-test: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(APPS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+demos: prepare-dir static-lib
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/bigint $(DEMOS)/bigint.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/plainmecs $(DEMOS)/plainmecs.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 test-debug: CFLAGS = -Wall -DBPU_CONF_FULL -ggdb -DDEBUG_L
 test-debug: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(APPS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 test-wo-h: CFLAGS += -DBPU_CONF_GOPPA_WO_H
 test-wo-h: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(APPS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 test-wo-h-debug: CFLAGS = -Wall -DBPU_CONF_FULL -ggdb -DDEBUG_L -DBPU_CONF_GOPPA_WO_H
 test-wo-h-debug: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(APPS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 speed-test: CFLAGS += -O3 -Wall -DBPU_CONF_FULL -DERROR_L
 speed-test: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(APPS)/test-speed.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/test-speed.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 profile: prepare-dir static-lib
-	$(CC) $(CFLAGS_PROF) $(C_FILES) $(APPS)/main.c -o $(TEST_DIR)/BitPunch $(LDFLAGS)
+	$(CC) $(CFLAGS_PROF) $(C_FILES) $(DEMOS)/main.c -o $(TEST_DIR)/BitPunch $(LDFLAGS)
 	@echo ""
 	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
 	@echo "Now you can run test aplication: $(TEST_DIR)/BitPunch"
@@ -125,7 +127,7 @@ help:
 	@echo "This is a McEliece library."
 	@echo ""
 	@echo "Default build makes test binary:"
-	@echo "\tSource file: $(apps)/main.c"
+	@echo "\tSource file: $(DEMOS)/main.c"
 	@echo "\tApplication: $(TEST_DIR)/BitPunch"
 	@echo "\tLibraries: $(DIST_DIR)/libbpumecs.so or $(DIST_DIR)/libbpumecs.a"
 	@echo ""
