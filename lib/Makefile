@@ -88,8 +88,12 @@ profile: prepare-dir static-lib
 print-info:
 	@echo ""
 	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
+	@echo "Now you can run test aplication: $(TEST_DIR)/bigint"
+	@echo "See source file in: $(CWD)/$(DEMOS)/bigint.c"
+	@echo "Now you can run test aplication: $(TEST_DIR)/plainmecs"
+	@echo "See source file in: $(CWD)/$(DEMOS)/plainmecs.c"
 	@echo "Now you can run test aplication: $(TEST_DIR)/BitPunch"
-	@echo "See source file in: $(CWD)/$(PREFIX_SRC)/main.c"
+	@echo "See source file in: $(CWD)/$(DEMOS)/main.c"
 
 %.c.o.pic: %.c
 	$(CC) $(CFLAGS) -c -fpic $< -o $@
@@ -126,9 +130,13 @@ help:
 	@echo ""
 	@echo "This is a McEliece library."
 	@echo ""
-	@echo "Default build makes test binary:"
+	@echo "Default build makes test binaries:"
 	@echo "\tSource file: $(DEMOS)/main.c"
+	@echo "\tSource file: $(DEMOS)/bigint.c"
+	@echo "\tSource file: $(DEMOS)/plainmecs.c"
 	@echo "\tApplication: $(TEST_DIR)/BitPunch"
+	@echo "\tApplication: $(TEST_DIR)/plainmecs"
+	@echo "\tApplication: $(TEST_DIR)/bigint"
 	@echo "\tLibraries: $(DIST_DIR)/libbpumecs.so or $(DIST_DIR)/libbpumecs.a"
 	@echo ""
 	@echo "It is possible to build library which has H matrix precomputed or not."
