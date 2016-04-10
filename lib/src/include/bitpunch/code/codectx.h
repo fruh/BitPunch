@@ -55,7 +55,6 @@ typedef struct _BPU_T_Code_Ctx {
     int (*_encode) (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in, const struct _BPU_T_Code_Ctx * ctx);   ///< This is reference to encode function. It will be set in BPU_codeInitCtx
     int (*_decode) (BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error, const BPU_T_GF2_Vector * in, const struct _BPU_T_Code_Ctx * ctx); ///< This is reference to decode function. It will be set in BPU_codeInitCtx
     BPU_T_Math_Ctx *math_ctx;   ///< Math context
-    BPU_T_GF2_Vector *e;        ///< Error vector TODO: Error vector should not be here
     BPU_T_UN_Code_Spec *code_spec;      ///< Code specific structure, like generator matrix, control matrix, gen. poly ...
 
     uint16_t code_len;          ///< Code length

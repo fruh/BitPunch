@@ -22,9 +22,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifdef BPU_CONF_ENCRYPTION
 int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
-                         const BPU_T_Mecs_Ctx * ctx) {
+                         const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector * error) {
     int rc;
-    BPU_T_GF2_Vector *e = ctx->code_ctx->e;
+    BPU_T_GF2_Vector *local_error = NULL;
+
+    if (NULL != error) {
+        local_error = error;
+    }
+    else {
+        BPU_gf2VecMalloc(&local_error, ctx->code_ctx->code_len);
+    }
+
 
     BPU_gf2VecNull(out);
 
@@ -43,14 +51,14 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
     }
 
     // generate random error vector e
-    rc += BPU_gf2VecRand(e, ctx->code_ctx->t);
+    rc += BPU_gf2VecRand(local_error, ctx->code_ctx->t);
     if (rc) {
         BPU_printError("can not init rand vector");
         return rc;
     }
 
     // z' XOR e
-    rc = BPU_gf2VecXor(out, e);
+    rc = BPU_gf2VecXor(out, local_error);
     if (rc) {
         BPU_printError("can not add error vector");
         return rc;

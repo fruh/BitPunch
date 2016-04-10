@@ -73,17 +73,17 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
 
     // BPU_printGf2Vec(ctx->e);
     // null error vector 
-    BPU_gf2VecNull(ctx->e);
+    BPU_gf2VecNull(error);
 
     // try to decode with faster algorithm
-    if (!BPU_mecsQcmdpcDecode2(ctx->e, in, ctx)) {
+    if (!BPU_mecsQcmdpcDecode2(error, in, ctx)) {
         // free decoded
-        BPU_gf2VecNull(ctx->e);
+        BPU_gf2VecNull(error);
         while (1) {
             // if not decoded, try algorithm with lower DFR
-            if (!BPU_mecsQcmdpcDecode1(ctx->e, in, delta, ctx)) {
+            if (!BPU_mecsQcmdpcDecode1(error, in, delta, ctx)) {
                 // free decoded
-                BPU_gf2VecNull(ctx->e);
+                BPU_gf2VecNull(error);
                 // if not decoded decrease threshold tolerance param
                 delta--;
                 if (delta < 0) {
@@ -100,7 +100,7 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
     if (ret == 0) {
         // decrypt message
         for (i = 0; i < out->array_length; i++)
-            out->elements[i] = ctx->e->elements[i] ^ in->elements[i];
+            out->elements[i] = error->elements[i] ^ in->elements[i];
         // crop last element
         out->elements[out->array_length - 1] <<= out->element_bit_size -
             (out->len % out->element_bit_size);
@@ -108,7 +108,7 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
             (out->len % out->element_bit_size);
     }
     else
-        BPU_gf2VecNull(ctx->e);
+        BPU_gf2VecNull(error);
 
     return ret;
 }

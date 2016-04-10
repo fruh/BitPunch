@@ -61,9 +61,6 @@ int testCmpMecsCtx(const BPU_T_Mecs_Ctx * ctx1, const BPU_T_Mecs_Ctx * ctx2) {
     if (ctx1->code_ctx->_encode != ctx2->code_ctx->_encode) {
         BPU_printError("_encode");
     }
-    if (ctx1->code_ctx->e->len != ctx2->code_ctx->e->len) {
-        BPU_printError("e.len");
-    }
     if (BPU_gf2xPolyCmp
         (ctx1->code_ctx->code_spec->goppa->g,
          ctx2->code_ctx->code_spec->goppa->g)) {
@@ -178,7 +175,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
         /***************************************/
     fprintf(stderr, "Encryption...\n");
     // BPU_encrypt plain text
-    if (BPU_mecsEncrypt(ct, pt_in, ctx)) {
+    if (BPU_mecsEncrypt(ct, pt_in, ctx, NULL)) {
         BPU_printError("Encryption error");
 
         BPU_gf2VecFree(&ct);

@@ -78,7 +78,7 @@ int BPU_goppaDecode(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
     // remove error
     rc += BPU_gf2VecMalloc(&orig_enc, in->len);
     BPU_gf2VecCopy(orig_enc, in);
-    rc += BPU_gf2VecXor(orig_enc, ctx->e);
+    rc += BPU_gf2VecXor(orig_enc, error);
 
     // get message
     rc += BPU_gf2VecCrop(out, orig_enc, in->len - ctx->msg_len, ctx->msg_len);

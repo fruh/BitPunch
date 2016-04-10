@@ -53,7 +53,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
     BPU_gf2VecRand(pt_out, 0);
 
     fprintf(stderr, "Encryption...\n");
-    if (BPU_mecsEncrypt(ct, pt_in, ctx)) {
+    if (BPU_mecsEncrypt(ct, pt_in, ctx, NULL)) {
         BPU_printError("Encryption error");
 
         BPU_gf2VecFree(&ct);

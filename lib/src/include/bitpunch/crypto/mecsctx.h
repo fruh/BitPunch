@@ -38,7 +38,7 @@ typedef enum _BPU_T_EN_Mecs_Types {
 typedef struct _BPU_T_Mecs_Ctx {
     BPU_T_EN_Mecs_Types type;
     int (*_encrypt) (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
-                     const struct _BPU_T_Mecs_Ctx * ctx);
+                     const struct _BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector * error);
     int (*_decrypt) (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
                      const struct _BPU_T_Mecs_Ctx * ctx);
     int (*_genKeyPair) (struct _BPU_T_Code_Ctx * ctx);

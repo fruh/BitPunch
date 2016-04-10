@@ -31,8 +31,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /// Encrypt plaintext (pt) and save it to cipher text.
 int BPU_mecsEncrypt(BPU_T_GF2_Vector * ct, const BPU_T_GF2_Vector * pt,
-                    const BPU_T_Mecs_Ctx * ctx) {
-    return ctx->_encrypt(ct, pt, ctx);
+                    const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector * error) {
+    return ctx->_encrypt(ct, pt, ctx, error);
 }
 
 /**

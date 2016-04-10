@@ -33,7 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef BPU_CONF_ENCRYPTION
 
 int BPU_mecsEncrypt(BPU_T_GF2_Vector * ct, const BPU_T_GF2_Vector * pt,
-                    const BPU_T_Mecs_Ctx * ctx);
+                    const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector *error);
 #endif
 
 #ifdef BPU_CONF_DECRYPTION
