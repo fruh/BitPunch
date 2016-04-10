@@ -64,7 +64,8 @@ int BPU_mecsQcmdpcEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
 #endif
 
 #ifdef BPU_CONF_DECRYPTION
-int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
+                          const BPU_T_GF2_Vector * in,
                           const struct _BPU_T_Code_Ctx *ctx) {
 
     int ret = 0, delta = BPU_QCMDPC_PARAM_DELTA;
@@ -305,8 +306,11 @@ int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx) {
                        (ctx->code_spec->qcmdpc->w %
                         ctx->code_spec->qcmdpc->n0)) + (int) (i ==
                                                               0) - (int) (i ==
-                                                                          ctx->code_spec->qcmdpc->n0
-                                                                          - 1);
+                                                                          ctx->
+                                                                          code_spec->
+                                                                          qcmdpc->
+                                                                          n0 -
+                                                                          1);
 
         // generate random polynomials of given weight
         err +=

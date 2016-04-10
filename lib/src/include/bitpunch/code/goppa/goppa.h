@@ -50,7 +50,8 @@ int BPU_goppaEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
  *
  * @return still 0
  */
-int BPU_goppaDecode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+int BPU_goppaDecode(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
+                    const BPU_T_GF2_Vector * in,
                     const struct _BPU_T_Code_Ctx *ctx);
 
 /**

@@ -66,13 +66,14 @@ int BPU_goppaEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
 
 /***********************************************************************************************************/
 #ifdef BPU_CONF_DECRYPTION
-int BPU_goppaDecode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+int BPU_goppaDecode(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
+                    const BPU_T_GF2_Vector * in,
                     const struct _BPU_T_Code_Ctx *ctx) {
     BPU_T_GF2_Vector *orig_enc;
     int rc;
 
     // get error vector
-    rc = BPU_goppaGetError(ctx->e, in, ctx);
+    rc = BPU_goppaGetError(error, in, ctx);
 
     // remove error
     rc += BPU_gf2VecMalloc(&orig_enc, in->len);
@@ -112,8 +113,8 @@ int BPU_goppaGetError(BPU_T_GF2_Vector * error,
 
     BPU_gf2xPolyMalloc(&inv_syndrome,
                        (syndrome->deg >
-                        ctx->code_spec->goppa->g->deg) ? syndrome->
-                       deg : ctx->code_spec->goppa->g->deg);
+                        ctx->code_spec->goppa->g->deg) ? syndrome->deg : ctx->
+                       code_spec->goppa->g->deg);
     BPU_gf2xPolyInv(inv_syndrome, syndrome, ctx->code_spec->goppa->g,
                     ctx->math_ctx);
     BPU_gf2xPolyFree(&syndrome);
@@ -127,8 +128,8 @@ int BPU_goppaGetError(BPU_T_GF2_Vector * error,
         /**************** FROM NOW WE ARE NOT USING MODULUS g for a, b ********************/
     BPU_gf2xPolyMalloc(&a,
                        (tau->deg >
-                        ctx->code_spec->goppa->g->deg) ? tau->
-                       deg : ctx->code_spec->goppa->g->deg);
+                        ctx->code_spec->goppa->g->deg) ? tau->deg : ctx->
+                       code_spec->goppa->g->deg);
     BPU_gf2xPolyMalloc(&b, a->max_deg);
     BPU_goppaFindPolyAB(a, b, tau, ctx->code_spec->goppa->g, ctx->math_ctx);
     BPU_gf2xPolyFree(&tau);
@@ -198,9 +199,8 @@ void BPU_goppaDetSyndrome(BPU_T_GF2_16x_Poly * syndrome,
                      k <= ctx->code_spec->goppa->g->deg; k++, e++) {
                     element ^=
                         BPU_gf2xMulMod(ctx->code_spec->goppa->g->coef[k],
-                                       BPU_gf2xPowerModT(ctx->
-                                                         math_ctx->exp_table
-                                                         [column], e,
+                                       BPU_gf2xPowerModT(ctx->math_ctx->
+                                                         exp_table[column], e,
                                                          ctx->math_ctx),
                                        ctx->math_ctx->mod);
                 }
@@ -280,8 +280,7 @@ int BPU_goppaInitMatH2(BPU_T_GF2_Matrix * h2, BPU_T_GF2_16x_Matrix * hx,
                  k <= ctx->code_spec->goppa->g->deg; k++, e++) {
                 element ^=
                     BPU_gf2xMulModT(ctx->code_spec->goppa->g->coef[k],
-                                    BPU_gf2xPowerModT(ctx->
-                                                      math_ctx->exp_table
+                                    BPU_gf2xPowerModT(ctx->math_ctx->exp_table
                                                       [column], e,
                                                       ctx->math_ctx),
                                     ctx->math_ctx);

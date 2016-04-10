@@ -64,11 +64,14 @@ int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
                          const BPU_T_Mecs_Ctx * ctx) {
     int rc = 0;
     BPU_T_GF2_Vector *temp;
+    BPU_T_GF2_Vector *error;
 
     BPU_gf2VecMalloc(&temp, in->len);
     BPU_gf2VecCopy(temp, in);
 
-    rc = ctx->code_ctx->_decode(out, temp, ctx->code_ctx);
+    BPU_gf2VecMalloc(&error, in->len);
+
+    rc = ctx->code_ctx->_decode(out, error, temp, ctx->code_ctx);
 
     BPU_gf2VecFree(&temp);
 

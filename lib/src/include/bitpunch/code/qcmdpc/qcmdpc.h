@@ -59,7 +59,8 @@ int BPU_mecsQcmdpcEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
  * @param  ctx 			QC-MDPC McEliece context
  * @return              0 if OK, else error
  */
-int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
+                          const BPU_T_GF2_Vector * in,
                           const struct _BPU_T_Code_Ctx *ctx);
 
 /**

@@ -316,8 +316,8 @@ int BPU_gf2xMatMul(BPU_T_GF2_16x_Matrix * x, const BPU_T_GF2_16x_Matrix * a,
                     continue;
                 x->elements[i][j] ^=
                     math_ctx->exp_table[(loga +
-                                         math_ctx->log_table[b->
-                                                             elements[k][j]]) %
+                                         math_ctx->
+                                         log_table[b->elements[k][j]]) %
                                         math_ctx->ord];
             }
         }
