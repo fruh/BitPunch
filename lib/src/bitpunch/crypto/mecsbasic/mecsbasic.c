@@ -21,53 +21,57 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 
 #ifdef BPU_CONF_ENCRYPTION
-int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx) {
-	int rc;
-	BPU_T_GF2_Vector *e = ctx->code_ctx->e;
-	BPU_gf2VecNull(out);
+int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+                         const BPU_T_Mecs_Ctx * ctx) {
+    int rc;
+    BPU_T_GF2_Vector *e = ctx->code_ctx->e;
 
-	// test the size of message and g_m
-	if (in->len != ctx->code_ctx->msg_len) {
-		BPU_printError("message length has to be of length %d", ctx->code_ctx->msg_len);
+    BPU_gf2VecNull(out);
 
-		return -1;
-	}
+    // test the size of message and g_m
+    if (in->len != ctx->code_ctx->msg_len) {
+        BPU_printError("message length has to be of length %d",
+                       ctx->code_ctx->msg_len);
 
-	rc = ctx->code_ctx->_encode(out, in, ctx->code_ctx);
-	if (rc) {
-		BPU_printError("can not encode");
-		return rc;
-	}
+        return -1;
+    }
 
-	// generate random error vector e
-	rc += BPU_gf2VecRand(e, ctx->code_ctx->t);
-	if (rc) {
-		BPU_printError("can not init rand vector");
-		return rc;
-	}
+    rc = ctx->code_ctx->_encode(out, in, ctx->code_ctx);
+    if (rc) {
+        BPU_printError("can not encode");
+        return rc;
+    }
 
-	// z' XOR e
-	rc = BPU_gf2VecXor(out, e);
-	if (rc) {
-		BPU_printError("can not add error vector");
-		return rc;
-	}
-	return rc;
+    // generate random error vector e
+    rc += BPU_gf2VecRand(e, ctx->code_ctx->t);
+    if (rc) {
+        BPU_printError("can not init rand vector");
+        return rc;
+    }
+
+    // z' XOR e
+    rc = BPU_gf2VecXor(out, e);
+    if (rc) {
+        BPU_printError("can not add error vector");
+        return rc;
+    }
+    return rc;
 }
 #endif
 
 #ifdef BPU_CONF_DECRYPTION
-int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx) {
-	int rc = 0;
+int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+                         const BPU_T_Mecs_Ctx * ctx) {
+    int rc = 0;
     BPU_T_GF2_Vector *temp;
 
-	BPU_gf2VecMalloc(&temp, in->len);
+    BPU_gf2VecMalloc(&temp, in->len);
     BPU_gf2VecCopy(temp, in);
 
     rc = ctx->code_ctx->_decode(out, temp, ctx->code_ctx);
 
     BPU_gf2VecFree(&temp);
 
-	return rc;
+    return rc;
 }
 #endif

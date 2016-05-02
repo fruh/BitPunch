@@ -23,41 +23,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "int.h"
 
 int BPU_isPrime(int n) {
-  int i;
+    int i;
 
-  if (n == 2)
+    if (n == 2)
+        return 1;
+    for (i = 2; i <= sqrt((double) n); i++) {
+        if (n % i == 0)
+            return 0;
+    }
     return 1;
-  for (i = 2; i <= sqrt((double)n); i++) {
-    if (n % i == 0)
-      return 0;
-  }
-  return 1;
 }
 
 int msb32(uint32_t x, int start, int len, int ele_size) {
-  // crop lenght to half
-  len /= 2;
+    // crop lenght to half
+    len /= 2;
 
-  // last recursion
-  if (len == 1) {
-    // return position of highest bit
-    if ((x >> len) == 1ul)
-      return start+1;
-    else
-      return start;
-  }
-  
-  // right half of integer
-  if ((x >> len) != 0ul) {
-    start += len;
-    x >>= len;
-  }
-  // left half of integer
-  else {
-    x <<= ele_size - len;
-    x >>= ele_size - len;
-  }
+    // last recursion
+    if (len == 1) {
+        // return position of highest bit
+        if ((x >> len) == 1ul)
+            return start + 1;
+        else
+            return start;
+    }
 
-  // recursion
-  return msb32(x, start, len, ele_size);
+    // right half of integer
+    if ((x >> len) != 0ul) {
+        start += len;
+        x >>= len;
+    }
+    // left half of integer
+    else {
+        x <<= ele_size - len;
+        x >>= ele_size - len;
+    }
+
+    // recursion
+    return msb32(x, start, len, ele_size);
 }

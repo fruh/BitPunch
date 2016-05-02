@@ -27,8 +27,9 @@
 #include <bitpunch/math/bigint.h>
 #include <bitpunch/math/uni.h>
 
-int testCmpMecsCtx(const BPU_T_Mecs_Ctx *ctx1, const BPU_T_Mecs_Ctx *ctx2) {
+int testCmpMecsCtx(const BPU_T_Mecs_Ctx * ctx1, const BPU_T_Mecs_Ctx * ctx2) {
     int i, j, rc = 0;
+
     if (ctx1->type != ctx2->type) {
         BPU_printError("type");
     }
@@ -65,42 +66,55 @@ int testCmpMecsCtx(const BPU_T_Mecs_Ctx *ctx1, const BPU_T_Mecs_Ctx *ctx2) {
     if (ctx1->code_ctx->e->len != ctx2->code_ctx->e->len) {
         BPU_printError("e.len");
     }
-    if (BPU_gf2xPolyCmp(ctx1->code_ctx->code_spec->goppa->g, ctx2->code_ctx->code_spec->goppa->g)) {
+    if (BPU_gf2xPolyCmp
+        (ctx1->code_ctx->code_spec->goppa->g,
+         ctx2->code_ctx->code_spec->goppa->g)) {
         BPU_printError("g poly");
     }
-    if (ctx1->code_ctx->code_spec->goppa->support_len != ctx2->code_ctx->code_spec->goppa->support_len) {
+    if (ctx1->code_ctx->code_spec->goppa->support_len !=
+        ctx2->code_ctx->code_spec->goppa->support_len) {
         BPU_printError("support len");
     }
-    if (ctx1->code_ctx->code_spec->goppa->permutation->size != ctx2->code_ctx->code_spec->goppa->permutation->size) {
+    if (ctx1->code_ctx->code_spec->goppa->permutation->size !=
+        ctx2->code_ctx->code_spec->goppa->permutation->size) {
         BPU_printError("perm size");
     }
-    if (ctx1->code_ctx->code_spec->goppa->g_mat->elements_in_row != ctx2->code_ctx->code_spec->goppa->g_mat->elements_in_row) {
+    if (ctx1->code_ctx->code_spec->goppa->g_mat->elements_in_row !=
+        ctx2->code_ctx->code_spec->goppa->g_mat->elements_in_row) {
         BPU_printError("g_mat elements_in_row");
     }
-    if (ctx1->code_ctx->code_spec->goppa->g_mat->element_bit_size != ctx2->code_ctx->code_spec->goppa->g_mat->element_bit_size) {
+    if (ctx1->code_ctx->code_spec->goppa->g_mat->element_bit_size !=
+        ctx2->code_ctx->code_spec->goppa->g_mat->element_bit_size) {
         BPU_printError("g_mat element_bit_size");
     }
-    if (ctx1->code_ctx->code_spec->goppa->g_mat->k != ctx2->code_ctx->code_spec->goppa->g_mat->k) {
+    if (ctx1->code_ctx->code_spec->goppa->g_mat->k !=
+        ctx2->code_ctx->code_spec->goppa->g_mat->k) {
         BPU_printError("g_mat k");
     }
-    if (ctx1->code_ctx->code_spec->goppa->g_mat->n != ctx2->code_ctx->code_spec->goppa->g_mat->n) {
+    if (ctx1->code_ctx->code_spec->goppa->g_mat->n !=
+        ctx2->code_ctx->code_spec->goppa->g_mat->n) {
         BPU_printError("g_mat n");
     }
     for (i = 0; i < ctx1->code_ctx->code_spec->goppa->permutation->size; i++) {
-        if (ctx1->code_ctx->code_spec->goppa->permutation->elements[i] != ctx2->code_ctx->code_spec->goppa->permutation->elements[i]) {
+        if (ctx1->code_ctx->code_spec->goppa->permutation->elements[i] !=
+            ctx2->code_ctx->code_spec->goppa->permutation->elements[i]) {
             BPU_printError("perm diff");
             break;
         }
     }
-    if (ctx1->code_ctx->code_spec->goppa->h_mat->k != ctx2->code_ctx->code_spec->goppa->h_mat->k) {
+    if (ctx1->code_ctx->code_spec->goppa->h_mat->k !=
+        ctx2->code_ctx->code_spec->goppa->h_mat->k) {
         BPU_printError("h_mat k");
     }
-    if (ctx1->code_ctx->code_spec->goppa->h_mat->n != ctx2->code_ctx->code_spec->goppa->h_mat->n) {
+    if (ctx1->code_ctx->code_spec->goppa->h_mat->n !=
+        ctx2->code_ctx->code_spec->goppa->h_mat->n) {
         BPU_printError("h_mat n");
     }
-    for (i = 0; i < ctx1->code_ctx->code_spec->goppa->g_mat->elements_in_row; i++) {
+    for (i = 0; i < ctx1->code_ctx->code_spec->goppa->g_mat->elements_in_row;
+         i++) {
         for (j = 0; j < ctx1->code_ctx->code_spec->goppa->g_mat->k; j++) {
-            if (ctx1->code_ctx->code_spec->goppa->g_mat->elements[j][i] != ctx2->code_ctx->code_spec->goppa->g_mat->elements[j][i]) {
+            if (ctx1->code_ctx->code_spec->goppa->g_mat->elements[j][i] !=
+                ctx2->code_ctx->code_spec->goppa->g_mat->elements[j][i]) {
                 BPU_printError("g_mat diff");
                 j = -1;
                 break;
@@ -112,7 +126,8 @@ int testCmpMecsCtx(const BPU_T_Mecs_Ctx *ctx1, const BPU_T_Mecs_Ctx *ctx2) {
     }
     for (i = 0; i < ctx1->code_ctx->code_spec->goppa->h_mat->n; i++) {
         for (j = 0; j < ctx1->code_ctx->code_spec->goppa->h_mat->k; j++) {
-            if (ctx1->code_ctx->code_spec->goppa->h_mat->elements[j][i] != ctx2->code_ctx->code_spec->goppa->h_mat->elements[j][i]) {
+            if (ctx1->code_ctx->code_spec->goppa->h_mat->elements[j][i] !=
+                ctx2->code_ctx->code_spec->goppa->h_mat->elements[j][i]) {
                 BPU_printError("h_mat diff");
                 j = -1;
                 break;
@@ -125,102 +140,104 @@ int testCmpMecsCtx(const BPU_T_Mecs_Ctx *ctx1, const BPU_T_Mecs_Ctx *ctx2) {
     return rc;
 }
 
-int testKeyGenEncDec(BPU_T_Mecs_Ctx *ctx) {
+int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
 //    BPU_T_Mecs_Ctx *ctx = NULL;
     BPU_T_GF2_Vector *ct, *pt_in, *pt_out;
-	int rc = 0;
+    int rc = 0;
 
-	/***************************************/
-	fprintf(stderr, "Key generation...\n");
-	// key pair generation
-	if (BPU_mecsGenKeyPair(ctx)) {
+        /***************************************/
+    fprintf(stderr, "Key generation...\n");
+    // key pair generation
+    if (BPU_mecsGenKeyPair(ctx)) {
 //    if (BPU_asn1LoadKeyPair(&ctx, "prikey.der", "pubkey.der")) {
-		BPU_printError("Key generation error");
+        BPU_printError("Key generation error");
 
-		return 1;
-	}
-	/***************************************/
-	// prepare plain text, allocate memory and init random plaintext
-	if (BPU_gf2VecMalloc(&pt_in, ctx->pt_len)) {
-		BPU_printError("PT initialisation error");
+        return 1;
+    }
+        /***************************************/
+    // prepare plain text, allocate memory and init random plaintext
+    if (BPU_gf2VecMalloc(&pt_in, ctx->pt_len)) {
+        BPU_printError("PT initialisation error");
 
-		return 1;
-	}
+        return 1;
+    }
     BPU_gf2VecRand(pt_in, 0);
 
-	// alocate cipher text vector
-	if (BPU_gf2VecMalloc(&ct, ctx->ct_len)) {
-		BPU_printError("CT vector allocation error");
+    // alocate cipher text vector
+    if (BPU_gf2VecMalloc(&ct, ctx->ct_len)) {
+        BPU_printError("CT vector allocation error");
 
         BPU_gf2VecFree(&pt_in);
-		return 1;
-	}
-	// prepare plain text, allocate memory and init random plaintext
-	if (BPU_gf2VecMalloc(&pt_out, ctx->pt_len)) {
-		BPU_printError("PT out initialisation error");
+        return 1;
+    }
+    // prepare plain text, allocate memory and init random plaintext
+    if (BPU_gf2VecMalloc(&pt_out, ctx->pt_len)) {
+        BPU_printError("PT out initialisation error");
 
-		return 1;
-	}
+        return 1;
+    }
     BPU_gf2VecRand(pt_out, 0);
-	/***************************************/
-	fprintf(stderr, "Encryption...\n");
-	// BPU_encrypt plain text
+        /***************************************/
+    fprintf(stderr, "Encryption...\n");
+    // BPU_encrypt plain text
     if (BPU_mecsEncrypt(ct, pt_in, ctx)) {
-		BPU_printError("Encryption error");
-
-        BPU_gf2VecFree(&ct);
-        BPU_gf2VecFree(&pt_in);
-        BPU_gf2VecFree(&pt_out);
-		return 1;
-	}
-	// exit(0);
-	/***************************************/
-	fprintf(stderr, "Decryption...\n");
-	// decrypt cipher text
-    if (BPU_mecsDecrypt(pt_out, ct, ctx)) {
-		BPU_printError("Decryption error");
+        BPU_printError("Encryption error");
 
         BPU_gf2VecFree(&ct);
         BPU_gf2VecFree(&pt_in);
         BPU_gf2VecFree(&pt_out);
         return 1;
     }
-	/***************************************/
+    // exit(0);
+        /***************************************/
+    fprintf(stderr, "Decryption...\n");
+    // decrypt cipher text
+    if (BPU_mecsDecrypt(pt_out, ct, ctx)) {
+        BPU_printError("Decryption error");
 
-	// check for correct decryption
+        BPU_gf2VecFree(&ct);
+        BPU_gf2VecFree(&pt_in);
+        BPU_gf2VecFree(&pt_out);
+        return 1;
+    }
+        /***************************************/
+
+    // check for correct decryption
     if (BPU_gf2VecCmp(pt_in, pt_out)) {
-		BPU_printError("\nOutput plain text differs from input");
+        BPU_printError("\nOutput plain text differs from input");
 
-		rc = 2;
-	}
-	else {
-		fprintf(stderr, "\nSUCCESS: Input plain text is equal to output plain text.\n");
-	}
-	// clean up
-	/***************************************/
-	fprintf(stderr, "\nCleaning up...\n");
+        rc = 2;
+    }
+    else {
+        fprintf(stderr,
+                "\nSUCCESS: Input plain text is equal to output plain text.\n");
+    }
+    // clean up
+        /***************************************/
+    fprintf(stderr, "\nCleaning up...\n");
     BPU_gf2VecFree(&pt_in);
     BPU_gf2VecFree(&pt_out);
     BPU_gf2VecFree(&ct);
-	return rc;
+    return rc;
 }
 
 #ifdef BPU_CONF_ASN1
 int testKeyGenAsn1() {
     int rc = 0;
+
     // MUST BE NULL
     BPU_T_Mecs_Ctx *ctx = NULL;
     BPU_T_Mecs_Ctx *ctx_2 = NULL;
-	BPU_T_UN_Mecs_Params params;
+    BPU_T_UN_Mecs_Params params;
 
     /***************************************/
     // mce initialisation t = 50, m = 11
     fprintf(stderr, "Basic GOPPA Initialisation...\n");
-	if (BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
-		return 1;
-	}
+    if (BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
+        return 1;
+    }
 
-	if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {
+    if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {
 //    if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {
         return 1;
     }
@@ -244,19 +261,20 @@ int testKeyGenAsn1() {
 
     BPU_mecsFreeCtx(&ctx);
     BPU_mecsFreeCtx(&ctx_2);
-	BPU_mecsFreeParamsGoppa(&params);
+    BPU_mecsFreeParamsGoppa(&params);
     return rc;
 }
 #endif
 int main(int argc, char **argv) {
-	int rc = 0;
+    int rc = 0;
+
     // MUST BE NULL
     BPU_T_Mecs_Ctx *ctx = NULL;
-	BPU_T_UN_Mecs_Params params;
+    BPU_T_UN_Mecs_Params params;
 
-	srand(time(NULL));
+    srand(time(NULL));
 #if !defined(BPU_CONF_GOPPA_WO_H) && defined(BPU_CONF_ASN1)
-	testKeyGenAsn1();
+    testKeyGenAsn1();
 #endif
 
 //  /***************************************/
@@ -281,7 +299,7 @@ int main(int argc, char **argv) {
     BPU_mecsFreeParamsGoppa(&params);
 #endif
 
-// 	/***************************************/
+//      /***************************************/
 //     mce initialisation of 80-bit security
     fprintf(stderr, "Basic QC-MDPC Initialisation...\n");
     if (BPU_mecsInitParamsQcmdpc(&params, 4801, 2, 90, 84)) {
@@ -294,7 +312,7 @@ int main(int argc, char **argv) {
     BPU_mecsFreeCtx(&ctx);
     BPU_mecsFreeParamsQcmdpc(&params);
 
- #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     fprintf(stderr, "\nCCA2 Pointcheval QC-MDPC Initialisation...\n");
     if (BPU_mecsInitParamsQcmdpc(&params, 4801, 2, 90, 84)) {
         return 1;
@@ -305,8 +323,9 @@ int main(int argc, char **argv) {
     rc += testKeyGenEncDec(ctx);
     BPU_mecsFreeCtx(&ctx);
     BPU_mecsFreeParamsQcmdpc(&params);
- #endif
+#endif
     BPU_T_Bigint *a, *b, *c;
+
     BPU_bigintMalloc(&a, 32);
     BPU_bigintMalloc(&b, 16);
     BPU_bigintMalloc(&c, 32);
@@ -332,5 +351,5 @@ int main(int argc, char **argv) {
     BPU_bigintFree(&b);
     BPU_bigintFree(&c);
 
-	return rc;
+    return rc;
 }

@@ -26,28 +26,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * QC-MDPC McEliece code matrices
  */
 typedef struct _BPU_T_Qcmdpc_Spec {
-	BPU_T_GF2_QC_Matrix G; ///< generator matrix
-  	BPU_T_GF2_Sparse_Qc_Matrix H; ///< parity-check matrix
-	uint16_t m; ///< size of cyclic matrix
-	uint16_t n0; ///< number of cyclic matrices
-	uint16_t w; ///< weight of parity-check matrix row
-}BPU_T_Qcmdpc_Spec;
+    BPU_T_GF2_QC_Matrix G;      ///< generator matrix
+    BPU_T_GF2_Sparse_Qc_Matrix H;       ///< parity-check matrix
+    uint16_t m;                 ///< size of cyclic matrix
+    uint16_t n0;                ///< number of cyclic matrices
+    uint16_t w;                 ///< weight of parity-check matrix row
+} BPU_T_Qcmdpc_Spec;
 
 /**
   QC-MDPC McEliece input code params
   */
 typedef struct _BPU_T_Qcmdpc_Params {
-	uint16_t m; ///< size of cyclic matrix
-	uint16_t n0; ///< number of cyclic matrices
-	uint16_t w; ///< weight of parity-check matrix row
-	uint16_t t; ///< count of errors
-}BPU_T_Qcmdpc_Params;
+    uint16_t m;                 ///< size of cyclic matrix
+    uint16_t n0;                ///< number of cyclic matrices
+    uint16_t w;                 ///< weight of parity-check matrix row
+    uint16_t t;                 ///< count of errors
+} BPU_T_Qcmdpc_Params;
 
 /**
  * Free QC-MDPC McEliece code matrices
  * @param spec pointer to structure
  */
-void BPU_qcmdpcFreeSpec(BPU_T_Qcmdpc_Spec *spec);
+void BPU_qcmdpcFreeSpec(BPU_T_Qcmdpc_Spec * spec);
 
 /**
  * Allocate memory for QC-MDPC code params. After work you have to free memory using call BPU_qcmdpcFreeParams
@@ -58,12 +58,13 @@ void BPU_qcmdpcFreeSpec(BPU_T_Qcmdpc_Spec *spec);
  * @param  t      count of errors
  * @return        0 if OK, else error
  */
-int BPU_qcmdpcInitParams(BPU_T_Qcmdpc_Params **params, const uint16_t m, const uint16_t n0, const uint16_t w, const uint16_t t);
+int BPU_qcmdpcInitParams(BPU_T_Qcmdpc_Params ** params, const uint16_t m,
+                         const uint16_t n0, const uint16_t w, const uint16_t t);
 
 /**
  * Free memory for QC-MDPC code params.
  * @param params pointer to structure
  */
-void BPU_qcmdpcFreeParams(BPU_T_Qcmdpc_Params **params);
+void BPU_qcmdpcFreeParams(BPU_T_Qcmdpc_Params ** params);
 
 #endif // QCMDPCTYPES_H

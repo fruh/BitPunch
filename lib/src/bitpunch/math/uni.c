@@ -64,12 +64,12 @@ void BPU_printBinary32LsbLn(uint32_t in) {
     BPU_printBinaryLsbLn(in, 32);
 }
 
-void BPU_printElementArray(const BPU_T_Element_Array* a) {
+void BPU_printElementArray(const BPU_T_Element_Array * a) {
     uint32_t j, bits_to_print;
 
     fprintf(stderr, "Vec (%4d): ", a->len);
     for (j = 0; j < a->array_length; j++) {
-        if (j == a->array_length-1) {
+        if (j == a->array_length - 1) {
             if (a->len % (a->element_bit_size) != 0) {
                 bits_to_print = a->len % a->element_bit_size;
             }
@@ -86,12 +86,12 @@ void BPU_printElementArray(const BPU_T_Element_Array* a) {
     fprintf(stderr, "\n");
 }
 
-void BPU_printElementArrayMsb(const BPU_T_Element_Array* a) {
+void BPU_printElementArrayMsb(const BPU_T_Element_Array * a) {
     uint32_t j, bits_to_print;
 
     fprintf(stderr, "Vec (%4d): ", a->len);
     for (j = 0; j < a->array_length; j++) {
-        if (j == a->array_length-1) {
+        if (j == a->array_length - 1) {
             if (a->len % (a->element_bit_size) != 0) {
                 bits_to_print = a->len % a->element_bit_size;
             }
@@ -108,20 +108,21 @@ void BPU_printElementArrayMsb(const BPU_T_Element_Array* a) {
     fprintf(stderr, "\n");
 }
 
-void BPU_printElementArrayOnes(const BPU_T_Element_Array *a) {
+void BPU_printElementArrayOnes(const BPU_T_Element_Array * a) {
     uint32_t i;
-    for (i = 0; i < a->len; ++i)
-    {
+
+    for (i = 0; i < a->len; ++i) {
         if (BPU_elementArrayGetBit(a, i)) {
             fprintf(stderr, "%d ", i);
         }
     }
     fprintf(stderr, "\n");
 }
+
 /* ------------------------------------ Print functions ------------------------------------ */
 #endif // BPU_CONF_PRINT
 
-void BPU_elementArrayFree(BPU_T_Element_Array **a) {
+void BPU_elementArrayFree(BPU_T_Element_Array ** a) {
     if (!*a) {
         return;
     }
@@ -130,7 +131,7 @@ void BPU_elementArrayFree(BPU_T_Element_Array **a) {
     *a = NULL;
 }
 
-int BPU_elementArrayMalloc(BPU_T_Element_Array **a, uint32_t len) {
+int BPU_elementArrayMalloc(BPU_T_Element_Array ** a, uint32_t len) {
     *a = (BPU_T_Element_Array *) calloc(sizeof(BPU_T_Element_Array), 1);
 
     if (!*a) {
@@ -140,14 +141,14 @@ int BPU_elementArrayMalloc(BPU_T_Element_Array **a, uint32_t len) {
     return BPU_elementArrayMallocElements(*a, len);
 }
 
-int BPU_elementArrayResize(BPU_T_Element_Array *a, uint32_t len) {
+int BPU_elementArrayResize(BPU_T_Element_Array * a, uint32_t len) {
     if (a->elements) {
         free(a->elements);
     }
     return BPU_elementArrayMallocElements(a, len);
 }
 
-int BPU_elementArrayMallocElements(BPU_T_Element_Array *a, uint32_t len) {
+int BPU_elementArrayMallocElements(BPU_T_Element_Array * a, uint32_t len) {
     // element size in bits
     a->element_bit_size = sizeof(BPU_T_Element) * 8;
 
@@ -163,7 +164,8 @@ int BPU_elementArrayMallocElements(BPU_T_Element_Array *a, uint32_t len) {
     a->array_length = len / a->element_bit_size + modul;
 
     // allocate elemtens
-    a->elements = (BPU_T_Element*) calloc(1, sizeof(BPU_T_Element) * a->array_length);
+    a->elements =
+        (BPU_T_Element *) calloc(1, sizeof(BPU_T_Element) * a->array_length);
 
     if (!a->elements) {
         BPU_printError("can not allocate memory for vector of len %d", len);
