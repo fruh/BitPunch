@@ -2,7 +2,7 @@
 #This file is part of BitPunch
 #Copyright (C) 2013-2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
 #Copyright (C) 2013-2014 Andrej Gulyas <andrej.guly[what here]gmail.com>
-#Copyright (C) 2013-2014 Marek Klein  <kleinmrk[what here]gmail.com>
+#Copyright (C) 2013-2016 Marek Klein  <kleinmrk[what here]gmail.com>
 #Copyright (C) 2013-2014 Filip Machovec  <filipmachovec[what here]yahoo.com>
 #Copyright (C) 2013-2014 Jozef Kudlac <jozef[what here]kudlac.sk>
 
@@ -25,27 +25,16 @@
 # $? - names of sources, which are newer than target
 
 PREFIX_SRC = src
-INCLUDE_PATH = -Isrc/
-
+INCLUDE_PATH = -Isrc/include
+DEMOS = demos
 ifndef CFLAGS
-	CFLAGS += -g -Wall -DBPU_CONF_FULL -DERROR_L
+	CFLAGS += -g -Wall -DBPU_CONF_FULL_MECS -DERROR_L -DBPU_CONF_PRINT
 endif
-
-# get libtasn1 path
-ARCH = $(shell uname -m)
-ifeq ($(ARCH), i686)
-	ARCH =i386
-else ifeq ($(ARCH), i586)
-	ARCH =i386
-endif
-
-LIBTASN1 = $(shell dirname `locate libtasn1.a | grep ${ARCH} | head -n 1 | cut -d '>' -f 2`)/libtasn1.a
-#LIBTASN1 = /usr/lib/x86_64-linux-gnu/libtasn1.a
 
 # compiler
 CC = gcc $(INCLUDE_PATH)
 
-LDFLAGS = -ltasn1 -lm
+LDFLAGS = -lm
 #-fstack-protector-all
 
 # curent working directory
@@ -54,12 +43,6 @@ CWD = $(shell pwd)
 # output, distribution files target, dynamic
 DIST_DIR = dist
 BUILD_DIR = build
-
-# static target dir
-STATIC_TARGET = $(DIST_DIR)/static
-
-# shared target dir
-SHARED_TARGET = $(DIST_DIR)/shared
 
 # test target
 TEST_DIR = $(DIST_DIR)/test
@@ -71,29 +54,31 @@ OBJS := $(patsubst %.c, %.c.o, $(C_FILES))
 PICS := $(patsubst %.c, %.c.o.pic, $(C_FILES))
 
 ######################################## TARGETS ###############################################
-default: test print-info
+default: demos print-info
 
-test: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+demos: prepare-dir static-lib
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/bigint $(DEMOS)/bigint.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/plainmecs $(DEMOS)/plainmecs.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 test-debug: CFLAGS = -Wall -DBPU_CONF_FULL -ggdb -DDEBUG_L
 test-debug: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 test-wo-h: CFLAGS += -DBPU_CONF_GOPPA_WO_H
 test-wo-h: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 test-wo-h-debug: CFLAGS = -Wall -DBPU_CONF_FULL -ggdb -DDEBUG_L -DBPU_CONF_GOPPA_WO_H
 test-wo-h-debug: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 speed-test: CFLAGS += -O3 -Wall -DBPU_CONF_FULL -DERROR_L
 speed-test: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch src/test-speed.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/test-speed.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 profile: prepare-dir static-lib
-	$(CC) $(CFLAGS_PROF) $(C_FILES) src/main.c -o $(TEST_DIR)/BitPunch $(LDFLAGS)
+	$(CC) $(CFLAGS_PROF) $(C_FILES) $(DEMOS)/main.c -o $(TEST_DIR)/BitPunch $(LDFLAGS)
 	@echo ""
 	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
 	@echo "Now you can run test aplication: $(TEST_DIR)/BitPunch"
@@ -103,8 +88,12 @@ profile: prepare-dir static-lib
 print-info:
 	@echo ""
 	@[ "${TERM}" != "" ] && which tput > /dev/null && which printf > /dev/null && printf '%$(shell [ "${TERM}" != "" ] && tput cols)s\n' | tr ' ' = || echo "========================================================="
+	@echo "Now you can run test aplication: $(TEST_DIR)/bigint"
+	@echo "See source file in: $(CWD)/$(DEMOS)/bigint.c"
+	@echo "Now you can run test aplication: $(TEST_DIR)/plainmecs"
+	@echo "See source file in: $(CWD)/$(DEMOS)/plainmecs.c"
 	@echo "Now you can run test aplication: $(TEST_DIR)/BitPunch"
-	@echo "See source file in: $(CWD)/$(PREFIX_SRC)/main.c"
+	@echo "See source file in: $(CWD)/$(DEMOS)/main.c"
 
 %.c.o.pic: %.c
 	$(CC) $(CFLAGS) -c -fpic $< -o $@
@@ -117,15 +106,14 @@ shared-lib: prepare-dir $(PICS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 static-lib: prepare-dir $(OBJS)
-	cd $(BUILD_DIR) && ar -x $(LIBTASN1)
-	ar rcs $(DIST_DIR)/libbpumecs.a $(OBJS) $(BUILD_DIR)/*.o
+	cd $(BUILD_DIR)
+	ar rcs $(DIST_DIR)/libbpumecs.a $(OBJS)
 
 ############################# prepare dirs
 prepare-dir:
 	@mkdir -vp $(BUILD_DIR)/
 	@mkdir -vp $(DIST_DIR)/
 	@mkdir -vp $(TEST_DIR)/
-	@cp -vR asn1/ $(TEST_DIR)/
 
 ############################# clean up matters
 clean: clean-obj
@@ -139,13 +127,16 @@ clean-obj:
 
 ############################# help
 help:
-	@echo "Some kind of help message:"
 	@echo ""
 	@echo "This is a McEliece library."
 	@echo ""
-	@echo "Default build makes test binary:"
-	@echo "\tSource file: $(CWD)/$(PREFIX_SRC)/main.c"
+	@echo "Default build makes test binaries:"
+	@echo "\tSource file: $(DEMOS)/main.c"
+	@echo "\tSource file: $(DEMOS)/bigint.c"
+	@echo "\tSource file: $(DEMOS)/plainmecs.c"
 	@echo "\tApplication: $(TEST_DIR)/BitPunch"
+	@echo "\tApplication: $(TEST_DIR)/plainmecs"
+	@echo "\tApplication: $(TEST_DIR)/bigint"
 	@echo "\tLibraries: $(DIST_DIR)/libbpumecs.so or $(DIST_DIR)/libbpumecs.a"
 	@echo ""
 	@echo "It is possible to build library which has H matrix precomputed or not."

@@ -24,7 +24,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 INCLUDEPATH += \
-    lib/src/
+    lib/src/include/
 SOURCES += \
     lib/src/bitpunch/code/goppa.c \
     lib/src/bitpunch/crypto/hash.c \
@@ -41,7 +41,6 @@ SOURCES += \
     lib/src/bitpunch/code/goppa/goppa.c \
     lib/src/bitpunch/crypto/mecsbasic/mecsbasic.c \
     lib/src/bitpunch/crypto/padding/padding.c \
-	lib/src/main.c \
     lib/src/bitpunch/code/goppa/goppatypes.c \
     lib/src/test-speed.c \
     lib/src/bitpunch/crypto/hash/polarssl/sha512.c \
@@ -52,39 +51,42 @@ SOURCES += \
     lib/src/bitpunch/code/qcmdpc/qcmdpc.c \
     lib/src/bitpunch/code/qcmdpc/qcmdpctypes.c \
     lib/src/bitpunch/math/bigint.c \
-    lib/src/bitpunch/math/uni.c
+    lib/src/bitpunch/math/uni.c \
+    demos/main.c \
+    demos/bigint.c \
+    lib/demos/plainmecs.c
 
 #include(deployment.pri)
 #qtcAddDeployment()
 
 HEADERS += \
-    lib/src/bitpunch/code/codectx.h \
-    lib/src/bitpunch/crypto/mecs.h \
-    lib/src/bitpunch/crypto/prng.h \
-    lib/src/bitpunch/math/gf2.h \
-    lib/src/bitpunch/math/gf2x.h \
-    lib/src/bitpunch/math/int.h \
-    lib/src/bitpunch/math/perm.h \
-    lib/src/bitpunch/debugio.h \
-    lib/src/bitpunch/crypto/mecsctx.h \
-    lib/src/bitpunch/code/goppatypes.h \
-    lib/src/bitpunch/prng/prng.h \
-    lib/src/bitpunch/errorcodes.h \
-    lib/src/bitpunch/code/goppa/goppa.h \
-    lib/src/bitpunch/code/goppa/goppatypes.h \
-    lib/src/bitpunch/crypto/mecsbasic/mecsbasic.h \
-    lib/src/bitpunch/crypto/padding/padding.h \
-    lib/src/bitpunch/version.h \
-    lib/src/bitpunch/bitpunch.h \
-    lib/src/bitpunch/crypto/hash/polarssl/polarssl/sha512.h \
-    lib/src/bitpunch/crypto/hash/sha512.h \
-    lib/src/bitpunch/config.h \
-    lib/src/bitpunch/crypto/cca2/mecspointcheval.h \
-    lib/src/bitpunch/asn1/asn1.h \
-    lib/src/bitpunch/code/qcmdpc/qcmdpc.h \
-    lib/src/bitpunch/code/qcmdpc/qcmdpctypes.h \
-    lib/src/bitpunch/math/bigint.h \
-    lib/src/bitpunch/math/uni.h
+    lib/src/include/bitpunch/code/codectx.h \
+    lib/src/include/bitpunch/crypto/mecs.h \
+    lib/src/include/bitpunch/crypto/prng.h \
+    lib/src/include/bitpunch/math/gf2.h \
+    lib/src/include/bitpunch/math/gf2x.h \
+    lib/src/include/bitpunch/math/int.h \
+    lib/src/include/bitpunch/math/perm.h \
+    lib/src/include/bitpunch/debugio.h \
+    lib/src/include/bitpunch/crypto/mecsctx.h \
+    lib/src/include/bitpunch/code/goppatypes.h \
+    lib/src/include/bitpunch/prng/prng.h \
+    lib/src/include/bitpunch/errorcodes.h \
+    lib/src/include/bitpunch/code/goppa/goppa.h \
+    lib/src/include/bitpunch/code/goppa/goppatypes.h \
+    lib/src/include/bitpunch/crypto/mecsbasic/mecsbasic.h \
+    lib/src/include/bitpunch/crypto/padding/padding.h \
+    lib/src/include/bitpunch/version.h \
+    lib/src/include/bitpunch/bitpunch.h \
+    lib/src/include/bitpunch/crypto/hash/polarssl/polarssl/sha512.h \
+    lib/src/include/bitpunch/crypto/hash/sha512.h \
+    lib/src/include/bitpunch/config.h \
+    lib/src/include/bitpunch/crypto/cca2/mecspointcheval.h \
+    lib/src/include/bitpunch/asn1/asn1.h \
+    lib/src/include/bitpunch/code/qcmdpc/qcmdpc.h \
+    lib/src/include/bitpunch/code/qcmdpc/qcmdpctypes.h \
+    lib/src/include/bitpunch/math/bigint.h \
+    lib/src/include/bitpunch/math/uni.h
 
 OTHER_FILES += \
     lib/Makefile

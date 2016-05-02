@@ -24,8 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 #include <bitpunch/prng/prng.h>
 
-#include "gf2x.h"
-#include "int.h"
+#include <bitpunch/math/gf2x.h>
+#include <bitpunch/math/int.h>
 
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
@@ -315,10 +315,10 @@ int BPU_gf2xMatMul(BPU_T_GF2_16x_Matrix * x, const BPU_T_GF2_16x_Matrix * a,
                 if (b->elements[k][j] == 0)
                     continue;
                 x->elements[i][j] ^=
-                    math_ctx->
-                    exp_table[(loga +
-                               math_ctx->log_table[b->elements[k][j]]) %
-                              math_ctx->ord];
+                    math_ctx->exp_table[(loga +
+                                         math_ctx->
+                                         log_table[b->elements[k][j]]) %
+                                        math_ctx->ord];
             }
         }
     }
@@ -350,7 +350,8 @@ void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
 }
 
 void BPU_gf2xPolyDiv(BPU_T_GF2_16x_Poly * q, BPU_T_GF2_16x_Poly * r,
-                     const BPU_T_GF2_16x_Poly * a, const BPU_T_GF2_16x_Poly * b,
+                     const BPU_T_GF2_16x_Poly * a,
+                     const BPU_T_GF2_16x_Poly * b,
                      const BPU_T_Math_Ctx * math_ctx) {
     // a:b = q+r
     BPU_T_GF2_16x_Poly *tmp;
@@ -563,7 +564,8 @@ void BPU_gf2xPolyMod(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
     BPU_gf2xPolyFree(&tmp_out);
 }
 
-void BPU_gf2xMatRoot(BPU_T_GF2_16x_Matrix * out, const BPU_T_GF2_16x_Poly * mod,
+void BPU_gf2xMatRoot(BPU_T_GF2_16x_Matrix * out,
+                     const BPU_T_GF2_16x_Poly * mod,
                      const BPU_T_Math_Ctx * math_ctx) {
     int i, j;
     BPU_T_GF2_16x_Poly *row, *tmp;
@@ -640,7 +642,8 @@ BPU_T_GF2_16x BPU_gf2xRoot(BPU_T_GF2_16x element,
     return sqr;
 }
 
-void BPU_gf2xPolyRoot(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * poly,
+void BPU_gf2xPolyRoot(BPU_T_GF2_16x_Poly * out,
+                      const BPU_T_GF2_16x_Poly * poly,
                       const BPU_T_GF2_16x_Poly * mod,
                       const BPU_T_Math_Ctx * math_ctx) {
     BPU_T_GF2_16x_Vector *tmp, *tmp_out;

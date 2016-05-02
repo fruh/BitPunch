@@ -19,9 +19,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "gf2.h"
-#include "perm.h"
-#include "uni.h"
+#include <bitpunch/math/gf2.h>
+#include <bitpunch/math/perm.h>
+#include <bitpunch/math/uni.h>
 
 #include <stdlib.h>
 #include <bitpunch/debugio.h>
@@ -938,10 +938,8 @@ void BPU_gf2PolyShiftRightOne(BPU_T_GF2_Poly * a) {
     for (i = 0; i < a->array_length - 1; i++) {
         // shift right by one and add lowest bit from next element
         a->elements[i] =
-            (a->
-             elements[i] >> 1) ^ ((a->elements[i + 1] & 1ul) << (a->
-                                                                 element_bit_size
-                                                                 - 1));
+            (a->elements[i] >> 1) ^ ((a->elements[i + 1] & 1ul) <<
+                                     (a->element_bit_size - 1));
     }
 
     // last element just shift
@@ -1023,8 +1021,8 @@ void BPU_gf2SparseQcMatrixGetRow(BPU_T_GF2_Sparse_Poly * p,
     }
     // row num is out of the matrix
     else {
-        BPU_printError("BPU_QcMatrixGetRow: row with index %i does not exist\n",
-                       row_num);
+        BPU_printError
+            ("BPU_QcMatrixGetRow: row with index %i does not exist\n", row_num);
     }
 }
 

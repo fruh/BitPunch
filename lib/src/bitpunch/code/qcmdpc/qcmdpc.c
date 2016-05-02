@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "qcmdpc.h"
+#include <bitpunch/code/qcmdpc/qcmdpc.h>
 
 #ifdef BPU_CONF_ENCRYPTION
 int BPU_mecsQcmdpcEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
@@ -64,7 +64,8 @@ int BPU_mecsQcmdpcEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
 #endif
 
 #ifdef BPU_CONF_DECRYPTION
-int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
+                          const BPU_T_GF2_Vector * in,
                           const struct _BPU_T_Code_Ctx *ctx) {
 
     int ret = 0, delta = BPU_QCMDPC_PARAM_DELTA;
@@ -72,17 +73,18 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
 
     // BPU_printGf2Vec(ctx->e);
     // null error vector 
-    BPU_gf2VecNull(ctx->e);
+    BPU_gf2VecNull(error);
 
     // try to decode with faster algorithm
-    if (!BPU_mecsQcmdpcDecode2(ctx->e, in, ctx)) {
+    if (!BPU_mecsQcmdpcDecode2(error, in, ctx)) {
         // free decoded
-        BPU_gf2VecNull(ctx->e);
+        BPU_gf2VecNull(error);
         while (1) {
             // if not decoded, try algorithm with lower DFR
-            if (!BPU_mecsQcmdpcDecode1(ctx->e, in, delta, ctx)) {
+            if (!BPU_mecsQcmdpcDecode1(error, in, delta, ctx)) {
                 // free decoded
-                BPU_gf2VecNull(ctx->e);
+                BPU_gf2VecNull(error);
+
                 // if not decoded decrease threshold tolerance param
                 delta--;
                 if (delta < 0) {
@@ -99,7 +101,7 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
     if (ret == 0) {
         // decrypt message
         for (i = 0; i < out->array_length; i++)
-            out->elements[i] = ctx->e->elements[i] ^ in->elements[i];
+            out->elements[i] = error->elements[i] ^ in->elements[i];
         // crop last element
         out->elements[out->array_length - 1] <<= out->element_bit_size -
             (out->len % out->element_bit_size);
@@ -107,7 +109,7 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
             (out->len % out->element_bit_size);
     }
     else
-        BPU_gf2VecNull(ctx->e);
+        BPU_gf2VecNull(error);
 
     return ret;
 }
@@ -127,11 +129,13 @@ int BPU_mecsQcmdpcDecode1(BPU_T_GF2_Vector * error_vec,
 
     // calc the syndrom
     BPU_mecsQcmdpcCalcSyndrom(&syndrom, cipher_text, ctx);
+
     // check syndrom
     if (!BPU_gf2PolyIsZero(&syndrom)) {
         // for max iterations
         for (iter = 0; iter < BPU_QCMDPC_PARAM_MAX_ITER; iter++) {
             max = 0;
+
             // for every bit of cipher text
             for (bit = 0; bit < error_vec->len; bit++) {
                 // calc #UPC
@@ -336,8 +340,8 @@ int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx) {
         BPU_gf2PolySetDeg(&H_temp[ctx->code_spec->qcmdpc->n0 - 1], -1);
         // find inversion using XGCD
         ret =
-            BPU_gf2PolyInv(&H_last_inv, &H_temp[ctx->code_spec->qcmdpc->n0 - 1],
-                           &mod);
+            BPU_gf2PolyInv(&H_last_inv,
+                           &H_temp[ctx->code_spec->qcmdpc->n0 - 1], &mod);
 
         // if inversion exists, test it (poly x inversion modulo = 1)
         if (ret) {

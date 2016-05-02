@@ -15,7 +15,7 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "asn1.h"
+#include <bitpunch/asn1/asn1.h>
 
 #ifdef BPU_CONF_ASN1
 #include <bitpunch/debugio.h>
@@ -95,8 +95,8 @@ int BPU_asn1EncodePriKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx) {
         return rc;
     }
     rc = asn1_write_value(asn1_element, "p",
-                          (void *) (ctx->code_ctx->code_spec->goppa->
-                                    permutation->elements),
+                          (void *) (ctx->code_ctx->code_spec->
+                                    goppa->permutation->elements),
                           sizeof(ctx->code_ctx->code_spec->goppa->permutation->
                                  elements[0]) *
                           ctx->code_ctx->code_spec->goppa->permutation->size);
@@ -111,8 +111,9 @@ int BPU_asn1EncodePriKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx) {
         }
         // prepare H matrix
         h_mat_bs =
-            sizeof(BPU_T_GF2_16x) * (ctx->code_ctx->code_spec->goppa->h_mat->k *
-                                     ctx->code_ctx->code_spec->goppa->h_mat->n);
+            sizeof(BPU_T_GF2_16x) *
+            (ctx->code_ctx->code_spec->goppa->h_mat->k *
+             ctx->code_ctx->code_spec->goppa->h_mat->n);
         h_mat = (BPU_T_GF2_16x *) malloc(h_mat_bs);
 
         if (!h_mat) {
@@ -340,8 +341,8 @@ int BPU_asn1EncodePubKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx) {
     if (ctx->code_ctx->type == BPU_EN_CODE_GOPPA) {
         g_mat_bs =
             sizeof(BPU_T_GF2) * (ctx->code_ctx->code_spec->goppa->g_mat->k *
-                                 ctx->code_ctx->code_spec->goppa->g_mat->
-                                 elements_in_row);
+                                 ctx->code_ctx->code_spec->goppa->
+                                 g_mat->elements_in_row);
 
         // prepare G matrix
         g_mat = (BPU_T_GF2 *) malloc(g_mat_bs);

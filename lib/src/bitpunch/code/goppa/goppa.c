@@ -19,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "goppa.h"
+#include <bitpunch/code/goppa/goppa.h>
 
 #include <stdlib.h>
 
@@ -66,18 +66,19 @@ int BPU_goppaEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
 
 /***********************************************************************************************************/
 #ifdef BPU_CONF_DECRYPTION
-int BPU_goppaDecode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+int BPU_goppaDecode(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
+                    const BPU_T_GF2_Vector * in,
                     const struct _BPU_T_Code_Ctx *ctx) {
     BPU_T_GF2_Vector *orig_enc;
     int rc;
 
     // get error vector
-    rc = BPU_goppaGetError(ctx->e, in, ctx);
+    rc = BPU_goppaGetError(error, in, ctx);
 
     // remove error
     rc += BPU_gf2VecMalloc(&orig_enc, in->len);
     BPU_gf2VecCopy(orig_enc, in);
-    rc += BPU_gf2VecXor(orig_enc, ctx->e);
+    rc += BPU_gf2VecXor(orig_enc, error);
 
     // get message
     rc += BPU_gf2VecCrop(out, orig_enc, in->len - ctx->msg_len, ctx->msg_len);
@@ -189,8 +190,8 @@ void BPU_goppaDetSyndrome(BPU_T_GF2_16x_Poly * syndrome,
         divider =
             BPU_gf2xPowerModT(BPU_gf2xPolyEval
                               (ctx->code_spec->goppa->g,
-                               ctx->math_ctx->exp_table[column], ctx->math_ctx),
-                              -1, ctx->math_ctx);
+                               ctx->math_ctx->exp_table[column],
+                               ctx->math_ctx), -1, ctx->math_ctx);
         if (BPU_gf2VecGetBit(z, column)) {
             for (row = 0; row < ctx->code_spec->goppa->g->deg; row++) {
                 element = 0;
@@ -255,8 +256,8 @@ int BPU_goppaInitMatH2(BPU_T_GF2_Matrix * h2, BPU_T_GF2_16x_Matrix * hx,
     if (hx->k != ctx->code_spec->goppa->g->deg
         || hx->n != ctx->code_spec->goppa->support_len) {
         BPU_printError("Matrix hx dimension should be %dx%d, current is %dx%d",
-                       ctx->code_spec->goppa->g->deg, ctx->math_ctx->ord, hx->k,
-                       hx->n);
+                       ctx->code_spec->goppa->g->deg, ctx->math_ctx->ord,
+                       hx->k, hx->n);
 
         return -1;
     }
@@ -265,8 +266,8 @@ int BPU_goppaInitMatH2(BPU_T_GF2_Matrix * h2, BPU_T_GF2_16x_Matrix * hx,
         divider =
             BPU_gf2xPowerModT(BPU_gf2xPolyEval
                               (ctx->code_spec->goppa->g,
-                               ctx->math_ctx->exp_table[column], ctx->math_ctx),
-                              -1, ctx->math_ctx);
+                               ctx->math_ctx->exp_table[column],
+                               ctx->math_ctx), -1, ctx->math_ctx);
         if ((column - act_element * h2->element_bit_size) >= h2->element_bit_size) {    // next elemenet, first bit
             act_element++;
             bit_in_element = 0;
@@ -279,8 +280,8 @@ int BPU_goppaInitMatH2(BPU_T_GF2_Matrix * h2, BPU_T_GF2_16x_Matrix * hx,
                  k <= ctx->code_spec->goppa->g->deg; k++, e++) {
                 element ^=
                     BPU_gf2xMulModT(ctx->code_spec->goppa->g->coef[k],
-                                    BPU_gf2xPowerModT(ctx->math_ctx->
-                                                      exp_table[column], e,
+                                    BPU_gf2xPowerModT(ctx->math_ctx->exp_table
+                                                      [column], e,
                                                       ctx->math_ctx),
                                     ctx->math_ctx);
             }

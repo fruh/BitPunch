@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "qcmdpctypes.h"
+#include <bitpunch/code/qcmdpc/qcmdpctypes.h>
 #include <bitpunch/math/gf2.h>
 
 void BPU_qcmdpcFreeSpec(BPU_T_Qcmdpc_Spec * spec) {

@@ -24,8 +24,6 @@
 
 #include <bitpunch/crypto/hash/sha512.h>
 #include <bitpunch/asn1/asn1.h>
-#include <bitpunch/math/bigint.h>
-#include <bitpunch/math/uni.h>
 
 int testCmpMecsCtx(const BPU_T_Mecs_Ctx * ctx1, const BPU_T_Mecs_Ctx * ctx2) {
     int i, j, rc = 0;
@@ -62,9 +60,6 @@ int testCmpMecsCtx(const BPU_T_Mecs_Ctx * ctx1, const BPU_T_Mecs_Ctx * ctx2) {
     }
     if (ctx1->code_ctx->_encode != ctx2->code_ctx->_encode) {
         BPU_printError("_encode");
-    }
-    if (ctx1->code_ctx->e->len != ctx2->code_ctx->e->len) {
-        BPU_printError("e.len");
     }
     if (BPU_gf2xPolyCmp
         (ctx1->code_ctx->code_spec->goppa->g,
@@ -180,7 +175,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
         /***************************************/
     fprintf(stderr, "Encryption...\n");
     // BPU_encrypt plain text
-    if (BPU_mecsEncrypt(ct, pt_in, ctx)) {
+    if (BPU_mecsEncrypt(ct, pt_in, ctx, NULL)) {
         BPU_printError("Encryption error");
 
         BPU_gf2VecFree(&ct);
@@ -324,32 +319,5 @@ int main(int argc, char **argv) {
     BPU_mecsFreeCtx(&ctx);
     BPU_mecsFreeParamsQcmdpc(&params);
 #endif
-    BPU_T_Bigint *a, *b, *c;
-
-    BPU_bigintMalloc(&a, 32);
-    BPU_bigintMalloc(&b, 16);
-    BPU_bigintMalloc(&c, 32);
-
-    a->elements[0] = 65535;
-    a->elements[1] = 65535;
-    b->elements[0] = 65535;
-    BPU_bigintMultiply(c, a, b);
-#ifdef BPU_CONF_PRINT
-    BPU_printElementArray(a);
-    BPU_printElementArray(b);
-    BPU_printElementArray(c);
-#endif
-
-    BPU_bigintAdd(c, a, b);
-#ifdef BPU_CONF_PRINT
-    BPU_printElementArray(a);
-    BPU_printElementArray(b);
-    BPU_printElementArray(c);
-#endif
-
-    BPU_bigintFree(&a);
-    BPU_bigintFree(&b);
-    BPU_bigintFree(&c);
-
     return rc;
 }

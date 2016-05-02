@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "codectx.h"
+#include <bitpunch/code/codectx.h>
 
 #include <stdlib.h>
 
@@ -121,11 +121,6 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx ** ctx, const BPU_T_UN_Code_Params * params,
         BPU_printError("Code type not supported: %d", type);
         return BPU_EC_CODE_TYPE_NOT_SUPPORTED;
     }
-    // error vector
-    if (BPU_gf2VecMalloc(&ctx_p->e, ctx_p->code_len)) {
-        BPU_printError("can not allocate error vector");
-        return BPU_EC_MALLOC_ERROR;
-    }
     return 0;
 }
 
@@ -188,7 +183,6 @@ void BPU_codeFreeCtx(BPU_T_Code_Ctx ** ctx) {
     default:
         BPU_printError("Code type not supported: %d", ctx_p->type);
     }
-    BPU_gf2VecFree(&ctx_p->e);
     BPU_mathFreeCtx(&ctx_p->math_ctx);
 
     free(ctx_p->code_spec);

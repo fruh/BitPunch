@@ -295,7 +295,8 @@ void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
  * @param b [in] input polynomial
  */
 void BPU_gf2xPolyDiv(BPU_T_GF2_16x_Poly * q, BPU_T_GF2_16x_Poly * r,
-                     const BPU_T_GF2_16x_Poly * a, const BPU_T_GF2_16x_Poly * b,
+                     const BPU_T_GF2_16x_Poly * a,
+                     const BPU_T_GF2_16x_Poly * b,
                      const BPU_T_Math_Ctx * math_ctx);
 
 /**
@@ -365,7 +366,8 @@ void BPU_gf2xPolyMod(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
  * @param out    [description]
  * @param math_ctx [description]
  */
-void BPU_gf2xMatRoot(BPU_T_GF2_16x_Matrix * out, const BPU_T_GF2_16x_Poly * mod,
+void BPU_gf2xMatRoot(BPU_T_GF2_16x_Matrix * out,
+                     const BPU_T_GF2_16x_Poly * mod,
                      const BPU_T_Math_Ctx * math_ctx);
 
 /**
@@ -384,7 +386,8 @@ BPU_T_GF2_16x BPU_gf2xRoot(BPU_T_GF2_16x element,
  * @param mod
  * @param math_ctx
  */
-void BPU_gf2xPolyRoot(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * poly,
+void BPU_gf2xPolyRoot(BPU_T_GF2_16x_Poly * out,
+                      const BPU_T_GF2_16x_Poly * poly,
                       const BPU_T_GF2_16x_Poly * mod,
                       const BPU_T_Math_Ctx * math_ctx);
 

@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * @return     0 - succes, else error
  */
 int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
-                         const BPU_T_Mecs_Ctx * ctx);
+                         const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector *error);
 #endif
 
 #ifdef BPU_CONF_DECRYPTION
