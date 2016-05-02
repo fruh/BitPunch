@@ -65,10 +65,10 @@ void BPU_printBinary32LsbLn(uint32_t in) {
 }
 
 void BPU_printElementArray(const BPU_T_Element_Array* a) {
-    int j, bits_to_print;
+    uint32_t j, bits_to_print;
 
     fprintf(stderr, "Vec (%4d): ", a->len);
-    for (j = 0; j <= a->array_length - 1; j++) {
+    for (j = 0; j < a->array_length; j++) {
         if (j == a->array_length-1) {
             if (a->len % (a->element_bit_size) != 0) {
                 bits_to_print = a->len % a->element_bit_size;
@@ -87,10 +87,10 @@ void BPU_printElementArray(const BPU_T_Element_Array* a) {
 }
 
 void BPU_printElementArrayMsb(const BPU_T_Element_Array* a) {
-    int j, bits_to_print;
+    uint32_t j, bits_to_print;
 
     fprintf(stderr, "Vec (%4d): ", a->len);
-    for (j = 0; j <= a->array_length - 1; j++) {
+    for (j = 0; j < a->array_length; j++) {
         if (j == a->array_length-1) {
             if (a->len % (a->element_bit_size) != 0) {
                 bits_to_print = a->len % a->element_bit_size;
@@ -109,7 +109,7 @@ void BPU_printElementArrayMsb(const BPU_T_Element_Array* a) {
 }
 
 void BPU_printElementArrayOnes(const BPU_T_Element_Array *a) {
-    int i;
+    uint32_t i;
     for (i = 0; i < a->len; ++i)
     {
         if (BPU_elementArrayGetBit(a, i)) {
@@ -130,7 +130,7 @@ void BPU_elementArrayFree(BPU_T_Element_Array **a) {
     *a = NULL;
 }
 
-int BPU_elementArrayMalloc(BPU_T_Element_Array **a, int len) {
+int BPU_elementArrayMalloc(BPU_T_Element_Array **a, uint32_t len) {
     *a = (BPU_T_Element_Array *) calloc(sizeof(BPU_T_Element_Array), 1);
 
     if (!*a) {
@@ -140,14 +140,14 @@ int BPU_elementArrayMalloc(BPU_T_Element_Array **a, int len) {
     return BPU_elementArrayMallocElements(*a, len);
 }
 
-int BPU_elementArrayResize(BPU_T_Element_Array *a, int len) {
+int BPU_elementArrayResize(BPU_T_Element_Array *a, uint32_t len) {
     if (a->elements) {
         free(a->elements);
     }
     return BPU_elementArrayMallocElements(a, len);
 }
 
-int BPU_elementArrayMallocElements(BPU_T_Element_Array *a, int len) {
+int BPU_elementArrayMallocElements(BPU_T_Element_Array *a, uint32_t len) {
     // element size in bits
     a->element_bit_size = sizeof(BPU_T_Element) * 8;
 
@@ -155,7 +155,7 @@ int BPU_elementArrayMallocElements(BPU_T_Element_Array *a, int len) {
     a->len = len;
 
     // calc how many elements of set size will be in one row
-    int modul = 0;
+    uint32_t modul = 0;
 
     if (len % a->element_bit_size > 0) {
         modul = 1;

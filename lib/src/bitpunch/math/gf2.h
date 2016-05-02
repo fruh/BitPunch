@@ -307,7 +307,7 @@ void BPU_gf2SparseQcMatrixFree(BPU_T_GF2_Sparse_Qc_Matrix *v, int is_dyn);
  * @return 1 - is set, else zero
  */
  /// Check if is set bit at n-th index.
-#define BPU_getBit(w, n) ((int)((((uint32_t)w) >> (n)) & 1u))
+//#define BPU_getBit(w, n) ((int)((((uint32_t)w) >> (n)) & 1u))
 
 /**
  * Check if is set bit at s, t position in matrix.
@@ -530,7 +530,7 @@ int BPU_gf2VecXor(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in);
  * @param  w weight of vector, if 0 weight is random
  * @return     0 - succes, else error
  */
-int BPU_gf2VecRand(BPU_T_GF2_Vector *out, int w);
+int BPU_gf2VecRand(BPU_T_GF2_Vector *out, uint32_t w);
 
 /**
 * Vector and matrix multiplication over GF2.

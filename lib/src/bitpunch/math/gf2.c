@@ -325,8 +325,8 @@ void BPU_gf2QcMatrixFree(BPU_T_GF2_QC_Matrix *v, int is_dyn) {
     free (v);
 }
 
-int BPU_gf2VecRand(BPU_T_GF2_Vector *out, int w) {
-	int i, j;
+int BPU_gf2VecRand(BPU_T_GF2_Vector *out, uint32_t w) {
+    uint32_t i, j;
 
 	if (w > out->len) {
 		BPU_printError("weight error w > l");

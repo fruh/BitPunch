@@ -32,7 +32,7 @@ typedef uint16_t BPU_T_Element;
 typedef struct _BPU_T_Element_Array {
     BPU_T_Element *elements; ///< element stored in the array
     uint8_t element_bit_size; ///< element size e.g., 16 bits
-    uint16_t array_length; ///< number of elements in the array
+    uint32_t array_length; ///< number of elements in the array
     uint32_t len; ///< bit length of the element
 }BPU_T_Element_Array;
 
@@ -139,7 +139,7 @@ void BPU_printElementArrayOnes(const BPU_T_Element_Array *a);
  * @return 1 - is set, else zero
  */
  /// Check if is set bit at n-th index.
-#define BPU_getBit(w, n) ((int)((((uint32_t)w) >> (n)) & 1u))
+#define BPU_getBit(w, n) ((uint32_t)((((uint32_t)w) >> (n)) & 1u))
 
 /**
 * Check if is set bit at s, t position in vector.
@@ -183,7 +183,7 @@ void BPU_elementArrayFree(BPU_T_Element_Array **a);
  * @param len len of vector
  * @return on succes 0, else error
  */
-int BPU_elementArrayMalloc(BPU_T_Element_Array **a, int len);
+int BPU_elementArrayMalloc(BPU_T_Element_Array **a, uint32_t len);
 
 /**
  * @brief Resize element array.
@@ -191,7 +191,7 @@ int BPU_elementArrayMalloc(BPU_T_Element_Array **a, int len);
  * @param len
  * @return
  */
-int BPU_elementArrayResize(BPU_T_Element_Array *a, int len);
+int BPU_elementArrayResize(BPU_T_Element_Array *a, uint32_t len);
 
 /**
  * @brief Malloc array elements and set to zero.
@@ -199,6 +199,6 @@ int BPU_elementArrayResize(BPU_T_Element_Array *a, int len);
  * @param len
  * @return
  */
-int BPU_elementArrayMallocElements(BPU_T_Element_Array *a, int len);
+int BPU_elementArrayMallocElements(BPU_T_Element_Array *a, uint32_t len);
 
 #endif // BPU_UNI_H
