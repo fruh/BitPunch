@@ -30,7 +30,7 @@ if [ $? != 0 ]; then
         echo "ERROR: building target static-lib"
         exit 2
 fi
-gcc -Isrc/ $TESTFILE_DIR/testFoo.c ./dist/libbpumecs.a -o $APP || exit 1
+gcc -Isrc/ $TESTFILE_DIR/testFoo.c ./dist/libbpumecs.a -o $APP -lm || exit 1
 
 # run app
 $APP
