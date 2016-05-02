@@ -12,6 +12,7 @@ ehthumbs.db
 Thumbs.db
 ~*
 massif.*
+*~
 
 # object files
 *.o
