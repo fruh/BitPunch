@@ -38,7 +38,7 @@ int BPU_mecsEncrypt(BPU_T_GF2_Vector * ct, const BPU_T_GF2_Vector * pt,
 
 #ifdef BPU_CONF_DECRYPTION
 
-int BPU_mecsDecrypt(BPU_T_GF2_Vector * pt, BPU_T_GF2_Vector * ct,
+int BPU_mecsDecrypt(BPU_T_GF2_Vector * pt, BPU_T_GF2_Vector *error, BPU_T_GF2_Vector * ct,
                     const BPU_T_Mecs_Ctx * ctx);
 #endif
 

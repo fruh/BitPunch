@@ -25,7 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef BPU_CONF_ENCRYPTION
 int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
                                    const BPU_T_GF2_Vector * in,
-                                   const BPU_T_Mecs_Ctx * ctx) {
+                                   const BPU_T_Mecs_Ctx * ctx,
+                                   BPU_T_GF2_Vector * error) {
     BPU_T_GF2_Vector *r1, *r2, *cca2_pt, *hash, *hash_in, *enc_pt, *tmp;
     int rc = 0;
 
@@ -49,7 +50,7 @@ int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
     BPU_gf2VecMalloc(&enc_pt, ctx->code_ctx->code_len);
 
     // encrypt with basic MECS
-    if (BPU_mecsBasicEncrypt(enc_pt, cca2_pt, ctx)) {
+    if (BPU_mecsBasicEncrypt(enc_pt, cca2_pt, ctx, NULL)) {
         return -1;
     }
     BPU_gf2VecFree(&cca2_pt);
@@ -62,7 +63,7 @@ int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
     BPU_gf2VecConcat(tmp, enc_pt, hash);
     BPU_gf2VecFree(&enc_pt);
 
-    BPU_gf2VecHash(hash, ctx->code_ctx->e);
+    BPU_gf2VecHash(hash, error);
     BPU_gf2VecXor(hash, r2);
     BPU_gf2VecFree(&r2);
     BPU_gf2VecConcat(out, tmp, hash);
@@ -76,6 +77,7 @@ int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
 
 #ifdef BPU_CONF_DECRYPTION
 int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector * out,
+                                   BPU_T_GF2_Vector * error,
                                    const BPU_T_GF2_Vector * in,
                                    const BPU_T_Mecs_Ctx * ctx) {
     BPU_T_GF2_Vector *z1, *z3;  // n, l, l-bit
@@ -96,7 +98,7 @@ int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector * out,
 
     BPU_gf2VecMalloc(&pt_cca2, ctx->code_ctx->msg_len);
     // decrypt z1 using basic mecs  Reconstruct the CCA2-safe plaintext m′ = z1 ⊕ e
-    if (BPU_mecsBasicDecrypt(pt_cca2, z1, ctx)) {
+    if (BPU_mecsBasicDecrypt(pt_cca2, error, z1, ctx)) {
         return -1;
     }
     BPU_gf2VecFree(&z1);
@@ -114,7 +116,7 @@ int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector * out,
     BPU_gf2VecXor(out, h_tmp);
 
     // Determine check value h′ = hash (m ∥ hash (e) ⊕ z3 ).
-    BPU_gf2VecHash(h_tmp, ctx->code_ctx->e);
+    BPU_gf2VecHash(h_tmp, error);
     BPU_gf2VecXor(h_tmp, z3);
     BPU_gf2VecFree(&z3);
 

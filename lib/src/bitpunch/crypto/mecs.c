@@ -43,9 +43,9 @@ int BPU_mecsEncrypt(BPU_T_GF2_Vector * ct, const BPU_T_GF2_Vector * pt,
  * @return     0 - succes, else error
  */
 /// Decrypt cipher text (ct) and save it to plain text.
-int BPU_mecsDecrypt(BPU_T_GF2_Vector * pt, BPU_T_GF2_Vector * ct,
-                    const BPU_T_Mecs_Ctx * ctx) {
-    return ctx->_decrypt(pt, ct, ctx);
+int BPU_mecsDecrypt(BPU_T_GF2_Vector * pt, BPU_T_GF2_Vector * error,
+                    BPU_T_GF2_Vector * ct, const BPU_T_Mecs_Ctx * ctx) {
+    return ctx->_decrypt(pt, error, ct, ctx);
 }
 
 /**

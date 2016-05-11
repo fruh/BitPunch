@@ -37,7 +37,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
                                    const BPU_T_GF2_Vector * in,
-                                   const BPU_T_Mecs_Ctx * ctx);
+                                   const BPU_T_Mecs_Ctx * ctx,
+                                   BPU_T_GF2_Vector * error);
 #endif
 
 #ifdef BPU_CONF_DECRYPTION
@@ -49,6 +50,7 @@ int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
  * @return
  */
 int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector * out,
+                                   BPU_T_GF2_Vector *error,
                                    const BPU_T_GF2_Vector * in,
                                    const BPU_T_Mecs_Ctx * ctx);
 #endif

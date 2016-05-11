@@ -68,11 +68,12 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
 #endif
 
 #ifdef BPU_CONF_DECRYPTION
-int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
+int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector * out,
+                         BPU_T_GF2_Vector * error,
+                         const BPU_T_GF2_Vector * in,
                          const BPU_T_Mecs_Ctx * ctx) {
     int rc = 0;
     BPU_T_GF2_Vector *temp;
-    BPU_T_GF2_Vector *error;
 
     BPU_gf2VecMalloc(&temp, in->len);
     BPU_gf2VecCopy(temp, in);

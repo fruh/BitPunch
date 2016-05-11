@@ -23,7 +23,7 @@
 #include <time.h>
 
 int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
-    BPU_T_GF2_Vector *ct, *pt_in, *pt_out;
+    BPU_T_GF2_Vector *ct, *pt_in, *pt_out, *error;
     int rc = 0;
 
     fprintf(stderr, "Key generation...\n");
@@ -63,7 +63,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
     }
 
     fprintf(stderr, "Decryption...\n");
-    if (BPU_mecsDecrypt(pt_out, ct, ctx)) {
+    if (BPU_mecsDecrypt(pt_out, error, ct, ctx)) {
         BPU_printError("Decryption error");
 
         BPU_gf2VecFree(&ct);
