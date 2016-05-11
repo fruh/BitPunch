@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     // MUST BE INITIALIZED TO NULL
     BPU_T_Mecs_Ctx *ctx = NULL;
     BPU_T_UN_Mecs_Params params;
-    BPU_T_GF2_Vector *ct, *pt;
+    BPU_T_GF2_Vector *ct, *pt, *error = NULL;
     int i;
     struct timeval tv, tv_end;
     double res = 0;
@@ -57,14 +57,14 @@ int main(int argc, char **argv) {
         BPU_gf2VecRand(pt, 0);
 
         gettimeofday(&tv, NULL);
-        BPU_mecsEncrypt(ct, pt, ctx);
+        BPU_mecsEncrypt(ct, pt, ctx, error);
         gettimeofday(&tv_end, NULL);
         res_2 +=
             (tv_end.tv_sec - tv.tv_sec +
              ((tv_end.tv_usec - tv.tv_usec) / (double) 1000000));
 
         gettimeofday(&tv, NULL);
-        BPU_mecsDecrypt(pt, ct, ctx);
+        BPU_mecsDecrypt(pt, error, ct, ctx);
         gettimeofday(&tv_end, NULL);
         res_3 +=
             (tv_end.tv_sec - tv.tv_sec +

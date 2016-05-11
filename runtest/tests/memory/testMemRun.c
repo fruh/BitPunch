@@ -27,7 +27,7 @@
 
 int testKeyGenEncDec(BPU_T_Mecs_Ctx *ctx) {
 //    BPU_T_Mecs_Ctx *ctx = NULL;
-    BPU_T_GF2_Vector *ct, *pt_in, *pt_out;
+    BPU_T_GF2_Vector *ct, *pt_in, *pt_out, *error = NULL;
 	int rc = 0;
 
 	/***************************************/
@@ -64,7 +64,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx *ctx) {
 	/***************************************/
 	fprintf(stderr, "Encryption...\n");
 	// BPU_encrypt plain text
-    if (BPU_mecsEncrypt(ct, pt_in, ctx)) {
+    if (BPU_mecsEncrypt(ct, pt_in, ctx, NULL)) {
 		BPU_printError("Encryption error");
 
         BPU_gf2VecFree(&ct);
@@ -76,7 +76,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx *ctx) {
 	/***************************************/
 	fprintf(stderr, "Decryption...\n");
 	// decrypt cipher text
-    if (BPU_mecsDecrypt(pt_out, ct, ctx)) {
+    if (BPU_mecsDecrypt(pt_out, error, ct, ctx)) {
 		BPU_printError("Decryption error");
 
         BPU_gf2VecFree(&ct);
