@@ -1,6 +1,7 @@
 /*
  This file is part of BitPunch
  Copyright (C) 2015 Frantisek Uhrecky <frantisek.uhrecky[what here]gmail.com>
+ Copyright (C) 2016 Marek Klein <kleinmrk[what here]gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -22,5 +23,10 @@
 #include "debugio.h"
 
 #include <bitpunch/crypto/mecs.h>
+
+#define BPU_SUCCESS 0
+#define BPU_ERROR -1
+
+#define BPU_SAFE_FREE(function, pointer) do { if(NULL != pointer) { function(pointer); pointer = NULL; } } while(0)
 
 #endif // BITPUNCH_H
