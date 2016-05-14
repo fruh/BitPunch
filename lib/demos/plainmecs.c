@@ -96,16 +96,22 @@ err:
 int main(int argc, char **argv) {
     int rc = BPU_ERROR;
     BPU_T_Mecs_Ctx *ctx = NULL; // MUST BE NULL
-    BPU_T_UN_Mecs_Params params;
+    BPU_T_UN_Mecs_Params *params = NULL;
 
     srand(time(NULL));
 
-    fprintf(stderr, "Basic GOPPA Initialisation...\n");
-    if (BPU_ERROR == BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
+    params = (BPU_T_UN_Mecs_Params*)calloc(1, sizeof(BPU_T_UN_Mecs_Params));
+    if (NULL == params) {
+        BPU_printError("calloc failed");
         goto err;
     }
 
-    if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {
+    fprintf(stderr, "Basic GOPPA Initialisation...\n");
+    if (BPU_ERROR == BPU_mecsInitParamsGoppa(params, 11, 50, 0)) {
+        goto err;
+    }
+
+    if (BPU_mecsInitCtx(&ctx, params, BPU_EN_MECS_BASIC_GOPPA)) {
         goto err;
     }
 
