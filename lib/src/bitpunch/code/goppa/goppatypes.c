@@ -45,9 +45,7 @@ int BPU_goppaInitParams(BPU_T_Goppa_Params ** params, const uint16_t m,
         goto err;
     }
 
-
     params_local = (BPU_T_Goppa_Params *) calloc(sizeof(BPU_T_Goppa_Params), 1);
-
     if (NULL == params_local) {
         BPU_printError("Unable to allocate memory");
         goto err;
@@ -66,9 +64,10 @@ err:
     return rv;
 }
 
-void BPU_goppaFreeParams(BPU_T_Goppa_Params ** params) {
-    if (*params) {
-        free(*params);
+void BPU_goppaFreeParams(BPU_T_Goppa_Params * params) {
+    if (NULL == params) {
+        return;
     }
-    *params = NULL;
+
+    BPU_SAFE_FREE(free, params);
 }
