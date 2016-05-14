@@ -205,7 +205,7 @@ void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params * params) {
         return;
     }
 
-    BPU_goppaFreeParams(&params->goppa);
+    BPU_SAFE_FREE(BPU_goppaFreeParams, params->goppa);
 }
 
 int BPU_codeInitParamsQcmdpc(BPU_T_UN_Code_Params * params, const uint16_t m,
