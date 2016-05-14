@@ -46,7 +46,7 @@ int BPU_goppaEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
 
         return -1;
     }
-    BPU_gf2VecMalloc(&tmp, ctx->code_spec->goppa->g_mat->k);
+    BPU_gf2VecNew(&tmp, ctx->code_spec->goppa->g_mat->k);
     for (j = 0; j < ctx->code_spec->goppa->g_mat->k; j++) {
         out_dword = 0;
         for (i = 0; i < ctx->code_spec->goppa->g_mat->elements_in_row; i++) {
@@ -76,7 +76,7 @@ int BPU_goppaDecode(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
     rc = BPU_goppaGetError(error, in, ctx);
 
     // remove error
-    rc += BPU_gf2VecMalloc(&orig_enc, in->len);
+    rc += BPU_gf2VecNew(&orig_enc, in->len);
     BPU_gf2VecCopy(orig_enc, in);
     rc += BPU_gf2VecXor(orig_enc, error);
 
@@ -98,7 +98,7 @@ int BPU_goppaGetError(BPU_T_GF2_Vector * error,
     BPU_T_GF2_Vector *enc_permuted;
 
     // permute code word
-    BPU_gf2VecMalloc(&enc_permuted, encoded->len);
+    BPU_gf2VecNew(&enc_permuted, encoded->len);
     BPU_gf2VecCopy(enc_permuted, encoded);
 
     BPU_permMalloc(&inv_perm, ctx->code_spec->goppa->permutation->size);

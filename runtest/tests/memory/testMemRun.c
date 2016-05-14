@@ -40,7 +40,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx *ctx) {
 	}
 	/***************************************/
 	// prepare plain text, allocate memory and init random plaintext
-	if (BPU_gf2VecMalloc(&pt_in, ctx->pt_len)) {
+	if (BPU_gf2VecNew(&pt_in, ctx->pt_len)) {
 		BPU_printError("PT initialisation error");
 
 		return 1;
@@ -48,14 +48,14 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx *ctx) {
     BPU_gf2VecRand(pt_in, 0);
 
 	// alocate cipher text vector
-	if (BPU_gf2VecMalloc(&ct, ctx->ct_len)) {
+	if (BPU_gf2VecNew(&ct, ctx->ct_len)) {
 		BPU_printError("CT vector allocation error");
 
         BPU_gf2VecFree(&pt_in);
 		return 1;
 	}
 	// prepare plain text, allocate memory and init random plaintext
-	if (BPU_gf2VecMalloc(&pt_out, ctx->pt_len)) {
+	if (BPU_gf2VecNew(&pt_out, ctx->pt_len)) {
 		BPU_printError("PT out initialisation error");
 
 		return 1;

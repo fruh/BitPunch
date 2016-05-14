@@ -207,7 +207,7 @@ int BPU_gf2MatMalloc(BPU_T_GF2_Matrix ** m, int rows, int cols);
  * @param len len of vector
  * @return on succes 0, else error
  */
-#define BPU_gf2VecMalloc(v_double_pointer, len) BPU_elementArrayMalloc(v_double_pointer, len)
+#define BPU_gf2VecNew(v_double_pointer, len) BPU_elementArrayMalloc(v_double_pointer, len)
 
 /**
  * @brief BPU_gf2VecResize Resize vecor.

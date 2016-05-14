@@ -392,7 +392,7 @@ int BPU_gf2VecPermute(BPU_T_GF2_Vector * vec,
     int i;
     BPU_T_GF2_Vector *tmp;
 
-    BPU_gf2VecMalloc(&tmp, vec->len);
+    BPU_gf2VecNew(&tmp, vec->len);
 
     for (i = 0; i < permutation->size; i++) {
         BPU_gf2VecSetBit(tmp, i,
@@ -660,7 +660,7 @@ int BPU_gf2MatPermute(BPU_T_GF2_Matrix * inout, BPU_T_Perm_Vector * permutation)
     }
     length = inout->elements_in_row * (inout->element_bit_size / 8);
 
-    BPU_gf2VecMalloc(&vector, permutation->size);
+    BPU_gf2VecNew(&vector, permutation->size);
 
     for (i = 0; i < inout->k; i++) {
         memcpy((vector->elements), inout->elements[i], length);
@@ -678,8 +678,8 @@ int BPU_gf2MatCrop(BPU_T_GF2_Matrix * m, uint16_t width) {
     int length, i, new_length;
 
     length = m->elements_in_row * (m->element_bit_size / 8);
-    BPU_gf2VecMalloc(&row, m->n);
-    BPU_gf2VecMalloc(&cropped_row, width);
+    BPU_gf2VecNew(&row, m->n);
+    BPU_gf2VecNew(&cropped_row, width);
     new_length = cropped_row->array_length * (m->element_bit_size / 8);
     for (i = 0; i < m->k; i++) {
         memcpy(row->elements, m->elements[i], length);
