@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <bitpunch/bitpunch.h>
 #include <bitpunch/code/goppa/goppatypes.h>
 #include <bitpunch/debugio.h>
 
@@ -35,18 +36,34 @@ void BPU_goppaFreeSpec(BPU_T_Goppa_Spec * spec) {
 
 int BPU_goppaInitParams(BPU_T_Goppa_Params ** params, const uint16_t m,
                         const uint16_t t, const BPU_T_GF2_16x mod) {
-    *params = (BPU_T_Goppa_Params *) calloc(sizeof(BPU_T_Goppa_Params), 1);
+    BPU_T_Goppa_Params *params_local = NULL;
+    int rv = BPU_ERROR;
 
-    if (!params) {
-        BPU_printError("Can't init Code params");
-
-        return -1;
+    if (params == NULL)
+    {
+        BPU_printError("Invalid input parameter \"%s\"", "params");
+        goto err;
     }
-    (*params)->m = m;
-    (*params)->t = t;
-    (*params)->mod = mod;
 
-    return 0;
+
+    params_local = (BPU_T_Goppa_Params *) calloc(sizeof(BPU_T_Goppa_Params), 1);
+
+    if (NULL == params_local) {
+        BPU_printError("Unable to allocate memory");
+        goto err;
+    }
+
+    params_local->m = m;
+    params_local->t = t;
+    params_local->mod = mod;
+
+    *params = params_local;
+    params_local = NULL;
+
+    rv = BPU_SUCCESS;
+err:
+    BPU_SAFE_FREE(free, params_local);
+    return rv;
 }
 
 void BPU_goppaFreeParams(BPU_T_Goppa_Params ** params) {
