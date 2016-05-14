@@ -168,7 +168,7 @@ int BPU_mecsInitCtx(BPU_T_Mecs_Ctx ** ctx, const BPU_T_UN_Mecs_Params * params,
 
 void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx) {
     if (NULL == ctx) {
-        return 0;
+        return;
     }
 
     switch (ctx->type) {
