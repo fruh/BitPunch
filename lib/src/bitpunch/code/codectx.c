@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <bitpunch/bitpunch.h>
 #include <bitpunch/code/codectx.h>
 
 #include <stdlib.h>
@@ -183,6 +184,7 @@ void BPU_codeFreeCtx(BPU_T_Code_Ctx ** ctx) {
     default:
         BPU_printError("Code type not supported: %d", ctx_p->type);
     }
+
     BPU_mathFreeCtx(&ctx_p->math_ctx);
 
     free(ctx_p->code_spec);
@@ -192,10 +194,19 @@ void BPU_codeFreeCtx(BPU_T_Code_Ctx ** ctx) {
 
 int BPU_codeInitParamsGoppa(BPU_T_UN_Code_Params * params, const uint16_t m,
                             const uint16_t t, const BPU_T_GF2_16x mod) {
+    if (NULL == params) {
+        BPU_printError("Invalid input parameter \"%s\"", "params")
+        return BPU_ERROR;
+    }
+
     return BPU_goppaInitParams(&params->goppa, m, t, mod);
 }
 
 void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params * params) {
+    if (NULL == params) {
+        return;
+    }
+
     BPU_goppaFreeParams(&params->goppa);
 }
 
