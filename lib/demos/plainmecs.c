@@ -44,13 +44,12 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
 
     if (BPU_gf2VecNew(&ct, ctx->ct_len)) {
         BPU_printError("CT vector allocation error");
-        BPU_gf2VecFree(&pt_in);
-        return 1;
+        goto err;
     }
 
     if (BPU_gf2VecNew(&pt_out, ctx->pt_len)) {
         BPU_printError("PT out initialisation error");
-        return 1;
+        goto err;
     }
 
     BPU_gf2VecRand(pt_out, 0);
@@ -58,27 +57,23 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
     fprintf(stderr, "Encryption...\n");
     if (BPU_mecsEncrypt(ct, pt_in, ctx, NULL)) {
         BPU_printError("Encryption error");
-
-        BPU_gf2VecFree(&ct);
-        BPU_gf2VecFree(&pt_in);
-        BPU_gf2VecFree(&pt_out);
-        return 1;
+        goto err;
     }
 
     fprintf(stderr, "Decryption...\n");
+
+    if (BPU_gf2VecNew(&error, ct->len)) {
+        goto err;
+    }
+
     if (BPU_mecsDecrypt(pt_out, error, ct, ctx)) {
         BPU_printError("Decryption error");
-
-        BPU_gf2VecFree(&ct);
-        BPU_gf2VecFree(&pt_in);
-        BPU_gf2VecFree(&pt_out);
-        return 1;
+        goto err;
     }
 
     if (BPU_gf2VecCmp(pt_in, pt_out)) {
         BPU_printError("\nOutput plain text differs from input");
-
-        rc = 2;
+        goto err;
     }
     else {
         fprintf(stderr,
@@ -88,9 +83,10 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
     rc = BPU_SUCCESS;
 err:
     fprintf(stderr, "\nCleaning up...\n");
-    BPU_gf2VecFree(&pt_in);
-    BPU_gf2VecFree(&pt_out);
-    BPU_gf2VecFree(&ct);
+    BPU_gf2VecFree(pt_in);
+    BPU_gf2VecFree(pt_out);
+    BPU_gf2VecFree(ct);
+    BPU_gf2VecFree(error);
     return rc;
 }
 
@@ -98,6 +94,7 @@ int main(int argc, char **argv) {
     int rc = BPU_ERROR;
     BPU_T_Mecs_Ctx *ctx = NULL; // MUST BE NULL
     BPU_T_UN_Mecs_Params *params = NULL;
+    BPU_T_UN_Mecs_Params *params_tmp = NULL;
 
     srand(time(NULL));
 
@@ -126,5 +123,8 @@ int main(int argc, char **argv) {
     rc = BPU_SUCCESS;
 err:
     BPU_SAFE_FREE(BPU_mecsFreeCtx, ctx);
+    params_tmp = params;
+    BPU_SAFE_FREE(BPU_mecsFreeParamsGoppa, params);
+    BPU_SAFE_FREE(free, params_tmp);
     return rc;
 }

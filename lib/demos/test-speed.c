@@ -70,8 +70,8 @@ int main(int argc, char **argv) {
             (tv_end.tv_sec - tv.tv_sec +
              ((tv_end.tv_usec - tv.tv_usec) / (double) 1000000));
 
-        BPU_gf2VecFree(&pt);
-        BPU_gf2VecFree(&ct);
+        BPU_gf2VecFree(pt);
+        BPU_gf2VecFree(ct);
         BPU_mecsFreeCtx(&ctx);
         BPU_mecsFreeParamsGoppa(&params);
     }

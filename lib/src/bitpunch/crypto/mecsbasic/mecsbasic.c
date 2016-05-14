@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <bitpunch/bitpunch.h>
 #include <bitpunch/crypto/mecsbasic/mecsbasic.h>
 
 #include <bitpunch/math/gf2.h>
@@ -63,6 +64,11 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
         BPU_printError("can not add error vector");
         return rc;
     }
+
+    if (NULL == error) {
+        BPU_SAFE_FREE(BPU_gf2VecFree, local_error);
+    }
+
     return rc;
 }
 #endif
@@ -78,11 +84,9 @@ int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector * out,
     BPU_gf2VecNew(&temp, in->len);
     BPU_gf2VecCopy(temp, in);
 
-    BPU_gf2VecNew(&error, in->len);
-
     rc = ctx->code_ctx->_decode(out, error, temp, ctx->code_ctx);
 
-    BPU_gf2VecFree(&temp);
+    BPU_gf2VecFree(temp);
 
     return rc;
 }

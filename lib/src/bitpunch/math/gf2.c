@@ -400,7 +400,7 @@ int BPU_gf2VecPermute(BPU_T_GF2_Vector * vec,
     }
     BPU_gf2VecCopy(vec, tmp);
 
-    BPU_gf2VecFree(&tmp);
+    BPU_gf2VecFree(tmp);
 
     return 0;
 }
@@ -669,7 +669,7 @@ int BPU_gf2MatPermute(BPU_T_GF2_Matrix * inout, BPU_T_Perm_Vector * permutation)
             BPU_gf2MatSetBit(inout, i, j, bit);
         }
     }
-    BPU_gf2VecFree(&vector);
+    BPU_gf2VecFree(vector);
     return 0;
 }
 
@@ -691,8 +691,8 @@ int BPU_gf2MatCrop(BPU_T_GF2_Matrix * m, uint16_t width) {
     m->n = cropped_row->len;
     m->elements_in_row = cropped_row->array_length;
 
-    BPU_gf2VecFree(&row);
-    BPU_gf2VecFree(&cropped_row);
+    BPU_gf2VecFree(row);
+    BPU_gf2VecFree(cropped_row);
 
     return 0;
 }

@@ -51,7 +51,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx *ctx) {
 	if (BPU_gf2VecNew(&ct, ctx->ct_len)) {
 		BPU_printError("CT vector allocation error");
 
-        BPU_gf2VecFree(&pt_in);
+        BPU_gf2VecFree(pt_in);
 		return 1;
 	}
 	// prepare plain text, allocate memory and init random plaintext
@@ -67,9 +67,9 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx *ctx) {
     if (BPU_mecsEncrypt(ct, pt_in, ctx, NULL)) {
 		BPU_printError("Encryption error");
 
-        BPU_gf2VecFree(&ct);
-        BPU_gf2VecFree(&pt_in);
-        BPU_gf2VecFree(&pt_out);
+        BPU_gf2VecFree(ct);
+        BPU_gf2VecFree(pt_in);
+        BPU_gf2VecFree(pt_out);
 		return 1;
 	}
 	// exit(0);
@@ -79,9 +79,9 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx *ctx) {
     if (BPU_mecsDecrypt(pt_out, error, ct, ctx)) {
 		BPU_printError("Decryption error");
 
-        BPU_gf2VecFree(&ct);
-        BPU_gf2VecFree(&pt_in);
-        BPU_gf2VecFree(&pt_out);
+        BPU_gf2VecFree(ct);
+        BPU_gf2VecFree(pt_in);
+        BPU_gf2VecFree(pt_out);
 		return 1;
 	}
 	/***************************************/
@@ -98,9 +98,9 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx *ctx) {
 	// clean up
 	/***************************************/
 	fprintf(stderr, "\nCleaning up...\n");
-    BPU_gf2VecFree(&pt_in);
-    BPU_gf2VecFree(&pt_out);
-    BPU_gf2VecFree(&ct);
+    BPU_gf2VecFree(pt_in);
+    BPU_gf2VecFree(pt_out);
+    BPU_gf2VecFree(ct);
 	return rc;
 }
 

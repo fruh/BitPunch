@@ -43,9 +43,9 @@ int main(int argc, char **argv) {
     BPU_printElementArray(b);
     BPU_printElementArray(c);
 #endif
-    BPU_bigintFree(&a);
-    BPU_bigintFree(&b);
-    BPU_bigintFree(&c);
+    BPU_bigintFree(a);
+    BPU_bigintFree(b);
+    BPU_bigintFree(c);
 
     return 0;
 }

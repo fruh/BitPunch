@@ -28,7 +28,7 @@ int BPU_bigintAdd(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b);
 
 #define BPU_bigintMalloc(b_double_pointer, len) BPU_elementArrayMalloc(b_double_pointer, len)
 
-#define BPU_bigintFree(b_double_pointer) BPU_elementArrayFree(b_double_pointer);
+#define BPU_bigintFree(b_pointer) BPU_elementArrayFree(b_pointer);
 
 /**
 * @brief BPU_gf2VecResize Resize vecor.

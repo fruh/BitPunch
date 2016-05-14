@@ -42,7 +42,7 @@ int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
     BPU_gf2VecConcat(hash_in, in, r2);
 
     BPU_gf2VecHash(hash, hash_in);
-    BPU_gf2VecFree(&hash_in);
+    BPU_gf2VecFree(hash_in);
 
     BPU_gf2VecNew(&cca2_pt, r1->len + hash->len);
     BPU_gf2VecConcat(cca2_pt, r1, hash);
@@ -53,23 +53,23 @@ int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
     if (BPU_mecsBasicEncrypt(enc_pt, cca2_pt, ctx, NULL)) {
         return -1;
     }
-    BPU_gf2VecFree(&cca2_pt);
+    BPU_gf2VecFree(cca2_pt);
 
     // add CCA2-safe data extension z = (z′ ⊕ e) ∥ (hash (r1) ⊕ m) ∥ (hash (e) ⊕ r2 )
     BPU_gf2VecNew(&tmp, enc_pt->len + hash->len);
     BPU_gf2VecHash(hash, r1);
-    BPU_gf2VecFree(&r1);
+    BPU_gf2VecFree(r1);
     BPU_gf2VecXor(hash, in);
     BPU_gf2VecConcat(tmp, enc_pt, hash);
-    BPU_gf2VecFree(&enc_pt);
+    BPU_gf2VecFree(enc_pt);
 
     BPU_gf2VecHash(hash, error);
     BPU_gf2VecXor(hash, r2);
-    BPU_gf2VecFree(&r2);
+    BPU_gf2VecFree(r2);
     BPU_gf2VecConcat(out, tmp, hash);
 
-    BPU_gf2VecFree(&hash);
-    BPU_gf2VecFree(&tmp);
+    BPU_gf2VecFree(hash);
+    BPU_gf2VecFree(tmp);
 
     return rc;
 }
@@ -101,37 +101,37 @@ int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector * out,
     if (BPU_mecsBasicDecrypt(pt_cca2, error, z1, ctx)) {
         return -1;
     }
-    BPU_gf2VecFree(&z1);
+    BPU_gf2VecFree(z1);
 
     BPU_gf2VecNew(&r, ctx->code_ctx->msg_len - ctx->pt_len);
     BPU_gf2VecNew(&h, ctx->pt_len);
     BPU_gf2VecCrop(r, pt_cca2, 0, r->len);
     BPU_gf2VecCrop(h, pt_cca2, r->len, h->len);
-    BPU_gf2VecFree(&pt_cca2);
+    BPU_gf2VecFree(pt_cca2);
 
     BPU_gf2VecNew(&h_tmp, ctx->pt_len);
     // Reconstruct plaintext candidate m = z2 ⊕ hash (r)
     BPU_gf2VecHash(h_tmp, r);
-    BPU_gf2VecFree(&r);
+    BPU_gf2VecFree(r);
     BPU_gf2VecXor(out, h_tmp);
 
     // Determine check value h′ = hash (m ∥ hash (e) ⊕ z3 ).
     BPU_gf2VecHash(h_tmp, error);
     BPU_gf2VecXor(h_tmp, z3);
-    BPU_gf2VecFree(&z3);
+    BPU_gf2VecFree(z3);
 
     BPU_gf2VecNew(&tmp_2, ctx->pt_len * 2);
     BPU_gf2VecConcat(tmp_2, out, h_tmp);
     BPU_gf2VecHash(h_tmp, tmp_2);
-    BPU_gf2VecFree(&tmp_2);
+    BPU_gf2VecFree(tmp_2);
 
     if (BPU_gf2VecCmp(h, h_tmp)) {
         BPU_printError("Wrong check value.");
 
         rc = -1;
     }
-    BPU_gf2VecFree(&h);
-    BPU_gf2VecFree(&h_tmp);
+    BPU_gf2VecFree(h);
+    BPU_gf2VecFree(h_tmp);
     return rc;
 }
 #endif // BPU_CONF_DECRYPTION

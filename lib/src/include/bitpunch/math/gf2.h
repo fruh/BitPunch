@@ -192,7 +192,7 @@ void BPU_gf2MatFree(BPU_T_GF2_Matrix ** m);
  * @param[out] *m address of vector object
  */
 /// Free dynamically or statically allocated vector
-#define BPU_gf2VecFree(v_double_pointer) BPU_elementArrayFree(v_double_pointer)
+#define BPU_gf2VecFree(v_pointer) BPU_elementArrayFree(v_pointer)
 
 /**
  * Allocate memory for matrix GF2. It also nulls new matrix. After work you have to free memory using call BPU_freeMatGF2

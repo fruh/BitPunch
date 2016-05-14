@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <bitpunch/bitpunch.h>
 #include <bitpunch/math/uni.h>
 
 #include <bitpunch/debugio.h>
@@ -122,13 +123,13 @@ void BPU_printElementArrayOnes(const BPU_T_Element_Array * a) {
 /* ------------------------------------ Print functions ------------------------------------ */
 #endif // BPU_CONF_PRINT
 
-void BPU_elementArrayFree(BPU_T_Element_Array ** a) {
-    if (!*a) {
+void BPU_elementArrayFree(BPU_T_Element_Array * a) {
+    if (NULL == a) {
         return;
     }
-    free((*a)->elements);
-    free(*a);
-    *a = NULL;
+
+    BPU_SAFE_FREE(free, a->elements);
+    free(a);
 }
 
 int BPU_elementArrayMalloc(BPU_T_Element_Array ** a, uint32_t len) {

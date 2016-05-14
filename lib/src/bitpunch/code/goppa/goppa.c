@@ -58,7 +58,7 @@ int BPU_goppaEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
     }
 
     rc += BPU_gf2VecConcat(out, tmp, in);
-    BPU_gf2VecFree(&tmp);
+    BPU_gf2VecFree(tmp);
 
     return rc;
 }
@@ -82,7 +82,7 @@ int BPU_goppaDecode(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
 
     // get message
     rc += BPU_gf2VecCrop(out, orig_enc, in->len - ctx->msg_len, ctx->msg_len);
-    BPU_gf2VecFree(&orig_enc);
+    BPU_gf2VecFree(orig_enc);
 
     return rc;
 }
@@ -109,7 +109,7 @@ int BPU_goppaGetError(BPU_T_GF2_Vector * error,
     // Beginning of patterson
     BPU_gf2xPolyMalloc(&syndrome, ctx->code_spec->goppa->g->deg - 1);
     BPU_goppaDetSyndrome(syndrome, enc_permuted, ctx);
-    BPU_gf2VecFree(&enc_permuted);
+    BPU_gf2VecFree(enc_permuted);
 
     BPU_gf2xPolyMalloc(&inv_syndrome,
                        (syndrome->deg >

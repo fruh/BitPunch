@@ -176,7 +176,7 @@ void BPU_printElementArrayOnes(const BPU_T_Element_Array * a);
  * @param[out] *m address of vector object
  */
 /// Free dynamically or statically allocated element array
-void BPU_elementArrayFree(BPU_T_Element_Array ** a);
+void BPU_elementArrayFree(BPU_T_Element_Array *a);
 
 /**
  * Allocate memory for element array. It also nulls array.
