@@ -23,20 +23,23 @@
 #include <time.h>
 
 int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
-    BPU_T_GF2_Vector *ct, *pt_in, *pt_out, *error;
-    int rc = 0;
+    BPU_T_GF2_Vector *ct = NULL;
+    BPU_T_GF2_Vector *pt_in = NULL;
+    BPU_T_GF2_Vector *pt_out = NULL;
+    BPU_T_GF2_Vector *error = NULL;
+    int rc = BPU_ERROR;
 
     fprintf(stderr, "Key generation...\n");
     if (BPU_mecsGenKeyPair(ctx)) {
         BPU_printError("Key generation error");
-        return 1;
+        goto err;
     }
 
     if (BPU_gf2VecMalloc(&pt_in, ctx->pt_len)) {
         BPU_printError("PT initialisation error");
-
-        return 1;
+        goto err;
     }
+
     BPU_gf2VecRand(pt_in, 0);
 
     if (BPU_gf2VecMalloc(&ct, ctx->ct_len)) {
@@ -82,6 +85,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
                 "\nSUCCESS: Input plain text is equal to output plain text.\n");
     }
 
+err:
     fprintf(stderr, "\nCleaning up...\n");
     BPU_gf2VecFree(&pt_in);
     BPU_gf2VecFree(&pt_out);
@@ -90,21 +94,25 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
 }
 
 int main(int argc, char **argv) {
-    int rc = 0;
-    // MUST BE NULL
-    BPU_T_Mecs_Ctx *ctx = NULL;
+    int rc = BPU_ERROR;
+    BPU_T_Mecs_Ctx *ctx = NULL; // MUST BE NULL
     BPU_T_UN_Mecs_Params params;
 
     srand(time(NULL));
+
     fprintf(stderr, "Basic GOPPA Initialisation...\n");
     if (BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
-        return 1;
+        goto err;
     }
-    if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {
-        return 1;
-    }
-    rc += testKeyGenEncDec(ctx);
-    BPU_mecsFreeCtx(&ctx);
 
+    if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {
+        goto err;
+    }
+
+    rc += testKeyGenEncDec(ctx);
+
+    rc = BPU_SUCCESS;
+err:
+    BPU_SAFE_FREE(BPU_mecsFreeCtx, ctx);
     return rc;
 }
