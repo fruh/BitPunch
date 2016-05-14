@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
     srand(time(NULL));
 
     fprintf(stderr, "Basic GOPPA Initialisation...\n");
-    if (BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
+    if (BPU_ERROR == BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
         goto err;
     }
 
