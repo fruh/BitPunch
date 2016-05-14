@@ -59,7 +59,7 @@ default: demos print-info
 demos: prepare-dir static-lib
 	$(CC) $(CFLAGS) -o $(TEST_DIR)/bigint $(DEMOS)/bigint.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 	$(CC) $(CFLAGS) -o $(TEST_DIR)/plainmecs $(DEMOS)/plainmecs.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	# $(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 test-debug: CFLAGS = -Wall -DBPU_CONF_FULL -ggdb -DDEBUG_L
 test-debug: prepare-dir static-lib
@@ -67,11 +67,11 @@ test-debug: prepare-dir static-lib
 
 test-wo-h: CFLAGS += -DBPU_CONF_GOPPA_WO_H
 test-wo-h: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/plainmecs.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 test-wo-h-debug: CFLAGS = -Wall -DBPU_CONF_FULL -ggdb -DDEBUG_L -DBPU_CONF_GOPPA_WO_H
 test-wo-h-debug: prepare-dir static-lib
-	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/main.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TEST_DIR)/BitPunch $(DEMOS)/plainmecs.c $(DIST_DIR)/libbpumecs.a $(LDFLAGS)
 
 speed-test: CFLAGS += -O3 -Wall -DBPU_CONF_FULL -DERROR_L
 speed-test: prepare-dir static-lib
