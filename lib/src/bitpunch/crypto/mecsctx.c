@@ -16,8 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <bitpunch/bitpunch.h>
 #include <bitpunch/crypto/mecsctx.h>
-
 #include <stdlib.h>
 
 #include <bitpunch/debugio.h>
@@ -166,38 +166,30 @@ int BPU_mecsInitCtx(BPU_T_Mecs_Ctx ** ctx, const BPU_T_UN_Mecs_Params * params,
     return rc;
 }
 
-int BPU_mecsFreeCtx(BPU_T_Mecs_Ctx ** ctx) {
-    BPU_T_Mecs_Ctx *ctx_p = *ctx;
-
-    if (!ctx_p) {
+void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx) {
+    if (NULL == ctx) {
         return 0;
     }
-    switch (ctx_p->type) {
+
+    switch (ctx->type) {
     case BPU_EN_MECS_BASIC_GOPPA:
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     case BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA:
 #endif
-        ctx_p->_encrypt = NULL;
-        ctx_p->_decrypt = NULL;
-        ctx_p->_genKeyPair = NULL;
-        break;
     case BPU_EN_MECS_BASIC_QCMDPC:
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC
     case BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC:
 #endif
-        ctx_p->_encrypt = NULL;
-        ctx_p->_decrypt = NULL;
-        ctx_p->_genKeyPair = NULL;
+        ctx->_encrypt = NULL;
+        ctx->_decrypt = NULL;
+        ctx->_genKeyPair = NULL;
         break;
     default:
-        BPU_printError("MECS type not supported: %d", ctx_p->type);
-        return BPU_EC_MECS_TYPE_NOT_SUPPORTED;
+        BPU_printError("MECS type not supported: %d", ctx->type);
     }
-    BPU_codeFreeCtx(&ctx_p->code_ctx);
-    free(ctx_p);
-    *ctx = NULL;
 
-    return 0;
+    BPU_SAFE_FREE(BPU_codeFreeCtx, ctx->code_ctx);
+    free(ctx);
 }
 
 int BPU_mecsInitParamsGoppa(BPU_T_UN_Mecs_Params * params, const uint16_t m,

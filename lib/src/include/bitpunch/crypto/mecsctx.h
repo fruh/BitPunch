@@ -54,7 +54,7 @@ typedef union _BPU_T_UN_Code_Params BPU_T_UN_Mecs_Params;
 int BPU_mecsInitCtx(BPU_T_Mecs_Ctx ** ctx, const BPU_T_UN_Mecs_Params * params,
                     const BPU_T_EN_Mecs_Types type);
 
-int BPU_mecsFreeCtx(BPU_T_Mecs_Ctx ** ctx);
+void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx);
 
 // Available init params for all codes, it is only wrapper for code params init
 int BPU_mecsInitParamsGoppa(BPU_T_UN_Mecs_Params * params, const uint16_t m,

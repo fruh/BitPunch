@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <bitpunch/bitpunch.h>
 #include <bitpunch/math/gf2x.h>
 
 #include <bitpunch/debugio.h>
@@ -66,16 +67,12 @@ int BPU_mathInitCtx(BPU_T_Math_Ctx ** ctx, const BPU_T_GF2_16x g,
     return 0;
 }
 
-void BPU_mathFreeCtx(BPU_T_Math_Ctx ** ctx) {
-    if (!*ctx) {
+void BPU_mathFreeCtx(BPU_T_Math_Ctx *ctx) {
+    if (NULL == ctx) {
         return;
     }
-    if ((*ctx)->exp_table) {
-        free((*ctx)->exp_table);
-    }
-    if ((*ctx)->log_table) {
-        free((*ctx)->log_table);
-    }
-    free(*ctx);
-    *ctx = NULL;
+
+    BPU_SAFE_FREE(free, ctx->exp_table);
+    BPU_SAFE_FREE(free, ctx->log_table);
+    BPU_SAFE_FREE(free, ctx);
 }

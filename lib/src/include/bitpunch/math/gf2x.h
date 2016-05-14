@@ -76,7 +76,7 @@ int BPU_mathInitCtx(BPU_T_Math_Ctx ** ctx, const BPU_T_GF2_16x g,
  * @param is_dyn 0 - staticaly allocated Aritmetic_Data object or 1 when dynamically
  */
 /// Free dynamiccaly or statically allocated Aritmetic_Data structure.
-void BPU_mathFreeCtx(BPU_T_Math_Ctx ** ctx);
+void BPU_mathFreeCtx(BPU_T_Math_Ctx *ctx);
 
 /**
  * GF2_16x Vector representation
