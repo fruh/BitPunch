@@ -87,7 +87,7 @@ int BPU_codeInitMathCtx(BPU_T_Math_Ctx ** ctx, const uint16_t m,
  * @brief BPU_codeFreeCtx
  * @param ctx
  */
-void BPU_codeFreeCtx(BPU_T_Code_Ctx ** ctx);
+void BPU_codeFreeCtx(BPU_T_Code_Ctx *ctx);
 
 // Available init params for all codes, it is only wrapper for code params init
 /**

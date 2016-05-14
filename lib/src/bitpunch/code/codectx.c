@@ -166,30 +166,28 @@ int BPU_codeInitMathCtx(BPU_T_Math_Ctx ** ctx, const uint16_t m,
     return rc;
 }
 
-void BPU_codeFreeCtx(BPU_T_Code_Ctx ** ctx) {
-    BPU_T_Code_Ctx *ctx_p = *ctx;
-
-    if (!ctx_p) {
+void BPU_codeFreeCtx(BPU_T_Code_Ctx * ctx) {
+    if (NULL == ctx) {
         return;
     }
-    switch (ctx_p->type) {
+
+    switch (ctx->type) {
     case BPU_EN_CODE_GOPPA:
-        BPU_goppaFreeSpec(ctx_p->code_spec->goppa);
-        free(ctx_p->code_spec->goppa);
+        BPU_goppaFreeSpec(ctx->code_spec->goppa);
+        free(ctx->code_spec->goppa);
         break;
     case BPU_EN_CODE_QCMDPC:
-        BPU_qcmdpcFreeSpec(ctx_p->code_spec->qcmdpc);
+        BPU_qcmdpcFreeSpec(ctx->code_spec->qcmdpc);
         // free(ctx_p->code_spec->qcmdpc);
         break;
     default:
-        BPU_printError("Code type not supported: %d", ctx_p->type);
+        BPU_printError("Code type not supported: %d", ctx->type);
     }
 
-    BPU_mathFreeCtx(&ctx_p->math_ctx);
+    BPU_mathFreeCtx(ctx->math_ctx);
 
-    free(ctx_p->code_spec);
-    free(ctx_p);
-    *ctx = NULL;
+    free(ctx->code_spec);
+    free(ctx);
 }
 
 int BPU_codeInitParamsGoppa(BPU_T_UN_Code_Params * params, const uint16_t m,
