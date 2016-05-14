@@ -85,6 +85,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
                 "\nSUCCESS: Input plain text is equal to output plain text.\n");
     }
 
+    rc = BPU_SUCCESS;
 err:
     fprintf(stderr, "\nCleaning up...\n");
     BPU_gf2VecFree(&pt_in);
@@ -108,14 +109,19 @@ int main(int argc, char **argv) {
 
     fprintf(stderr, "Basic GOPPA Initialisation...\n");
     if (BPU_ERROR == BPU_mecsInitParamsGoppa(params, 11, 50, 0)) {
+        BPU_printError("BPU_mecsInitParamsGoppa failed");
         goto err;
     }
 
-    if (BPU_mecsInitCtx(&ctx, params, BPU_EN_MECS_BASIC_GOPPA)) {
+    if (BPU_SUCCESS != BPU_mecsInitCtx(&ctx, params, BPU_EN_MECS_BASIC_GOPPA)) {
+        BPU_printError("BPU_mecsInitCtx failed");
         goto err;
     }
 
-    rc += testKeyGenEncDec(ctx);
+    if (BPU_SUCCESS != testKeyGenEncDec(ctx)) {
+        BPU_printError("testKeyGenEncDec failed");
+        goto err;
+    }
 
     rc = BPU_SUCCESS;
 err:
