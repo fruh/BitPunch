@@ -19,6 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <bitpunch/bitpunch.h>
 #include <bitpunch/math/gf2.h>
 #include <bitpunch/math/perm.h>
 #include <bitpunch/math/uni.h>
@@ -340,11 +341,13 @@ void BPU_gf2QcMatrixFree(BPU_T_GF2_QC_Matrix * v, int is_dyn) {
 
 int BPU_gf2VecRand(BPU_T_GF2_Vector * out, uint32_t w) {
     uint32_t i, j;
+    int rv = BPU_ERROR;
 
     if (w > out->len) {
         BPU_printError("weight error w > l");
-        return -2;
+        goto err;
     }
+
     //vector of random weight
     if (w == 0) {
         for (i = 0; i < out->len; i++) {
@@ -366,7 +369,10 @@ int BPU_gf2VecRand(BPU_T_GF2_Vector * out, uint32_t w) {
             }
         }
     }
-    return 0;
+
+    rv = BPU_SUCCESS;
+err:
+    return rv;
 }
 
 int BPU_gf2MatCopy(BPU_T_GF2_Matrix * out, const BPU_T_GF2_Matrix * in) {
