@@ -60,7 +60,7 @@ void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx);
 int BPU_mecsInitParamsGoppa(BPU_T_UN_Mecs_Params * params, const uint16_t m,
                             const uint16_t t, const BPU_T_GF2_16x mod);
 
-void BPU_mecsFreeParamsGoppa(BPU_T_UN_Mecs_Params * params);
+void BPU_mecsDestroyParamsGoppa(BPU_T_UN_Mecs_Params * params);
 
 /**
  * Wrapper for param initialization. After work you have to free memory using call BPU_mecsFreeParamsQcmdpc

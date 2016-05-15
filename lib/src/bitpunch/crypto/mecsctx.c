@@ -197,7 +197,7 @@ int BPU_mecsInitParamsGoppa(BPU_T_UN_Mecs_Params * params, const uint16_t m,
     return BPU_codeInitParamsGoppa((BPU_T_UN_Code_Params *) params, m, t, mod);
 }
 
-void BPU_mecsFreeParamsGoppa(BPU_T_UN_Mecs_Params * params) {
+void BPU_mecsDestroyParamsGoppa(BPU_T_UN_Mecs_Params * params) {
     BPU_codeFreeParamsGoppa((BPU_T_UN_Code_Params *) params);
 }
 

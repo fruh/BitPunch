@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
         BPU_gf2VecFree(pt);
         BPU_gf2VecFree(ct);
         BPU_mecsFreeCtx(&ctx);
-        BPU_mecsFreeParamsGoppa(&params);
+        BPU_mecsDestroyParamsGoppa(&params);
     }
     fprintf(stderr, "%0.6lf\n", res / BPU_TEST_ROUNDS);
     fprintf(stderr, "%0.6lf\n", res_2 / BPU_TEST_ROUNDS);

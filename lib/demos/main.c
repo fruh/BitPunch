@@ -256,7 +256,7 @@ int testKeyGenAsn1() {
 
     BPU_mecsFreeCtx(&ctx);
     BPU_mecsFreeCtx(&ctx_2);
-    BPU_mecsFreeParamsGoppa(&params);
+    BPU_mecsDestroyParamsGoppa(&params);
     return rc;
 }
 #endif
@@ -291,7 +291,7 @@ int main(int argc, char **argv) {
     }
     rc += testKeyGenEncDec(ctx);
     BPU_mecsFreeCtx(&ctx);
-    BPU_mecsFreeParamsGoppa(&params);
+    BPU_mecsDestroyParamsGoppa(&params);
 #endif
 
 //      /***************************************/

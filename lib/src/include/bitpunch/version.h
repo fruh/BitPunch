@@ -283,7 +283,7 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 	BPU_mecsFreeCtx(&ctx);
-	BPU_mecsFreeParamsGoppa(&params);
+	BPU_mecsDestroyParamsGoppa(&params);
 
 	return rc;
 }

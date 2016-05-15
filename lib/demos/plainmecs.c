@@ -94,7 +94,6 @@ int main(int argc, char **argv) {
     int rc = BPU_ERROR;
     BPU_T_Mecs_Ctx *ctx = NULL; // MUST BE NULL
     BPU_T_UN_Mecs_Params *params = NULL;
-    BPU_T_UN_Mecs_Params *params_tmp = NULL;
 
     srand(time(NULL));
 
@@ -123,8 +122,10 @@ int main(int argc, char **argv) {
     rc = BPU_SUCCESS;
 err:
     BPU_SAFE_FREE(BPU_mecsFreeCtx, ctx);
-    params_tmp = params;
-    BPU_SAFE_FREE(BPU_mecsFreeParamsGoppa, params);
-    BPU_SAFE_FREE(free, params_tmp);
+    if (NULL != params) {
+        BPU_mecsDestroyParamsGoppa(params);
+    }
+
+    BPU_SAFE_FREE(free, params);
     return rc;
 }

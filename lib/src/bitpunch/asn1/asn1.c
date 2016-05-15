@@ -225,7 +225,7 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
         if (BPU_mecsInitCtx(ctx, &params, type)) {
             return -1;
         }
-        BPU_mecsFreeParamsGoppa(&params);
+        BPU_mecsDestroyParamsGoppa(&params);
         if (BPU_asn1ReadValue
             (&tmp_buf, &tmp_len, sizeof(BPU_T_GF2_16x) * (t + 1), "g",
              asn1_element)) {
@@ -456,7 +456,7 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
 
         return rc;
     }
-    BPU_mecsFreeParamsGoppa(&params);
+    BPU_mecsDestroyParamsGoppa(&params);
 
     if (BPU_asn1ReadValue
         (&tmp_buf, &tmp_len,
