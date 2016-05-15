@@ -202,9 +202,9 @@ BPU_T_UN_Code_Params * BPU_codeParamsGoppaNew(const uint16_t m,
         goto err;
     }
 
-    goppa_params = BPU_goppaInitParams(m, t, mod);
+    goppa_params = BPU_goppaParamsNew(m, t, mod);
     if (NULL == goppa_params) {
-        BPU_printError("BPU_goppaInitParams failed");
+        BPU_printError("BPU_goppaParamsNew failed");
         goto err;
     }
 
