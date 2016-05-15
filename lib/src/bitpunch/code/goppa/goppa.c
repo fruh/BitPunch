@@ -19,6 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <bitpunch/bitpunch.h>
 #include <bitpunch/code/goppa/goppa.h>
 
 #include <stdlib.h>
@@ -31,11 +32,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef BPU_CONF_ENCRYPTION
 int BPU_goppaEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
                     const struct _BPU_T_Code_Ctx *ctx) {
-    int rc = 0;
+    int rv = BPU_ERROR;
     int i, j;
     uint8_t out_bit = 0;
     BPU_T_GF2 out_dword;
-    BPU_T_GF2_Vector *tmp;
+    BPU_T_GF2_Vector *tmp = NULL;
 
     BPU_gf2VecNull(out);
 
@@ -44,9 +45,16 @@ int BPU_goppaEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
         BPU_printError("message length have to be of length %d",
                        ctx->code_spec->goppa->g_mat->n);
 
-        return -1;
+        goto err;
     }
-    BPU_gf2VecNew(&tmp, ctx->code_spec->goppa->g_mat->k);
+
+    tmp = BPU_gf2VecNew(ctx->code_spec->goppa->g_mat->k);
+    if (NULL == tmp)
+    {
+        BPU_printError("BPU_gf2VecNew failed");
+        goto err;
+    }
+
     for (j = 0; j < ctx->code_spec->goppa->g_mat->k; j++) {
         out_dword = 0;
         for (i = 0; i < ctx->code_spec->goppa->g_mat->elements_in_row; i++) {
@@ -57,10 +65,16 @@ int BPU_goppaEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
         BPU_gf2VecSetBit(tmp, j, out_bit);
     }
 
-    rc += BPU_gf2VecConcat(out, tmp, in);
-    BPU_gf2VecFree(tmp);
+    if (BPU_SUCCESS != BPU_gf2VecConcat(out, tmp, in))
+    {
+        BPU_printError("BPU_gf2VecConcat failed");
+        goto err;
+    }
 
-    return rc;
+    rv = BPU_SUCCESS;
+err:
+    BPU_SAFE_FREE(BPU_gf2VecFree, tmp);
+    return rv;
 }
 #endif // BPU_CONF_ENCRYPTION
 
@@ -70,21 +84,39 @@ int BPU_goppaDecode(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
                     const BPU_T_GF2_Vector * in,
                     const struct _BPU_T_Code_Ctx *ctx) {
     BPU_T_GF2_Vector *orig_enc;
-    int rc;
+    int rv = BPU_ERROR;
 
     // get error vector
-    rc = BPU_goppaGetError(error, in, ctx);
+    if (BPU_SUCCESS != BPU_goppaGetError(error, in, ctx)) {
+        BPU_printError("BPU_goppaGetError failed");
+    }
 
     // remove error
-    rc += BPU_gf2VecNew(&orig_enc, in->len);
+    orig_enc = BPU_gf2VecNew(in->len);
+    if (NULL == orig_enc) {
+        BPU_printError("BPU_gf2VecNew failed");
+        goto err;
+    }
+
     BPU_gf2VecCopy(orig_enc, in);
-    rc += BPU_gf2VecXor(orig_enc, error);
+
+    if (BPU_SUCCESS != BPU_gf2VecXor(orig_enc, error)) {
+        BPU_printError("BPU_gf2VecXor failed");
+        goto err;
+    }
 
     // get message
-    rc += BPU_gf2VecCrop(out, orig_enc, in->len - ctx->msg_len, ctx->msg_len);
-    BPU_gf2VecFree(orig_enc);
+    if (BPU_SUCCESS != BPU_gf2VecCrop(out, orig_enc, in->len - ctx->msg_len, ctx->msg_len))
+    {
+        BPU_printError("BPU_gf2VecCrop failed");
+        goto err;
+    }
 
-    return rc;
+
+    rv = BPU_SUCCESS;
+err:
+    BPU_SAFE_FREE(BPU_gf2VecFree, orig_enc);
+    return rv;
 }
 
 int BPU_goppaGetError(BPU_T_GF2_Vector * error,
@@ -98,7 +130,7 @@ int BPU_goppaGetError(BPU_T_GF2_Vector * error,
     BPU_T_GF2_Vector *enc_permuted;
 
     // permute code word
-    BPU_gf2VecNew(&enc_permuted, encoded->len);
+    enc_permuted = BPU_gf2VecNew(encoded->len);
     BPU_gf2VecCopy(enc_permuted, encoded);
 
     BPU_permMalloc(&inv_perm, ctx->code_spec->goppa->permutation->size);

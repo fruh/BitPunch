@@ -31,7 +31,7 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
         local_error = error;
     }
     else {
-        BPU_gf2VecNew(&local_error, ctx->code_ctx->code_len);
+        local_error = BPU_gf2VecNew(ctx->code_ctx->code_len);
     }
     BPU_gf2VecNull(out);
 
@@ -81,7 +81,7 @@ int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector * out,
     int rc = 0;
     BPU_T_GF2_Vector *temp;
 
-    BPU_gf2VecNew(&temp, in->len);
+    temp = BPU_gf2VecNew(in->len);
     BPU_gf2VecCopy(temp, in);
 
     rc = ctx->code_ctx->_decode(out, error, temp, ctx->code_ctx);

@@ -183,7 +183,7 @@ void BPU_elementArrayFree(BPU_T_Element_Array *a);
  * @param len len of vector
  * @return on succes 0, else error
  */
-int BPU_elementArrayMalloc(BPU_T_Element_Array ** a, uint32_t len);
+BPU_T_Element_Array * BPU_elementArrayMalloc(uint32_t len);
 
 /**
  * @brief Resize element array.

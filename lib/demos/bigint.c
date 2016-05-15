@@ -22,9 +22,9 @@
 int main(int argc, char **argv) {
     BPU_T_Bigint *a, *b, *c;
 
-    BPU_bigintMalloc(&a, 32);
-    BPU_bigintMalloc(&b, 16);
-    BPU_bigintMalloc(&c, 32);
+    a = BPU_bigintMalloc(32);
+    b = BPU_bigintMalloc(16);
+    c = BPU_bigintMalloc(32);
 
     a->elements[0] = 65535;
     a->elements[1] = 65535;

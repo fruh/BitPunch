@@ -35,20 +35,26 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
         goto err;
     }
 
-    if (BPU_gf2VecNew(&pt_in, ctx->pt_len)) {
-        BPU_printError("PT initialisation error");
+    pt_in = BPU_gf2VecNew(ctx->pt_len);
+    if (NULL == pt_in) {
+        BPU_printError("BPU_gf2VecNew failed");
         goto err;
     }
 
-    BPU_gf2VecRand(pt_in, 0);
-
-    if (BPU_gf2VecNew(&ct, ctx->ct_len)) {
-        BPU_printError("CT vector allocation error");
+    if (BPU_SUCCESS != BPU_gf2VecRand(pt_in, 0)) {
+        BPU_printError("BPU_gf2VecRand failed");
         goto err;
     }
 
-    if (BPU_gf2VecNew(&pt_out, ctx->pt_len)) {
-        BPU_printError("PT out initialisation error");
+    ct = BPU_gf2VecNew(ctx->ct_len);
+    if (NULL == ct) {
+        BPU_printError("BPU_gf2VecNew failed");
+        goto err;
+    }
+
+    pt_out = BPU_gf2VecNew(ctx->pt_len);
+    if (NULL == pt_out) {
+        BPU_printError("BPU_gf2VecNew failed");
         goto err;
     }
 
@@ -56,13 +62,15 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
 
     fprintf(stderr, "Encryption...\n");
     if (BPU_mecsEncrypt(ct, pt_in, ctx, NULL)) {
-        BPU_printError("Encryption error");
+        BPU_printError("BPU_mecsEncrypt failed");
         goto err;
     }
 
     fprintf(stderr, "Decryption...\n");
 
-    if (BPU_gf2VecNew(&error, ct->len)) {
+    error = BPU_gf2VecNew(ct->len);
+    if (NULL == error) {
+        BPU_printError("BPU_gf2VecNew failed");
         goto err;
     }
 

@@ -132,16 +132,50 @@ void BPU_elementArrayFree(BPU_T_Element_Array * a) {
     free(a);
 }
 
-int BPU_elementArrayMalloc(BPU_T_Element_Array ** a, uint32_t len) {
-    *a = (BPU_T_Element_Array *) calloc(sizeof(BPU_T_Element_Array), 1);
+BPU_T_Element_Array* BPU_elementArrayMalloc(uint32_t len) {
+    BPU_T_Element_Array *a = NULL;
+    BPU_T_Element_Array *a_local = NULL;
+    uint32_t modul = 0;
+    BPU_T_Element *elements_local;
 
-    if (!*a) {
-        BPU_printError("allocation error");
-        return -1;
+    a_local = (BPU_T_Element_Array *) calloc(sizeof(BPU_T_Element_Array), 1);
+    if (NULL == a_local) {
+        BPU_printError("calloc failed");
+        goto err;
     }
-    return BPU_elementArrayMallocElements(*a, len);
+
+    // element size in bits
+    a_local->element_bit_size = sizeof(BPU_T_Element) * 8;
+
+    // len
+    a_local->len = len;
+
+    // calc how many elements of a set size will be in one row
+    if (len % a_local->element_bit_size > 0) {
+        modul = 1;
+    }
+
+    a_local->array_length = (len / a_local->element_bit_size) + modul;
+
+    // allocate elemtens
+    elements_local =
+        (BPU_T_Element *) calloc(a_local->array_length, sizeof(BPU_T_Element));
+    if (NULL == elements_local) {
+        BPU_printError("calloc failed");
+        goto err;
+    }
+
+    a_local->elements = elements_local;
+    a = a_local;
+    a_local = NULL;
+    elements_local = NULL;
+err:
+    BPU_SAFE_FREE(free, elements_local);
+    BPU_SAFE_FREE(free, a_local);
+    return a;
 }
 
+// TODO: I would like to get rid of this function
 int BPU_elementArrayResize(BPU_T_Element_Array * a, uint32_t len) {
     if (a->elements) {
         free(a->elements);
@@ -149,6 +183,7 @@ int BPU_elementArrayResize(BPU_T_Element_Array * a, uint32_t len) {
     return BPU_elementArrayMallocElements(a, len);
 }
 
+// TODO: I would like to get rid of this function
 int BPU_elementArrayMallocElements(BPU_T_Element_Array * a, uint32_t len) {
     // element size in bits
     a->element_bit_size = sizeof(BPU_T_Element) * 8;
