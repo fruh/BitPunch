@@ -196,7 +196,7 @@ void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx) {
         BPU_printError("MECS type not supported: %d", ctx->type);
     }
 
-    BPU_SAFE_FREE(BPU_codeFreeCtx, ctx->code_ctx);
+    BPU_SAFE_FREE(BPU_codeCtxFree, ctx->code_ctx);
     BPU_SAFE_FREE(free, ctx);
 }
 

@@ -166,7 +166,7 @@ int BPU_codeInitMathCtx(BPU_T_Math_Ctx ** ctx, const uint16_t m,
     return rc;
 }
 
-void BPU_codeFreeCtx(BPU_T_Code_Ctx * ctx) {
+void BPU_codeCtxFree(BPU_T_Code_Ctx * ctx) {
     if (NULL == ctx) {
         return;
     }
