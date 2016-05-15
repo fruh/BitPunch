@@ -55,7 +55,7 @@ void BPU_goppaFreeSpec(BPU_T_Goppa_Spec * spec);
  * @param mod
  * @return
  */
-int BPU_goppaInitParams(BPU_T_Goppa_Params ** params, const uint16_t m,
+BPU_T_Goppa_Params * BPU_goppaInitParams(const uint16_t m,
                         const uint16_t t, const BPU_T_GF2_16x mod);
 
 /**

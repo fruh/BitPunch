@@ -190,14 +190,33 @@ void BPU_codeCtxFree(BPU_T_Code_Ctx * ctx) {
     free(ctx);
 }
 
-int BPU_codeInitParamsGoppa(BPU_T_UN_Code_Params * params, const uint16_t m,
+BPU_T_UN_Code_Params * BPU_codeParamsGoppaNew(const uint16_t m,
                             const uint16_t t, const BPU_T_GF2_16x mod) {
-    if (NULL == params) {
-        BPU_printError("Invalid input parameter \"%s\"", "params")
-        return BPU_ERROR;
+    BPU_T_UN_Code_Params *code_params_local = NULL;
+    BPU_T_UN_Code_Params *code_params = NULL;
+    BPU_T_Goppa_Params *goppa_params = NULL;
+
+    code_params_local = (BPU_T_UN_Code_Params *) calloc(1, sizeof(BPU_T_UN_Code_Params));
+    if (NULL == code_params_local) {
+        BPU_printError("calloc failed");
+        goto err;
     }
 
-    return BPU_goppaInitParams(&params->goppa, m, t, mod);
+    goppa_params = BPU_goppaInitParams(m, t, mod);
+    if (NULL == goppa_params) {
+        BPU_printError("BPU_goppaInitParams failed");
+        goto err;
+    }
+
+    code_params_local->goppa = goppa_params;
+
+    code_params = code_params_local;
+    code_params_local = NULL;
+    goppa_params = NULL;
+err:
+    BPU_SAFE_FREE(BPU_goppaFreeParams, goppa_params);
+    BPU_SAFE_FREE(free, code_params_local);
+    return code_params;
 }
 
 void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params * params) {
@@ -206,6 +225,7 @@ void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params * params) {
     }
 
     BPU_SAFE_FREE(BPU_goppaFreeParams, params->goppa);
+    BPU_SAFE_FREE(free, params);
 }
 
 int BPU_codeInitParamsQcmdpc(BPU_T_UN_Code_Params * params, const uint16_t m,

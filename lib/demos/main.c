@@ -228,7 +228,7 @@ int testKeyGenAsn1() {
     /***************************************/
     // mce initialisation t = 50, m = 11
     fprintf(stderr, "Basic GOPPA Initialisation...\n");
-    if (BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
+    if (BPU_mecsParamsGoppaNew(&params, 11, 50, 0)) {
         return 1;
     }
 
@@ -275,7 +275,7 @@ int main(int argc, char **argv) {
 //  /***************************************/
 //     // mce initialisation t = 50, m = 11
     fprintf(stderr, "Basic GOPPA Initialisation...\n");
-    if (BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
+    if (BPU_mecsParamsGoppaNew(&params, 11, 50, 0)) {
         return 1;
     }
     if (BPU_mecsCtxNew(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {

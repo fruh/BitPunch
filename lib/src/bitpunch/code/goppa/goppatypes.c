@@ -34,16 +34,10 @@ void BPU_goppaFreeSpec(BPU_T_Goppa_Spec * spec) {
     BPU_permFree(&spec->permutation);
 }
 
-int BPU_goppaInitParams(BPU_T_Goppa_Params ** params, const uint16_t m,
+BPU_T_Goppa_Params *BPU_goppaInitParams(const uint16_t m,
                         const uint16_t t, const BPU_T_GF2_16x mod) {
     BPU_T_Goppa_Params *params_local = NULL;
-    int rv = BPU_ERROR;
-
-    if (params == NULL)
-    {
-        BPU_printError("Invalid input parameter \"%s\"", "params");
-        goto err;
-    }
+    BPU_T_Goppa_Params *params = NULL;
 
     params_local = (BPU_T_Goppa_Params *) calloc(sizeof(BPU_T_Goppa_Params), 1);
     if (NULL == params_local) {
@@ -55,13 +49,12 @@ int BPU_goppaInitParams(BPU_T_Goppa_Params ** params, const uint16_t m,
     params_local->t = t;
     params_local->mod = mod;
 
-    *params = params_local;
+    params = params_local;
     params_local = NULL;
 
-    rv = BPU_SUCCESS;
 err:
     BPU_SAFE_FREE(free, params_local);
-    return rv;
+    return params;
 }
 
 void BPU_goppaFreeParams(BPU_T_Goppa_Params * params) {

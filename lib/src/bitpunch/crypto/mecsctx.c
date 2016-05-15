@@ -200,9 +200,22 @@ void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx) {
     BPU_SAFE_FREE(free, ctx);
 }
 
-int BPU_mecsInitParamsGoppa(BPU_T_UN_Mecs_Params * params, const uint16_t m,
+BPU_T_UN_Mecs_Params * BPU_mecsParamsGoppaNew(const uint16_t m,
                             const uint16_t t, const BPU_T_GF2_16x mod) {
-    return BPU_codeInitParamsGoppa((BPU_T_UN_Code_Params *) params, m, t, mod);
+    BPU_T_UN_Mecs_Params *mecs_params_local = NULL;
+    BPU_T_UN_Mecs_Params *mecs_params = NULL;
+
+    mecs_params_local = BPU_codeParamsGoppaNew(m, t, mod);
+    if (NULL == mecs_params_local) {
+        BPU_printError("code_params_local failed");
+        goto err;
+    }
+
+    mecs_params = mecs_params_local;
+    mecs_params_local = NULL;
+err:
+    BPU_SAFE_FREE(BPU_codeFreeParamsGoppa, mecs_params_local);
+    return mecs_params;
 }
 
 void BPU_mecsDestroyParamsGoppa(BPU_T_UN_Mecs_Params * params) {

@@ -275,7 +275,7 @@ int main(int argc, char **argv) {
 
 	/***************************************/
 	// mce initialisation t = 50, m = 11
-	if (BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
+	if (BPU_mecsParamsGoppaNew(&params, 11, 50, 0)) {
 		return 1;
 	}
 	fprintf(stderr, "Basic GOPPA Initialisation...\n");

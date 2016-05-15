@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
     srand(time(NULL));
 
     for (i = 0; i < BPU_TEST_ROUNDS; i++) {
-        BPU_mecsInitParamsGoppa(&params, 11, 50, 0);
+        BPU_mecsParamsGoppaNew(&params, 11, 50, 0);
         BPU_mecsCtxNew(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA);
         gettimeofday(&tv, NULL);
 

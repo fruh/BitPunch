@@ -57,7 +57,7 @@ BPU_T_Mecs_Ctx *BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
 void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx);
 
 // Available init params for all codes, it is only wrapper for code params init
-int BPU_mecsInitParamsGoppa(BPU_T_UN_Mecs_Params * params, const uint16_t m,
+BPU_T_UN_Mecs_Params * BPU_mecsParamsGoppaNew(const uint16_t m,
                             const uint16_t t, const BPU_T_GF2_16x mod);
 
 void BPU_mecsDestroyParamsGoppa(BPU_T_UN_Mecs_Params * params);

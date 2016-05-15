@@ -97,15 +97,10 @@ int main(int argc, char **argv) {
 
     srand(time(NULL));
 
-    params = (BPU_T_UN_Mecs_Params*)calloc(1, sizeof(BPU_T_UN_Mecs_Params));
-    if (NULL == params) {
-        BPU_printError("calloc failed");
-        goto err;
-    }
-
     fprintf(stderr, "Basic GOPPA Initialisation...\n");
-    if (BPU_ERROR == BPU_mecsInitParamsGoppa(params, 11, 50, 0)) {
-        BPU_printError("BPU_mecsInitParamsGoppa failed");
+    params = BPU_mecsParamsGoppaNew(11, 50, 0);
+    if (NULL == params) {
+        BPU_printError("BPU_mecsParamsGoppaNew failed");
         goto err;
     }
 
@@ -123,10 +118,6 @@ int main(int argc, char **argv) {
     rc = BPU_SUCCESS;
 err:
     BPU_SAFE_FREE(BPU_mecsFreeCtx, ctx);
-    if (NULL != params) {
-        BPU_mecsDestroyParamsGoppa(params);
-    }
-
-    BPU_SAFE_FREE(free, params);
+    BPU_SAFE_FREE(BPU_mecsDestroyParamsGoppa, params);
     return rc;
 }

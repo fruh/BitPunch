@@ -217,7 +217,7 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
     }
     if (type == BPU_EN_MECS_BASIC_GOPPA
         || type == BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA) {
-        if (BPU_mecsInitParamsGoppa
+        if (BPU_mecsParamsGoppaNew
             (&params, m, t, *((BPU_T_GF2_16x *) tmp_buf))) {
             return -1;
         }
@@ -443,7 +443,7 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
     // init mecs context without mod
     if (type == BPU_EN_MECS_BASIC_GOPPA
         || type == BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA) {
-        if (BPU_mecsInitParamsGoppa(&params, m, t, -1)) {
+        if (BPU_mecsParamsGoppaNew(&params, m, t, -1)) {
             return -1;
         }
     }

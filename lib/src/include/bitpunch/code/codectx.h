@@ -91,14 +91,14 @@ void BPU_codeCtxFree(BPU_T_Code_Ctx *ctx);
 
 // Available init params for all codes, it is only wrapper for code params init
 /**
- * @brief BPU_codeInitParamsGoppa
+ * @brief BPU_codeParamsGoppaNew
  * @param params
  * @param m
  * @param t
  * @param mod
  * @return
  */
-int BPU_codeInitParamsGoppa(BPU_T_UN_Code_Params * params, const uint16_t m,
+BPU_T_UN_Code_Params * BPU_codeParamsGoppaNew(const uint16_t m,
                             const uint16_t t, const BPU_T_GF2_16x mod);
 
 /**
