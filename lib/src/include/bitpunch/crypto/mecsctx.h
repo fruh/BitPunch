@@ -51,7 +51,7 @@ typedef struct _BPU_T_Mecs_Ctx {
 typedef union _BPU_T_UN_Code_Params BPU_T_UN_Mecs_Params;
 
 /// Initialize (register) mecs functions for encryption, decryption and key gen based on type.
-int BPU_mecsInitCtx(BPU_T_Mecs_Ctx ** ctx, const BPU_T_UN_Mecs_Params * params,
+BPU_T_Mecs_Ctx *BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
                     const BPU_T_EN_Mecs_Types type);
 
 void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx);

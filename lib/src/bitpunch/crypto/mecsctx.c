@@ -34,110 +34,112 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/crypto/cca2/mecspointcheval.h>
 #endif
 
-int BPU_mecsInitCtx(BPU_T_Mecs_Ctx ** ctx, const BPU_T_UN_Mecs_Params * params,
+BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
                     const BPU_T_EN_Mecs_Types type) {
-    int rc = 0;
-    BPU_T_Mecs_Ctx *ctx_p;
+    BPU_T_Mecs_Ctx *ctx = NULL;
+    BPU_T_Mecs_Ctx *ctx_local = NULL;
 
-    if (!*ctx) {
-        *ctx = (BPU_T_Mecs_Ctx *) calloc(sizeof(BPU_T_Mecs_Ctx), 1);
+    if (NULL == params) {
+        BPU_printError("Invalid input parameter \"%s\"", "params");
+        goto err;
+    }
 
-        if (!*ctx) {
-            BPU_printError("can not alloc Mecs ctx");
-            return -1;
-        }
+    ctx_local = (BPU_T_Mecs_Ctx *) calloc(1, sizeof(BPU_T_Mecs_Ctx));
+    if (NULL == ctx_local) {
+        BPU_printError("calloc failed");
+        goto err;
     }
-    else {
-        BPU_printDebug("Already initialized");
-        return 0;
-    }
-    ctx_p = *ctx;
-    ctx_p->type = type;
+
+    ctx_local->type = type;
 
     switch (type) {
     case BPU_EN_MECS_BASIC_GOPPA:
 #ifdef BPU_CONF_ENCRYPTION
-        ctx_p->_encrypt = BPU_mecsBasicEncrypt;
+        ctx_local->_encrypt = BPU_mecsBasicEncrypt;
 #endif
 #ifdef BPU_CONF_DECRYPTION
-        ctx_p->_decrypt = BPU_mecsBasicDecrypt;
+        ctx_local->_decrypt = BPU_mecsBasicDecrypt;
 #endif
 #ifdef BPU_CONF_KEY_GEN
-        ctx_p->_genKeyPair = BPU_goppaGenCode;
+        ctx_local->_genKeyPair = BPU_goppaGenCode;
 #endif
-        rc = BPU_codeInitCtx(&ctx_p->code_ctx, (BPU_T_UN_Code_Params *) params,
-                             BPU_EN_CODE_GOPPA);
-        if (rc) {
-            return rc;
+        if (BPU_codeInitCtx(&ctx_local->code_ctx, (BPU_T_UN_Code_Params *) params,
+                             BPU_EN_CODE_GOPPA)) {
+            BPU_printError("BPU_codeInitCtx failed");
+            goto err;
         }
-        ctx_p->pt_len = ctx_p->code_ctx->msg_len;
-        ctx_p->ct_len = ctx_p->code_ctx->code_len;
+
+        ctx_local->pt_len = ctx_local->code_ctx->msg_len;
+        ctx_local->ct_len = ctx_local->code_ctx->code_len;
         break;
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     case BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA:
 #ifdef BPU_CONF_ENCRYPTION
-        ctx_p->_encrypt = BPU_mecsPointchevalCCA2Encrypt;
+        ctx_local->_encrypt = BPU_mecsPointchevalCCA2Encrypt;
 #endif
 #ifdef BPU_CONF_DECRYPTION
-        ctx_p->_decrypt = BPU_mecsPointchevalCCA2Decrypt;
+        ctx_local->_decrypt = BPU_mecsPointchevalCCA2Decrypt;
 #endif
 #ifdef BPU_CONF_KEY_GEN
-        ctx_p->_genKeyPair = BPU_goppaGenCode;
+        ctx_local->_genKeyPair = BPU_goppaGenCode;
 #endif
-        rc = BPU_codeInitCtx(&ctx_p->code_ctx, (BPU_T_UN_Code_Params *) params,
-                             BPU_EN_CODE_GOPPA);
-        if (rc) {
-            return rc;
+        if (BPU_codeInitCtx(&ctx_local->code_ctx, (BPU_T_UN_Code_Params *) params,
+                             BPU_EN_CODE_GOPPA)) {
+            BPU_printError("BPU_codeInitCtx failed");
+            goto err;
         }
-        ctx_p->pt_len =
+
+        ctx_local->pt_len =
             BPU_HASH_LEN * 8 <
-            ctx_p->code_ctx->msg_len ? BPU_HASH_LEN *
-            8 : ctx_p->code_ctx->msg_len;
-        ctx_p->ct_len = ctx_p->code_ctx->code_len + 2 * ctx_p->ct_len;
+            ctx_local->code_ctx->msg_len ? BPU_HASH_LEN *
+            8 : ctx_local->code_ctx->msg_len;
+        ctx_local->ct_len = ctx_local->code_ctx->code_len + 2 * ctx_local->ct_len;
         break;
 #endif
 
     case BPU_EN_MECS_BASIC_QCMDPC:
 #ifdef BPU_CONF_ENCRYPTION
-        ctx_p->_encrypt = BPU_mecsBasicEncrypt;
+        ctx_local->_encrypt = BPU_mecsBasicEncrypt;
 #endif
 #ifdef BPU_CONF_DECRYPTION
-        ctx_p->_decrypt = BPU_mecsBasicDecrypt;
+        ctx_local->_decrypt = BPU_mecsBasicDecrypt;
 #endif
 #ifdef BPU_CONF_KEY_GEN
-        ctx_p->_genKeyPair = BPU_mecsQcmdpcGenKeys;
+        ctx_local->_genKeyPair = BPU_mecsQcmdpcGenKeys;
 #endif
-        rc = BPU_codeInitCtx(&ctx_p->code_ctx, (BPU_T_UN_Code_Params *) params,
-                             BPU_EN_CODE_QCMDPC);
-        if (rc) {
-            return rc;
+        if (BPU_codeInitCtx(&ctx_local->code_ctx, (BPU_T_UN_Code_Params *) params,
+                             BPU_EN_CODE_QCMDPC)) {
+            BPU_printError("BPU_codeInitCtx failed");
+            goto err;
         }
-        ctx_p->pt_len = ctx_p->code_ctx->msg_len;
-        ctx_p->ct_len = ctx_p->code_ctx->code_len;
+
+        ctx_local->pt_len = ctx_local->code_ctx->msg_len;
+        ctx_local->ct_len = ctx_local->code_ctx->code_len;
         break;
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC
     case BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC:
 #ifdef BPU_CONF_ENCRYPTION
-        ctx_p->_encrypt = BPU_mecsPointchevalCCA2Encrypt;
+        ctx_local->_encrypt = BPU_mecsPointchevalCCA2Encrypt;
 #endif
 #ifdef BPU_CONF_DECRYPTION
-        ctx_p->_decrypt = BPU_mecsPointchevalCCA2Decrypt;
+        ctx_local->_decrypt = BPU_mecsPointchevalCCA2Decrypt;
 #endif
 #ifdef BPU_CONF_KEY_GEN
-        ctx_p->_genKeyPair = BPU_mecsQcmdpcGenKeys;
+        ctx_local->_genKeyPair = BPU_mecsQcmdpcGenKeys;
 #endif
-        rc = BPU_codeInitCtx(&ctx_p->code_ctx, (BPU_T_UN_Code_Params *) params,
-                             BPU_EN_CODE_QCMDPC);
-        if (rc) {
-            return rc;
+        if (BPU_codeInitCtx(&ctx_local->code_ctx, (BPU_T_UN_Code_Params *) params,
+                             BPU_EN_CODE_QCMDPC)) {
+            BPU_printError("BPU_codeInitCtx failed");
+            goto err;
         }
-        ctx_p->pt_len =
+
+        ctx_local->pt_len =
             BPU_HASH_LEN * 8 <
-            ctx_p->code_ctx->msg_len ? BPU_HASH_LEN *
-            8 : ctx_p->code_ctx->msg_len;
-        ctx_p->ct_len = ctx_p->code_ctx->code_len + 2 * ctx_p->ct_len;
+            ctx_local->code_ctx->msg_len ? BPU_HASH_LEN *
+            8 : ctx_local->code_ctx->msg_len;
+        ctx_local->ct_len = ctx_local->code_ctx->code_len + 2 * ctx_local->ct_len;
         break;
 #endif
         /* EXAMPLE please DO NOT REMOVE
@@ -161,9 +163,15 @@ int BPU_mecsInitCtx(BPU_T_Mecs_Ctx ** ctx, const BPU_T_UN_Mecs_Params * params,
          */
     default:
         BPU_printError("MECS type not supported: %d", type);
-        return BPU_EC_MECS_TYPE_NOT_SUPPORTED;
+        goto err;
     }
-    return rc;
+
+    ctx = ctx_local;
+    ctx_local = NULL;
+err:
+    // TODO: in case of error code context is not released
+    BPU_SAFE_FREE(free, ctx_local);
+    return ctx;
 }
 
 void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx) {
@@ -189,7 +197,7 @@ void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx) {
     }
 
     BPU_SAFE_FREE(BPU_codeFreeCtx, ctx->code_ctx);
-    free(ctx);
+    BPU_SAFE_FREE(free, ctx);
 }
 
 int BPU_mecsInitParamsGoppa(BPU_T_UN_Mecs_Params * params, const uint16_t m,

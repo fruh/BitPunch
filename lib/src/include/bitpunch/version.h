@@ -31,7 +31,7 @@
     Where are the most important processes done?
         - Initialization:
             - lib/src/bitpunch/crypto/mecsctx.h
-                - BPU_mecsInitCtx()
+                - BPU_mecsCtxNew()
                 - BPU_codeInitCtx()
                 - BPU_mathInitCtx()
 
@@ -109,7 +109,7 @@
 				- this context registers encode, decode and code generation functions
 			- Math context
 				- speed up math operations over GF2x
-		When you want to use MECS you just need to initialize context, using BPU_mecsInitCtx, see doc for more details.
+		When you want to use MECS you just need to initialize context, using BPU_mecsCtxNew, see doc for more details.
   
 \section Build
 	For build details go to lib/ and see makefile help. Now you can build test aplication, realease or debug, you can specify wheter you want to use precomputed H matrix (more memory) or not:
@@ -279,7 +279,7 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 	fprintf(stderr, "Basic GOPPA Initialisation...\n");
-	if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {
+	if (BPU_mecsCtxNew(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {
 		return 1;
 	}
 	BPU_mecsFreeCtx(&ctx);

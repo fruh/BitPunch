@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
 
     for (i = 0; i < BPU_TEST_ROUNDS; i++) {
         BPU_mecsInitParamsGoppa(&params, 11, 50, 0);
-        BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA);
+        BPU_mecsCtxNew(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA);
         gettimeofday(&tv, NULL);
 
         BPU_mecsGenKeyPair(ctx);

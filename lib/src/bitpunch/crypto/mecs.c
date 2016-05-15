@@ -49,11 +49,11 @@ int BPU_mecsDecrypt(BPU_T_GF2_Vector * pt, BPU_T_GF2_Vector * error,
 }
 
 /**
- * Key generation, first must be initialized context using BPU_mecsInitCtx().
+ * Key generation, first must be initialized context using BPU_mecsCtxNew().
  * @param  ctx McEliece context
  * @return     0 - success, else error
  */
-/// Key generation, first must be initialized context using BPU_mecsInitCtx().
+/// Key generation, first must be initialized context using BPU_mecsCtxNew().
 int BPU_mecsGenKeyPair(BPU_T_Mecs_Ctx * ctx) {
     return ctx->_genKeyPair(ctx->code_ctx);
 }

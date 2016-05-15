@@ -117,8 +117,8 @@ int testKeyGenAsn1() {
 	if (BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
 		return 1;
 	}
-    if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {
-//    if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {
+    if (BPU_mecsCtxNew(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {
+//    if (BPU_mecsCtxNew(&ctx, 11, 50, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {
         return 1;
     }
     /***************************************/
@@ -163,7 +163,7 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 	fprintf(stderr, "Basic GOPPA Initialisation...\n");
-	if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {
+	if (BPU_mecsCtxNew(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {
 		return 1;
 	}
     rc += testKeyGenEncDec(ctx);
@@ -171,7 +171,7 @@ int main(int argc, char **argv) {
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
 	fprintf(stderr, "\nCCA2 Pointcheval GOPPA Initialisation...\n");
-	if (BPU_mecsInitCtx(&ctx, 11, 50, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {
+	if (BPU_mecsCtxNew(&ctx, 11, 50, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {
 		return 1;
 	}
 	rc += testKeyGenEncDec(ctx);

@@ -109,8 +109,9 @@ int main(int argc, char **argv) {
         goto err;
     }
 
-    if (BPU_SUCCESS != BPU_mecsInitCtx(&ctx, params, BPU_EN_MECS_BASIC_GOPPA)) {
-        BPU_printError("BPU_mecsInitCtx failed");
+    ctx = BPU_mecsCtxNew(params, BPU_EN_MECS_BASIC_GOPPA);
+    if (NULL == ctx) {
+        BPU_printError("BPU_mecsCtxNew failed");
         goto err;
     }
 

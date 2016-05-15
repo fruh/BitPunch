@@ -222,7 +222,7 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
             return -1;
         }
         free(tmp_buf);
-        if (BPU_mecsInitCtx(ctx, &params, type)) {
+        if (BPU_mecsCtxNew(ctx, &params, type)) {
             return -1;
         }
         BPU_mecsDestroyParamsGoppa(&params);
@@ -451,7 +451,7 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
         BPU_printError("Type not supported");
         return -1;
     }
-    if ((rc = BPU_mecsInitCtx(ctx, &params, type))) {
+    if ((rc = BPU_mecsCtxNew(ctx, &params, type))) {
         BPU_printError("can not initialize mecs ctx");
 
         return rc;
