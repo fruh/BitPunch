@@ -69,7 +69,7 @@ typedef struct _BPU_T_Code_Ctx {
  * @param type
  * @return
  */
-int BPU_codeInitCtx(BPU_T_Code_Ctx ** ctx, const BPU_T_UN_Code_Params * params,
+BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
                     const BPU_T_EN_Code_Types type);
 
 /**

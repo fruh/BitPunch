@@ -29,78 +29,74 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/code/goppa/goppa.h>
 #include <bitpunch/code/qcmdpc/qcmdpc.h>
 
-int BPU_codeInitCtx(BPU_T_Code_Ctx ** ctx, const BPU_T_UN_Code_Params * params,
+BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
                     const BPU_T_EN_Code_Types type) {
     int tmp;
-    BPU_T_Code_Ctx *ctx_p;
+    BPU_T_Code_Ctx *ctx_local = NULL;
+    BPU_T_Code_Ctx *ctx = NULL;
 
-    *ctx = (BPU_T_Code_Ctx *) calloc(1, sizeof(BPU_T_Code_Ctx));
-    if (!*ctx) {
-        BPU_printError("Can not malloc BPU_T_Code_Ctx");
-
-        return BPU_EC_MALLOC_ERROR;
+    ctx_local = (BPU_T_Code_Ctx *) calloc(1, sizeof(BPU_T_Code_Ctx));
+    if (NULL == ctx_local) {
+        BPU_printError("calloc failed");
+        goto err;
     }
-    ctx_p = *ctx;
-    ctx_p->type = type;
 
-    ctx_p->code_spec =
+    ctx_local->type = type;
+
+    ctx_local->code_spec =
         (BPU_T_UN_Code_Spec *) calloc(1, sizeof(BPU_T_UN_Code_Spec));
-    if (!ctx_p->code_spec) {
+    if (!ctx_local->code_spec) {
         BPU_printError("Can not malloc BPU_T_UN_Code_Spec");
-
-        return BPU_EC_MALLOC_ERROR;
+        goto err;
     }
     switch (type) {
     case BPU_EN_CODE_GOPPA:
 #ifdef BPU_CONF_ENCRYPTION
-        ctx_p->_encode = BPU_goppaEncode;
+        ctx_local->_encode = BPU_goppaEncode;
 #endif
 #ifdef BPU_CONF_DECRYPTION
-        ctx_p->_decode = BPU_goppaDecode;
+        ctx_local->_decode = BPU_goppaDecode;
 #endif
         tmp =
-            BPU_codeInitMathCtx(&ctx_p->math_ctx, params->goppa->m,
+            BPU_codeInitMathCtx(&ctx_local->math_ctx, params->goppa->m,
                                 params->goppa->t, params->goppa->mod);
         if (tmp) {
             BPU_printError("Code math context initialization ERROR.");
-
-            return tmp;
+            goto err;
         }
-        ctx_p->code_spec->goppa =
+        ctx_local->code_spec->goppa =
             (BPU_T_Goppa_Spec *) calloc(1, sizeof(BPU_T_Goppa_Spec));
-        if (!ctx_p->code_spec->goppa) {
+        if (!ctx_local->code_spec->goppa) {
             BPU_printError("Can not malloc BPU_T_Goppa_Spec");
-
-            return BPU_EC_MALLOC_ERROR;
+            goto err;
         }
-        ctx_p->code_spec->goppa->support_len = (1 << params->goppa->m); // ctx->math_ctx->ord + 1;
-        ctx_p->code_len = ctx_p->code_spec->goppa->support_len;
-        ctx_p->msg_len = ctx_p->code_spec->goppa->support_len - params->goppa->m * params->goppa->t;    // n - m*t
-        ctx_p->t = params->goppa->t;
+        ctx_local->code_spec->goppa->support_len = (1 << params->goppa->m); // ctx->math_ctx->ord + 1;
+        ctx_local->code_len = ctx_local->code_spec->goppa->support_len;
+        ctx_local->msg_len = ctx_local->code_spec->goppa->support_len - params->goppa->m * params->goppa->t;    // n - m*t
+        ctx_local->t = params->goppa->t;
 
         break;
     case BPU_EN_CODE_QCMDPC:
-        ctx_p->code_spec->qcmdpc =
+        ctx_local->code_spec->qcmdpc =
             (BPU_T_Qcmdpc_Spec *) calloc(1, sizeof(BPU_T_Qcmdpc_Spec));
 #ifdef BPU_CONF_ENCRYPTION
-        ctx_p->_encode = BPU_mecsQcmdpcEncode;
+        ctx_local->_encode = BPU_mecsQcmdpcEncode;
         // ctx_p->code_spec->qcmdpc->G = (BPU_T_GF2_QC_Matrix *) malloc(sizeof(BPU_T_GF2_QC_Matrix));
 #endif
 #ifdef BPU_CONF_DECRYPTION
-        ctx_p->_decode = BPU_mecsQcmdpcDecrypt;
+        ctx_local->_decode = BPU_mecsQcmdpcDecrypt;
         // ctx_p->code_spec->qcmdpc->H = (BPU_T_GF2_Sparse_Qc_Matrix *) malloc(sizeof(BPU_T_GF2_Sparse_Qc_Matrix));
 #endif
-        if (!ctx_p->code_spec->qcmdpc) {
+        if (!ctx_local->code_spec->qcmdpc) {
             BPU_printError("Can not malloc BPU_T_Goppa_Spec");
-
-            return BPU_EC_MALLOC_ERROR;
+            goto err;
         }
-        ctx_p->code_spec->qcmdpc->m = params->qcmdpc->m;
-        ctx_p->code_spec->qcmdpc->n0 = params->qcmdpc->n0;
-        ctx_p->code_spec->qcmdpc->w = params->qcmdpc->w;
-        ctx_p->code_len = params->qcmdpc->m * params->qcmdpc->n0;
-        ctx_p->msg_len = ctx_p->code_len - params->qcmdpc->m;
-        ctx_p->t = params->qcmdpc->t;
+        ctx_local->code_spec->qcmdpc->m = params->qcmdpc->m;
+        ctx_local->code_spec->qcmdpc->n0 = params->qcmdpc->n0;
+        ctx_local->code_spec->qcmdpc->w = params->qcmdpc->w;
+        ctx_local->code_len = params->qcmdpc->m * params->qcmdpc->n0;
+        ctx_local->msg_len = ctx_local->code_len - params->qcmdpc->m;
+        ctx_local->t = params->qcmdpc->t;
 
         break;
         /* EXAMPLE please DO NOT REMOVE
@@ -120,9 +116,13 @@ int BPU_codeInitCtx(BPU_T_Code_Ctx ** ctx, const BPU_T_UN_Code_Params * params,
          */
     default:
         BPU_printError("Code type not supported: %d", type);
-        return BPU_EC_CODE_TYPE_NOT_SUPPORTED;
+        goto err;
     }
-    return 0;
+
+    ctx = ctx_local;
+    ctx_local = NULL;
+err:
+    return ctx;
 }
 
 int BPU_codeInitMathCtx(BPU_T_Math_Ctx ** ctx, const uint16_t m,

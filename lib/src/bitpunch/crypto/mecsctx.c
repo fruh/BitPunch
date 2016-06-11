@@ -38,6 +38,7 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
                     const BPU_T_EN_Mecs_Types type) {
     BPU_T_Mecs_Ctx *ctx = NULL;
     BPU_T_Mecs_Ctx *ctx_local = NULL;
+    BPU_T_Code_Ctx *code_ctx = NULL;
 
     if (NULL == params) {
         BPU_printError("Invalid input parameter \"%s\"", "params");
@@ -63,14 +64,15 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
 #ifdef BPU_CONF_KEY_GEN
         ctx_local->_genKeyPair = BPU_goppaGenCode;
 #endif
-        if (BPU_codeInitCtx(&ctx_local->code_ctx, (BPU_T_UN_Code_Params *) params,
-                             BPU_EN_CODE_GOPPA)) {
+        code_ctx = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
+                                     BPU_EN_CODE_GOPPA);
+        if (NULL == code_ctx) {
             BPU_printError("BPU_codeInitCtx failed");
             goto err;
         }
 
-        ctx_local->pt_len = ctx_local->code_ctx->msg_len;
-        ctx_local->ct_len = ctx_local->code_ctx->code_len;
+        ctx_local->pt_len = code_ctx->msg_len;
+        ctx_local->ct_len = code_ctx->code_len;
         break;
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
@@ -84,17 +86,18 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
 #ifdef BPU_CONF_KEY_GEN
         ctx_local->_genKeyPair = BPU_goppaGenCode;
 #endif
-        if (BPU_codeInitCtx(&ctx_local->code_ctx, (BPU_T_UN_Code_Params *) params,
-                             BPU_EN_CODE_GOPPA)) {
+        code_ctx = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
+                                     BPU_EN_CODE_GOPPA);
+        if (NULL == code_ctx) {
             BPU_printError("BPU_codeInitCtx failed");
             goto err;
         }
 
         ctx_local->pt_len =
             BPU_HASH_LEN * 8 <
-            ctx_local->code_ctx->msg_len ? BPU_HASH_LEN *
-            8 : ctx_local->code_ctx->msg_len;
-        ctx_local->ct_len = ctx_local->code_ctx->code_len + 2 * ctx_local->ct_len;
+            code_ctx->msg_len ? BPU_HASH_LEN *
+            8 : code_ctx->msg_len;
+        ctx_local->ct_len = code_ctx->code_len + 2 * ctx_local->ct_len;
         break;
 #endif
 
@@ -108,14 +111,15 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
 #ifdef BPU_CONF_KEY_GEN
         ctx_local->_genKeyPair = BPU_mecsQcmdpcGenKeys;
 #endif
-        if (BPU_codeInitCtx(&ctx_local->code_ctx, (BPU_T_UN_Code_Params *) params,
-                             BPU_EN_CODE_QCMDPC)) {
+        code_ctx = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
+                                     BPU_EN_CODE_QCMDPC);
+        if (NULL == code_ctx) {
             BPU_printError("BPU_codeInitCtx failed");
             goto err;
         }
 
-        ctx_local->pt_len = ctx_local->code_ctx->msg_len;
-        ctx_local->ct_len = ctx_local->code_ctx->code_len;
+        ctx_local->pt_len = code_ctx->msg_len;
+        ctx_local->ct_len = code_ctx->code_len;
         break;
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC
@@ -129,17 +133,19 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
 #ifdef BPU_CONF_KEY_GEN
         ctx_local->_genKeyPair = BPU_mecsQcmdpcGenKeys;
 #endif
-        if (BPU_codeInitCtx(&ctx_local->code_ctx, (BPU_T_UN_Code_Params *) params,
-                             BPU_EN_CODE_QCMDPC)) {
+        code_ctx = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
+                                     BPU_EN_CODE_QCMDPC);
+        if (NULL == code_ctx) {
             BPU_printError("BPU_codeInitCtx failed");
             goto err;
         }
 
         ctx_local->pt_len =
             BPU_HASH_LEN * 8 <
-            ctx_local->code_ctx->msg_len ? BPU_HASH_LEN *
-            8 : ctx_local->code_ctx->msg_len;
-        ctx_local->ct_len = ctx_local->code_ctx->code_len + 2 * ctx_local->ct_len;
+            code_ctx->msg_len ? BPU_HASH_LEN *
+            8 : code_ctx->msg_len;
+        // TODO: critical
+        ctx_local->ct_len = code_ctx->code_len + 2 * ctx_local->ct_len;
         break;
 #endif
         /* EXAMPLE please DO NOT REMOVE
@@ -153,9 +159,9 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
            #ifdef BPU_CONF_KEY_GEN
            ctx_p->_genKeyPair = FUNC_FROM_YOUR_FILE;
            #endif
-           rc = BPU_codeInitCtx(&ctx_p->code_ctx, m, t, BPU_EN_CODE_GOPPA, mod);
-           if (rc) {
-           return rc;
+           ctx_p->code_ctx = BPU_codeInitCtx(m, t, BPU_EN_CODE_GOPPA, mod);
+           if (ctx_p->code_ctx) {
+           goto err;
            }
            ctx->pt_len = PT_LEN;
            ctx->ct_len = CT_LEN;
@@ -166,11 +172,14 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
         goto err;
     }
 
+    ctx_local->code_ctx = code_ctx;
     ctx = ctx_local;
     ctx_local = NULL;
+    code_ctx = NULL;
 err:
     // TODO: in case of error code context is not released
     BPU_SAFE_FREE(free, ctx_local);
+    BPU_SAFE_FREE(BPU_codeCtxFree, code_ctx);
     return ctx;
 }
 
