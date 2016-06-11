@@ -80,7 +80,7 @@ BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
  * @param mod
  * @return
  */
-int BPU_codeInitMathCtx(BPU_T_Math_Ctx ** ctx, const uint16_t m,
+BPU_T_Math_Ctx * BPU_codeMathCtxNew(const uint16_t m,
                         const uint16_t t, const BPU_T_GF2_16x mod);
 
 /**

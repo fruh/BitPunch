@@ -21,50 +21,81 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 #include <stdlib.h>
 
-int BPU_mathInitCtx(BPU_T_Math_Ctx ** ctx, const BPU_T_GF2_16x g,
+BPU_T_Math_Ctx * BPU_mathCtxNew(const BPU_T_GF2_16x g,
                     const BPU_T_GF2_16x mod) {
     BPU_T_GF2_16x b = 1;
     int i = 0;
-    BPU_T_Math_Ctx *math_ctx;
+    int mod_deg = -1;
+    BPU_T_Math_Ctx *math_ctx = NULL;
+    BPU_T_Math_Ctx *math_ctx_local = NULL;
+    BPU_T_GF2_16x *log_table = NULL;
+    BPU_T_GF2_16x *exp_table = NULL;
 
-    *ctx = (BPU_T_Math_Ctx *) calloc(1, sizeof(BPU_T_Math_Ctx));
-    if (!*ctx) {
+    math_ctx_local = (BPU_T_Math_Ctx *) calloc(1, sizeof(BPU_T_Math_Ctx));
+    if (NULL == math_ctx_local) {
         BPU_printError("Can not malloc BPU_T_Math_Ctx");
-
-        return -1;
+        goto err;
     }
-    math_ctx = *ctx;
+
+    mod_deg = BPU_gf2xGetDeg(mod);
+    if (-1 == mod_deg)
+    {
+        BPU_printError("Invalid degree of mod");
+        goto err;
+    }
+
     // get group ord, number of elements
-    BPU_T_GF2_16x ord = ((1 << BPU_gf2xGetDeg(mod)) - 1);
+    BPU_T_GF2_16x ord = ((1 << mod_deg) - 1);
 
     // alocate memory for tables
-    math_ctx->mod = mod;
-    math_ctx->mod_deg = BPU_gf2xGetDeg(mod);
-    math_ctx->log_table =
+    math_ctx_local->mod = mod;
+    math_ctx_local->mod_deg = mod_deg;
+    log_table =
         (BPU_T_GF2_16x *) malloc(sizeof(BPU_T_GF2_16x) * (ord + 1));
-    math_ctx->exp_table =
+    if (NULL == log_table)
+    {
+        BPU_printError("malloc failed");
+        goto err;
+    }
+
+    exp_table =
         (BPU_T_GF2_16x *) malloc(sizeof(BPU_T_GF2_16x) * (ord + 1));
+    if (NULL == exp_table)
+    {
+        BPU_printError("malloc failed")
+        goto err;
+    }
 
     // set ord
-    math_ctx->ord = ord;
+    math_ctx_local->ord = ord;
 
     do {
-        math_ctx->exp_table[i] = b;
-        math_ctx->log_table[b] = i;
+        exp_table[i] = b;
+        log_table[b] = i;
 
         b = BPU_gf2xMulMod(b, g, mod);
         i++;
     } while (b != 1);
 
-    math_ctx->exp_table[ord] = 0;
-    math_ctx->log_table[0] = ord;
+    exp_table[ord] = 0;
+    log_table[0] = ord;
 
     if (i != ord) {
         BPU_printError("element 0x%x is not generator", g);
-
-        return 1;
+        goto err;
     }
-    return 0;
+
+    math_ctx_local->log_table = log_table;
+    log_table = NULL;
+    math_ctx_local->exp_table = exp_table;
+    exp_table = NULL;
+    math_ctx = math_ctx_local;
+    math_ctx_local = NULL;
+err:
+    BPU_SAFE_FREE(free, math_ctx_local);
+    BPU_SAFE_FREE(free, log_table);
+    BPU_SAFE_FREE(free, exp_table);
+    return math_ctx;
 }
 
 void BPU_mathFreeCtx(BPU_T_Math_Ctx *ctx) {

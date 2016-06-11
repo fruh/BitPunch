@@ -31,7 +31,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
                     const BPU_T_EN_Code_Types type) {
-    int tmp;
     BPU_T_Code_Ctx *ctx_local = NULL;
     BPU_T_Code_Ctx *ctx = NULL;
 
@@ -57,10 +56,9 @@ BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
 #ifdef BPU_CONF_DECRYPTION
         ctx_local->_decode = BPU_goppaDecode;
 #endif
-        tmp =
-            BPU_codeInitMathCtx(&ctx_local->math_ctx, params->goppa->m,
+        ctx_local->math_ctx = BPU_codeMathCtxNew(params->goppa->m,
                                 params->goppa->t, params->goppa->mod);
-        if (tmp) {
+        if (NULL == ctx_local->math_ctx) {
             BPU_printError("Code math context initialization ERROR.");
             goto err;
         }
@@ -81,11 +79,9 @@ BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
             (BPU_T_Qcmdpc_Spec *) calloc(1, sizeof(BPU_T_Qcmdpc_Spec));
 #ifdef BPU_CONF_ENCRYPTION
         ctx_local->_encode = BPU_mecsQcmdpcEncode;
-        // ctx_p->code_spec->qcmdpc->G = (BPU_T_GF2_QC_Matrix *) malloc(sizeof(BPU_T_GF2_QC_Matrix));
 #endif
 #ifdef BPU_CONF_DECRYPTION
         ctx_local->_decode = BPU_mecsQcmdpcDecrypt;
-        // ctx_p->code_spec->qcmdpc->H = (BPU_T_GF2_Sparse_Qc_Matrix *) malloc(sizeof(BPU_T_GF2_Sparse_Qc_Matrix));
 #endif
         if (!ctx_local->code_spec->qcmdpc) {
             BPU_printError("Can not malloc BPU_T_Goppa_Spec");
@@ -125,45 +121,45 @@ err:
     return ctx;
 }
 
-int BPU_codeInitMathCtx(BPU_T_Math_Ctx ** ctx, const uint16_t m,
+BPU_T_Math_Ctx* BPU_codeMathCtxNew(const uint16_t m,
                         const uint16_t t, const BPU_T_GF2_16x mod) {
-    int rc = 0;
+    BPU_T_Math_Ctx *math_ctx_local = NULL;
+    BPU_T_Math_Ctx *math_ctx = NULL;
+    BPU_T_GF2_16x context_mod = 0;
 
-    if (mod == (BPU_T_GF2_16x) - 1) {
-        *ctx = (BPU_T_Math_Ctx *) calloc(1, sizeof(BPU_T_Math_Ctx));
-        if (!*ctx) {
-            BPU_printError("Can not malloc BPU_T_Math_Ctx");
-
-            return -1;
-        }
-        (*ctx)->mod_deg = m;
-    }
-    else if (mod != 0) {
-        rc = BPU_mathInitCtx(ctx, (BPU_T_GF2_16x) 2, mod);
+    if (mod != 0) {
+        context_mod = mod;
     }
     else if (m == 5 && t == 5) {
-        rc = BPU_mathInitCtx(ctx, (BPU_T_GF2_16x) 2,
-                             (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_5);
+        context_mod = BPU_GF2_POLY_DEG_5;
     }
     else if (m == 6 && t == 6) {
-        rc = BPU_mathInitCtx(ctx, (BPU_T_GF2_16x) 2,
-                             (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_6);
+        context_mod = BPU_GF2_POLY_DEG_6;
     }
     else if (m == 6 && t == 7) {
-        rc = BPU_mathInitCtx(ctx, (BPU_T_GF2_16x) 2,
-                             (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_6);
+        context_mod = BPU_GF2_POLY_DEG_6;
     }
     else if (m == 11 && t == 50) {
-        rc = BPU_mathInitCtx(ctx, (BPU_T_GF2_16x) 2,
-                             (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_11);
+        context_mod = BPU_GF2_POLY_DEG_11;
     }
     else {
         BPU_printError
             ("Code params not supported. Supported only (m,t): (5,5), (6,6), (6,7), (11,50)");
-
-        return BPU_EC_CODE_PARAMS_NOT_SUPPORTED;
+        goto err;
     }
-    return rc;
+
+    math_ctx_local = BPU_mathCtxNew((BPU_T_GF2_16x) 2, context_mod);
+    if (NULL == math_ctx_local)
+    {
+        BPU_printError("BPU_mathCtxNew failed");
+        goto err;
+    }
+
+    math_ctx = math_ctx_local;
+    math_ctx_local = NULL;
+err:
+    BPU_SAFE_FREE(BPU_mathFreeCtx, math_ctx_local);
+    return math_ctx;
 }
 
 void BPU_codeCtxFree(BPU_T_Code_Ctx * ctx) {

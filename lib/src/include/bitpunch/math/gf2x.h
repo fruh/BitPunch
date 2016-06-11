@@ -67,7 +67,7 @@ typedef struct _BPU_T_Math_Ctx {
 * @return number of elements or < 0 means error
 */
 /// Precalculate logaritmic and exponencial tables and initialize structure Aritmetic_Data
-int BPU_mathInitCtx(BPU_T_Math_Ctx ** ctx, const BPU_T_GF2_16x g,
+BPU_T_Math_Ctx * BPU_mathCtxNew(const BPU_T_GF2_16x g,
                     const BPU_T_GF2_16x mod);
 
 /**
