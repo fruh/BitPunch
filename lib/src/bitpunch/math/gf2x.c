@@ -127,7 +127,7 @@ BPU_T_GF2_16x BPU_gf2xMulModT(BPU_T_GF2_16x a, BPU_T_GF2_16x b, const BPU_T_Math
 	BPU_T_GF2_32x condition;
 	BPU_T_GF2_16x candidate;
 	candidate = math_ctx->exp_table[(math_ctx->log_table[a] + math_ctx->log_table[b]) % math_ctx->ord];
-	if (condition = (a * b))
+    if ((condition = (a * b)))
 		return candidate;
 	return condition;
 }
@@ -153,7 +153,7 @@ BPU_T_GF2_16x BPU_gf2xMulModTC(BPU_T_GF2_16x a, BPU_T_GF2_16x b, const BPU_T_Mat
 	exp = (exp & math_ctx->ord) - !bit;
 	candidate = math_ctx->exp_table[exp];
 
-	if (condition = (a * b))
+    if ((condition = (a * b)))
 		return candidate;
 	return condition;
 //	a = !a;
@@ -648,9 +648,9 @@ int BPU_gf2xGetDeg(BPU_T_GF2_32x poly) {
 }
 
 int BPU_gf2xPolyGetDegC(BPU_T_GF2_16x_Poly *poly) {
-	int i = poly->max_deg;
+    int i;
 	int deg = 0;
-	for (i; i >= 0; i--) {
+    for (i = poly->max_deg; i >= 0; i--) {
 		deg = deg ^ ((i + 1) * !deg * !!poly->coef[i]);
 	}
 	deg = deg - 1;
@@ -658,8 +658,8 @@ int BPU_gf2xPolyGetDegC(BPU_T_GF2_16x_Poly *poly) {
 }
 
 int BPU_gf2xPolyGetDeg(BPU_T_GF2_16x_Poly *poly) {
-	int i = poly->max_deg;
-	for (i; i >= 0; i--) {
+    int i;
+    for (i = poly->max_deg; i >= 0; i--) {
 		if (poly->coef[i] != 0) {
 			return i;
 		}
@@ -1225,7 +1225,9 @@ void BPU_gf2xMatGEM(BPU_T_GF2_16x_Matrix *mat, const BPU_T_Math_Ctx *math_ctx) {
 	for (i = 0; i < mat->k; i++) {
 		pivot = BPU_gf2xMatFindPivot(mat, i);
 		if (pivot == -1)
-			BPU_printError("################# unbeliviable 'badness' ###########");
+        {
+            BPU_printError("################# unbeliviable 'badness' ###########");
+        }
 		if (pivot != i) {
 			BPU_gf2xMatSwapRows(mat, i, pivot);
 		}

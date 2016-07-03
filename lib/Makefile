@@ -31,7 +31,7 @@ INCLUDE_PATH = -Isrc/
 CC = gcc $(INCLUDE_PATH)
 
 # compiler flags
-CFLAGS_PROF = -Wall -DERROR_L -O3 -pg
+CFLAGS_PROF = -Wall -DERROR_L -O2 -pg
 #-fprofile-arcs
 CFLAGS_SPEED = -Wall -DERROR_L -O3
 CFLAGS = -Wall -DERROR_L -O2 -g

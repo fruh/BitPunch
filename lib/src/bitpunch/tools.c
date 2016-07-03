@@ -38,6 +38,15 @@ void removeErrorBit(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *error, int number_o
 	}
 }
 
+void xorBit(BPU_T_GF2_Vector *out, int position) {
+        if (!BPU_gf2VecGetBit(out, position)) {
+            BPU_gf2VecSetBit(out, position, 1);
+        }
+        else {
+            BPU_gf2VecSetBit(out, position, 0);
+        }
+}
+
 void addErrorBit(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *error, int number_of_errors) {
 	int i;
 	for(i = 0; i < error->len; i++) {

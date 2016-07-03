@@ -41,7 +41,7 @@ int elpMeasurementsBB() {
 	int test, number_of_tests;
 	BPU_T_Mecs_Ctx ctx;
 	BPU_T_GF2_Vector ct, pt_in, pt_out, error;
-	int i, iter;
+    unsigned int i, iter;
 #ifdef ATTACK_BB
 	unsigned long long int start, stop, delta;
 #endif
@@ -62,35 +62,38 @@ int elpMeasurementsBB() {
 //	BPU_gf2VecRand(&error, ctx.ct_len, ctx.code_ctx->t);
 
 //	Decryption
-	number_of_tests = 2;
+    number_of_tests = ct.len;
 //	removeErrorBit(&ct, &error, 4);
 	BPU_gf2VecRand(&error, ctx.ct_len, ctx.code_ctx->t);
 	BPU_gf2VecXor(&ct, &error);
 
-	iter = 1;
+    iter = 20;
+    BPU_printGf2Vec(&error);
 	for (test = 0; test < number_of_tests; test++){
+#ifdef ATTACK_BB
+            start = rdtsc();
+#endif
+            xorBit(&ct, test);
 		for (i = 0; i < iter; i++) {
-#ifdef ATTACK_BB
-			start = rdtsc();
-#endif
 			BPU_mecsDecrypt(&pt_out, &ct, &ctx);
-#ifdef ATTACK_BB
-			stop = rdtsc();
-			delta = stop - start;
-			fprintf(stdout, "%d\n", delta);
-#endif
 		}
-		removeErrorBit(&ct, &error, 26);
+#ifdef ATTACK_BB
+            stop = rdtsc();
+            delta = stop - start;
+            fprintf(stdout, "%llu ", delta / (unsigned long long int)iter);
+#endif
+        xorBit(&ct, test);
+//        removeErrorBit(&ct, &error, 20);
 //		addErrorBit(&ct, &error, 2);
 	}
 
 
 
 
-	if (!BPU_gf2VecCmp(&pt_in, &pt_out))
-		fprintf(stderr, "success\n");
-	else
-		fprintf(stderr, "failure\n");
+//	if (!BPU_gf2VecCmp(&pt_in, &pt_out))
+//		fprintf(stderr, "success\n");
+//	else
+//		fprintf(stderr, "failure\n");
 //	Clean up
 	BPU_gf2VecFree(&pt_in, 0);
 	BPU_gf2VecFree(&pt_out, 0);
