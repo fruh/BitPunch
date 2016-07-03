@@ -265,7 +265,7 @@ int main(int argc, char **argv) {
 
     // MUST BE NULL
     BPU_T_Mecs_Ctx *ctx = NULL;
-    BPU_T_UN_Mecs_Params params;
+    BPU_T_UN_Mecs_Params* params;
 
     srand(time(NULL));
 #if !defined(BPU_CONF_GOPPA_WO_H) && defined(BPU_CONF_ASN1)

@@ -38,7 +38,7 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
                     const BPU_T_EN_Mecs_Types type) {
     BPU_T_Mecs_Ctx *ctx = NULL;
     BPU_T_Mecs_Ctx *ctx_local = NULL;
-    BPU_T_Code_Ctx *code_ctx = NULL;
+    BPU_T_Code_Ctx *code_ctx_local = NULL;
 
     if (NULL == params) {
         BPU_printError("Invalid input parameter \"%s\"", "params");
@@ -64,15 +64,15 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
 #ifdef BPU_CONF_KEY_GEN
         ctx_local->_genKeyPair = BPU_goppaGenCode;
 #endif
-        code_ctx = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
+        code_ctx_local = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
                                      BPU_EN_CODE_GOPPA);
-        if (NULL == code_ctx) {
+        if (NULL == code_ctx_local) {
             BPU_printError("BPU_codeInitCtx failed");
             goto err;
         }
 
-        ctx_local->pt_len = code_ctx->msg_len;
-        ctx_local->ct_len = code_ctx->code_len;
+        ctx_local->pt_len = code_ctx_local->msg_len;
+        ctx_local->ct_len = code_ctx_local->code_len;
         break;
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
@@ -111,15 +111,15 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
 #ifdef BPU_CONF_KEY_GEN
         ctx_local->_genKeyPair = BPU_mecsQcmdpcGenKeys;
 #endif
-        code_ctx = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
+        code_ctx_local = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
                                      BPU_EN_CODE_QCMDPC);
-        if (NULL == code_ctx) {
+        if (NULL == code_ctx_local) {
             BPU_printError("BPU_codeInitCtx failed");
             goto err;
         }
 
-        ctx_local->pt_len = code_ctx->msg_len;
-        ctx_local->ct_len = code_ctx->code_len;
+        ctx_local->pt_len = code_ctx_local->msg_len;
+        ctx_local->ct_len = code_ctx_local->code_len;
         break;
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC
@@ -172,14 +172,15 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
         goto err;
     }
 
-    ctx_local->code_ctx = code_ctx;
+    ctx_local->code_ctx = code_ctx_local;
+    code_ctx_local = NULL;
+
     ctx = ctx_local;
     ctx_local = NULL;
-    code_ctx = NULL;
 err:
     // TODO: in case of error code context is not released
     BPU_SAFE_FREE(free, ctx_local);
-    BPU_SAFE_FREE(BPU_codeCtxFree, code_ctx);
+    BPU_SAFE_FREE(BPU_codeCtxFree, code_ctx_local);
     return ctx;
 }
 

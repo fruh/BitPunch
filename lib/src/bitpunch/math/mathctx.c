@@ -98,7 +98,7 @@ err:
     return math_ctx;
 }
 
-void BPU_mathFreeCtx(BPU_T_Math_Ctx *ctx) {
+void BPU_mathCtxFree(BPU_T_Math_Ctx *ctx) {
     if (NULL == ctx) {
         return;
     }

@@ -33,6 +33,9 @@ BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
                     const BPU_T_EN_Code_Types type) {
     BPU_T_Code_Ctx *ctx_local = NULL;
     BPU_T_Code_Ctx *ctx = NULL;
+    BPU_T_UN_Code_Spec *code_spec_local = NULL;
+    BPU_T_Math_Ctx *math_ctx_local = NULL;
+    BPU_T_Goppa_Spec *goppa_spec_local = NULL;
 
     ctx_local = (BPU_T_Code_Ctx *) calloc(1, sizeof(BPU_T_Code_Ctx));
     if (NULL == ctx_local) {
@@ -41,13 +44,13 @@ BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
     }
 
     ctx_local->type = type;
-
-    ctx_local->code_spec =
+    code_spec_local =
         (BPU_T_UN_Code_Spec *) calloc(1, sizeof(BPU_T_UN_Code_Spec));
-    if (!ctx_local->code_spec) {
+    if (NULL == code_spec_local) {
         BPU_printError("Can not malloc BPU_T_UN_Code_Spec");
         goto err;
     }
+
     switch (type) {
     case BPU_EN_CODE_GOPPA:
 #ifdef BPU_CONF_ENCRYPTION
@@ -56,23 +59,29 @@ BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
 #ifdef BPU_CONF_DECRYPTION
         ctx_local->_decode = BPU_goppaDecode;
 #endif
-        ctx_local->math_ctx = BPU_codeMathCtxNew(params->goppa->m,
+        math_ctx_local = BPU_codeMathCtxNew(params->goppa->m,
                                 params->goppa->t, params->goppa->mod);
-        if (NULL == ctx_local->math_ctx) {
+        if (NULL == math_ctx_local) {
             BPU_printError("Code math context initialization ERROR.");
             goto err;
         }
-        ctx_local->code_spec->goppa =
+
+        goppa_spec_local =
             (BPU_T_Goppa_Spec *) calloc(1, sizeof(BPU_T_Goppa_Spec));
-        if (!ctx_local->code_spec->goppa) {
+        if (NULL == goppa_spec_local) {
             BPU_printError("Can not malloc BPU_T_Goppa_Spec");
             goto err;
         }
-        ctx_local->code_spec->goppa->support_len = (1 << params->goppa->m); // ctx->math_ctx->ord + 1;
-        ctx_local->code_len = ctx_local->code_spec->goppa->support_len;
-        ctx_local->msg_len = ctx_local->code_spec->goppa->support_len - params->goppa->m * params->goppa->t;    // n - m*t
+        goppa_spec_local->support_len = (1 << params->goppa->m); // ctx->math_ctx->ord + 1;
+        ctx_local->code_len = goppa_spec_local->support_len;
+        ctx_local->msg_len = goppa_spec_local->support_len - params->goppa->m * params->goppa->t;    // n - m*t
         ctx_local->t = params->goppa->t;
-
+        code_spec_local->goppa = goppa_spec_local;
+        goppa_spec_local = NULL;
+        ctx_local->code_spec = code_spec_local;
+        code_spec_local = NULL;
+        ctx_local->math_ctx = math_ctx_local;
+        math_ctx_local = NULL;
         break;
     case BPU_EN_CODE_QCMDPC:
         ctx_local->code_spec->qcmdpc =
@@ -118,6 +127,10 @@ BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
     ctx = ctx_local;
     ctx_local = NULL;
 err:
+    BPU_SAFE_FREE(free, ctx_local);
+    BPU_SAFE_FREE(BPU_mathCtxFree, math_ctx_local);
+    BPU_SAFE_FREE(free, goppa_spec_local);
+    BPU_SAFE_FREE(free, code_spec_local);
     return ctx;
 }
 
@@ -158,7 +171,7 @@ BPU_T_Math_Ctx* BPU_codeMathCtxNew(const uint16_t m,
     math_ctx = math_ctx_local;
     math_ctx_local = NULL;
 err:
-    BPU_SAFE_FREE(BPU_mathFreeCtx, math_ctx_local);
+    BPU_SAFE_FREE(BPU_mathCtxFree, math_ctx_local);
     return math_ctx;
 }
 
@@ -180,7 +193,7 @@ void BPU_codeCtxFree(BPU_T_Code_Ctx * ctx) {
         BPU_printError("Code type not supported: %d", ctx->type);
     }
 
-    BPU_mathFreeCtx(ctx->math_ctx);
+    BPU_mathCtxFree(ctx->math_ctx);
 
     free(ctx->code_spec);
     free(ctx);
@@ -205,10 +218,10 @@ BPU_T_UN_Code_Params * BPU_codeParamsGoppaNew(const uint16_t m,
     }
 
     code_params_local->goppa = goppa_params;
+    goppa_params = NULL;
 
     code_params = code_params_local;
     code_params_local = NULL;
-    goppa_params = NULL;
 err:
     BPU_SAFE_FREE(BPU_goppaFreeParams, goppa_params);
     BPU_SAFE_FREE(free, code_params_local);
