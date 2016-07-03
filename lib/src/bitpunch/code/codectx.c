@@ -37,6 +37,11 @@ BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
     BPU_T_Math_Ctx *math_ctx_local = NULL;
     BPU_T_Goppa_Spec *goppa_spec_local = NULL;
 
+    if (NULL == params) {
+        BPU_printError("Invalid input parameter \"%s\"", "params");
+        goto err;
+    }
+
     ctx_local = (BPU_T_Code_Ctx *) calloc(1, sizeof(BPU_T_Code_Ctx));
     if (NULL == ctx_local) {
         BPU_printError("calloc failed");
