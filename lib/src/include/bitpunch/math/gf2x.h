@@ -177,7 +177,7 @@ void BPU_gf2xMatFree(BPU_T_GF2_16x_Matrix ** m);
  * @param  max_deg max degree of polynomial
  * @return
  */
-int BPU_gf2xPolyMalloc(BPU_T_GF2_16x_Poly ** p, int16_t max_deg);
+BPU_T_GF2_16x_Poly* BPU_gf2xPolyMalloc(int16_t max_deg);
 
 /**
  * @brief BPU_gf2xPolyResize Resize polynomial, increase max deg.
@@ -199,7 +199,7 @@ int BPU_gf2xPolyMallocCoef(BPU_T_GF2_16x_Poly * p, int16_t max_deg);
  * dealloc memory
  * @param p
  */
-void BPU_gf2xPolyFree(BPU_T_GF2_16x_Poly ** p);
+void BPU_gf2xPolyFree(BPU_T_GF2_16x_Poly *p);
 
 /**
  * Get inverse element of galois field.

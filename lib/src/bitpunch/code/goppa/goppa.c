@@ -139,35 +139,35 @@ int BPU_goppaGetError(BPU_T_GF2_Vector * error,
     BPU_permFree(&inv_perm);
 
     // Beginning of patterson
-    BPU_gf2xPolyMalloc(&syndrome, ctx->code_spec->goppa->g->deg - 1);
+    syndrome = BPU_gf2xPolyMalloc(ctx->code_spec->goppa->g->deg - 1);
     BPU_goppaDetSyndrome(syndrome, enc_permuted, ctx);
     BPU_gf2VecFree(enc_permuted);
 
-    BPU_gf2xPolyMalloc(&inv_syndrome,
+    inv_syndrome = BPU_gf2xPolyMalloc(
                        (syndrome->deg >
                         ctx->code_spec->goppa->g->deg) ? syndrome->deg : ctx->
                        code_spec->goppa->g->deg);
     BPU_gf2xPolyInv(inv_syndrome, syndrome, ctx->code_spec->goppa->g,
                     ctx->math_ctx);
-    BPU_gf2xPolyFree(&syndrome);
+    BPU_SAFE_FREE(BPU_gf2xPolyFree, syndrome);
     inv_syndrome->coef[1] = inv_syndrome->coef[1] ^ 1;
 
     // get square root
-    BPU_gf2xPolyMalloc(&tau, ctx->code_spec->goppa->g->deg);
+    tau = BPU_gf2xPolyMalloc(ctx->code_spec->goppa->g->deg);
     BPU_gf2xPolyRoot(tau, inv_syndrome, ctx->code_spec->goppa->g,
                      ctx->math_ctx);
-    BPU_gf2xPolyFree(&inv_syndrome);
+    BPU_SAFE_FREE(BPU_gf2xPolyFree, inv_syndrome);
         /**************** FROM NOW WE ARE NOT USING MODULUS g for a, b ********************/
-    BPU_gf2xPolyMalloc(&a,
+    a = BPU_gf2xPolyMalloc(
                        (tau->deg >
                         ctx->code_spec->goppa->g->deg) ? tau->deg : ctx->
                        code_spec->goppa->g->deg);
-    BPU_gf2xPolyMalloc(&b, a->max_deg);
+    b = BPU_gf2xPolyMalloc(a->max_deg);
     BPU_goppaFindPolyAB(a, b, tau, ctx->code_spec->goppa->g, ctx->math_ctx);
-    BPU_gf2xPolyFree(&tau);
+    BPU_SAFE_FREE(BPU_gf2xPolyFree, tau);
 
-    BPU_gf2xPolyMalloc(&tmp2, 2 * ctx->code_spec->goppa->g->deg);
-    BPU_gf2xPolyMalloc(&tmp, 2 * ctx->code_spec->goppa->g->deg);
+    tmp2 = BPU_gf2xPolyMalloc(2 * ctx->code_spec->goppa->g->deg);
+    tmp = BPU_gf2xPolyMalloc(2 * ctx->code_spec->goppa->g->deg);
 
     // a^2, b^2
     BPU_gf2xPolyMul(tmp, a, a, ctx->math_ctx);
@@ -175,19 +175,21 @@ int BPU_goppaGetError(BPU_T_GF2_Vector * error,
 
     // copy a^2, b^2 to a, b
     BPU_gf2xPolyCopy(a, tmp);
-    BPU_gf2xPolyFree(&tmp);
+    BPU_SAFE_FREE(BPU_gf2xPolyFree, tmp);
+
 
     BPU_gf2xPolyCopy(b, tmp2);
-    BPU_gf2xPolyFree(&tmp2);
+    BPU_SAFE_FREE(BPU_gf2xPolyFree, tmp2);
 
     // b^2 * x
     BPU_gf2xPolyShl(b, 1);
-    BPU_gf2xPolyMalloc(&sigma, ctx->code_spec->goppa->g->deg);
+    sigma = BPU_gf2xPolyMalloc(ctx->code_spec->goppa->g->deg);
 
     // calculate sigma = a^2 + x * b^2
     BPU_gf2xPolyAdd(sigma, a, b);
-    BPU_gf2xPolyFree(&a);
-    BPU_gf2xPolyFree(&b);
+    BPU_SAFE_FREE(BPU_gf2xPolyFree, a);
+    BPU_SAFE_FREE(BPU_gf2xPolyFree, b);
+
     // check if there is enough space
     if (error->len < ctx->code_spec->goppa->support_len) {
         BPU_gf2VecResize(error, ctx->code_spec->goppa->support_len);
@@ -203,7 +205,7 @@ int BPU_goppaGetError(BPU_T_GF2_Vector * error,
     }
     // permute error vector
     BPU_gf2VecPermute(error, ctx->code_spec->goppa->permutation);
-    BPU_gf2xPolyFree(&sigma);
+    BPU_SAFE_FREE(BPU_gf2xPolyFree, sigma);
     return 0;
 }
 
@@ -261,9 +263,10 @@ void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly * a, BPU_T_GF2_16x_Poly * b,
     BPU_T_GF2_16x_Poly *tmp;
     int end_deg = mod->deg / 2;
 
-    BPU_gf2xPolyMalloc(&tmp, (tau->deg > mod->deg) ? tau->deg : mod->deg);
+    tmp = BPU_gf2xPolyMalloc((tau->deg > mod->deg) ? tau->deg : mod->deg);
     BPU_gf2xPolyExtEuclid(a, b, tmp, tau, mod, end_deg, math_ctx);
-    BPU_gf2xPolyFree(&tmp);
+
+    BPU_SAFE_FREE(BPU_gf2xPolyFree, tmp);
 }
 #endif // BPU_CONF_DECRYPTION
 
@@ -334,7 +337,7 @@ int BPU_goppaGenCode(BPU_T_Code_Ctx * ctx) {
     int permute = -1;           // needed for equivalent codes
     BPU_T_Perm_Vector *temp;
 
-    BPU_gf2xPolyMalloc(&ctx->code_spec->goppa->g, ctx->t);
+    ctx->code_spec->goppa->g = BPU_gf2xPolyMalloc(ctx->t);
     BPU_gf2xPolyGenGoppa(ctx->code_spec->goppa->g, ctx->t, ctx->math_ctx);
 #ifdef BPU_CONF_GOPPA_WO_H
     ctx->code_spec->goppa->h_mat = NULL;
