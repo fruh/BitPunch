@@ -228,6 +228,16 @@ void BPU_gf2xPolyFree(BPU_T_GF2_16x_Poly ** p);
 /// Multiplication over Galois field, modulus mod.
 BPU_T_GF2_16x BPU_gf2xMulMod(BPU_T_GF2_16x a, BPU_T_GF2_16x b,
                              BPU_T_GF2_16x mod);
+/**
+ * @brief Time constant multiplication over Galois field.
+ * @param a
+ * @param b
+ * @param modulus
+ * @param degree of modulus
+ * @return a*b mod mod
+ */
+BPU_T_GF2_16x BPU_gf2xMulModC(BPU_T_GF2_16x a, BPU_T_GF2_16x b,
+                              BPU_T_GF2_16x mod, BPU_T_GF2_16x mod_deg);
 
 /**
 * Multiplication over Galois field, modulus mod.

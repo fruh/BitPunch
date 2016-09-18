@@ -237,6 +237,16 @@ BPU_T_GF2_16x BPU_gf2xMulMod(BPU_T_GF2_16x a, BPU_T_GF2_16x b,
     return tmp;
 }
 
+BPU_T_GF2_16x BPU_gf2xMulModC(BPU_T_GF2_16x a, BPU_T_GF2_16x b, BPU_T_GF2_16x mod, BPU_T_GF2_16x mod_deg) {
+    BPU_T_GF2_16x ret=0, i;
+    for(i = 0; i < mod_deg; i++) {
+        b ^= ((b >> mod_deg) & 1) * mod;
+        ret ^= ((a >> i) & 1) * b;
+        b = b << 1;
+    }
+    return ret;
+}
+
 BPU_T_GF2_16x BPU_gf2xMulModT(const BPU_T_GF2_16x a, const BPU_T_GF2_16x b,
                               const BPU_T_Math_Ctx * math_ctx) {
     BPU_T_GF2_32x condition;
