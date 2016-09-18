@@ -298,6 +298,14 @@ void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
                      const BPU_T_GF2_16x_Poly * b);
 
 /**
+ * @brief Plus operation on polynomials (out = a + b). All argumets must be allocated before using BPU_mallocPoly().
+ * @param out
+ * @param a
+ * @param b
+ */
+void BPU_gf2xPolyAddC(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b);
+
+/**
  * Divide two polynomials. All argumets must be allocated before using BPU_mallocPoly().
  * @param q [out] output quocient
  * @param r [out] output reminder
