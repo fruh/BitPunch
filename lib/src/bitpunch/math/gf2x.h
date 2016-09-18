@@ -319,6 +319,16 @@ void BPU_gf2xPolyDiv(BPU_T_GF2_16x_Poly * q, BPU_T_GF2_16x_Poly * r,
 void BPU_gf2xPolyMul(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
                      const BPU_T_GF2_16x_Poly * b,
                      const BPU_T_Math_Ctx * math_ctx);
+/**
+ * @brief Multiplicate two polynomials. All argumets must be allocated before using BPU_mallocPoly().
+ * @param out output polynomial
+ * @param a input polynomial
+ * @param b input polynomial
+ * @param math_ctx math context
+ */
+void BPU_gf2xPolyMulC(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a,
+                      const BPU_T_GF2_16x_Poly *b,
+                      const BPU_T_Math_Ctx *math_ctx);
 
 /**
  * Shift polynomial right, it is like a div x^n.

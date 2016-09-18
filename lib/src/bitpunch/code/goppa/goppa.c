@@ -137,8 +137,8 @@ int BPU_goppaGetError(BPU_T_GF2_Vector * error,
     BPU_gf2xPolyMalloc(&tmp, 2 * ctx->code_spec->goppa->g->deg);
 
     // a^2, b^2
-    BPU_gf2xPolyMul(tmp, a, a, ctx->math_ctx);
-    BPU_gf2xPolyMul(tmp2, b, b, ctx->math_ctx);
+    BPU_gf2xPolyMulC(tmp, a, a, ctx->math_ctx);
+    BPU_gf2xPolyMulC(tmp2, b, b, ctx->math_ctx);
 
     // copy a^2, b^2 to a, b
     BPU_gf2xPolyCopy(a, tmp);

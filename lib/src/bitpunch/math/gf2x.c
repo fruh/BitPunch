@@ -439,6 +439,29 @@ void BPU_gf2xPolyMul(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
     out->deg = BPU_gf2xPolyGetDeg(out);
 }
 
+void BPU_gf2xPolyMulC(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a,
+                      const BPU_T_GF2_16x_Poly *b,
+                      const BPU_T_Math_Ctx *math_ctx) {
+    int i;
+    int j;
+    int max_deg = a->max_deg + b->max_deg;
+
+    if (out->max_deg < max_deg) {
+        BPU_gf2xPolyFree(&out);
+        BPU_gf2xPolyMalloc(&out, max_deg);
+    }
+    else {
+        BPU_gf2xPolyNull(out);
+    }
+
+    for (i = a->max_deg; i >= 0; i--) {
+        for (j = b->max_deg; j >= 0; j--) {
+            out->coef[i+j] ^= BPU_gf2xMulModC(a->coef[i], b->coef[j], math_ctx->mod, math_ctx->mod_deg);
+        }
+    }
+    out->deg = BPU_gf2xPolyGetDeg(out);
+}
+
 void BPU_gf2xPolyShr(BPU_T_GF2_16x_Poly * a, int n) {
     BPU_T_GF2_16x_Poly *tmp;
 
