@@ -246,56 +246,6 @@ void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const
 	out->deg = BPU_gf2xPolyGetDeg(out);
 }
 
-void BPU_gf2xPolyDivC(BPU_T_GF2_16x_Poly *q, BPU_T_GF2_16x_Poly *r, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, const BPU_T_Math_Ctx *math_ctx) {
-	// a:b = q+r
-	BPU_T_GF2_16x_Poly tmp;
-	BPU_T_GF2_16x leader;
-	BPU_T_GF2_16x_Poly dividend;
-	const BPU_T_GF2_16x_Poly *divider = b;
-	int exponent;
-	int i;
-	int max_deg_q;
-
-	BPU_gf2xPolyMalloc(&dividend, a->max_deg);
-	BPU_gf2xPolyCopy(&dividend, a);
-
-	max_deg_q = a->deg - b->deg;
-
-	// check size of outputs
-	if (q->max_deg < max_deg_q) {
-		BPU_gf2xPolyFree(q, 0);
-		BPU_gf2xPolyMalloc(q, max_deg_q);
-	}
-	else {
-		BPU_gf2xPolyNull(q);
-	}
-	if (r->max_deg < (b->max_deg - 1)) {
-		BPU_gf2xPolyFree(r, 0);
-		BPU_gf2xPolyMalloc(r, b->max_deg - 1);
-	}
-	BPU_gf2xPolyNull(r);
-	BPU_gf2xPolyMalloc(&tmp, a->max_deg);
-
-	i = a->deg;
-	while (dividend.deg >= divider->deg) {
-		BPU_gf2xPolyNull(&tmp);
-		leader = BPU_gf2xMulModT(dividend.coef[i], BPU_gf2xPowerModT(divider->coef[divider->deg], -1, math_ctx), math_ctx);
-		exponent = dividend.deg - divider->deg;
-		q->coef[exponent] = leader;
-
-		if(q->deg == -1) {
-			q->deg = BPU_gf2xPolyGetDeg(q);
-		}
-		BPU_gf2xPolyMul(&tmp, divider, q, math_ctx);
-
-		BPU_gf2xPolyAdd(&dividend, a, &tmp);
-		i--;
-	}
-	BPU_gf2xPolyCopy(r, &dividend);
-	BPU_gf2xPolyFree(&dividend, 0);
-	BPU_gf2xPolyFree(&tmp, 0);
-}
-
 void BPU_gf2xPolyDiv(BPU_T_GF2_16x_Poly *q, BPU_T_GF2_16x_Poly *r, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, const BPU_T_Math_Ctx *math_ctx) {
 	// a:b = q+r
 	BPU_T_GF2_16x_Poly tmp;
@@ -950,7 +900,7 @@ BPU_T_GF2_16x BPU_gf2xPolyEval(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_1
 	for (i = 1; i <= poly->deg; i++) {
 		ret = ret ^ BPU_gf2xMulModT(poly->coef[i], BPU_gf2xPowerModT(x, i, math_ctx), math_ctx);
 	}
-	return ret;
+    return ret;
 }
 
 BPU_T_GF2_16x BPU_gf2xPolyEvalC(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x x, const BPU_T_Math_Ctx *math_ctx) {
