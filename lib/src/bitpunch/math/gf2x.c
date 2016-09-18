@@ -729,6 +729,16 @@ int BPU_gf2xPolyGetDeg(BPU_T_GF2_16x_Poly * poly) {
     return -1;
 }
 
+int BPU_gf2xPolyGetDegC(BPU_T_GF2_16x_Poly *poly) {
+    int i;
+    int deg = 0;
+    for (i = poly->max_deg; i >= 0; i--) {
+        deg = deg ^ ((i + 1) * !deg * !!poly->coef[i]);
+    }
+    deg = deg - 1;
+    return deg;
+}
+
 int BPU_gf2xMatPermute(BPU_T_GF2_16x_Matrix * out,
                        const BPU_T_GF2_16x_Matrix * m,
                        const BPU_T_Perm_Vector * permutation) {

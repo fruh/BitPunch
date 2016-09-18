@@ -430,11 +430,18 @@ int BPU_gf2xGetDeg(BPU_T_GF2_32x pol);
 
 /**
 * Get degree of polynomial over GF2x.
-* @param pol input polynomial
+* @param poly input polynomial
 * @return degree of pol or -1 if it is pol = 0
 */
 /// Get degree of polynomial over GF2x
 int BPU_gf2xPolyGetDeg(BPU_T_GF2_16x_Poly * poly);
+
+/**
+ * @brief Get degree of polynomial over GF2x.
+ * @param poly input polynomial
+ * @return degree of polynomial poly
+ */
+int BPU_gf2xPolyGetDegC(BPU_T_GF2_16x_Poly *poly);
 
 /**
  * Permute matrix GF2^m with permutation.
