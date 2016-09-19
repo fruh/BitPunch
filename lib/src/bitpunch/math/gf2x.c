@@ -668,9 +668,7 @@ int BPU_gf2xPolyExtEuclidC(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_G
 	int deg, leader_exp;
 	int counter = 0;
 	int act_deg, parity = 0;
-#ifdef ATTACK_INSIDE
-	unsigned long long int start1, stop1, delta1;
-#endif
+
 	deg = (a->max_deg > b->max_deg) ? a->max_deg : b->max_deg;
 
 	// check GCD qoutient size
@@ -699,9 +697,6 @@ int BPU_gf2xPolyExtEuclidC(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_G
 	BPU_gf2xPolyCopy(&r, b);
 	BPU_gf2xPolyCopy(&old_r, a);
 
-#ifdef ATTACK_INSIDE
-	start1 = rdtsc();
-#endif
 	if (a->deg == -1) {
 		BPU_gf2xPolyCopy(&old_r, b);
 		old_t.coef[0] = 1;
@@ -721,7 +716,7 @@ int BPU_gf2xPolyExtEuclidC(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_G
 
 		act_deg = old_r.max_deg;
 		parity = (!(end_deg & 1)) * 2;
-		for (counter = 0; counter < end_deg*2 + parity; counter++) {
+        for (counter = 0; counter < end_deg*2 + parity; counter++) {
 
 			//// leader = old_r.coef[act_deg] / r.coef[r.deg];
 			leader_exp = math_ctx->log_table[old_r.coef[act_deg]] - math_ctx->log_table[r.coef[r.deg]];
@@ -771,11 +766,7 @@ int BPU_gf2xPolyExtEuclidC(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_G
 			act_deg += 1;
 		}
 	}
-#ifdef ATTACK_INSIDE
-	stop1 = rdtsc();
-	delta1 = stop1 - start1;
-	fprintf(stdout, "%llu\n", delta1);
-#endif
+
 	// prepare return values
 	BPU_gf2xPolyCopy(d, &old_r);
 	BPU_gf2xPolyCopy(s, &old_s);

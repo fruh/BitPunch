@@ -95,7 +95,7 @@ int BPU_codeInitMathCtx(BPU_T_Math_Ctx *ctx, const uint16_t m, const uint16_t t)
 	else if (m == 6 && t == 7) {
 		rc = BPU_mathInitCtx(ctx, (BPU_T_GF2_16x)2, (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_6);
 	}
-	else if (m == 11 && t == 50) {
+    else if (m == 11 && t == 50) {
 		rc = BPU_mathInitCtx(ctx, (BPU_T_GF2_16x)2, (BPU_T_GF2_16x) BPU_GF2_POLY_DEG_11);
 	}
 	else {

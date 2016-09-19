@@ -63,15 +63,6 @@ default: test-with-h print-info
 test-wo-h: prepare-dir-test
 	$(CC) $(CFLAGS) $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
 
-test-w-h-attack-bb: prepare-dir-test
-	$(CC) $(CFLAGS) -DATTACK_BB -DBPU_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
-
-test-w-h-attack-inside: prepare-dir-test
-	$(CC) $(CFLAGS) -DATTACK_INSIDE -DBPU_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
-
-test-w-h-attack-inside-counter: prepare-dir-test
-	$(CC) $(CFLAGS) -DATTACK_INSIDE -DCOUNTER_MEASURE -DBPU_GOPPA_WITH_H $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
-
 test-wo-h-debug: prepare-dir-test
 	$(CC) $(CFLAGS) -ggdb $(SRC_FILES) src/main.c -o $(TEST_TARGET)/BitPunch
 

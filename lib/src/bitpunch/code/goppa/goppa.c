@@ -29,10 +29,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 #include <bitpunch/bitpunch.h>
 
-#ifdef ATTACK_INSIDE
-#include <time.h>
-#endif
-
 int BPU_goppaEncode(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, const struct _BPU_T_Code_Ctx *ctx) {
 	int rc = 0;
 	BPU_T_GF2_Vector tmp;
@@ -191,12 +187,12 @@ int BPU_goppaGetError(BPU_T_GF2_Vector *error, const BPU_T_GF2_Vector *encoded, 
 }
 
 void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector *z, const BPU_T_Code_Ctx *ctx) {
-	int row, column, bit;
+    int row, column;
 #ifndef BPU_GOPPA_WITH_H
-	int k, e;
+    int k, e, bit;
 	BPU_T_GF2_16x element, divider;
 #endif
-	BPU_gf2xPolyNull(syndrome);
+    BPU_gf2xPolyNull(syndrome);
 #ifdef BPU_GOPPA_WITH_H
 	for (column = 0; column < z->len; column++) {
 		for (row = 0; row < ctx->code_spec->goppa->h_mat->k; row++) {
@@ -221,13 +217,13 @@ void BPU_goppaDetSyndromeM(BPU_T_GF2_16x_Poly *syndrome, const BPU_T_GF2_Vector 
 }
 
 void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x_Poly *b, const BPU_T_GF2_16x_Poly *tau, const BPU_T_GF2_16x_Poly *mod, const BPU_T_Math_Ctx *math_ctx) {
-	BPU_T_GF2_16x_Poly tmp;
-	int end_deg = mod->deg / 2;
+    BPU_T_GF2_16x_Poly tmp;
+    int end_deg = mod->deg / 2;
 
-	BPU_gf2xPolyMalloc(&tmp, (tau->deg > mod->deg) ? tau->deg : mod->deg);
-	BPU_gf2xPolyExtEuclidC(a, &tmp, b, mod, tau, end_deg, math_ctx);
-//	BPU_gf2xPolyExtEuclid(a, &tmp, b, mod, tau, end_deg, math_ctx);
-	BPU_gf2xPolyFree(&tmp, 0);
+    BPU_gf2xPolyMalloc(&tmp, (tau->deg > mod->deg) ? tau->deg : mod->deg);
+//    BPU_gf2xPolyExtEuclidC(a, &tmp, b, mod, tau, end_deg, math_ctx);
+    BPU_gf2xPolyExtEuclid(a, &tmp, b, mod, tau, end_deg, math_ctx);
+    BPU_gf2xPolyFree(&tmp, 0);
 }
 
 int BPU_goppaInitMatH2(BPU_T_GF2_Matrix *h2, BPU_T_GF2_16x_Matrix *hx, const BPU_T_Code_Ctx *ctx) {
