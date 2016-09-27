@@ -24,8 +24,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 
 #include <bitpunch/math/gf2.h>
+#include <bitpunch/prng/prng.h>
 #include <bitpunch/math/perm.h>
 #include <bitpunch/debugio.h>
+#include <bitpunch/bitpunch.h>
 
 /***********************************************************************************************************/
 #ifdef BPU_CONF_ENCRYPTION
@@ -218,6 +220,7 @@ void BPU_goppaDetSyndrome(BPU_T_GF2_16x_Poly * syndrome,
                 ctx->code_spec->goppa->h_mat->elements[row][column];
         }
     }
+
 #endif
     syndrome->deg = BPU_gf2xPolyGetDeg(syndrome);
 }

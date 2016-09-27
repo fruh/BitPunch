@@ -260,7 +260,6 @@ BPU_T_GF2_16x BPU_gf2xMulModT(const BPU_T_GF2_16x a, const BPU_T_GF2_16x b,
     return condition;
 }
 
-
 //not possible to apply on cryptosystem where parameter $n \neq 2^m$
 //BPU_T_GF2_16x BPU_gf2xMulModT(BPU_T_GF2_16x a, BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx) {
 //  BPU_T_GF2_16x candidate;
@@ -294,6 +293,30 @@ BPU_T_GF2_16x BPU_gf2xPowerModT(BPU_T_GF2_16x a, int e,
     }
     // look into exp table
     return math_ctx->exp_table[e];
+}
+
+BPU_T_GF2_16x BPU_gf2xMulModTC(BPU_T_GF2_16x a, BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx) {
+	BPU_T_GF2_16x candidate;
+	BPU_T_GF2_16x exp, bit, carry_mask = 1 << math_ctx->mod_deg;
+	BPU_T_GF2_32x condition;
+	exp = math_ctx->log_table[a] + math_ctx->log_table[b];
+	exp = exp + 1;
+	bit = (exp & carry_mask);
+	exp = (exp & math_ctx->ord);
+	exp = (exp & math_ctx->ord) - !bit;
+	candidate = math_ctx->exp_table[exp];
+
+    if ((condition = (a * b)))
+		return candidate;
+	return condition;
+//	a = !a;
+//	b = !b;
+//	a = a | b;
+////	a = a - 1;
+//	a = !a;
+//	return candidate * a;
+//	candidate = BPU_gf2xMulModC(a, b, math_ctx->mod, math_ctx->mod_deg);
+//	return candidate;
 }
 
 /*** PZ: speedup critical instructions ***/
@@ -529,6 +552,25 @@ void BPU_gf2xPolyShl(BPU_T_GF2_16x_Poly * a, int n) {
     BPU_gf2xPolyFree(&tmp);
 }
 
+void BPU_gf2xPolyShlC(BPU_T_GF2_16x_Poly *a, int n) {
+    BPU_T_GF2_16x_Poly *tmp;
+
+    BPU_gf2xPolyMalloc(&tmp, a->deg);
+    BPU_gf2xPolyCopy(tmp, a);
+
+    if (a->max_deg < a->deg + n) {
+        BPU_gf2xPolyFree(&a);
+
+        BPU_gf2xPolyMalloc(&a, a->deg + n);
+    }
+    else {
+        BPU_gf2xPolyNull(a);
+    }
+    memcpy((void *)(a->coef + n), (void *)tmp->coef, (tmp->deg + 1) * sizeof(BPU_T_GF2_16x));
+    a->deg += (!!a->deg) * n;
+    BPU_gf2xPolyFree(&tmp);
+}
+
 void BPU_gf2xPolyPower(BPU_T_GF2_16x_Poly * a, int e,
                        const BPU_T_Math_Ctx * math_ctx) {
     int i;
@@ -573,6 +615,17 @@ void BPU_gf2xPolyMulEl(BPU_T_GF2_16x_Poly * a, BPU_T_GF2_16x el,
         a->coef[i] = BPU_gf2xMulModT(a->coef[i], el, math_ctx);
     }
     a->deg = BPU_gf2xPolyGetDeg(a);
+}
+
+void BPU_gf2xPolyMulElC(BPU_T_GF2_16x_Poly *a, BPU_T_GF2_16x el, const BPU_T_Math_Ctx *math_ctx) {
+    int i;
+
+    for (i = a->max_deg; i >= 0; i--) {
+//		a->coef[i] = BPU_gf2xMulModT(a->coef[i], el, math_ctx);
+        a->coef[i] = BPU_gf2xMulModTC(a->coef[i], el, math_ctx);
+//		a->coef[i] = BPU_gf2xMulModC(a->coef[i], el, math_ctx->mod, math_ctx->mod_deg);
+    }
+    a->deg = a->deg * (!!el);
 }
 
 void BPU_gf2xPolyMod(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
@@ -905,6 +958,135 @@ int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly * d, BPU_T_GF2_16x_Poly * s,
     return 0;
 }
 
+int BPU_gf2xPolyExtEuclidC(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s, BPU_T_GF2_16x_Poly *t, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b, int end_deg, const BPU_T_Math_Ctx *math_ctx) {
+    BPU_T_GF2_16x_Poly *tmp, *tmp_2, *old_s, *old_t, *old_r, *r, *q, *helper1, *helper2;
+    BPU_T_GF2_16x inv_lead, leader;
+    int deg, leader_exp;
+    int counter = 0;
+    int act_deg, parity = 0;
+
+    deg = (a->max_deg > b->max_deg) ? a->max_deg : b->max_deg;
+
+    // check GCD qoutient size
+    // check GCD qoutient size
+    if (d->max_deg < deg) {
+        BPU_gf2xPolyResize(d, deg);
+    }
+    if (s->max_deg < deg) {
+        BPU_gf2xPolyResize(s, deg);
+    }
+    if (t->max_deg < deg) {
+        BPU_gf2xPolyResize(t, deg);
+    }
+
+    BPU_gf2xPolyMalloc(&tmp, deg);
+    BPU_gf2xPolyMalloc(&tmp_2, deg);
+    BPU_gf2xPolyMalloc(&old_s, deg);
+    BPU_gf2xPolyMalloc(&old_t, deg);
+    BPU_gf2xPolyMalloc(&old_r, deg);
+    BPU_gf2xPolyMalloc(&r, deg);
+    BPU_gf2xPolyMalloc(&q, deg);
+    BPU_gf2xPolyMalloc(&helper1, deg);
+    BPU_gf2xPolyMalloc(&helper2, deg);
+
+    BPU_gf2xPolyCopy(r, b);
+    BPU_gf2xPolyCopy(old_r, a);
+
+    if (a->deg == -1) {
+        BPU_gf2xPolyCopy(old_r, b);
+        old_t->coef[0] = 1;
+        old_t->deg = 0;
+    }
+    else if (b->deg == -1) {
+        BPU_gf2xPolyCopy(old_r, a);
+        old_s->coef[0] = 1;
+        old_s->deg = 0;
+    }
+    else {
+        old_s->coef[0] = 1;
+        old_s->deg = 0;
+
+        t->coef[0] = 1;
+        t->deg = 0;
+
+        act_deg = old_r->max_deg;
+        parity = (!(end_deg & 1)) * 2;
+        for (counter = 0; counter < end_deg*2 + parity; counter++) {
+
+            //// leader = old_r.coef[act_deg] / r.coef[r.deg];
+            leader_exp = math_ctx->log_table[old_r->coef[act_deg]] - math_ctx->log_table[r->coef[r->deg]];
+            if (leader_exp < 0){
+                leader_exp += math_ctx->ord;
+            }
+            leader = math_ctx->exp_table[leader_exp];
+            leader = leader * (!!old_r->coef[act_deg]);
+
+            //// old_r = old_r + r q_i(X);
+            BPU_gf2xPolyCopy(helper1, r);
+            BPU_gf2xPolyMulEl(helper1, leader, math_ctx);
+            BPU_gf2xPolyShlC(helper1, act_deg - r->deg);
+            BPU_gf2xPolyAddC(helper2, old_r, helper1);
+            BPU_gf2xPolyCopy(old_r, helper2);
+
+            //// q = q + tmp_q(X);
+            BPU_gf2xPolyCopy(helper1, t);
+            BPU_gf2xPolyMulEl(helper1, leader, math_ctx);
+            BPU_gf2xPolyShlC(helper1, act_deg - r->deg);
+            BPU_gf2xPolyCopy(helper2, tmp_2);
+            BPU_gf2xPolyAddC(tmp_2, helper1, helper2);
+
+            BPU_gf2xPolyCopy(helper1, old_r);
+            BPU_gf2xPolyCopy(old_r, r);
+//			BPU_gf2xPolyCopy(&tmp, &old_t);
+            if (r->deg < act_deg) {
+                act_deg -= 2;
+                BPU_gf2xPolyCopy(old_r, helper1);
+
+                //// Perform dummy operations
+                BPU_gf2xPolyCopy(tmp, old_t);
+                BPU_gf2xPolyCopy(old_s, t);
+                BPU_gf2xPolyAddC(s, tmp, tmp_2);
+                BPU_gf2xPolyNull(tmp);
+            }
+            else {
+                act_deg -= 1;
+                BPU_gf2xPolyCopy(r, helper1);
+
+                //// save t quocient
+                BPU_gf2xPolyCopy(tmp, old_t);
+                BPU_gf2xPolyCopy(old_t, t);
+                BPU_gf2xPolyAddC(t, tmp, tmp_2);
+                BPU_gf2xPolyNull(tmp_2);
+            }
+            act_deg += 1;
+        }
+    }
+
+    // prepare return values
+    BPU_gf2xPolyCopy(d, old_r);
+    BPU_gf2xPolyCopy(s, old_s);
+    BPU_gf2xPolyCopy(t, old_t);
+
+    // make monic, if it is not
+    inv_lead = BPU_gf2xPolyMakeMonic(d, math_ctx);
+
+    if (inv_lead != 0) {
+        BPU_gf2xPolyMulEl(s, inv_lead, math_ctx);
+        BPU_gf2xPolyMulEl(t, inv_lead, math_ctx);
+    }
+    BPU_gf2xPolyFree(&tmp);
+    BPU_gf2xPolyFree(&tmp_2);
+    BPU_gf2xPolyFree(&old_s);
+    BPU_gf2xPolyFree(&old_t);
+    BPU_gf2xPolyFree(&old_r);
+    BPU_gf2xPolyFree(&r);
+    BPU_gf2xPolyFree(&q);
+    BPU_gf2xPolyFree(&helper1);
+    BPU_gf2xPolyFree(&helper2);
+
+    return 0;
+}
+
 BPU_T_GF2_16x BPU_gf2xPolyEval(const BPU_T_GF2_16x_Poly * poly,
                                const BPU_T_GF2_16x x,
                                const BPU_T_Math_Ctx * math_ctx) {
@@ -913,6 +1095,19 @@ BPU_T_GF2_16x BPU_gf2xPolyEval(const BPU_T_GF2_16x_Poly * poly,
 
     for (i = poly->deg; i > 0; i--) {
         ret = BPU_gf2xMulModT(ret, x, math_ctx) ^ poly->coef[i - 1];
+    }
+    return ret;
+}
+
+
+BPU_T_GF2_16x BPU_gf2xPolyEvalC(const BPU_T_GF2_16x_Poly *poly,
+                                const BPU_T_GF2_16x x,
+                                const BPU_T_Math_Ctx *math_ctx) {
+    int i;
+    BPU_T_GF2_16x ret = poly->coef[poly->deg];
+
+    for (i = poly->deg; i > 0; i--) {
+        ret = BPU_gf2xMulModC(ret, x, math_ctx->mod, math_ctx->mod_deg) ^ poly->coef[i-1];
     }
     return ret;
 }

@@ -41,7 +41,7 @@ SOURCES += \
     lib/src/bitpunch/code/goppa/goppa.c \
     lib/src/bitpunch/crypto/mecsbasic/mecsbasic.c \
     lib/src/bitpunch/crypto/padding/padding.c \
-	lib/src/main.c \
+    lib/src/main.c \
     lib/src/bitpunch/code/goppa/goppatypes.c \
     lib/src/test-speed.c \
     lib/src/bitpunch/crypto/hash/polarssl/sha512.c \
@@ -53,6 +53,7 @@ SOURCES += \
     lib/src/bitpunch/code/qcmdpc/qcmdpctypes.c \
     lib/src/bitpunch/math/bigint.c \
     lib/src/bitpunch/math/uni.c
+    lib/src/bitpunch/tools.c
 
 #include(deployment.pri)
 #qtcAddDeployment()
@@ -85,6 +86,7 @@ HEADERS += \
     lib/src/bitpunch/code/qcmdpc/qcmdpctypes.h \
     lib/src/bitpunch/math/bigint.h \
     lib/src/bitpunch/math/uni.h
+    lib/src/bitpunch/tools.h
 
 OTHER_FILES += \
     lib/Makefile

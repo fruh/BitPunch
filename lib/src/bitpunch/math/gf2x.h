@@ -135,8 +135,11 @@ void BPU_printGf2xVec(const BPU_T_GF2_16x_Vector * v);
  * @param d_pointer[out] pointer to GF2_16x polynomial
  */
  /// Copy Polynomial.
-#define BPU_gf2xPolyNull(d_pointer) memset((void *) ((d_pointer)->coef), 0, sizeof(BPU_T_GF2_16x)*((d_pointer)->max_deg + 1));\
-  (d_pointer)->deg = -1
+#define BPU_gf2xPolyNull(d_pointer) do{memset((void *) ((d_pointer)->coef), 0, sizeof(BPU_T_GF2_16x)*((d_pointer)->max_deg + 1));\
+  (d_pointer)->deg = -1;}while(0)
+
+BPU_T_GF2_16x BPU_gf2xMulModTC(BPU_T_GF2_16x a, BPU_T_GF2_16x b, const BPU_T_Math_Ctx *math_ctx);
+BPU_T_GF2_16x BPU_gf2xPolyEvalC(const BPU_T_GF2_16x_Poly *poly, const BPU_T_GF2_16x x, const BPU_T_Math_Ctx *math_ctx);
 
 void BPU_gf2xMatNull(BPU_T_GF2_16x_Matrix * mat);
 
@@ -303,7 +306,8 @@ void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
  * @param a
  * @param b
  */
-void BPU_gf2xPolyAddC(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a, const BPU_T_GF2_16x_Poly *b);
+void BPU_gf2xPolyAddC(BPU_T_GF2_16x_Poly *out, const BPU_T_GF2_16x_Poly *a,
+                      const BPU_T_GF2_16x_Poly *b);
 
 /**
  * Divide two polynomials. All argumets must be allocated before using BPU_mallocPoly().
@@ -316,7 +320,6 @@ void BPU_gf2xPolyDiv(BPU_T_GF2_16x_Poly * q, BPU_T_GF2_16x_Poly * r,
                      const BPU_T_GF2_16x_Poly * a,
                      const BPU_T_GF2_16x_Poly * b,
                      const BPU_T_Math_Ctx * math_ctx);
-
 /**
  * Multiplicate two polynomials. All argumets must be allocated before using BPU_mallocPoly().
  * @param a   [in] input polynomial
@@ -353,6 +356,7 @@ void BPU_gf2xPolyShr(BPU_T_GF2_16x_Poly * a, int n);
  */
 /// Shift polynomial left, it is like a mul 1/x^n.
 void BPU_gf2xPolyShl(BPU_T_GF2_16x_Poly * a, int n);
+void BPU_gf2xPolyShlC(BPU_T_GF2_16x_Poly *a, int n);
 
 /**
  * Calculate power of polynomial.
@@ -482,6 +486,9 @@ int BPU_gf2xMatConvertToGf2Mat(BPU_T_GF2_Matrix * out,
 BPU_T_GF2_16x BPU_gf2xPolyEval(const BPU_T_GF2_16x_Poly * poly,
                                const BPU_T_GF2_16x x,
                                const BPU_T_Math_Ctx * math_ctx);
+BPU_T_GF2_16x BPU_gf2xPolyEvalC(const BPU_T_GF2_16x_Poly *poly,
+                                const BPU_T_GF2_16x x,
+                                const BPU_T_Math_Ctx *math_ctx);
 
 /**
  * Extended euclidian to find greatest common divisor and Bézout coefficients s, t, where gcd(a, b) = d = a*s + b*t.
@@ -500,7 +507,10 @@ int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly * d, BPU_T_GF2_16x_Poly * s,
                           BPU_T_GF2_16x_Poly * t, const BPU_T_GF2_16x_Poly * a,
                           const BPU_T_GF2_16x_Poly * b, int end_deg,
                           const BPU_T_Math_Ctx * math_ctx);
-
+int BPU_gf2xPolyExtEuclidC(BPU_T_GF2_16x_Poly *d, BPU_T_GF2_16x_Poly *s,
+                           BPU_T_GF2_16x_Poly *t, const BPU_T_GF2_16x_Poly *a,
+                           const BPU_T_GF2_16x_Poly *b, int end_deg,
+                           const BPU_T_Math_Ctx *math_ctx);
 /**
  * Function compares two polynomials
  * @param  p1 [description]

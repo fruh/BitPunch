@@ -55,15 +55,14 @@ int BPU_mathInitCtx(BPU_T_Math_Ctx ** ctx, const BPU_T_GF2_16x g,
         i++;
     } while (b != 1);
 
-    math_ctx->exp_table[ord] = 0;
-    math_ctx->log_table[0] = ord;
-
     if (i != ord) {
         BPU_printError("element 0x%x is not generator", g);
+		return 1;
+	}
 
-        return 1;
-    }
-    return 0;
+	math_ctx->exp_table[ord] = 0;
+	math_ctx->log_table[0] = ord;
+	return 0;
 }
 
 void BPU_mathFreeCtx(BPU_T_Math_Ctx ** ctx) {

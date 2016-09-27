@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // additional codes
 #include <bitpunch/code/goppa/goppa.h>
 #include <bitpunch/code/qcmdpc/qcmdpc.h>
+#include <bitpunch/code/qcmdpc/qcmdpctypes.h>
 
 int BPU_codeInitCtx(BPU_T_Code_Ctx ** ctx, const BPU_T_UN_Code_Params * params,
                     const BPU_T_EN_Code_Types type) {
