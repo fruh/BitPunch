@@ -24,8 +24,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef BPU_CONF_ENCRYPTION
 int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
                          const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector * error) {
-    int rc;
+    int rc = BPU_ERROR;
     BPU_T_GF2_Vector *local_error = NULL;
+
+    if (NULL == out) {
+        BPU_printError("Invalid input parameter \"%s\"", "out");
+        goto err;
+    }
+
+    if (NULL == in) {
+        BPU_printError("Invalid input parameter \"%s\"", "in");
+        goto err;
+    }
+
+    if (NULL == ctx) {
+        BPU_printError("Invalid input parameter \"%s\"", "ctx");
+        goto err;
+    }
 
     if (NULL != error) {
         local_error = error;
@@ -33,38 +48,30 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
     else {
         local_error = BPU_gf2VecNew(ctx->code_ctx->code_len);
     }
+
     BPU_gf2VecNull(out);
 
-    // test the size of message and g_m
-    if (in->len != ctx->code_ctx->msg_len) {
-        BPU_printError("message length has to be of length %d",
-                       ctx->code_ctx->msg_len);
-
-        return -1;
+    if (BPU_SUCCESS != ctx->code_ctx->_encode(out, in, ctx->code_ctx)) {
+        BPU_printError("encode failed");
+        goto err;
     }
 
-    rc = ctx->code_ctx->_encode(out, in, ctx->code_ctx);
-    if (rc) {
-        BPU_printError("can not encode");
-        return rc;
-    }
-
-    // generate random error vector e
-    rc += BPU_gf2VecRand(local_error, ctx->code_ctx->t);
-
-    if (rc) {
-        BPU_printError("can not init rand vector");
-        return rc;
+    // generate random error vector e if needed
+    if (NULL == error) {
+        if (BPU_SUCCESS != BPU_gf2VecRand(local_error, ctx->code_ctx->t)) {
+            BPU_printError("BPU_gf2VecRand failed");
+            goto err;
+        }
     }
 
     // z' XOR e
-    rc = BPU_gf2VecXor(out, local_error);
-
-    if (rc) {
-        BPU_printError("can not add error vector");
-        return rc;
+    if (BPU_SUCCESS != BPU_gf2VecXor(out, local_error)) {
+        BPU_printError("BPU_gf2VecXor failed");
+        goto err;
     }
 
+    rc = BPU_SUCCESS;
+err:
     if (NULL == error) {
         BPU_SAFE_FREE(BPU_gf2VecFree, local_error);
     }

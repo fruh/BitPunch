@@ -38,13 +38,27 @@ int BPU_goppaEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
     BPU_T_GF2 out_dword;
     BPU_T_GF2_Vector *tmp = NULL;
 
+    if (NULL == out) {
+        BPU_printError("Invalid input parameter \"%s\"", "out");
+        goto err;
+    }
+
+    if (NULL == in) {
+        BPU_printError("Invalid input parameter \"%s\"", "in");
+        goto err;
+    }
+
+    if (NULL == ctx) {
+        BPU_printError("Invalid input parameter \"%s\"", "ctx");
+        goto err;
+    }
+
     BPU_gf2VecNull(out);
 
     // test the size of message and g_m
     if (in->len != ctx->code_spec->goppa->g_mat->n) {
         BPU_printError("message length have to be of length %d",
                        ctx->code_spec->goppa->g_mat->n);
-
         goto err;
     }
 
@@ -55,6 +69,7 @@ int BPU_goppaEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
         goto err;
     }
 
+    // TODO: maybe some function instead of this!
     for (j = 0; j < ctx->code_spec->goppa->g_mat->k; j++) {
         out_dword = 0;
         for (i = 0; i < ctx->code_spec->goppa->g_mat->elements_in_row; i++) {

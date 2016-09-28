@@ -604,18 +604,32 @@ int BPU_gf2VecCmp(const BPU_T_GF2_Vector * v1, const BPU_T_GF2_Vector * v2) {
 
 int BPU_gf2VecXor(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in) {
     int i;
+    int rv = BPU_ERROR;
+
+    if (NULL == out) {
+        BPU_printError("Invalid input parameter \"%s\"", "out");
+        goto err;
+    }
+
+    if (NULL == in) {
+        BPU_printError("Invalid input parameter \"%s\"", "in");
+        goto err;
+    }
 
     if (out->len != in->len) {
         BPU_printError
-            ("BPU_gf2VecXor: length error (el. in row) %d != %d, len %d != %d",
-             out->array_length, in->array_length, out->len, in->len);
-
-        return -1;
+            ("Different lengths of vectors");
+        goto err;
     }
+
     for (i = 0; i < out->array_length; i++) {
         out->elements[i] ^= in->elements[i];
     }
-    return 0;
+
+    rv = BPU_SUCCESS;
+
+err:
+    return rv;
 }
 
 int BPU_gf2VecMulMat(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * v,

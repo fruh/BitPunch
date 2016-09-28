@@ -58,7 +58,10 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
         goto err;
     }
 
-    BPU_gf2VecRand(pt_out, 0);
+    if (BPU_SUCCESS != BPU_gf2VecRand(pt_out, 0)) {
+        BPU_printError("BPU_gf2VecRand failed");
+        goto err;
+    }
 
     fprintf(stderr, "Encryption...\n");
     if (BPU_mecsEncrypt(ct, pt_in, ctx, NULL)) {

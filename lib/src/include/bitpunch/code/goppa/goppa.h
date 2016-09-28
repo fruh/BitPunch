@@ -35,7 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * @param out
  * @param in
  * @param ctx
- * @return
+ * @return 0 on success
  */
 int BPU_goppaEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
                     const struct _BPU_T_Code_Ctx *ctx);
