@@ -178,13 +178,12 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
     ctx = ctx_local;
     ctx_local = NULL;
 err:
-    // TODO: in case of error code context is not released
-    BPU_SAFE_FREE(free, ctx_local);
+    BPU_SAFE_FREE(free, ctx_local); // TODO: in case of error code context is not released
     BPU_SAFE_FREE(BPU_codeCtxFree, code_ctx_local);
     return ctx;
 }
 
-void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx) {
+void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx) { // TODO: 'New', 'Free' etc. should be at the end of name
     if (NULL == ctx) {
         return;
     }
@@ -217,7 +216,7 @@ BPU_T_UN_Mecs_Params * BPU_mecsParamsGoppaNew(const uint16_t m,
 
     mecs_params_local = BPU_codeParamsGoppaNew(m, t, mod);
     if (NULL == mecs_params_local) {
-        BPU_printError("code_params_local failed");
+        BPU_printError("BPU_codeParamsGoppaNew failed");
         goto err;
     }
 
@@ -229,7 +228,8 @@ err:
 }
 
 void BPU_mecsDestroyParamsGoppa(BPU_T_UN_Mecs_Params * params) {
-    BPU_codeFreeParamsGoppa((BPU_T_UN_Code_Params *) params);
+    BPU_SAFE_FREE(BPU_codeFreeParamsGoppa, params);
+//    BPU_codeFreeParamsGoppa((BPU_T_UN_Code_Params *) params);
 }
 
 int BPU_mecsInitParamsQcmdpc(BPU_T_UN_Mecs_Params * params, const uint16_t m,
