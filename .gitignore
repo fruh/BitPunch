@@ -30,6 +30,7 @@ massif.*
 *.pri
 *.config
 *.creator
+*.creator.user
 *.files
 *.includes
 *.pro
