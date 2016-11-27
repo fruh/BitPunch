@@ -23,13 +23,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/crypto/mecsctx.h>
 
 /**
- * Encrypt plaintext (pt) and save it to cipher text. All strctures must be allocated before use.
+ * Encrypts plaintext and saves it to cipher text.
  * @param  ct  cipher text
  * @param  pt  plain text
  * @param  ctx McEliece context
+ * @param  error If set to null then error is generated at random.
  * @return     0 - succes, else error
  */
-/// Encrypt plaintext (pt) and save it to cipher text.
 int BPU_mecsEncrypt(BPU_T_GF2_Vector * ct, const BPU_T_GF2_Vector * pt,
                     const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector * error) {
     return ctx->_encrypt(ct, pt, ctx, error);

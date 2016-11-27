@@ -229,7 +229,6 @@ err:
 
 void BPU_mecsDestroyParamsGoppa(BPU_T_UN_Mecs_Params * params) {
     BPU_SAFE_FREE(BPU_codeFreeParamsGoppa, params);
-//    BPU_codeFreeParamsGoppa((BPU_T_UN_Code_Params *) params);
 }
 
 int BPU_mecsInitParamsQcmdpc(BPU_T_UN_Mecs_Params * params, const uint16_t m,

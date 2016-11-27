@@ -179,8 +179,8 @@ void BPU_printElementArrayOnes(const BPU_T_Element_Array * a);
 void BPU_elementArrayFree(BPU_T_Element_Array *a);
 
 /**
- * Allocate memory for element array. It also nulls array.
- * @param len len of vector
+ * Allocates and nulls memory for element array.
+ * @param len length of vector
  * @return on succes 0, else error
  */
 BPU_T_Element_Array * BPU_elementArrayMalloc(uint32_t len);

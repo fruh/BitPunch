@@ -64,7 +64,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
     }
 
     fprintf(stderr, "Encryption...\n");
-    if (BPU_mecsEncrypt(ct, pt_in, ctx, NULL)) {
+    if (BPU_SUCCESS != BPU_mecsEncrypt(ct, pt_in, ctx, NULL)) {
         BPU_printError("BPU_mecsEncrypt failed");
         goto err;
     }
@@ -103,13 +103,13 @@ err:
 
 int main(int argc, char **argv) {
     int rc = BPU_ERROR;
-    BPU_T_Mecs_Ctx *ctx = NULL; // MUST BE NULL
+    BPU_T_Mecs_Ctx *ctx = NULL;
     BPU_T_UN_Mecs_Params *params = NULL;
 
     srand(time(NULL));
 
     fprintf(stderr, "Basic GOPPA Initialisation...\n");
-    params = BPU_mecsParamsGoppaNew(11, 50, 0);
+    params = BPU_mecsParamsGoppaNew(11, 55, 0);
     if (NULL == params) {
         BPU_printError("BPU_mecsParamsGoppaNew failed");
         goto err;

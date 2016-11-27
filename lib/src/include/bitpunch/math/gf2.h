@@ -204,7 +204,7 @@ int BPU_gf2MatMalloc(BPU_T_GF2_Matrix ** m, int rows, int cols);
 
 /**
  * Allocate memory for vector GF2. It also null vector. After work you have to free memory using call BPU_freeVecGF2.
- * @param len len of vector
+ * @param len length of vector (bits)
  * @return on succes 0, else error
  */
 #define BPU_gf2VecNew(len) BPU_elementArrayMalloc(len)
