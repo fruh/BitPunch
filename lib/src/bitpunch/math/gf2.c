@@ -518,13 +518,31 @@ int BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix * inout) {
 
 int BPU_gf2VecConcat(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * vec1,
                      const BPU_T_GF2_Vector * vec2) {
-    int len = vec1->len + vec2->len;
+    int len;
     int i;
+    int rv = BPU_ERROR;
+
+    if (NULL == out) {
+        BPU_printError("Invalid input parameter \"%s\"", "out");
+        goto err;
+    }
+
+    if (NULL == vec1) {
+        BPU_printError("Invalid input parameter \"%s\"", "vec1");
+        goto err;
+    }
+
+    if (NULL == vec2) {
+        BPU_printError("Invalid input parameter \"%s\"", "vec2");
+        goto err;
+    }
+
+    len = vec1->len + vec2->len;
 
     if (out->len != len) {
         if (BPU_gf2VecResize(out, len)) {
             BPU_printError("resize error");
-            return -1;
+            goto err;
         }
     }
     else {
@@ -537,9 +555,11 @@ int BPU_gf2VecConcat(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * vec1,
     for (i = 0; i < vec2->len; i++) {
         BPU_gf2VecSetBit(out, i + vec1->len, BPU_gf2VecGetBit(vec2, i));
     }
-    out->len = len;
 
-    return 0;
+    out->len = len;
+    rv = BPU_SUCCESS;
+err:
+    return rv;
 }
 
 int BPU_gf2VecCrop(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
