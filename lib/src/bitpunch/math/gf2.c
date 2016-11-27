@@ -595,22 +595,38 @@ int BPU_gf2MatGetRowAsGf2Vec(BPU_T_GF2_Vector * out,
     return 0;
 }
 
-// TODO: check if the sizes are correct instead of reallocating resources
-// in case they are not return error
-void BPU_gf2VecCopy(BPU_T_GF2_Vector * dest, const BPU_T_GF2_Vector * src) {
+int BPU_gf2VecCopy(BPU_T_GF2_Vector * dest, const BPU_T_GF2_Vector * src) {
+    int rv = BPU_ERROR;
+
+    if (NULL == dest) {
+        BPU_printError("Invalid input parameter \"%s\"", "dest");
+        goto err;
+    }
+
+    if (NULL == src) {
+        BPU_printError("Invalid input parameter \"%s\"", "src");
+        goto err;
+    }
+
     // if there is not enough space resize
     if (dest->array_length < src->array_length) {
-        BPU_gf2VecResize(dest,
-                         src->array_length * src->element_bit_size *
-                         sizeof(BPU_T_GF2));
+        BPU_printError("Not enough memory in destination vector");
+        goto err;
+//        BPU_gf2VecResize(dest,
+//                         src->array_length * src->element_bit_size *
+//                         sizeof(BPU_T_GF2));
     }
     else {
         BPU_gf2VecNull(dest);
     }
+
     memcpy((void *) (dest->elements), (void *) (src->elements),
            sizeof(BPU_T_GF2) * (src->array_length));
 
     dest->len = src->len;
+    rv = BPU_SUCCESS;
+err:
+    return rv;
 }
 
 int BPU_gf2VecCmp(const BPU_T_GF2_Vector * v1, const BPU_T_GF2_Vector * v2) {

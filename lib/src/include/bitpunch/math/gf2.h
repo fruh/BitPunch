@@ -504,7 +504,7 @@ int BPU_gf2MatGetRowAsGf2Vec(BPU_T_GF2_Vector * out,
  * @param src[in] pointer to VectorGF2  
  */
  /// Copy VectorGF2.
-void BPU_gf2VecCopy(BPU_T_GF2_Vector * dest, const BPU_T_GF2_Vector * src);
+int BPU_gf2VecCopy(BPU_T_GF2_Vector * dest, const BPU_T_GF2_Vector * src);
 
 /**
  * @brief BPU_gf2VecCmp Compare two vectors.
