@@ -343,6 +343,11 @@ int BPU_gf2VecRand(BPU_T_GF2_Vector * out, uint32_t w) {
     uint32_t i, j;
     int rv = BPU_ERROR;
 
+    if (NULL == out) {
+        BPU_printError("Invalid input parameter \"out\"");
+        goto err;
+    }
+
     if (w > out->len) {
         BPU_printError("weight error w > l");
         goto err;
