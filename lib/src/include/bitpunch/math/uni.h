@@ -157,11 +157,11 @@ void BPU_printElementArrayOnes(const BPU_T_Element_Array * a);
  * @param  bit       bit value 0 or 1
  */
 #define BPU_elementArraySetBit(v_pointer, i, bit) \
-    (v_pointer)->elements[(i) / (v_pointer)->element_bit_size] &= \
+    do { (v_pointer)->elements[(i) / (v_pointer)->element_bit_size] &= \
     ((BPU_T_Element) (0xFFFFFFFFu)) \
     ^ (((BPU_T_Element) 1) << ((i) % (v_pointer)->element_bit_size));\
     (v_pointer)->elements[(i) / (v_pointer)->element_bit_size] |= \
-    ((BPU_T_Element) bit) << ((i) % (v_pointer)->element_bit_size)
+    ((BPU_T_Element) bit) << ((i) % (v_pointer)->element_bit_size); }while(0)
 
 
 /**
