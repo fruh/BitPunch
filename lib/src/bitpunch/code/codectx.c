@@ -65,7 +65,7 @@ BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
         ctx_local->_decode = BPU_goppaDecode;
 #endif
         math_ctx_local = BPU_codeMathCtxNew(params->goppa->m,
-                                params->goppa->t, params->goppa->mod);
+                                            params->goppa->mod);
         if (NULL == math_ctx_local) {
             BPU_printError("Code math context initialization ERROR.");
             goto err;
@@ -140,7 +140,7 @@ err:
 }
 
 BPU_T_Math_Ctx* BPU_codeMathCtxNew(const uint16_t m,
-                        const uint16_t t, const BPU_T_GF2_16x mod) {
+                                   const BPU_T_GF2_16x mod) {
     BPU_T_Math_Ctx *math_ctx_local = NULL;
     BPU_T_Math_Ctx *math_ctx = NULL;
     BPU_T_GF2_16x context_mod = 0;
@@ -148,16 +148,16 @@ BPU_T_Math_Ctx* BPU_codeMathCtxNew(const uint16_t m,
     if (mod != 0) {
         context_mod = mod;
     }
-    else if (m == 5 && t == 5) {
+    else if (m == 5) {
         context_mod = BPU_GF2_POLY_DEG_5;
     }
-    else if (m == 6 && t == 6) {
+    else if (m == 6) {
         context_mod = BPU_GF2_POLY_DEG_6;
     }
-    else if (m == 6 && t == 7) {
+    else if (m == 6) {
         context_mod = BPU_GF2_POLY_DEG_6;
     }
-    else if (m == 11 && t == 50) {
+    else if (m == 11) {
         context_mod = BPU_GF2_POLY_DEG_11;
     }
     else {

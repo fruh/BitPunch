@@ -109,7 +109,7 @@ int main(int argc, char **argv) {
     srand(time(NULL));
 
     fprintf(stderr, "Basic GOPPA Initialisation...\n");
-    params = BPU_mecsParamsGoppaNew(11, 55, 0);
+    params = BPU_mecsParamsGoppaNew(11, 50, 0);
     if (NULL == params) {
         BPU_printError("BPU_mecsParamsGoppaNew failed");
         goto err;
