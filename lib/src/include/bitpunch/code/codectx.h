@@ -105,7 +105,7 @@ BPU_T_UN_Code_Params *BPU_codeParamsGoppaNew(const uint16_t m,
  * @brief BPU_codeFreeParamsGoppa
  * @param params
  */
-void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params * params);
+void BPU_codeParamsGoppaFree(BPU_T_UN_Code_Params * params);
 
 /**
  * Wrapper for param initialization. After work you have to free memory using call BPU_codeFreeParamsQcmdpc

@@ -43,8 +43,7 @@ int BPU_bigintMultiply(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b) {
     if ((a->len + b->len) > out->len) {
         BPU_printDebug("Resizing big int output to %d", a->len + b->len);
         BPU_bigintResize(out, a->len + b->len);
-    }
-    else {
+    } else {
         BPU_bigintNull(out);
     }
 
@@ -94,8 +93,7 @@ int BPU_bigintAdd(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b) {
     if (tmplen > out->len) {
         BPU_printDebug("Resizing big int output to %d", tmplen);
         BPU_bigintResize(out, tmplen);
-    }
-    else {
+    } else {
         BPU_bigintNull(out);
     }
 

@@ -98,9 +98,30 @@ int BPU_goppaDecode(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
     BPU_T_GF2_Vector *orig_enc;
     int rv = BPU_ERROR;
 
+    if (NULL == out) {
+        BPU_printError("Invalid input parameter \"%s\"", "out");
+        goto err;
+    }
+
+    if (NULL == error) {
+        BPU_printError("Invalid input parameter \"%s\"", "error");
+        goto err;
+    }
+
+    if (NULL == in) {
+        BPU_printError("Invalid input parameter \"%s\"", "in");
+        goto err;
+    }
+
+    if (NULL == ctx) {
+        BPU_printError("Invalid input parameter \"%s\"", "ctx");
+        goto err;
+    }
+
     // get error vector
     if (BPU_SUCCESS != BPU_goppaGetError(error, in, ctx)) {
         BPU_printError("BPU_goppaGetError failed");
+        goto err;
     }
     // remove error
     orig_enc = BPU_gf2VecNew(in->len);
@@ -132,8 +153,8 @@ int BPU_goppaGetError(BPU_T_GF2_Vector * error,
                       const BPU_T_GF2_Vector * encoded,
                       const BPU_T_Code_Ctx * ctx) {
     BPU_T_Perm_Vector *inv_perm;
-    BPU_T_GF2_16x_Poly *syndrome, *tau, *a, *b, *sigma, *inv_syndrome, *tmp,
-        *tmp2;
+    BPU_T_GF2_16x_Poly *syndrome,
+        *tau, *a, *b, *sigma, *inv_syndrome, *tmp, *tmp2;
     int l;
     BPU_T_GF2_16x tmp_eval;
     BPU_T_GF2_Vector *enc_permuted;
@@ -200,8 +221,7 @@ int BPU_goppaGetError(BPU_T_GF2_Vector * error,
     // check if there is enough space
     if (error->len < ctx->code_spec->goppa->support_len) {
         BPU_gf2VecResize(error, ctx->code_spec->goppa->support_len);
-    }
-    else {
+    } else {
         BPU_gf2VecNull(error);
     }
     sigma->deg = ctx->t;
@@ -313,8 +333,7 @@ int BPU_goppaInitMatH2(BPU_T_GF2_Matrix * h2, BPU_T_GF2_16x_Matrix * hx,
         if ((column - act_element * h2->element_bit_size) >= h2->element_bit_size) {    // next elemenet, first bit
             act_element++;
             bit_in_element = 0;
-        }
-        else                    // same element, next bit
+        } else                  // same element, next bit
             bit_in_element++;
         for (row = 0; row < ctx->code_spec->goppa->g->deg; row++) {
             element = 0;

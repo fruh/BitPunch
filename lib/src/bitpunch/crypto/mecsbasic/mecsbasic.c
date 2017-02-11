@@ -51,8 +51,7 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
 
     if (NULL != error) {
         local_error = error;
-    }
-    else {
+    } else {
         // generate random error vector e if needed
         local_error = BPU_gf2VecNew(ctx->code_ctx->code_len);
         if (BPU_SUCCESS != BPU_gf2VecRand(local_error, ctx->code_ctx->t)) {

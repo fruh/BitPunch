@@ -224,12 +224,12 @@ BPU_T_UN_Mecs_Params *BPU_mecsParamsGoppaNew(const uint16_t m,
     mecs_params = mecs_params_local;
     mecs_params_local = NULL;
   err:
-    BPU_SAFE_FREE(BPU_codeFreeParamsGoppa, mecs_params_local);
+    BPU_SAFE_FREE(BPU_codeParamsGoppaFree, mecs_params_local);
     return mecs_params;
 }
 
-void BPU_mecsDestroyParamsGoppa(BPU_T_UN_Mecs_Params * params) {
-    BPU_SAFE_FREE(BPU_codeFreeParamsGoppa, params);
+void BPU_mecsParamsGoppaFree(BPU_T_UN_Mecs_Params * params) {
+    BPU_SAFE_FREE(BPU_codeParamsGoppaFree, params);
 }
 
 BPU_T_UN_Mecs_Params *BPU_mecsInitParamsQcmdpc(const uint16_t m,

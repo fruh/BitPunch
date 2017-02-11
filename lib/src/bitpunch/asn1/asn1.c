@@ -97,8 +97,8 @@ int BPU_asn1EncodePriKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx) {
     rc = asn1_write_value(asn1_element, "p",
                           (void *) (ctx->code_ctx->code_spec->
                                     goppa->permutation->elements),
-                          sizeof(ctx->code_ctx->code_spec->goppa->permutation->
-                                 elements[0]) *
+                          sizeof(ctx->code_ctx->code_spec->goppa->
+                                 permutation->elements[0]) *
                           ctx->code_ctx->code_spec->goppa->permutation->size);
     if (rc != ASN1_SUCCESS) {
         BPU_printError("asn1_write_value(): p %d", rc);
@@ -128,8 +128,7 @@ int BPU_asn1EncodePriKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx) {
                    sizeof(BPU_T_GF2_16x));
             j += ctx->code_ctx->code_spec->goppa->h_mat->n;
         }
-    }
-    else {
+    } else {
         BPU_printError("Not supported for this CODE type.");
         return -1;
     }
@@ -226,7 +225,7 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
         if (NULL == (*ctx = BPU_mecsCtxNew(params, type))) {
             return -1;
         }
-        BPU_mecsDestroyParamsGoppa(params);
+        BPU_mecsParamsGoppaFree(params);
         if (BPU_asn1ReadValue
             (&tmp_buf, &tmp_len, sizeof(BPU_T_GF2_16x) * (t + 1), "g",
              asn1_element)) {
@@ -239,8 +238,7 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
         memcpy((*ctx)->code_ctx->code_spec->goppa->g->coef, tmp_buf, tmp_len);
         (*ctx)->code_ctx->code_spec->goppa->g->deg = t;
         free(tmp_buf);
-    }
-    else {
+    } else {
         BPU_printError("Not supported for this code type.");
         return -1;
     }
@@ -361,8 +359,7 @@ int BPU_asn1EncodePubKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx) {
                    sizeof(BPU_T_GF2));
             j += ctx->code_ctx->code_spec->goppa->g_mat->elements_in_row;
         }
-    }
-    else {
+    } else {
         BPU_printError("Not supported for this MECS type.");
         return -1;
     }
@@ -448,8 +445,7 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
         if (NULL == (params = BPU_mecsParamsGoppaNew(m, t, -1))) {
             return -1;
         }
-    }
-    else {
+    } else {
         BPU_printError("Type not supported");
         return -1;
     }
@@ -458,7 +454,7 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
 
         return rc;
     }
-    BPU_mecsDestroyParamsGoppa(params);
+    BPU_mecsParamsGoppaFree(params);
 
     if (BPU_asn1ReadValue
         (&tmp_buf, &tmp_len,
@@ -542,8 +538,7 @@ int BPU_asn1MallocBuffer(char **buffer, int *len, const int max_len,
         BPU_printError("requested length %d is bigger than max expected %d",
                        *len, max_len);
         return -1;
-    }
-    else if (*len > 0) {
+    } else if (*len > 0) {
         // malloc data
         *buffer = (char *) malloc(*len);
 
@@ -551,8 +546,7 @@ int BPU_asn1MallocBuffer(char **buffer, int *len, const int max_len,
             BPU_printError("can not allocate memory.");
             return -1;
         }
-    }
-    else {
+    } else {
         BPU_printError("can not get size of data");
         return rc;
     }

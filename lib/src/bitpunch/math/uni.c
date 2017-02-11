@@ -73,12 +73,10 @@ void BPU_printElementArray(const BPU_T_Element_Array * a) {
         if (j == a->array_length - 1) {
             if (a->len % (a->element_bit_size) != 0) {
                 bits_to_print = a->len % a->element_bit_size;
-            }
-            else {
+            } else {
                 bits_to_print = a->element_bit_size;
             }
-        }
-        else {
+        } else {
             bits_to_print = a->element_bit_size;
         }
         BPU_printBinaryLsb(a->elements[j], bits_to_print);
@@ -95,12 +93,10 @@ void BPU_printElementArrayMsb(const BPU_T_Element_Array * a) {
         if (j == a->array_length - 1) {
             if (a->len % (a->element_bit_size) != 0) {
                 bits_to_print = a->len % a->element_bit_size;
-            }
-            else {
+            } else {
                 bits_to_print = a->element_bit_size;
             }
-        }
-        else {
+        } else {
             bits_to_print = a->element_bit_size;
         }
         BPU_printBinaryMsbLn(a->elements[j], bits_to_print);

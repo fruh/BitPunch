@@ -25,21 +25,20 @@
 #include <bitpunch/crypto/hash/sha512.h>
 #include <bitpunch/asn1/asn1.h>
 
-int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx)
+int testKeyGenEncDec(BPU_T_Mecs_Ctx* ctx)
 {
-//    BPU_T_Mecs_Ctx *ctx = NULL;
-    BPU_T_GF2_Vector *ct, *pt_in, *pt_out, *error = NULL;
+    BPU_T_GF2_Vector *ct = NULL;
+    BPU_T_GF2_Vector *pt_in = NULL;
+    BPU_T_GF2_Vector *pt_out= NULL;
+    BPU_T_GF2_Vector *error = NULL;
     int rc = 0;
 
-        /***************************************/
     fprintf(stderr, "Key generation...\n");
-    // key pair generation
     if (BPU_mecsGenKeyPair(ctx)) {
         BPU_printError("Key generation error");
-
         return 1;
     }
-        /***************************************/
+
     // prepare plain text, allocate memory and init random plaintext
     if (NULL == (pt_in = BPU_gf2VecNew(ctx->pt_len))) {
         BPU_printError("PT initialisation error");
@@ -60,10 +59,10 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx)
         BPU_printError("PT out initialisation error");
         return 1;
     }
+
     BPU_gf2VecRand(pt_out, 0);
-        /***************************************/
+
     fprintf(stderr, "Encryption...\n");
-    // BPU_encrypt plain text
     if (BPU_mecsEncrypt(ct, pt_in, ctx, NULL)) {
         BPU_printError("Encryption error");
 
@@ -72,10 +71,16 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx)
         BPU_gf2VecFree(pt_out);
         return 1;
     }
-    // exit(0);
-        /***************************************/
+
+
+    // alocate cipher text vector
+    if (NULL == (error = BPU_gf2VecNew(ctx->ct_len))) {
+        BPU_printError("BPU_gf2VecNew failed");
+        BPU_gf2VecFree(pt_in);
+        return 1;
+    }
+
     fprintf(stderr, "Decryption...\n");
-    // decrypt cipher text
     if (BPU_mecsDecrypt(pt_out, error, ct, ctx)) {
         BPU_printError("Decryption error");
 
@@ -84,19 +89,16 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx)
         BPU_gf2VecFree(pt_out);
         return 1;
     }
-        /***************************************/
 
     // check for correct decryption
     if (BPU_gf2VecCmp(pt_in, pt_out)) {
         BPU_printError("\nOutput plain text differs from input");
-
         rc = 2;
     } else {
         fprintf(stderr,
                 "\nSUCCESS: Input plain text is equal to output plain text.\n");
     }
-    // clean up
-        /***************************************/
+
     fprintf(stderr, "\nCleaning up...\n");
     BPU_gf2VecFree(pt_in);
     BPU_gf2VecFree(pt_out);
@@ -108,41 +110,38 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx)
 int testKeyGenAsn1()
 {
     int rc = 0;
-    // MUST BE NULL
     BPU_T_Mecs_Ctx *ctx = NULL;
-    BPU_T_UN_Mecs_Params params;
+    BPU_T_UN_Mecs_Params *params = NULL;
 
     /***************************************/
     // mce initialisation t = 50, m = 11
     fprintf(stderr, "Basic GOPPA Initialisation...\n");
-    if (BPU_mecsParamsGoppaNew(&params, 11, 50, 0)) {
+    if (NULL == (params = BPU_mecsParamsGoppaNew(11, 50, 0))) {
         return 1;
     }
-    if (BPU_mecsCtxNew(&ctx, &params, BPU_EN_MECS_BASIC_GOPPA)) {
-//    if (BPU_mecsCtxNew(&ctx, 11, 50, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {
+    if (NULL == (ctx = BPU_mecsCtxNew(params, BPU_EN_MECS_BASIC_GOPPA))) {
         return 1;
     }
-    /***************************************/
+
     fprintf(stderr, "Key generation...\n");
-    // key pair generation
     if (BPU_mecsGenKeyPair(ctx)) {
         BPU_printError("Key generation error");
-
         return 1;
     }
+
     rc = BPU_asn1SaveKeyPair(ctx, "prikey.der", "pubkey.der");
     if (rc) {
         asn1_perror(rc);
     }
-    BPU_mecsFreeCtx(&ctx);
 
+    BPU_mecsFreeCtx(ctx);
     rc = BPU_asn1LoadKeyPair(&ctx, "prikey.der", "pubkey.der");
     if (rc) {
         asn1_perror(rc);
     }
-    BPU_mecsFreeCtx(&ctx);
-    BPU_mecsDestroyParamsGoppa(&params);
 
+    BPU_mecsFreeCtx(ctx);
+    BPU_mecsDestroyParamsGoppa(params);
     return rc;
 }
 #endif
@@ -150,35 +149,34 @@ int testKeyGenAsn1()
 int main(int argc, char **argv)
 {
     int rc = 0;
-    // MUST BE NULL
     BPU_T_Mecs_Ctx *ctx = NULL;
-    BPU_T_UN_Mecs_Params *params;
+    BPU_T_UN_Mecs_Params *params = NULL;
 
     srand(time(NULL));
 #if defined(BPU_CONF_GOPPA_WITH_H) && defined(BPU_CONF_ASN1)
     testKeyGenAsn1();
 #endif
-
-        /***************************************/
-    // mce initialisation t = 50, m = 11
     if (NULL == (params = BPU_mecsParamsGoppaNew(11, 50, 0))) {
         return 1;
     }
+
     fprintf(stderr, "Basic GOPPA Initialisation...\n");
     if (NULL == (ctx = BPU_mecsCtxNew(params, BPU_EN_MECS_BASIC_GOPPA))) {
         return 1;
     }
+
     rc += testKeyGenEncDec(ctx);
     BPU_mecsFreeCtx(ctx);
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     fprintf(stderr, "\nCCA2 Pointcheval GOPPA Initialisation...\n");
-    if (BPU_mecsCtxNew(&ctx, 11, 50, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA)) {
+    if (NULL == (ctx = BPU_mecsCtxNew(11, 50, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA))) {
         return 1;
     }
+
     rc += testKeyGenEncDec(ctx);
-    BPU_mecsFreeCtx(&ctx);
-    BPU_mecsDestroyParamsGoppa(&params);
+    BPU_mecsFreeCtx(ctx);
+    BPU_mecsDestroyParamsGoppa(params);
 #endif
     return rc;
 }

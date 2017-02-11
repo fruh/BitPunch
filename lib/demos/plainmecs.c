@@ -85,8 +85,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
     if (BPU_gf2VecCmp(pt_in, pt_out)) {
         BPU_printError("\nOutput plain text differs from input");
         goto err;
-    }
-    else {
+    } else {
         fprintf(stderr,
                 "\nSUCCESS: Input plain text is equal to output plain text.\n");
     }
@@ -129,6 +128,6 @@ int main(int argc, char **argv) {
     rc = BPU_SUCCESS;
   err:
     BPU_SAFE_FREE(BPU_mecsFreeCtx, ctx);
-    BPU_SAFE_FREE(BPU_mecsDestroyParamsGoppa, params);
+    BPU_SAFE_FREE(BPU_mecsParamsGoppaFree, params);
     return rc;
 }

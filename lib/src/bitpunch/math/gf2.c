@@ -42,12 +42,10 @@ void BPU_printGf2Mat(const BPU_T_GF2_Matrix * m) {
             if (j == m->elements_in_row - 1) {
                 if (m->n % (m->element_bit_size) != 0) {
                     bits_to_print = m->n % m->element_bit_size;
-                }
-                else {
+                } else {
                     bits_to_print = m->element_bit_size;
                 }
-            }
-            else {
+            } else {
                 bits_to_print = m->element_bit_size;
             }
             BPU_printBinaryLsb(m->elements[i][j], bits_to_print);
@@ -74,12 +72,10 @@ void BPU_printGf2PolyForMatrix(const BPU_T_GF2_Poly * v) {
         if (j == v->array_length - 1) {
             if (v->len % (v->element_bit_size) != 0) {
                 bits_to_print = v->len % v->element_bit_size;
-            }
-            else {
+            } else {
                 bits_to_print = v->element_bit_size;
             }
-        }
-        else {
+        } else {
             bits_to_print = v->element_bit_size;
         }
         BPU_printBinaryLsb(v->elements[j], bits_to_print);
@@ -94,12 +90,10 @@ void BPU_printGf2Poly(const BPU_T_GF2_Poly * v) {
         if (j == v->array_length - 1) {
             if (v->len % (v->element_bit_size) != 0) {
                 bits_to_print = v->len % v->element_bit_size;
-            }
-            else {
+            } else {
                 bits_to_print = v->element_bit_size;
             }
-        }
-        else {
+        } else {
             bits_to_print = v->element_bit_size;
         }
         BPU_printBinaryMsb(v->elements[j], bits_to_print);
@@ -234,8 +228,7 @@ void BPU_gf2SparseQcMatrixMalloc(BPU_T_GF2_Sparse_Qc_Matrix * v,
     if (isVertical) {
         v->k = element_count * element_size;
         v->n = element_size;
-    }
-    else {
+    } else {
         v->k = element_size;
         v->n = element_count * element_size;
     }
@@ -308,8 +301,7 @@ int BPU_gf2QcMatrixMalloc(BPU_T_GF2_QC_Matrix * v, int element_count,
     if (isVertical) {
         v->k = element_count * element_size;
         v->n = element_size;
-    }
-    else {
+    } else {
         v->k = element_size;
         v->n = element_count * element_size;
     }
@@ -366,8 +358,7 @@ int BPU_gf2VecRand(BPU_T_GF2_Vector * out, uint32_t w) {
 
             if (BPU_gf2VecGetBit(out, j) == 0) {
                 BPU_gf2VecSetBit(out, j, 1);
-            }
-            else {
+            } else {
                 i--;
             }
         }
@@ -539,8 +530,7 @@ int BPU_gf2VecConcat(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * vec1,
             BPU_printError("resize error");
             goto err;
         }
-    }
-    else {
+    } else {
         BPU_gf2VecNull(out);
     }
     // copy first vector
@@ -609,8 +599,7 @@ int BPU_gf2VecCopy(BPU_T_GF2_Vector * dest, const BPU_T_GF2_Vector * src) {
 //        BPU_gf2VecResize(dest,
 //                         src->array_length * src->element_bit_size *
 //                         sizeof(BPU_T_GF2));
-    }
-    else {
+    } else {
         BPU_gf2VecNull(dest);
     }
 
@@ -893,8 +882,7 @@ void BPU_gf2PolyShiftLeft(BPU_T_GF2_Poly * a, int shift_count) {
             if ((a->element_bit_size - bit_shift) >= a->element_bit_size) {
                 ele1 = 0ul;
                 shift_right = 0;
-            }
-            else {
+            } else {
                 ele1 = a->elements[i - start - 1];
                 shift_right = a->element_bit_size - bit_shift;
             }
@@ -903,8 +891,7 @@ void BPU_gf2PolyShiftLeft(BPU_T_GF2_Poly * a, int shift_count) {
             if ((i - start) >= a->array_length) {
                 ele2 = 0ul;
                 shift_left = 0;
-            }
-            else {
+            } else {
                 ele2 = a->elements[i - start];
                 shift_left = bit_shift;
             }
@@ -1176,8 +1163,7 @@ void BPU_gf2PolyExtEuclidA(BPU_T_GF2_Poly * d, BPU_T_GF2_Poly * s,
     if (a->len == 0) {
         old_t.elements[0] = 1ul;
         BPU_gf2PolySetDeg(&old_t, -1);
-    }
-    else if (b->len == 0) {
+    } else if (b->len == 0) {
         BPU_gf2PolyFree(&old_r, 0);
         BPU_gf2PolyCopy(&old_r, a);
         old_s.elements[0] = 1ul;

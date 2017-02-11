@@ -152,8 +152,7 @@ void sha512_starts(sha512_context * ctx, int is384) {
         ctx->state[5] = UL64(0x9B05688C2B3E6C1F);
         ctx->state[6] = UL64(0x1F83D9ABFB41BD6B);
         ctx->state[7] = UL64(0x5BE0CD19137E2179);
-    }
-    else {
+    } else {
         /* SHA-384 */
         ctx->state[0] = UL64(0xCBBB9D5DC1059ED8);
         ctx->state[1] = UL64(0x629A292A367CD507);
@@ -686,8 +685,7 @@ int sha512_self_test(int verbose) {
 
             for (j = 0; j < 1000; j++)
                 sha512_update(&ctx, buf, buflen);
-        }
-        else
+        } else
             sha512_update(&ctx, sha512_test_buf[j], sha512_test_buflen[j]);
 
         sha512_finish(&ctx, sha512sum);
@@ -717,8 +715,7 @@ int sha512_self_test(int verbose) {
         if (j == 5 || j == 6) {
             memset(buf, '\xAA', buflen = 131);
             sha512_hmac_starts(&ctx, buf, buflen, k);
-        }
-        else
+        } else
             sha512_hmac_starts(&ctx, sha512_hmac_test_key[j],
                                sha512_hmac_test_keylen[j], k);
 

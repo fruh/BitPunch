@@ -58,6 +58,6 @@ BPU_T_Goppa_Params *BPU_goppaParamsNew(const uint16_t m,
     return params;
 }
 
-void BPU_goppaFreeParams(BPU_T_Goppa_Params * params) {
+void BPU_goppaParamsFree(BPU_T_Goppa_Params * params) {
     BPU_SAFE_FREE(free, params);
 }

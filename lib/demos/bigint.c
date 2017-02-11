@@ -20,7 +20,9 @@
 #include <bitpunch/math/uni.h>
 
 int main(int argc, char **argv) {
-    BPU_T_Bigint *a, *b, *c;
+    BPU_T_Bigint *a = NULL;
+    BPU_T_Bigint *b = NULL;
+    BPU_T_Bigint *c = NULL;
 
     a = BPU_bigintMalloc(32);
     b = BPU_bigintMalloc(16);

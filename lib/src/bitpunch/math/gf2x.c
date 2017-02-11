@@ -345,8 +345,7 @@ void BPU_gf2xPolyAdd(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
 
     if (out->max_deg < out_deg) {
         BPU_gf2xPolyResize(out, out_deg);
-    }
-    else {
+    } else {
         BPU_gf2xPolyNull(out);
     }
     for (i = 0; i <= out_deg; i++) {
@@ -387,14 +386,12 @@ void BPU_gf2xPolyDiv(BPU_T_GF2_16x_Poly * q, BPU_T_GF2_16x_Poly * r,
     // check size of outputs
     if (q->max_deg < max_deg_q) {
         BPU_gf2xPolyResize(q, max_deg_q);
-    }
-    else {
+    } else {
         BPU_gf2xPolyNull(q);
     }
     if (r->max_deg < (b->max_deg - 1)) {
         BPU_gf2xPolyResize(r, b->max_deg - 1);
-    }
-    else {
+    } else {
         BPU_gf2xPolyNull(r);
     }
 
@@ -420,8 +417,8 @@ void BPU_gf2xPolyDiv(BPU_T_GF2_16x_Poly * q, BPU_T_GF2_16x_Poly * r,
         if (q->deg == -1) {
             q->deg = BPU_gf2xPolyGetDeg(q);
         }
-        BPU_gf2xPolyMul(tmp, divider, q, math_ctx);
 
+        BPU_gf2xPolyMul(tmp, divider, q, math_ctx);
         BPU_gf2xPolyAdd(dividend, a, tmp);
     }
 
@@ -439,8 +436,7 @@ void BPU_gf2xPolyMul(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
 
     if (out->max_deg < max_deg) {
         BPU_gf2xPolyResize(out, max_deg);
-    }
-    else {
+    } else {
         BPU_gf2xPolyNull(out);
     }
 
@@ -498,8 +494,7 @@ void BPU_gf2xPolyShl(BPU_T_GF2_16x_Poly * a, int n) {
 
     if (a->max_deg < a->deg + n) {
         BPU_gf2xPolyResize(a, a->deg + n);
-    }
-    else {
+    } else {
         BPU_gf2xPolyNull(a);
     }
     memcpy((void *) (a->coef + n), (void *) tmp->coef,
@@ -525,11 +520,9 @@ void BPU_gf2xPolyPower(BPU_T_GF2_16x_Poly * a, int e,
         BPU_gf2xPolyNull(a);
         a->coef[0] = 1;
         a->deg = 0;
-    }
-    else if (e == 1 || a->deg < 0) {
+    } else if (e == 1 || a->deg < 0) {
         return;
-    }
-    else {
+    } else {
         tmp = BPU_gf2xPolyMalloc(a->deg * e);
         if (NULL == tmp) {
             BPU_printError("BPU_gf2xPolyMalloc failed");
@@ -578,8 +571,7 @@ void BPU_gf2xPolyMod(BPU_T_GF2_16x_Poly * out, const BPU_T_GF2_16x_Poly * a,
     }
     if (out->max_deg < a->deg) {
         BPU_gf2xPolyResize(out, a->deg);
-    }
-    else {
+    } else {
         BPU_gf2xPolyNull(out);
     }
     // if there is nothing to do
@@ -808,8 +800,7 @@ int BPU_gf2xMatConvertToGf2Mat(BPU_T_GF2_Matrix * out,
         if ((j - act_element * out->element_bit_size) >= out->element_bit_size) {       // next elemenet, first bit
             act_element++;
             bit_in_element = 0;
-        }
-        else                    // same element, next bit
+        } else                  // same element, next bit
             bit_in_element++;
         for (i = 0; i < m->k; i++) {    // row loop
             for (bit = 0; bit < element_bit_size; bit++) {      // bit loop through element of matrix
@@ -896,13 +887,11 @@ int BPU_gf2xPolyExtEuclid(BPU_T_GF2_16x_Poly * d, BPU_T_GF2_16x_Poly * s,
         BPU_gf2xPolyCopy(old_r, b);
         old_t->coef[0] = 1;
         old_t->deg = 0;
-    }
-    else if (b->deg == -1) {
+    } else if (b->deg == -1) {
         BPU_gf2xPolyCopy(old_r, a);
         old_s->coef[0] = 1;
         old_s->deg = 0;
-    }
-    else {
+    } else {
         old_s->coef[0] = 1;
         old_s->deg = 0;
 
@@ -1142,8 +1131,7 @@ void BPU_gf2xPolyCopy(BPU_T_GF2_16x_Poly * dest, const BPU_T_GF2_16x_Poly * src)
     // if there is not enough space resize
     if (dest->max_deg < src->max_deg) {
         BPU_gf2xPolyResize(dest, src->max_deg);
-    }
-    else {
+    } else {
         BPU_gf2xPolyNull(dest);
     }
     memcpy((void *) (dest->coef), (void *) (src->coef),

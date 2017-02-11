@@ -91,8 +91,7 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
                     ret = -1;
                     break;
                 }
-            }
-            else
+            } else
                 break;
         }
     }
@@ -106,8 +105,7 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
             (out->len % out->element_bit_size);
         out->elements[out->array_length - 1] >>= out->element_bit_size -
             (out->len % out->element_bit_size);
-    }
-    else
+    } else
         BPU_gf2VecNull(error);
 
     return ret;
@@ -118,8 +116,8 @@ int BPU_mecsQcmdpcDecode1(BPU_T_GF2_Vector * error_vec,
                           const struct _BPU_T_Code_Ctx *ctx) {
     BPU_T_GF2_Poly syndrom;
     BPU_T_GF2_Sparse_Poly row;
-    int iter = -1, max, bit, upc, upc_counts[cipher_text->len], isSyndromZero =
-        0;
+    int iter = -1,
+        max, bit, upc, upc_counts[cipher_text->len], isSyndromZero = 0;
     int flipped_bits_iter = 0;
     uint8_t bit_value;
 
@@ -177,8 +175,7 @@ int BPU_mecsQcmdpcDecode1(BPU_T_GF2_Vector * error_vec,
             if (isSyndromZero)
                 break;
         }
-    }
-    else {
+    } else {
         isSyndromZero = 1;
     }
     //free
@@ -242,8 +239,7 @@ int BPU_mecsQcmdpcDecode2(BPU_T_GF2_Vector * error_vec,
             if (isSyndromZero)
                 break;
         }
-    }
-    else {
+    } else {
         isSyndromZero = 1;
     }
     //free
@@ -325,8 +321,7 @@ int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx) {
 
     if (!err) {
         BPU_printDebug("generation successful");
-    }
-    else {
+    } else {
         BPU_printError("generation failed");
     }
 
@@ -350,8 +345,7 @@ int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx) {
             if (test_inv.len != 1 || test_inv.elements[0] != 1ul) {
                 ret = 0;
                 BPU_printWarning("inversion failed");
-            }
-            else {
+            } else {
                 BPU_printDebug("inversion OK");
             }
             BPU_gf2PolyFree(&test_inv, 0);
@@ -422,8 +416,7 @@ int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx) {
     if (BPU_mecsQcmdpcTestGHmatrices(&G_temp_mat, &H_temp_sparse) != 0) {
         BPU_printError("generator x parity check matrix ERROR");
         ret = -1;
-    }
-    else {
+    } else {
         BPU_printDebug("GH^t = 0");
     }
 
