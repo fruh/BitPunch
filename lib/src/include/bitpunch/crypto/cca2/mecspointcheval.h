@@ -16,18 +16,18 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef MECSPOINTCHEVAL_H
-#define MECSPOINTCHEVAL_H
+# define MECSPOINTCHEVAL_H
 
-#include <bitpunch/config.h>
+# include <bitpunch/config.h>
 
-#if defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA) || defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC)
+# if defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA) || defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC)
 
-#include <bitpunch/config.h>
-#include <bitpunch/math/gf2.h>
-#include <bitpunch/crypto/mecsctx.h>
-#include <bitpunch/crypto/hash/sha512.h>
+#  include <bitpunch/config.h>
+#  include <bitpunch/math/gf2.h>
+#  include <bitpunch/crypto/mecsctx.h>
+#  include <bitpunch/crypto/hash/sha512.h>
 
-#ifdef BPU_CONF_ENCRYPTION
+#  ifdef BPU_CONF_ENCRYPTION
 /**
  * @brief BPU_mecsPointchevalCCA2Encrypt
  * @param out
@@ -39,9 +39,9 @@ int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
                                    const BPU_T_GF2_Vector * in,
                                    const BPU_T_Mecs_Ctx * ctx,
                                    BPU_T_GF2_Vector * error);
-#endif
+#  endif
 
-#ifdef BPU_CONF_DECRYPTION
+#  ifdef BPU_CONF_DECRYPTION
 /**
  * @brief BPU_mecsPointchevalCCA2Decrypt
  * @param out
@@ -50,10 +50,10 @@ int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
  * @return
  */
 int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector * out,
-                                   BPU_T_GF2_Vector *error,
+                                   BPU_T_GF2_Vector * error,
                                    const BPU_T_GF2_Vector * in,
                                    const BPU_T_Mecs_Ctx * ctx);
-#endif
+#  endif
 
-#endif // BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
-#endif // MECSPOINTCHEVAL_H
+# endif                         // BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+#endif                          // MECSPOINTCHEVAL_H

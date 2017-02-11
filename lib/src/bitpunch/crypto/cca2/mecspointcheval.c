@@ -18,36 +18,37 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/crypto/cca2/mecspointcheval.h>
 
 #if defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA) || defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC)
-#include <bitpunch/debugio.h>
-#include <bitpunch/math/gf2.h>
-#include <bitpunch/crypto/mecsbasic/mecsbasic.h>
+# include <bitpunch/debugio.h>
+# include <bitpunch/math/gf2.h>
+# include <bitpunch/crypto/mecsbasic/mecsbasic.h>
 
-#ifdef BPU_CONF_ENCRYPTION
+# ifdef BPU_CONF_ENCRYPTION
 int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
                                    const BPU_T_GF2_Vector * in,
                                    const BPU_T_Mecs_Ctx * ctx,
-                                   BPU_T_GF2_Vector * error) {
+                                   BPU_T_GF2_Vector * error)
+{
     BPU_T_GF2_Vector *r1, *r2, *cca2_pt, *hash, *hash_in, *enc_pt, *tmp;
     int rc = 0;
 
     // Generate a random (k − l)-bit vector r1 and a random l-bit vector r2
-    BPU_gf2VecNew(&r2, ctx->pt_len);
-    BPU_gf2VecNew(&r1, ctx->code_ctx->msg_len - ctx->pt_len);
+    r2 = BPU_gf2VecNew(ctx->pt_len);
+    r1 = BPU_gf2VecNew(ctx->code_ctx->msg_len - ctx->pt_len);
     BPU_gf2VecRand(r1, 0);
     BPU_gf2VecRand(r2, 0);
 
-    BPU_gf2VecNew(&hash, ctx->pt_len);
-    BPU_gf2VecNew(&hash_in, 2 * ctx->pt_len);
+    hash = BPU_gf2VecNew(ctx->pt_len);
+    hash_in = BPU_gf2VecNew(2 * ctx->pt_len);
     // Create CCA2-safe plaintext m= r1 ∥ hash (m ∥ r2 )
     BPU_gf2VecConcat(hash_in, in, r2);
 
     BPU_gf2VecHash(hash, hash_in);
     BPU_gf2VecFree(hash_in);
 
-    BPU_gf2VecNew(&cca2_pt, r1->len + hash->len);
+    cca2_pt = BPU_gf2VecNew(r1->len + hash->len);
     BPU_gf2VecConcat(cca2_pt, r1, hash);
 
-    BPU_gf2VecNew(&enc_pt, ctx->code_ctx->code_len);
+    enc_pt = BPU_gf2VecNew(ctx->code_ctx->code_len);
 
     // encrypt with basic MECS
     if (BPU_mecsBasicEncrypt(enc_pt, cca2_pt, ctx, NULL)) {
@@ -56,7 +57,7 @@ int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
     BPU_gf2VecFree(cca2_pt);
 
     // add CCA2-safe data extension z = (z′ ⊕ e) ∥ (hash (r1) ⊕ m) ∥ (hash (e) ⊕ r2 )
-    BPU_gf2VecNew(&tmp, enc_pt->len + hash->len);
+    tmp = BPU_gf2VecNew(enc_pt->len + hash->len);
     BPU_gf2VecHash(hash, r1);
     BPU_gf2VecFree(r1);
     BPU_gf2VecXor(hash, in);
@@ -73,13 +74,14 @@ int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
 
     return rc;
 }
-#endif // BPU_CONF_ENCRYPTION
+# endif                         // BPU_CONF_ENCRYPTION
 
-#ifdef BPU_CONF_DECRYPTION
+# ifdef BPU_CONF_DECRYPTION
 int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector * out,
                                    BPU_T_GF2_Vector * error,
                                    const BPU_T_GF2_Vector * in,
-                                   const BPU_T_Mecs_Ctx * ctx) {
+                                   const BPU_T_Mecs_Ctx * ctx)
+{
     BPU_T_GF2_Vector *z1, *z3;  // n, l, l-bit
     BPU_T_GF2_Vector *tmp_2, *pt_cca2;
     BPU_T_GF2_Vector *r;        // k - l
@@ -87,29 +89,29 @@ int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector * out,
     int rc = 0;
 
     // split ct in z1, z2, z3
-    BPU_gf2VecNew(&z1, ctx->code_ctx->code_len);
+    z1 = BPU_gf2VecNew(ctx->code_ctx->code_len);
     // z2 is like out
-    BPU_gf2VecNew(&z3, ctx->pt_len);
+    z3 = BPU_gf2VecNew(ctx->pt_len);
 
     // Split z to ( z1 , z2 , z3 )
     BPU_gf2VecCrop(z1, in, 0, z1->len);
     BPU_gf2VecCrop(out, in, z1->len, out->len);
     BPU_gf2VecCrop(z3, in, z1->len + out->len, z3->len);
 
-    BPU_gf2VecNew(&pt_cca2, ctx->code_ctx->msg_len);
+    pt_cca2 = BPU_gf2VecNew(ctx->code_ctx->msg_len);
     // decrypt z1 using basic mecs  Reconstruct the CCA2-safe plaintext m′ = z1 ⊕ e
     if (BPU_mecsBasicDecrypt(pt_cca2, error, z1, ctx)) {
         return -1;
     }
     BPU_gf2VecFree(z1);
 
-    BPU_gf2VecNew(&r, ctx->code_ctx->msg_len - ctx->pt_len);
-    BPU_gf2VecNew(&h, ctx->pt_len);
+    r = BPU_gf2VecNew(ctx->code_ctx->msg_len - ctx->pt_len);
+    h = BPU_gf2VecNew(ctx->pt_len);
     BPU_gf2VecCrop(r, pt_cca2, 0, r->len);
     BPU_gf2VecCrop(h, pt_cca2, r->len, h->len);
     BPU_gf2VecFree(pt_cca2);
 
-    BPU_gf2VecNew(&h_tmp, ctx->pt_len);
+    h_tmp = BPU_gf2VecNew(ctx->pt_len);
     // Reconstruct plaintext candidate m = z2 ⊕ hash (r)
     BPU_gf2VecHash(h_tmp, r);
     BPU_gf2VecFree(r);
@@ -120,7 +122,7 @@ int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector * out,
     BPU_gf2VecXor(h_tmp, z3);
     BPU_gf2VecFree(z3);
 
-    BPU_gf2VecNew(&tmp_2, ctx->pt_len * 2);
+    tmp_2 = BPU_gf2VecNew(ctx->pt_len * 2);
     BPU_gf2VecConcat(tmp_2, out, h_tmp);
     BPU_gf2VecHash(h_tmp, tmp_2);
     BPU_gf2VecFree(tmp_2);
@@ -134,6 +136,6 @@ int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector * out,
     BPU_gf2VecFree(h_tmp);
     return rc;
 }
-#endif // BPU_CONF_DECRYPTION
+# endif                         // BPU_CONF_DECRYPTION
 
-#endif // BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+#endif                          // BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA

@@ -29,8 +29,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/code/goppa/goppa.h>
 #include <bitpunch/code/qcmdpc/qcmdpc.h>
 
-BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
-                    const BPU_T_EN_Code_Types type) {
+BPU_T_Code_Ctx *BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
+                               const BPU_T_EN_Code_Types type)
+{
     BPU_T_Code_Ctx *ctx_local = NULL;
     BPU_T_Code_Ctx *ctx = NULL;
     BPU_T_UN_Code_Spec *code_spec_local = NULL;
@@ -77,9 +78,10 @@ BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
             BPU_printError("Can not malloc BPU_T_Goppa_Spec");
             goto err;
         }
+
         goppa_spec_local->support_len = (1 << params->goppa->m); // ctx->math_ctx->ord + 1;
         ctx_local->code_len = goppa_spec_local->support_len;
-        ctx_local->msg_len = goppa_spec_local->support_len - params->goppa->m * params->goppa->t;    // n - m*t
+        ctx_local->msg_len = goppa_spec_local->support_len - params->goppa->m * params->goppa->t; // n - m*t
         ctx_local->t = params->goppa->t;
         code_spec_local->goppa = goppa_spec_local;
         goppa_spec_local = NULL;
@@ -101,13 +103,13 @@ BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
             BPU_printError("Can not malloc BPU_T_Goppa_Spec");
             goto err;
         }
+
         ctx_local->code_spec->qcmdpc->m = params->qcmdpc->m;
         ctx_local->code_spec->qcmdpc->n0 = params->qcmdpc->n0;
         ctx_local->code_spec->qcmdpc->w = params->qcmdpc->w;
         ctx_local->code_len = params->qcmdpc->m * params->qcmdpc->n0;
         ctx_local->msg_len = ctx_local->code_len - params->qcmdpc->m;
         ctx_local->t = params->qcmdpc->t;
-
         break;
         /* EXAMPLE please DO NOT REMOVE
            case BPU_EN_CODE_*****:
@@ -131,7 +133,7 @@ BPU_T_Code_Ctx * BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
 
     ctx = ctx_local;
     ctx_local = NULL;
-err:
+ err:
     BPU_SAFE_FREE(free, ctx_local);
     BPU_SAFE_FREE(BPU_mathCtxFree, math_ctx_local);
     BPU_SAFE_FREE(free, goppa_spec_local);
@@ -139,48 +141,43 @@ err:
     return ctx;
 }
 
-BPU_T_Math_Ctx* BPU_codeMathCtxNew(const uint16_t m,
-                                   const BPU_T_GF2_16x mod) {
+BPU_T_Math_Ctx *BPU_codeMathCtxNew(const uint16_t m, const BPU_T_GF2_16x mod)
+{
     BPU_T_Math_Ctx *math_ctx_local = NULL;
     BPU_T_Math_Ctx *math_ctx = NULL;
     BPU_T_GF2_16x context_mod = 0;
 
     if (mod != 0) {
         context_mod = mod;
-    }
-    else if (m == 5) {
+    } else if (m == 5) {
         context_mod = BPU_GF2_POLY_DEG_5;
-    }
-    else if (m == 6) {
+    } else if (m == 6) {
         context_mod = BPU_GF2_POLY_DEG_6;
-    }
-    else if (m == 6) {
+    } else if (m == 6) {
         context_mod = BPU_GF2_POLY_DEG_6;
-    }
-    else if (m == 11) {
+    } else if (m == 11) {
         context_mod = BPU_GF2_POLY_DEG_11;
-    }
-    else {
+    } else {
         BPU_printError
             ("Code params not supported. Supported only (m,t): (5,5), (6,6), (6,7), (11,50)");
         goto err;
     }
 
     math_ctx_local = BPU_mathCtxNew((BPU_T_GF2_16x) 2, context_mod);
-    if (NULL == math_ctx_local)
-    {
+    if (NULL == math_ctx_local) {
         BPU_printError("BPU_mathCtxNew failed");
         goto err;
     }
 
     math_ctx = math_ctx_local;
     math_ctx_local = NULL;
-err:
+ err:
     BPU_SAFE_FREE(BPU_mathCtxFree, math_ctx_local);
     return math_ctx;
 }
 
-void BPU_codeCtxFree(BPU_T_Code_Ctx * ctx) {
+void BPU_codeCtxFree(BPU_T_Code_Ctx * ctx)
+{
     if (NULL == ctx) {
         return;
     }
@@ -192,7 +189,6 @@ void BPU_codeCtxFree(BPU_T_Code_Ctx * ctx) {
         break;
     case BPU_EN_CODE_QCMDPC:
         BPU_qcmdpcFreeSpec(ctx->code_spec->qcmdpc);
-        // free(ctx_p->code_spec->qcmdpc);
         break;
     default:
         BPU_printError("Code type not supported: %d", ctx->type);
@@ -204,13 +200,16 @@ void BPU_codeCtxFree(BPU_T_Code_Ctx * ctx) {
     free(ctx);
 }
 
-BPU_T_UN_Code_Params * BPU_codeParamsGoppaNew(const uint16_t m,
-                            const uint16_t t, const BPU_T_GF2_16x mod) {
+BPU_T_UN_Code_Params *BPU_codeParamsGoppaNew(const uint16_t m,
+                                             const uint16_t t,
+                                             const BPU_T_GF2_16x mod)
+{
     BPU_T_UN_Code_Params *code_params_local = NULL;
     BPU_T_UN_Code_Params *code_params = NULL;
     BPU_T_Goppa_Params *goppa_params = NULL;
 
-    code_params_local = (BPU_T_UN_Code_Params *) calloc(1, sizeof(BPU_T_UN_Code_Params));
+    code_params_local =
+        (BPU_T_UN_Code_Params *) calloc(1, sizeof(BPU_T_UN_Code_Params));
     if (NULL == code_params_local) {
         BPU_printError("calloc failed");
         goto err;
@@ -227,27 +226,52 @@ BPU_T_UN_Code_Params * BPU_codeParamsGoppaNew(const uint16_t m,
 
     code_params = code_params_local;
     code_params_local = NULL;
-err:
+ err:
     BPU_SAFE_FREE(BPU_goppaFreeParams, goppa_params);
     BPU_SAFE_FREE(free, code_params_local);
     return code_params;
 }
 
-void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params * params) {
-    if (NULL == params) {
-        return;
-    }
-
+void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params * params)
+{
     BPU_SAFE_FREE(BPU_goppaFreeParams, params->goppa);
     BPU_SAFE_FREE(free, params);
 }
 
-int BPU_codeInitParamsQcmdpc(BPU_T_UN_Code_Params * params, const uint16_t m,
+BPU_T_UN_Code_Params * BPU_codeInitParamsQcmdpc(const uint16_t m,
                              const uint16_t n0, const uint16_t w,
-                             const uint16_t t) {
-    return BPU_qcmdpcInitParams(&params->qcmdpc, m, n0, w, t);
+                             const uint16_t t)
+{
+    BPU_T_UN_Code_Params *code_params_local = NULL;
+    BPU_T_UN_Code_Params *code_params = NULL;
+    BPU_T_Qcmdpc_Params *qcmdpc_params = NULL;
+
+    code_params_local =
+        (BPU_T_UN_Code_Params *) calloc(1, sizeof(BPU_T_UN_Code_Params));
+    if (NULL == code_params_local) {
+        BPU_printError("calloc failed");
+        goto err;
+    }
+
+    qcmdpc_params = BPU_qcmdpcInitParams(m, n0, w, t);
+    if (NULL == qcmdpc_params) {
+        BPU_printError("BPU_qcmdpcInitParams failed");
+        goto err;
+    }
+
+    code_params_local->qcmdpc = qcmdpc_params;
+    qcmdpc_params = NULL;
+
+    code_params = code_params_local;
+    code_params_local = NULL;
+ err:
+    BPU_SAFE_FREE(BPU_qcmdpcFreeParams, qcmdpc_params);
+    BPU_SAFE_FREE(free, code_params_local);
+    return code_params;
 }
 
-void BPU_codeFreeParamsQcmdpc(BPU_T_UN_Code_Params * params) {
-    BPU_qcmdpcFreeParams(&params->qcmdpc);
+void BPU_codeFreeParamsQcmdpc(BPU_T_UN_Code_Params * params)
+{
+    BPU_SAFE_FREE(BPU_qcmdpcFreeParams, params->qcmdpc);
+    BPU_SAFE_FREE(free, params);
 }

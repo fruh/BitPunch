@@ -17,12 +17,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef BPU_UNI_H
-#define BPU_UNI_H
+# define BPU_UNI_H
 
-#include <bitpunch/config.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdint.h>
+# include <bitpunch/config.h>
+# include <string.h>
+# include <stdlib.h>
+# include <stdint.h>
 
 typedef uint16_t BPU_T_Element;
 
@@ -36,7 +36,7 @@ typedef struct _BPU_T_Element_Array {
     uint32_t len;               ///< bit length of the element
 } BPU_T_Element_Array;
 
-#ifdef BPU_CONF_PRINT
+# ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
 // TODO: Possibility of turning off print functions - do not compile
 /**
@@ -130,7 +130,7 @@ void BPU_printElementArrayMsb(const BPU_T_Element_Array * a);
 void BPU_printElementArrayOnes(const BPU_T_Element_Array * a);
 
 /* ------------------------------------ Print functions ------------------------------------ */
-#endif // BPU_CONF_PRINT
+# endif                         // BPU_CONF_PRINT
 
 /**
  * Check if is set bit at n-th index makro.
@@ -139,7 +139,7 @@ void BPU_printElementArrayOnes(const BPU_T_Element_Array * a);
  * @return 1 - is set, else zero
  */
  /// Check if is set bit at n-th index.
-#define BPU_getBit(w, n) ((uint32_t)((((uint32_t)w) >> (n)) & 1u))
+# define BPU_getBit(w, n) ((uint32_t)((((uint32_t)w) >> (n)) & 1u))
 
 /**
 * Check if is set bit at s, t position in vector.
@@ -148,7 +148,7 @@ void BPU_printElementArrayOnes(const BPU_T_Element_Array * a);
 * @return 1 - is set, else zero
 */
 /// Check if is set bit at i-th position in vector.
-#define BPU_elementArrayGetBit(a_pointer, i) (BPU_getBit((a_pointer)->elements[(i) / (a_pointer)->element_bit_size], (i) % (a_pointer)->element_bit_size))
+# define BPU_elementArrayGetBit(a_pointer, i) (BPU_getBit((a_pointer)->elements[(i) / (a_pointer)->element_bit_size], (i) % (a_pointer)->element_bit_size))
 
 /**
  * Set bit in vector GF2 at index i
@@ -156,34 +156,33 @@ void BPU_printElementArrayOnes(const BPU_T_Element_Array * a);
  * @param  i         col index
  * @param  bit       bit value 0 or 1
  */
-#define BPU_elementArraySetBit(v_pointer, i, bit) \
+# define BPU_elementArraySetBit(v_pointer, i, bit) \
     do { (v_pointer)->elements[(i) / (v_pointer)->element_bit_size] &= \
     ((BPU_T_Element) (0xFFFFFFFFu)) \
     ^ (((BPU_T_Element) 1) << ((i) % (v_pointer)->element_bit_size));\
     (v_pointer)->elements[(i) / (v_pointer)->element_bit_size] |= \
     ((BPU_T_Element) bit) << ((i) % (v_pointer)->element_bit_size); }while(0)
 
-
 /**
  * Null element array.
  * @param[out]  a_pointer pointer to element array
  */
 /// Null element array.
-#define BPU_elementArrayNull(a_pointer) memset((void *) ((a_pointer)->elements), 0, (a_pointer)->element_bit_size / 8 * (a_pointer)->array_length)
+# define BPU_elementArrayNull(a_pointer) memset((void *) ((a_pointer)->elements), 0, (a_pointer)->element_bit_size / 8 * (a_pointer)->array_length)
 
 /**
  * Free dynamically element array.
  * @param[out] *m address of vector object
  */
 /// Free dynamically or statically allocated element array
-void BPU_elementArrayFree(BPU_T_Element_Array *a);
+void BPU_elementArrayFree(BPU_T_Element_Array * a);
 
 /**
  * Allocates and nulls memory for element array.
  * @param len length of vector
  * @return on succes 0, else error
  */
-BPU_T_Element_Array * BPU_elementArrayMalloc(uint32_t len);
+BPU_T_Element_Array *BPU_elementArrayMalloc(uint32_t len);
 
 /**
  * @brief Resize element array.
@@ -201,4 +200,4 @@ int BPU_elementArrayResize(BPU_T_Element_Array * a, uint32_t len);
  */
 int BPU_elementArrayMallocElements(BPU_T_Element_Array * a, uint32_t len);
 
-#endif // BPU_UNI_H
+#endif                          // BPU_UNI_H

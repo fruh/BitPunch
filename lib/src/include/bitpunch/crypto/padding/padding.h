@@ -20,9 +20,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef PADDING_H
-#define PADDING_H
+# define PADDING_H
 
-#include <bitpunch/math/gf2.h>
+# include <bitpunch/math/gf2.h>
 
 /**
  * Add padding to message. Padding begins with 1.
@@ -45,4 +45,4 @@ int BPU_padAdd(BPU_T_GF2_Vector * padded_message,
 int BPU_padDel(BPU_T_GF2_Vector * message,
                const BPU_T_GF2_Vector * padded_message);
 
-#endif // PADDING_H
+#endif                          // PADDING_H

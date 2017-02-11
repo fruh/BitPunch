@@ -18,12 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/crypto/hash/sha512.h>
 
 #ifdef BPU_CONF_SHA_512
-#include <bitpunch/crypto/hash/polarssl/polarssl/sha512.h>
+# include <bitpunch/crypto/hash/polarssl/polarssl/sha512.h>
 
-#include <bitpunch/debugio.h>
-#include <bitpunch/math/gf2.h>
+# include <bitpunch/debugio.h>
+# include <bitpunch/math/gf2.h>
 
-int BPU_gf2VecHash(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in) {
+int BPU_gf2VecHash(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in)
+{
     uint8_t md[BPU_HASH_LEN];
 
     if (out->len != BPU_HASH_LEN * 8) {
@@ -38,7 +39,7 @@ int BPU_gf2VecHash(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in) {
                          in->len);
     }
     // hash vector
-    sha512((uint8_t *) in->elements, in->len / 8, md, 0);
+    sha512((uint8_t *)in->elements, in->len / 8, md, 0);
     // copy digest to vector
     memcpy(out->elements, md, BPU_HASH_LEN);
 

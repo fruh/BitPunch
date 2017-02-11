@@ -21,9 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #ifndef BPU_PRNG_H
-#define BPU_PRNG_H
+# define BPU_PRNG_H
 
-#include <stdint.h>
+# include <stdint.h>
 /**
  * Get random unsigned int 32 value from given range (from <= return <= to)
  * @param from minimum
@@ -33,4 +33,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /// Get random unsigned int 32 value from given range (from <= return <= to)
 uint32_t BPU_prngGetRand(int from, int to);
 
-#endif // BPU_PRNG_H
+#endif                          // BPU_PRNG_H

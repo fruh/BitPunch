@@ -16,19 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef SHA512_H
-#define SHA512_H
+# define SHA512_H
 
-#include <bitpunch/config.h>
+# include <bitpunch/config.h>
 
-#ifdef BPU_CONF_SHA_512
-#include <stdint.h>
+# ifdef BPU_CONF_SHA_512
+#  include <stdint.h>
 
-#include <bitpunch/math/gf2.h>
+#  include <bitpunch/math/gf2.h>
 
-#define BPU_HASH_LEN 64
+#  define BPU_HASH_LEN 64
 
 int BPU_gf2VecHash(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in);
 
-#endif // BPU_CONF_SHA_512
+# endif                         // BPU_CONF_SHA_512
 
-#endif // SHA512_H
+#endif                          // SHA512_H

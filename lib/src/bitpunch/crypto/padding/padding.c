@@ -19,31 +19,38 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <bitpunch/bitpunch.h>
 #include <bitpunch/crypto/padding/padding.h>
 
 #include <bitpunch/debugio.h>
 #include <bitpunch/math/gf2.h>
 
 int BPU_padAdd(BPU_T_GF2_Vector * padded_message,
-               const BPU_T_GF2_Vector * message, const uint16_t padding_len) {
+               const BPU_T_GF2_Vector * message, const uint16_t padding_len)
+{
     int i;
+    int rv = BPU_ERROR;
 
     if (message->len + padding_len != padded_message->len) {
         BPU_printError("Wrong message len");
-        return -1;
+        goto err;
     }
-    // copy message into padded message
+
+    BPU_gf2VecNull(padded_message);
     for (i = 0; i < message->array_length; i++) {
         padded_message->elements[i] = message->elements[i];
     }
-    // add padding - first padded bit set to 1, rest keep 0
+
     BPU_gf2VecSetBit(padded_message, message->len, 1);
 
-    return 0;
+    rv = BPU_SUCCESS;
+err:
+    return rv;
 }
 
 int BPU_padDel(BPU_T_GF2_Vector * message,
-               const BPU_T_GF2_Vector * padded_message) {
+               const BPU_T_GF2_Vector * padded_message)
+{
     int i, message_size = 0;
 
     // count the message size

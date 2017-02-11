@@ -20,9 +20,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef BPU_INT_H
-#define BPU_INT_H
+# define BPU_INT_H
 
-#include <stdint.h>
+# include <stdint.h>
 
 /**
  * Check if number is prime number.
@@ -41,4 +41,4 @@ int BPU_isPrime(int n);
  */
 int msb32(uint32_t x, int start, int len, int ele_size);
 
-#endif // BPU_INT_H
+#endif                          // BPU_INT_H

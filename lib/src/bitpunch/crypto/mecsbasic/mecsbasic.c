@@ -23,7 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifdef BPU_CONF_ENCRYPTION
 int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
-                         const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector * error) {
+                         const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector * error)
+{
     int rc = BPU_ERROR;
     BPU_T_GF2_Vector *local_error = NULL;
 
@@ -42,13 +43,6 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
         goto err;
     }
 
-    if (NULL != error) {
-        local_error = error;
-    }
-    else {
-        local_error = BPU_gf2VecNew(ctx->code_ctx->code_len);
-    }
-
     BPU_gf2VecNull(out);
 
     if (BPU_SUCCESS != ctx->code_ctx->_encode(out, in, ctx->code_ctx)) {
@@ -56,8 +50,11 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
         goto err;
     }
 
-    // generate random error vector e if needed
-    if (NULL == error) {
+    if (NULL != error) {
+        local_error = error;
+    } else {
+        // generate random error vector e if needed
+        local_error = BPU_gf2VecNew(ctx->code_ctx->code_len);
         if (BPU_SUCCESS != BPU_gf2VecRand(local_error, ctx->code_ctx->t)) {
             BPU_printError("BPU_gf2VecRand failed");
             goto err;
@@ -71,7 +68,7 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
     }
 
     rc = BPU_SUCCESS;
-err:
+ err:
     if (NULL == error) {
         BPU_SAFE_FREE(BPU_gf2VecFree, local_error);
     }
@@ -84,17 +81,29 @@ err:
 int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector * out,
                          BPU_T_GF2_Vector * error,
                          const BPU_T_GF2_Vector * in,
-                         const BPU_T_Mecs_Ctx * ctx) {
-    int rc = 0;
-    BPU_T_GF2_Vector *temp;
+                         const BPU_T_Mecs_Ctx * ctx)
+{
+    int rc = BPU_ERROR;
+    BPU_T_GF2_Vector *temp = NULL;
 
-    temp = BPU_gf2VecNew(in->len);
-    BPU_gf2VecCopy(temp, in);
+    if (NULL == (temp = BPU_gf2VecNew(in->len))) {
+        BPU_printError("BPU_gf2VecNew failed");
+        goto err;
+    }
 
-    rc = ctx->code_ctx->_decode(out, error, temp, ctx->code_ctx);
+    if (BPU_SUCCESS != BPU_gf2VecCopy(temp, in)) {
+        BPU_printError("BPU_gf2VecCopy failed");
+        goto err;
+    }
 
-    BPU_gf2VecFree(temp);
+    if (BPU_SUCCESS != ctx->code_ctx->_decode(out, error, temp, ctx->code_ctx)) {
+        BPU_printError("_decode failed");
+        goto err;
+    }
 
+    rc = BPU_SUCCESS;
+err:
+    BPU_SAFE_FREE(BPU_gf2VecFree, temp);
     return rc;
 }
 #endif

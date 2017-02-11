@@ -22,7 +22,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
+int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx)
+{
     BPU_T_GF2_Vector *ct = NULL;
     BPU_T_GF2_Vector *pt_in = NULL;
     BPU_T_GF2_Vector *pt_out = NULL;
@@ -85,14 +86,13 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
     if (BPU_gf2VecCmp(pt_in, pt_out)) {
         BPU_printError("\nOutput plain text differs from input");
         goto err;
-    }
-    else {
+    } else {
         fprintf(stderr,
                 "\nSUCCESS: Input plain text is equal to output plain text.\n");
     }
 
     rc = BPU_SUCCESS;
-err:
+ err:
     fprintf(stderr, "\nCleaning up...\n");
     BPU_gf2VecFree(pt_in);
     BPU_gf2VecFree(pt_out);
@@ -101,7 +101,8 @@ err:
     return rc;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     int rc = BPU_ERROR;
     BPU_T_Mecs_Ctx *ctx = NULL;
     BPU_T_UN_Mecs_Params *params = NULL;
@@ -127,7 +128,7 @@ int main(int argc, char **argv) {
     }
 
     rc = BPU_SUCCESS;
-err:
+ err:
     BPU_SAFE_FREE(BPU_mecsFreeCtx, ctx);
     BPU_SAFE_FREE(BPU_mecsDestroyParamsGoppa, params);
     return rc;

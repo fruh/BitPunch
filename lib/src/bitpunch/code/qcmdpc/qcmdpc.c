@@ -21,7 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifdef BPU_CONF_ENCRYPTION
 int BPU_mecsQcmdpcEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
-                         const struct _BPU_T_Code_Ctx *ctx) {
+                         const struct _BPU_T_Code_Ctx *ctx)
+{
 
     BPU_T_GF2_Poly temp_ct, temp_rot_row;
     int ele, bit, i, bit_in_msg = 0;
@@ -66,7 +67,8 @@ int BPU_mecsQcmdpcEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
 #ifdef BPU_CONF_DECRYPTION
 int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
                           const BPU_T_GF2_Vector * in,
-                          const struct _BPU_T_Code_Ctx *ctx) {
+                          const struct _BPU_T_Code_Ctx *ctx)
+{
 
     int ret = 0, delta = BPU_QCMDPC_PARAM_DELTA;
     int i;
@@ -91,12 +93,10 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
                     ret = -1;
                     break;
                 }
-            }
-            else
+            } else
                 break;
         }
     }
-
     // if decoded, get message from first param_m bits
     if (ret == 0) {
         // decrypt message
@@ -107,8 +107,7 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
             (out->len % out->element_bit_size);
         out->elements[out->array_length - 1] >>= out->element_bit_size -
             (out->len % out->element_bit_size);
-    }
-    else
+    } else
         BPU_gf2VecNull(error);
 
     return ret;
@@ -116,7 +115,8 @@ int BPU_mecsQcmdpcDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
 
 int BPU_mecsQcmdpcDecode1(BPU_T_GF2_Vector * error_vec,
                           const BPU_T_GF2_Vector * cipher_text, int delta,
-                          const struct _BPU_T_Code_Ctx *ctx) {
+                          const struct _BPU_T_Code_Ctx *ctx)
+{
     BPU_T_GF2_Poly syndrom;
     BPU_T_GF2_Sparse_Poly row;
     int iter = -1, max, bit, upc, upc_counts[cipher_text->len], isSyndromZero =
@@ -153,7 +153,6 @@ int BPU_mecsQcmdpcDecode1(BPU_T_GF2_Vector * error_vec,
                 break;
             }
 
-
             flipped_bits_iter = 0;
             // check which bits to flip
             for (bit = 0; bit < error_vec->len; bit++) {
@@ -179,8 +178,7 @@ int BPU_mecsQcmdpcDecode1(BPU_T_GF2_Vector * error_vec,
             if (isSyndromZero)
                 break;
         }
-    }
-    else {
+    } else {
         isSyndromZero = 1;
     }
     //free
@@ -191,7 +189,8 @@ int BPU_mecsQcmdpcDecode1(BPU_T_GF2_Vector * error_vec,
 
 int BPU_mecsQcmdpcDecode2(BPU_T_GF2_Vector * error_vec,
                           const BPU_T_GF2_Vector * cipher_text,
-                          const struct _BPU_T_Code_Ctx *ctx) {
+                          const struct _BPU_T_Code_Ctx *ctx)
+{
     BPU_T_GF2_Poly syndrom;
     BPU_T_GF2_Sparse_Poly row;
     int iter = -1, bit, upc, isSyndromZero = 0;
@@ -244,8 +243,7 @@ int BPU_mecsQcmdpcDecode2(BPU_T_GF2_Vector * error_vec,
             if (isSyndromZero)
                 break;
         }
-    }
-    else {
+    } else {
         isSyndromZero = 1;
     }
     //free
@@ -256,7 +254,8 @@ int BPU_mecsQcmdpcDecode2(BPU_T_GF2_Vector * error_vec,
 
 void BPU_mecsQcmdpcCalcSyndrom(BPU_T_GF2_Vector * syndrom,
                                const BPU_T_GF2_Vector * cipher_text,
-                               const struct _BPU_T_Code_Ctx *ctx) {
+                               const struct _BPU_T_Code_Ctx *ctx)
+{
     BPU_T_GF2_Sparse_Poly row;
     int i;
 
@@ -272,7 +271,8 @@ void BPU_mecsQcmdpcCalcSyndrom(BPU_T_GF2_Vector * syndrom,
 #endif
 
 #ifdef BPU_CONF_KEY_GEN
-int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx) {
+int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx)
+{
 
     BPU_T_GF2_Poly H_temp[ctx->code_spec->qcmdpc->n0];
     BPU_T_GF2_Poly G_temp[ctx->code_spec->qcmdpc->n0 - 1];
@@ -287,11 +287,11 @@ int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx) {
     BPU_gf2VecSetBit(&mod, ctx->code_spec->qcmdpc->m, 1ul);
     BPU_gf2VecSetBit(&mod, 0, 1ul);
 
-#if defined(DEBUG_L)
+# if defined(DEBUG_L)
     BPU_printDebug("modulus: ");
 //    BPU_printGf2Poly(&mod);
     BPU_printDebug("generating H vectors");
-#endif
+# endif
 
     // alloc parity-check matrix
     for (i = 0; i < ctx->code_spec->qcmdpc->n0; i++) {
@@ -299,36 +299,31 @@ int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx) {
         if ((ctx->code_spec->qcmdpc->w / ctx->code_spec->qcmdpc->n0) % 2 == 1)
             wi[i] =
                 ctx->code_spec->qcmdpc->w / ctx->code_spec->qcmdpc->n0 +
-                (int) (i <
-                       (ctx->code_spec->qcmdpc->w %
-                        ctx->code_spec->qcmdpc->n0));
+                (int)(i <
+                      (ctx->code_spec->qcmdpc->w % ctx->code_spec->qcmdpc->n0));
         else
             wi[i] =
                 ctx->code_spec->qcmdpc->w / ctx->code_spec->qcmdpc->n0 +
-                (int) (i <
-                       (ctx->code_spec->qcmdpc->w %
-                        ctx->code_spec->qcmdpc->n0)) + (int) (i ==
-                                                              0) - (int) (i ==
-                                                                          ctx->
-                                                                          code_spec->
-                                                                          qcmdpc->
-                                                                          n0 -
-                                                                          1);
+                (int)(i <
+                      (ctx->code_spec->qcmdpc->w %
+                       ctx->code_spec->qcmdpc->n0)) + (int)(i ==
+                                                            0) - (int)(i ==
+                                                                       ctx->code_spec->qcmdpc->n0
+                                                                       - 1);
 
         // generate random polynomials of given weight
         err +=
             BPU_gf2PolyInitRand(&H_temp[i], ctx->code_spec->qcmdpc->m, wi[i],
                                 1);
-#if defined(DEBUG_L)
+# if defined(DEBUG_L)
         BPU_printDebug("H[%i]: ", i);
 //      BPU_printGf2Poly(&H_temp[i]);
-#endif
+# endif
     }
 
     if (!err) {
         BPU_printDebug("generation successful");
-    }
-    else {
+    } else {
         BPU_printError("generation failed");
     }
 
@@ -352,13 +347,11 @@ int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx) {
             if (test_inv.len != 1 || test_inv.elements[0] != 1ul) {
                 ret = 0;
                 BPU_printWarning("inversion failed");
-            }
-            else {
+            } else {
                 BPU_printDebug("inversion OK");
             }
             BPU_gf2PolyFree(&test_inv, 0);
         }
-
         // inversion not found, regenerate last poly and try to find inversion again
         if (!ret) {
             BPU_printDebug("inversion not found");
@@ -369,18 +362,18 @@ int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx) {
                 BPU_gf2PolyInitRand(&H_temp[ctx->code_spec->qcmdpc->n0 - 1],
                                     ctx->code_spec->qcmdpc->m,
                                     wi[ctx->code_spec->qcmdpc->n0 - 1], 1);
-#if defined(DEBUG_L)
+# if defined(DEBUG_L)
             BPU_printGf2Poly(&H_temp[ctx->code_spec->qcmdpc->n0 - 1]);
-#endif
+# endif
             BPU_gf2PolyFree(&H_last_inv, 0);
         }
     }
 
-#if defined(DEBUG_L)
+# if defined(DEBUG_L)
     BPU_printDebug("inversion to H[%i] found ", ctx->code_spec->qcmdpc->n0 - 1);
 //    BPU_printGf2Poly(&H_last_inv);
     BPU_printDebug("creating H matrix");
-#endif
+# endif
 
     // create H temp matrix
     BPU_gf2QcMatrixMalloc(&H_temp_mat, ctx->code_spec->qcmdpc->n0,
@@ -392,22 +385,22 @@ int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx) {
 
     BPU_gf2QcMatrixToSparse(&H_temp_sparse, &H_temp_mat, wi);
 
-#if defined(DEBUG_L)
+# if defined(DEBUG_L)
     BPU_printDebug("H: ");
 //    BPU_printGf2QcMatrix(&H_temp_mat);
     BPU_printDebug("H sparse: ");
 //    BPU_printGf2SparseQcMatrix(&H_temp_sparse);
     BPU_printDebug("creating G matrix");
-#endif
+# endif
 
     // create G temp matrix
     for (i = 0; i < ctx->code_spec->qcmdpc->n0 - 1; i++) {
         BPU_printDebug("multiplicating vectors H[%i]^-1 x H[%i]",
                        ctx->code_spec->qcmdpc->n0 - 1, i);
         BPU_gf2PolyMulMod(&H_last_inv, &H_temp[i], &G_temp[i], &mod, 0);
-#if defined(DEBUG_L)
+# if defined(DEBUG_L)
 //      BPU_printGf2Poly(&G_temp[i]);
-#endif
+# endif
     }
 
     BPU_printDebug("creating temp G for GH^T test");
@@ -425,27 +418,25 @@ int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx) {
     if (BPU_mecsQcmdpcTestGHmatrices(&G_temp_mat, &H_temp_sparse) != 0) {
         BPU_printError("generator x parity check matrix ERROR");
         ret = -1;
-    }
-    else {
+    } else {
         BPU_printDebug("GH^t = 0");
     }
 
     // transpose G matrix
     if (ret == 0) {
         BPU_gf2QcMatrixTransp(&ctx->code_spec->qcmdpc->G, &G_temp_mat);
-#if defined(DEBUG_L)
+# if defined(DEBUG_L)
         BPU_printDebug("transposing G matrix");
 //      BPU_printGf2QcMatrix(&ctx->code_spec->qcmdpc->G);
-#endif
+# endif
     }
-
     // transpose H matrix
     if (ret == 0) {
         BPU_gf2SparseQcMatrixTransp(&ctx->code_spec->qcmdpc->H, &H_temp_sparse);
-#if defined(DEBUG_L)
+# if defined(DEBUG_L)
         BPU_printDebug("transposing H matrix");
 //      BPU_printGf2SparseQcMatrix(&ctx->code_spec->qcmdpc->H);
-#endif
+# endif
     }
 
     BPU_printDebug("free and exit");
@@ -467,7 +458,8 @@ int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx) {
 }
 
 int BPU_mecsQcmdpcTestGHmatrices(const BPU_T_GF2_QC_Matrix * G,
-                                 const BPU_T_GF2_Sparse_Qc_Matrix * H) {
+                                 const BPU_T_GF2_Sparse_Qc_Matrix * H)
+{
     int i, element, err = 0;
     BPU_T_GF2_Poly temp;
     BPU_T_GF2_Sparse_Poly row;
@@ -500,14 +492,14 @@ int BPU_mecsQcmdpcTestGHmatrices(const BPU_T_GF2_QC_Matrix * G,
         }
     }
 
-#if defined(DEBUG_L)
+# if defined(DEBUG_L)
     BPU_T_GF2_QC_Matrix GH_result;
 
     BPU_gf2QcMatrixMalloc(&GH_result, 1, G->element_size, 0, 0);
     BPU_gf2PolyCopy(&GH_result.matrices[0], &temp);
 //    BPU_printGf2QcMatrix(&GH_result);
     BPU_gf2QcMatrixFree(&GH_result, 0);
-#endif
+# endif
 
     BPU_gf2PolyFree(&temp, 0);
 

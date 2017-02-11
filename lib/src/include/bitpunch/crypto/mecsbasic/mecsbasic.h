@@ -16,27 +16,35 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef MECSBASIC_H
-#define MECSBASIC_H
+# define MECSBASIC_H
 
-#include <bitpunch/config.h>
-#include <bitpunch/crypto/mecsctx.h>
+# include <bitpunch/config.h>
+# include <bitpunch/crypto/mecsctx.h>
 
-#ifdef BPU_CONF_ENCRYPTION
+# ifdef BPU_CONF_ENCRYPTION
 /**
  * Encrypt plaintext.
- * @param  out    cyphertext
+ * @param  out    ciphertext
  * @param  message  plaintext
  * @param  ctx  McEliece context
  * @return     0 - succes, else error
  */
 int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
-                         const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector *error);
-#endif
+                         const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector * error);
+# endif
 
-#ifdef BPU_CONF_DECRYPTION
-int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector *error,
+# ifdef BPU_CONF_DECRYPTION
+/**
+ * @brief BPU_mecsBasicDecrypt
+ * @param out plaintext
+ * @param error error that was used while encryption
+ * @param in ciphertext
+ * @param ctx McEliece context
+ * @return
+ */
+int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error,
                          const BPU_T_GF2_Vector * in,
                          const BPU_T_Mecs_Ctx * ctx);
-#endif
+# endif
 
-#endif // MECSBASIC_H
+#endif                          // MECSBASIC_H

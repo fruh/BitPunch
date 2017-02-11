@@ -21,8 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 #include <stdlib.h>
 
-BPU_T_Math_Ctx * BPU_mathCtxNew(const BPU_T_GF2_16x g,
-                    const BPU_T_GF2_16x mod) {
+BPU_T_Math_Ctx *BPU_mathCtxNew(const BPU_T_GF2_16x g, const BPU_T_GF2_16x mod)
+{
     BPU_T_GF2_16x b = 1;
     int i = 0;
     int mod_deg = -1;
@@ -38,34 +38,27 @@ BPU_T_Math_Ctx * BPU_mathCtxNew(const BPU_T_GF2_16x g,
     }
 
     mod_deg = BPU_gf2xGetDeg(mod);
-    if (-1 == mod_deg)
-    {
+    if (-1 == mod_deg) {
         BPU_printError("Invalid degree of mod");
         goto err;
     }
-
     // get group ord, number of elements
     BPU_T_GF2_16x ord = ((1 << mod_deg) - 1);
 
     // alocate memory for tables
     math_ctx_local->mod = mod;
     math_ctx_local->mod_deg = mod_deg;
-    log_table =
-        (BPU_T_GF2_16x *) malloc(sizeof(BPU_T_GF2_16x) * (ord + 1));
-    if (NULL == log_table)
-    {
+    log_table = (BPU_T_GF2_16x *) malloc(sizeof(BPU_T_GF2_16x) * (ord + 1));
+    if (NULL == log_table) {
         BPU_printError("malloc failed");
         goto err;
     }
 
-    exp_table =
-        (BPU_T_GF2_16x *) malloc(sizeof(BPU_T_GF2_16x) * (ord + 1));
-    if (NULL == exp_table)
-    {
+    exp_table = (BPU_T_GF2_16x *) malloc(sizeof(BPU_T_GF2_16x) * (ord + 1));
+    if (NULL == exp_table) {
         BPU_printError("malloc failed")
-        goto err;
+            goto err;
     }
-
     // set ord
     math_ctx_local->ord = ord;
 
@@ -91,14 +84,15 @@ BPU_T_Math_Ctx * BPU_mathCtxNew(const BPU_T_GF2_16x g,
     exp_table = NULL;
     math_ctx = math_ctx_local;
     math_ctx_local = NULL;
-err:
+ err:
     BPU_SAFE_FREE(free, math_ctx_local);
     BPU_SAFE_FREE(free, log_table);
     BPU_SAFE_FREE(free, exp_table);
     return math_ctx;
 }
 
-void BPU_mathCtxFree(BPU_T_Math_Ctx *ctx) {
+void BPU_mathCtxFree(BPU_T_Math_Ctx * ctx)
+{
     if (NULL == ctx) {
         return;
     }

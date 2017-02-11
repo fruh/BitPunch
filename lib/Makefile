@@ -34,7 +34,7 @@ endif
 # compiler
 CC = gcc $(INCLUDE_PATH)
 
-LDFLAGS = -lm
+LDFLAGS = -lm -ltasn1
 #-fstack-protector-all
 
 # curent working directory

@@ -16,21 +16,38 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <bitpunch/bitpunch.h>
 #include <bitpunch/math/bigint.h>
 #include <bitpunch/debugio.h>
 
-int BPU_bigintMultiply(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b) {
+int BPU_bigintMultiply(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b)
+{
     uint32_t tmp, carry;
     uint32_t i, j;
+    int rv = BPU_ERROR;
+
+    if (NULL == out) {
+        BPU_printError("Invalid input parameter \"%s\"", "out");
+        goto err;
+    }
+
+    if (NULL == a) {
+        BPU_printError("Invalid input parameter \"%s\"", "a");
+        goto err;
+    }
+
+    if (NULL == b) {
+        BPU_printError("Invalid input parameter \"%s\"", "b");
+        goto err;
+    }
 
     if ((a->len + b->len) > out->len) {
         BPU_printDebug("Resizing big int output to %d", a->len + b->len);
-
         BPU_bigintResize(out, a->len + b->len);
-    }
-    else {
+    } else {
         BPU_bigintNull(out);
     }
+
     carry = 0;
 
     for (i = 0; i < b->array_length; i++) {
@@ -41,24 +58,44 @@ int BPU_bigintMultiply(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b) {
             out->elements[i + j + 1] += (BPU_T_Element) carry;
         }
     }
-    return 0;
+
+    rv = BPU_SUCCESS;
+err:
+    return rv;
 }
 
-int BPU_bigintAdd(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b) {
+int BPU_bigintAdd(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b)
+{
     uint32_t tmp, carry;
     uint32_t i;
-    uint32_t tmplen = (a->len > b->len) ? a->len : b->len;
-    uint16_t array_len =
-        (a->array_length > b->array_length) ? a->array_length : b->array_length;
+    uint32_t tmplen = 0;
+    uint16_t array_len = 0;
+    int rv = BPU_ERROR;
 
+    if (NULL == out) {
+        BPU_printError("Invalid input parameter \"%s\"", "out");
+        goto err;
+    }
+
+    if (NULL == a) {
+        BPU_printError("Invalid input parameter \"%s\"", "a");
+        goto err;
+    }
+
+    if (NULL == b) {
+        BPU_printError("Invalid input parameter \"%s\"", "b");
+        goto err;
+    }
+
+    array_len =
+            (a->array_length > b->array_length) ? a->array_length : b->array_length;
+    tmplen = (a->len > b->len) ? a->len : b->len;
     tmplen++;
 
     if (tmplen > out->len) {
         BPU_printDebug("Resizing big int output to %d", tmplen);
-
         BPU_bigintResize(out, tmplen);
-    }
-    else {
+    } else {
         BPU_bigintNull(out);
     }
 
@@ -66,17 +103,19 @@ int BPU_bigintAdd(BPU_T_Bigint * out, BPU_T_Bigint * a, BPU_T_Bigint * b) {
     for (i = 0; i < array_len; i++) {
         tmp = carry;
 
-        if (i < a->array_length) {
+        if (i < a->array_length)
             tmp += a->elements[i];
-        }
-        if (i < b->array_length) {
+        if (i < b->array_length)
             tmp += b->elements[i];
-        }
         carry = tmp >> a->element_bit_size;
         out->elements[i] = tmp;
     }
+
     if (carry) {
         out->elements[i] = carry;
     }
-    return 0;
+
+    rv = BPU_SUCCESS;
+err:
+    return rv;
 }

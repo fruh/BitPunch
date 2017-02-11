@@ -31,11 +31,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/code/qcmdpc/qcmdpc.h>
 
 #if defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA) || defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC)
-#include <bitpunch/crypto/cca2/mecspointcheval.h>
+# include <bitpunch/crypto/cca2/mecspointcheval.h>
 #endif
 
-BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
-                    const BPU_T_EN_Mecs_Types type) {
+BPU_T_Mecs_Ctx *BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
+                               const BPU_T_EN_Mecs_Types type)
+{
     BPU_T_Mecs_Ctx *ctx = NULL;
     BPU_T_Mecs_Ctx *ctx_local = NULL;
     BPU_T_Code_Ctx *code_ctx_local = NULL;
@@ -65,7 +66,7 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
         ctx_local->_genKeyPair = BPU_goppaGenCode;
 #endif
         code_ctx_local = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
-                                     BPU_EN_CODE_GOPPA);
+                                        BPU_EN_CODE_GOPPA);
         if (NULL == code_ctx_local) {
             BPU_printError("BPU_codeInitCtx failed");
             goto err;
@@ -77,27 +78,26 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     case BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA:
-#ifdef BPU_CONF_ENCRYPTION
+# ifdef BPU_CONF_ENCRYPTION
         ctx_local->_encrypt = BPU_mecsPointchevalCCA2Encrypt;
-#endif
-#ifdef BPU_CONF_DECRYPTION
+# endif
+# ifdef BPU_CONF_DECRYPTION
         ctx_local->_decrypt = BPU_mecsPointchevalCCA2Decrypt;
-#endif
-#ifdef BPU_CONF_KEY_GEN
+# endif
+# ifdef BPU_CONF_KEY_GEN
         ctx_local->_genKeyPair = BPU_goppaGenCode;
-#endif
-        code_ctx = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
-                                     BPU_EN_CODE_GOPPA);
-        if (NULL == code_ctx) {
+# endif
+        code_ctx_local = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
+                                  BPU_EN_CODE_GOPPA);
+        if (NULL == code_ctx_local) {
             BPU_printError("BPU_codeInitCtx failed");
             goto err;
         }
 
         ctx_local->pt_len =
             BPU_HASH_LEN * 8 <
-            code_ctx->msg_len ? BPU_HASH_LEN *
-            8 : code_ctx->msg_len;
-        ctx_local->ct_len = code_ctx->code_len + 2 * ctx_local->ct_len;
+            code_ctx_local->msg_len ? BPU_HASH_LEN * 8 : code_ctx_local->msg_len;
+        ctx_local->ct_len = code_ctx_local->code_len + 2 * ctx_local->ct_len;
         break;
 #endif
 
@@ -112,7 +112,7 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
         ctx_local->_genKeyPair = BPU_mecsQcmdpcGenKeys;
 #endif
         code_ctx_local = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
-                                     BPU_EN_CODE_QCMDPC);
+                                        BPU_EN_CODE_QCMDPC);
         if (NULL == code_ctx_local) {
             BPU_printError("BPU_codeInitCtx failed");
             goto err;
@@ -124,28 +124,27 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC
     case BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC:
-#ifdef BPU_CONF_ENCRYPTION
+# ifdef BPU_CONF_ENCRYPTION
         ctx_local->_encrypt = BPU_mecsPointchevalCCA2Encrypt;
-#endif
-#ifdef BPU_CONF_DECRYPTION
+# endif
+# ifdef BPU_CONF_DECRYPTION
         ctx_local->_decrypt = BPU_mecsPointchevalCCA2Decrypt;
-#endif
-#ifdef BPU_CONF_KEY_GEN
+# endif
+# ifdef BPU_CONF_KEY_GEN
         ctx_local->_genKeyPair = BPU_mecsQcmdpcGenKeys;
-#endif
-        code_ctx = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
-                                     BPU_EN_CODE_QCMDPC);
-        if (NULL == code_ctx) {
+# endif
+        code_ctx_local = BPU_codeCtxNew((BPU_T_UN_Code_Params *) params,
+                                  BPU_EN_CODE_QCMDPC);
+        if (NULL == code_ctx_local) {
             BPU_printError("BPU_codeInitCtx failed");
             goto err;
         }
 
         ctx_local->pt_len =
             BPU_HASH_LEN * 8 <
-            code_ctx->msg_len ? BPU_HASH_LEN *
-            8 : code_ctx->msg_len;
+            code_ctx_local->msg_len ? BPU_HASH_LEN * 8 : code_ctx_local->msg_len;
         // TODO: critical
-        ctx_local->ct_len = code_ctx->code_len + 2 * ctx_local->ct_len;
+        ctx_local->ct_len = code_ctx_local->code_len + 2 * ctx_local->ct_len;
         break;
 #endif
         /* EXAMPLE please DO NOT REMOVE
@@ -177,13 +176,14 @@ BPU_T_Mecs_Ctx* BPU_mecsCtxNew(const BPU_T_UN_Mecs_Params * params,
 
     ctx = ctx_local;
     ctx_local = NULL;
-err:
+ err:
     BPU_SAFE_FREE(free, ctx_local); // TODO: in case of error code context is not released
     BPU_SAFE_FREE(BPU_codeCtxFree, code_ctx_local);
     return ctx;
 }
 
-void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx) { // TODO: 'New', 'Free' etc. should be at the end of name
+void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx * ctx)
+{                               // TODO: 'New', 'Free' etc. should be at the end of name
     if (NULL == ctx) {
         return;
     }
@@ -209,8 +209,10 @@ void BPU_mecsFreeCtx(BPU_T_Mecs_Ctx *ctx) { // TODO: 'New', 'Free' etc. should b
     BPU_SAFE_FREE(free, ctx);
 }
 
-BPU_T_UN_Mecs_Params * BPU_mecsParamsGoppaNew(const uint16_t m,
-                            const uint16_t t, const BPU_T_GF2_16x mod) {
+BPU_T_UN_Mecs_Params *BPU_mecsParamsGoppaNew(const uint16_t m,
+                                             const uint16_t t,
+                                             const BPU_T_GF2_16x mod)
+{
     BPU_T_UN_Mecs_Params *mecs_params_local = NULL;
     BPU_T_UN_Mecs_Params *mecs_params = NULL;
 
@@ -222,22 +224,24 @@ BPU_T_UN_Mecs_Params * BPU_mecsParamsGoppaNew(const uint16_t m,
 
     mecs_params = mecs_params_local;
     mecs_params_local = NULL;
-err:
+ err:
     BPU_SAFE_FREE(BPU_codeFreeParamsGoppa, mecs_params_local);
     return mecs_params;
 }
 
-void BPU_mecsDestroyParamsGoppa(BPU_T_UN_Mecs_Params * params) {
+void BPU_mecsDestroyParamsGoppa(BPU_T_UN_Mecs_Params * params)
+{
     BPU_SAFE_FREE(BPU_codeFreeParamsGoppa, params);
 }
 
-int BPU_mecsInitParamsQcmdpc(BPU_T_UN_Mecs_Params * params, const uint16_t m,
+BPU_T_UN_Mecs_Params* BPU_mecsInitParamsQcmdpc(const uint16_t m,
                              const uint16_t n0, const uint16_t w,
-                             const uint16_t t) {
-    return BPU_codeInitParamsQcmdpc((BPU_T_UN_Code_Params *) params, m, n0, w,
-                                    t);
+                             const uint16_t t)
+{
+    return BPU_codeInitParamsQcmdpc(m, n0, w, t);
 }
 
-void BPU_mecsFreeParamsQcmdpc(BPU_T_UN_Mecs_Params * params) {
+void BPU_mecsFreeParamsQcmdpc(BPU_T_UN_Mecs_Params * params)
+{
     BPU_codeFreeParamsQcmdpc((BPU_T_UN_Code_Params *) params);
 }
