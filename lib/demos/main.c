@@ -25,8 +25,7 @@
 #include <bitpunch/crypto/hash/sha512.h>
 #include <bitpunch/asn1/asn1.h>
 
-int testCmpMecsCtx(const BPU_T_Mecs_Ctx * ctx1, const BPU_T_Mecs_Ctx * ctx2)
-{
+int testCmpMecsCtx(const BPU_T_Mecs_Ctx * ctx1, const BPU_T_Mecs_Ctx * ctx2) {
     int i, j, rc = 0;
 
     if (ctx1->type != ctx2->type) {
@@ -136,8 +135,7 @@ int testCmpMecsCtx(const BPU_T_Mecs_Ctx * ctx1, const BPU_T_Mecs_Ctx * ctx2)
     return rc;
 }
 
-int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx)
-{
+int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx) {
 //    BPU_T_Mecs_Ctx *ctx = NULL;
     BPU_T_GF2_Vector *ct = NULL;
     BPU_T_GF2_Vector *pt_in = NULL;
@@ -207,7 +205,8 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx)
         BPU_printError("\nOutput plain text differs from input");
 
         rc = 2;
-    } else {
+    }
+    else {
         fprintf(stderr,
                 "\nSUCCESS: Input plain text is equal to output plain text.\n");
     }
@@ -221,8 +220,7 @@ int testKeyGenEncDec(BPU_T_Mecs_Ctx * ctx)
 }
 
 #ifdef BPU_CONF_ASN1
-int testKeyGenAsn1()
-{
+int testKeyGenAsn1() {
     int rc = 0;
 
     // MUST BE NULL
@@ -265,8 +263,7 @@ int testKeyGenAsn1()
     return rc;
 }
 #endif
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     int rc = 0;
 
     // MUST BE NULL
@@ -292,7 +289,8 @@ int main(int argc, char **argv)
 
 #ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     fprintf(stderr, "\nCCA2 Pointcheval GOPPA Initialisation...\n");
-    if (NULL == (ctx = BPU_mecsCtxNew(params, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA))) {
+    if (NULL ==
+        (ctx = BPU_mecsCtxNew(params, BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA))) {
         return 1;
     }
     rc += testKeyGenEncDec(ctx);
@@ -318,7 +316,8 @@ int main(int argc, char **argv)
     if (NULL == (params = BPU_mecsInitParamsQcmdpc(4801, 2, 90, 84))) {
         return 1;
     }
-    if (NULL == (ctx = BPU_mecsCtxNew(params, BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC))) {
+    if (NULL ==
+        (ctx = BPU_mecsCtxNew(params, BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC))) {
         return 1;
     }
     rc += testKeyGenEncDec(ctx);

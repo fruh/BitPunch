@@ -30,8 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
-void BPU_printGf2Mat(const BPU_T_GF2_Matrix * m)
-{
+void BPU_printGf2Mat(const BPU_T_GF2_Matrix * m) {
     int i, j, bits_to_print;
 
     fprintf(stderr, "Matrix size: %dx%d\n", m->k, m->n);
@@ -43,10 +42,12 @@ void BPU_printGf2Mat(const BPU_T_GF2_Matrix * m)
             if (j == m->elements_in_row - 1) {
                 if (m->n % (m->element_bit_size) != 0) {
                     bits_to_print = m->n % m->element_bit_size;
-                } else {
+                }
+                else {
                     bits_to_print = m->element_bit_size;
                 }
-            } else {
+            }
+            else {
                 bits_to_print = m->element_bit_size;
             }
             BPU_printBinaryLsb(m->elements[i][j], bits_to_print);
@@ -56,8 +57,7 @@ void BPU_printGf2Mat(const BPU_T_GF2_Matrix * m)
     }
 }
 
-void BPU_printGf2SparsePoly(const BPU_T_GF2_Sparse_Poly * v)
-{
+void BPU_printGf2SparsePoly(const BPU_T_GF2_Sparse_Poly * v) {
     int i;
 
     fprintf(stderr, "Sparse poly (%i): ", v->weight);
@@ -67,26 +67,26 @@ void BPU_printGf2SparsePoly(const BPU_T_GF2_Sparse_Poly * v)
     fprintf(stderr, "\n");
 }
 
-void BPU_printGf2PolyForMatrix(const BPU_T_GF2_Poly * v)
-{
+void BPU_printGf2PolyForMatrix(const BPU_T_GF2_Poly * v) {
     int j, bits_to_print;
 
     for (j = 0; j < v->array_length; j++) {
         if (j == v->array_length - 1) {
             if (v->len % (v->element_bit_size) != 0) {
                 bits_to_print = v->len % v->element_bit_size;
-            } else {
+            }
+            else {
                 bits_to_print = v->element_bit_size;
             }
-        } else {
+        }
+        else {
             bits_to_print = v->element_bit_size;
         }
         BPU_printBinaryLsb(v->elements[j], bits_to_print);
     }
 }
 
-void BPU_printGf2Poly(const BPU_T_GF2_Poly * v)
-{
+void BPU_printGf2Poly(const BPU_T_GF2_Poly * v) {
     int j, bits_to_print;
 
     fprintf(stderr, "Poly (%4d): ", v->len - 1);
@@ -94,10 +94,12 @@ void BPU_printGf2Poly(const BPU_T_GF2_Poly * v)
         if (j == v->array_length - 1) {
             if (v->len % (v->element_bit_size) != 0) {
                 bits_to_print = v->len % v->element_bit_size;
-            } else {
+            }
+            else {
                 bits_to_print = v->element_bit_size;
             }
-        } else {
+        }
+        else {
             bits_to_print = v->element_bit_size;
         }
         BPU_printBinaryMsb(v->elements[j], bits_to_print);
@@ -105,8 +107,7 @@ void BPU_printGf2Poly(const BPU_T_GF2_Poly * v)
     fprintf(stderr, "\n");
 }
 
-void BPU_printGf2QcMatrix(const BPU_T_GF2_QC_Matrix * v)
-{
+void BPU_printGf2QcMatrix(const BPU_T_GF2_QC_Matrix * v) {
     int ele, i;
     BPU_T_GF2_Poly temp;
 
@@ -128,8 +129,7 @@ void BPU_printGf2QcMatrix(const BPU_T_GF2_QC_Matrix * v)
     }
 }
 
-void BPU_printGf2SparseQcMatrix(const BPU_T_GF2_Sparse_Qc_Matrix * v)
-{
+void BPU_printGf2SparseQcMatrix(const BPU_T_GF2_Sparse_Qc_Matrix * v) {
     int i;
     BPU_T_GF2_Sparse_Poly row;
 
@@ -145,10 +145,9 @@ void BPU_printGf2SparseQcMatrix(const BPU_T_GF2_Sparse_Qc_Matrix * v)
 }
 
 /* ------------------------------------ Print functions ------------------------------------ */
-#endif                          // BPU_CONF_PRINT
+#endif // BPU_CONF_PRINT
 
-void BPU_gf2MatFree(BPU_T_GF2_Matrix ** m)
-{
+void BPU_gf2MatFree(BPU_T_GF2_Matrix ** m) {
     int i;
 
     if (!*m) {
@@ -164,8 +163,7 @@ void BPU_gf2MatFree(BPU_T_GF2_Matrix ** m)
     *m = NULL;
 }
 
-int BPU_gf2MatMalloc(BPU_T_GF2_Matrix ** m, int rows, int cols)
-{
+int BPU_gf2MatMalloc(BPU_T_GF2_Matrix ** m, int rows, int cols) {
     int i;
 
     *m = (BPU_T_GF2_Matrix *) calloc(sizeof(BPU_T_GF2_Matrix), 1);
@@ -210,16 +208,14 @@ int BPU_gf2MatMalloc(BPU_T_GF2_Matrix ** m, int rows, int cols)
     return 0;
 }
 
-void BPU_gf2SparsePolyMalloc(BPU_T_GF2_Sparse_Poly * p, int weight)
-{
+void BPU_gf2SparsePolyMalloc(BPU_T_GF2_Sparse_Poly * p, int weight) {
     // allocate indexes
-    p->index = (uint32_t *)malloc(weight * sizeof(uint32_t));
+    p->index = (uint32_t *) malloc(weight * sizeof(uint32_t));
     // set weight
     p->weight = weight;
 }
 
-void BPU_gf2SparsePolyFree(BPU_T_GF2_Sparse_Poly * p, int is_dyn)
-{
+void BPU_gf2SparsePolyFree(BPU_T_GF2_Sparse_Poly * p, int is_dyn) {
     free(p->index);
 
     if (is_dyn)
@@ -228,8 +224,7 @@ void BPU_gf2SparsePolyFree(BPU_T_GF2_Sparse_Poly * p, int is_dyn)
 
 void BPU_gf2SparseQcMatrixMalloc(BPU_T_GF2_Sparse_Qc_Matrix * v,
                                  int element_count, int element_size,
-                                 int isVertical)
-{
+                                 int isVertical) {
     // allocate matrices
     v->matrices =
         (BPU_T_GF2_Sparse_Poly *) malloc(element_count *
@@ -239,7 +234,8 @@ void BPU_gf2SparseQcMatrixMalloc(BPU_T_GF2_Sparse_Qc_Matrix * v,
     if (isVertical) {
         v->k = element_count * element_size;
         v->n = element_size;
-    } else {
+    }
+    else {
         v->k = element_size;
         v->n = element_count * element_size;
     }
@@ -250,8 +246,7 @@ void BPU_gf2SparseQcMatrixMalloc(BPU_T_GF2_Sparse_Qc_Matrix * v,
     v->isVertical = isVertical;
 }
 
-void BPU_gf2SparseQcMatrixFree(BPU_T_GF2_Sparse_Qc_Matrix * v, int is_dyn)
-{
+void BPU_gf2SparseQcMatrixFree(BPU_T_GF2_Sparse_Qc_Matrix * v, int is_dyn) {
     int i;
 
     // free matrices
@@ -264,8 +259,7 @@ void BPU_gf2SparseQcMatrixFree(BPU_T_GF2_Sparse_Qc_Matrix * v, int is_dyn)
         free(v);
 }
 
-void BPU_gf2PolyFree(BPU_T_GF2_Poly * p, int is_dyn)
-{
+void BPU_gf2PolyFree(BPU_T_GF2_Poly * p, int is_dyn) {
     free(p->elements);
 
     if (is_dyn) {
@@ -273,8 +267,7 @@ void BPU_gf2PolyFree(BPU_T_GF2_Poly * p, int is_dyn)
     }
 }
 
-int BPU_gf2PolyMalloc(BPU_T_GF2_Poly * p, int len)
-{
+int BPU_gf2PolyMalloc(BPU_T_GF2_Poly * p, int len) {
     // element size in bits
     p->element_bit_size = sizeof(BPU_T_GF2) * 8;
 
@@ -300,8 +293,7 @@ int BPU_gf2PolyMalloc(BPU_T_GF2_Poly * p, int len)
 }
 
 int BPU_gf2QcMatrixMalloc(BPU_T_GF2_QC_Matrix * v, int element_count,
-                          int element_size, int isVertical, int is_I_appended)
-{
+                          int element_size, int isVertical, int is_I_appended) {
     int err = 0;
 
     // check isVertical
@@ -316,7 +308,8 @@ int BPU_gf2QcMatrixMalloc(BPU_T_GF2_QC_Matrix * v, int element_count,
     if (isVertical) {
         v->k = element_count * element_size;
         v->n = element_size;
-    } else {
+    }
+    else {
         v->k = element_size;
         v->n = element_count * element_size;
     }
@@ -331,8 +324,7 @@ int BPU_gf2QcMatrixMalloc(BPU_T_GF2_QC_Matrix * v, int element_count,
 }
 
 // free QC binary matrix
-void BPU_gf2QcMatrixFree(BPU_T_GF2_QC_Matrix * v, int is_dyn)
-{
+void BPU_gf2QcMatrixFree(BPU_T_GF2_QC_Matrix * v, int is_dyn) {
     int i;
 
     // free matrices
@@ -346,8 +338,7 @@ void BPU_gf2QcMatrixFree(BPU_T_GF2_QC_Matrix * v, int is_dyn)
         free(v);
 }
 
-int BPU_gf2VecRand(BPU_T_GF2_Vector * out, uint32_t w)
-{
+int BPU_gf2VecRand(BPU_T_GF2_Vector * out, uint32_t w) {
     uint32_t i, j;
     int rv = BPU_ERROR;
 
@@ -375,19 +366,19 @@ int BPU_gf2VecRand(BPU_T_GF2_Vector * out, uint32_t w)
 
             if (BPU_gf2VecGetBit(out, j) == 0) {
                 BPU_gf2VecSetBit(out, j, 1);
-            } else {
+            }
+            else {
                 i--;
             }
         }
     }
 
     rv = BPU_SUCCESS;
- err:
+  err:
     return rv;
 }
 
-int BPU_gf2MatCopy(BPU_T_GF2_Matrix * out, const BPU_T_GF2_Matrix * in)
-{
+int BPU_gf2MatCopy(BPU_T_GF2_Matrix * out, const BPU_T_GF2_Matrix * in) {
     int i, j;
 
     if (out->k != in->k || out->n != in->n) {
@@ -405,8 +396,7 @@ int BPU_gf2MatCopy(BPU_T_GF2_Matrix * out, const BPU_T_GF2_Matrix * in)
 }
 
 int BPU_gf2VecPermute(BPU_T_GF2_Vector * vec,
-                      const BPU_T_Perm_Vector * permutation)
-{
+                      const BPU_T_Perm_Vector * permutation) {
     int i;
     BPU_T_GF2_Vector *tmp;
 
@@ -424,28 +414,25 @@ int BPU_gf2VecPermute(BPU_T_GF2_Vector * vec,
 }
 
 BPU_T_GF2 BPU_gf2MatGetMaskedBit(const BPU_T_GF2_Matrix * m, uint32_t row,
-                                 uint32_t bit)
-{
+                                 uint32_t bit) {
     int segment, bit_in_segment;
 
     segment = bit / (m->element_bit_size);
     bit_in_segment = bit % (m->element_bit_size);
     // TODO: consider repleacing di literal 1u
-    return m->elements[row][segment] & ((uint32_t)1 << bit_in_segment);
+    return m->elements[row][segment] & ((uint32_t) 1 << bit_in_segment);
 }
 
-BPU_T_GF2 BPU_gf2VecGetMaskedBit(const BPU_T_GF2_Vector * vec, uint32_t bit)
-{
+BPU_T_GF2 BPU_gf2VecGetMaskedBit(const BPU_T_GF2_Vector * vec, uint32_t bit) {
     int segment, bit_in_segment;
 
     segment = bit / (vec->element_bit_size);
     bit_in_segment = bit % (vec->element_bit_size);
     // TODO: consider repleacing di literal 1u
-    return vec->elements[segment] & ((uint32_t)1 << bit_in_segment);
+    return vec->elements[segment] & ((uint32_t) 1 << bit_in_segment);
 }
 
-int BPU_gf2MatTransp(BPU_T_GF2_Matrix * out, const BPU_T_GF2_Matrix * in)
-{
+int BPU_gf2MatTransp(BPU_T_GF2_Matrix * out, const BPU_T_GF2_Matrix * in) {
     int i, j;
 
     if (out->k != in->n || out->n != in->k) {
@@ -462,8 +449,7 @@ int BPU_gf2MatTransp(BPU_T_GF2_Matrix * out, const BPU_T_GF2_Matrix * in)
     return 0;
 }
 
-void BPU_gf2Swap(BPU_T_GF2 * a, BPU_T_GF2 * b)
-{
+void BPU_gf2Swap(BPU_T_GF2 * a, BPU_T_GF2 * b) {
     BPU_T_GF2 tmp;
 
     tmp = *a;
@@ -471,8 +457,7 @@ void BPU_gf2Swap(BPU_T_GF2 * a, BPU_T_GF2 * b)
     *b = tmp;
 }
 
-void BPU_gf2MatSwapRows(BPU_T_GF2_Matrix * mat, int i, int j)
-{
+void BPU_gf2MatSwapRows(BPU_T_GF2_Matrix * mat, int i, int j) {
     int k;
 
     for (k = 0; k < mat->elements_in_row; k++) {
@@ -480,8 +465,7 @@ void BPU_gf2MatSwapRows(BPU_T_GF2_Matrix * mat, int i, int j)
     }
 }
 
-int BPU_gf2MatFindRow(const BPU_T_GF2_Matrix * mat, int i, int start_index)
-{
+int BPU_gf2MatFindRow(const BPU_T_GF2_Matrix * mat, int i, int start_index) {
     int k;
 
     for (k = start_index; k < mat->k; k++) {
@@ -492,8 +476,7 @@ int BPU_gf2MatFindRow(const BPU_T_GF2_Matrix * mat, int i, int start_index)
     return -1;
 }
 
-int BPU_gf2MatFindCol(const BPU_T_GF2_Matrix * mat, int i, int start_index)
-{
+int BPU_gf2MatFindCol(const BPU_T_GF2_Matrix * mat, int i, int start_index) {
     int k;
 
     for (k = start_index; k < mat->n; k++) {
@@ -504,8 +487,7 @@ int BPU_gf2MatFindCol(const BPU_T_GF2_Matrix * mat, int i, int start_index)
     return -1;
 }
 
-int BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix * inout)
-{
+int BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix * inout) {
     int act_position = 0;
     int i;
     int row;
@@ -530,8 +512,7 @@ int BPU_gf2MatMakeSystematic(BPU_T_GF2_Matrix * inout)
 }
 
 int BPU_gf2VecConcat(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * vec1,
-                     const BPU_T_GF2_Vector * vec2)
-{
+                     const BPU_T_GF2_Vector * vec2) {
     int len;
     int i;
     int rv = BPU_ERROR;
@@ -558,7 +539,8 @@ int BPU_gf2VecConcat(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * vec1,
             BPU_printError("resize error");
             goto err;
         }
-    } else {
+    }
+    else {
         BPU_gf2VecNull(out);
     }
     // copy first vector
@@ -571,13 +553,12 @@ int BPU_gf2VecConcat(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * vec1,
 
     out->len = len;
     rv = BPU_SUCCESS;
- err:
+  err:
     return rv;
 }
 
 int BPU_gf2VecCrop(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
-                   const int start, const int length)
-{
+                   const int start, const int length) {
     int i;
     int counter = 0;
 
@@ -598,8 +579,7 @@ int BPU_gf2VecCrop(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
 }
 
 int BPU_gf2MatGetRowAsGf2Vec(BPU_T_GF2_Vector * out,
-                             const BPU_T_GF2_Matrix * in, int row)
-{
+                             const BPU_T_GF2_Matrix * in, int row) {
     if (out->len != in->n) {
         BPU_printError("dimension is wrong out->len %d != in->n %d", out->len,
                        in->n);
@@ -610,8 +590,7 @@ int BPU_gf2MatGetRowAsGf2Vec(BPU_T_GF2_Vector * out,
     return 0;
 }
 
-int BPU_gf2VecCopy(BPU_T_GF2_Vector * dest, const BPU_T_GF2_Vector * src)
-{
+int BPU_gf2VecCopy(BPU_T_GF2_Vector * dest, const BPU_T_GF2_Vector * src) {
     int rv = BPU_ERROR;
 
     if (NULL == dest) {
@@ -630,21 +609,21 @@ int BPU_gf2VecCopy(BPU_T_GF2_Vector * dest, const BPU_T_GF2_Vector * src)
 //        BPU_gf2VecResize(dest,
 //                         src->array_length * src->element_bit_size *
 //                         sizeof(BPU_T_GF2));
-    } else {
+    }
+    else {
         BPU_gf2VecNull(dest);
     }
 
-    memcpy((void *)(dest->elements), (void *)(src->elements),
+    memcpy((void *) (dest->elements), (void *) (src->elements),
            sizeof(BPU_T_GF2) * (src->array_length));
 
     dest->len = src->len;
     rv = BPU_SUCCESS;
- err:
+  err:
     return rv;
 }
 
-int BPU_gf2VecCmp(const BPU_T_GF2_Vector * v1, const BPU_T_GF2_Vector * v2)
-{
+int BPU_gf2VecCmp(const BPU_T_GF2_Vector * v1, const BPU_T_GF2_Vector * v2) {
     int i;
 
     if (v1->len != v2->len) {
@@ -658,8 +637,7 @@ int BPU_gf2VecCmp(const BPU_T_GF2_Vector * v1, const BPU_T_GF2_Vector * v2)
     return 0;
 }
 
-int BPU_gf2VecXor(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in)
-{
+int BPU_gf2VecXor(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in) {
     int i;
     int rv = BPU_ERROR;
 
@@ -684,13 +662,12 @@ int BPU_gf2VecXor(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in)
 
     rv = BPU_SUCCESS;
 
- err:
+  err:
     return rv;
 }
 
 int BPU_gf2VecMulMat(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * v,
-                     const BPU_T_GF2_Matrix * b)
-{
+                     const BPU_T_GF2_Matrix * b) {
     int i, j;
 
     if ((v->len != b->k) || (out->len != b->n)) {
@@ -717,8 +694,7 @@ int BPU_gf2VecMulMat(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * v,
     return 0;
 }
 
-void BPU_gf2MatXorRows(BPU_T_GF2_Matrix * mat, int i, int j)
-{
+void BPU_gf2MatXorRows(BPU_T_GF2_Matrix * mat, int i, int j) {
     int k;
 
     for (k = 0; k < mat->elements_in_row; k++) {
@@ -727,8 +703,7 @@ void BPU_gf2MatXorRows(BPU_T_GF2_Matrix * mat, int i, int j)
 }
 
 // TODO: error handling
-int BPU_gf2MatPermute(BPU_T_GF2_Matrix * inout, BPU_T_Perm_Vector * permutation)
-{
+int BPU_gf2MatPermute(BPU_T_GF2_Matrix * inout, BPU_T_Perm_Vector * permutation) {
     int i, j;
     int bit = 0;
     BPU_T_GF2_Vector *vector;
@@ -756,8 +731,7 @@ int BPU_gf2MatPermute(BPU_T_GF2_Matrix * inout, BPU_T_Perm_Vector * permutation)
 }
 
 // TODO: error handling
-int BPU_gf2MatCrop(BPU_T_GF2_Matrix * m, uint16_t width)
-{
+int BPU_gf2MatCrop(BPU_T_GF2_Matrix * m, uint16_t width) {
     BPU_T_GF2_Vector *row, *cropped_row;
     int length, i, new_length;
 
@@ -781,8 +755,7 @@ int BPU_gf2MatCrop(BPU_T_GF2_Matrix * m, uint16_t width)
     return 0;
 }
 
-uint8_t BPU_getParity(BPU_T_GF2 dword)
-{
+uint8_t BPU_getParity(BPU_T_GF2 dword) {
     uint32_t tmp = dword;
 
     tmp = (tmp >> 16) ^ tmp;
@@ -793,8 +766,7 @@ uint8_t BPU_getParity(BPU_T_GF2 dword)
     return tmp & 1;
 }
 
-void BPU_gf2PolyCopy(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in)
-{
+void BPU_gf2PolyCopy(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in) {
 
     int i;
 
@@ -809,8 +781,7 @@ void BPU_gf2PolyCopy(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in)
 }
 
 int BPU_gf2QcMatrixToSparse(BPU_T_GF2_Sparse_Qc_Matrix * out,
-                            const BPU_T_GF2_QC_Matrix * in, const int wi[])
-{
+                            const BPU_T_GF2_QC_Matrix * in, const int wi[]) {
     int i, counter, bit;
 
     // allocate output matrix
@@ -824,7 +795,7 @@ int BPU_gf2QcMatrixToSparse(BPU_T_GF2_Sparse_Qc_Matrix * out,
         // set bits
         for (bit = 0; bit < in->matrices[i].len; bit++) {
             if (BPU_gf2VecGetBit(&in->matrices[i], bit) == 1ul) {
-                out->matrices[i].index[counter] = (uint32_t)(bit);
+                out->matrices[i].index[counter] = (uint32_t) (bit);
                 counter++;
             }
         }
@@ -838,8 +809,7 @@ int BPU_gf2QcMatrixToSparse(BPU_T_GF2_Sparse_Qc_Matrix * out,
     return 0;
 }
 
-int BPU_gf2PolyInitRand(BPU_T_GF2_Poly * out, int l, int w, int set_deg)
-{
+int BPU_gf2PolyInitRand(BPU_T_GF2_Poly * out, int l, int w, int set_deg) {
     int ret;
 
     // allocate output poly
@@ -857,8 +827,7 @@ int BPU_gf2PolyInitRand(BPU_T_GF2_Poly * out, int l, int w, int set_deg)
 }
 
 void BPU_gf2SparsePolyCopy(BPU_T_GF2_Sparse_Poly * out,
-                           const BPU_T_GF2_Sparse_Poly * in)
-{
+                           const BPU_T_GF2_Sparse_Poly * in) {
     int i;
 
     // allocate output poly
@@ -870,8 +839,7 @@ void BPU_gf2SparsePolyCopy(BPU_T_GF2_Sparse_Poly * out,
 }
 
 void BPU_gf2SparseQcMatrixTransp(BPU_T_GF2_Sparse_Qc_Matrix * out,
-                                 const BPU_T_GF2_Sparse_Qc_Matrix * in)
-{
+                                 const BPU_T_GF2_Sparse_Qc_Matrix * in) {
     int counter, coeff, ele, zero_coeff_is_set;
 
     // allocate memory for output matrix
@@ -902,8 +870,7 @@ void BPU_gf2SparseQcMatrixTransp(BPU_T_GF2_Sparse_Qc_Matrix * out,
     }
 }
 
-void BPU_gf2PolyShiftLeft(BPU_T_GF2_Poly * a, int shift_count)
-{
+void BPU_gf2PolyShiftLeft(BPU_T_GF2_Poly * a, int shift_count) {
     int i;
     int diff, bit_shift, start, shift_right, shift_left;
     uint32_t ele1, ele2;
@@ -926,7 +893,8 @@ void BPU_gf2PolyShiftLeft(BPU_T_GF2_Poly * a, int shift_count)
             if ((a->element_bit_size - bit_shift) >= a->element_bit_size) {
                 ele1 = 0ul;
                 shift_right = 0;
-            } else {
+            }
+            else {
                 ele1 = a->elements[i - start - 1];
                 shift_right = a->element_bit_size - bit_shift;
             }
@@ -935,7 +903,8 @@ void BPU_gf2PolyShiftLeft(BPU_T_GF2_Poly * a, int shift_count)
             if ((i - start) >= a->array_length) {
                 ele2 = 0ul;
                 shift_left = 0;
-            } else {
+            }
+            else {
                 ele2 = a->elements[i - start];
                 shift_left = bit_shift;
             }
@@ -953,8 +922,7 @@ void BPU_gf2PolyShiftLeft(BPU_T_GF2_Poly * a, int shift_count)
         a->elements[i] = 0ul;
 }
 
-int BPU_gf2PolyGetHighestBitPos(BPU_T_GF2_Poly * a)
-{
+int BPU_gf2PolyGetHighestBitPos(BPU_T_GF2_Poly * a) {
     int ele;
 
     // scan all elements and found highest non zero element
@@ -969,8 +937,7 @@ int BPU_gf2PolyGetHighestBitPos(BPU_T_GF2_Poly * a)
     return -1;
 }
 
-void BPU_gf2PolySetDeg(BPU_T_GF2_Poly * a, int deg)
-{
+void BPU_gf2PolySetDeg(BPU_T_GF2_Poly * a, int deg) {
     int j, orig_elements_in_row = a->array_length;
 
     // find max degree
@@ -999,8 +966,7 @@ void BPU_gf2PolySetDeg(BPU_T_GF2_Poly * a, int deg)
     }
 }
 
-void BPU_gf2PolyMulX(BPU_T_GF2_Poly * a)
-{
+void BPU_gf2PolyMulX(BPU_T_GF2_Poly * a) {
     int ele;
     uint8_t shift = a->element_bit_size - 1;
 
@@ -1022,8 +988,7 @@ void BPU_gf2PolyMulX(BPU_T_GF2_Poly * a)
     a->elements[0] ^= msb;
 }
 
-void BPU_gf2PolyShiftRightOne(BPU_T_GF2_Poly * a)
-{
+void BPU_gf2PolyShiftRightOne(BPU_T_GF2_Poly * a) {
     int i;
 
     // for all elements
@@ -1039,8 +1004,7 @@ void BPU_gf2PolyShiftRightOne(BPU_T_GF2_Poly * a)
 
 }
 
-void BPU_gf2PolyAdd(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in, int crop)
-{
+void BPU_gf2PolyAdd(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in, int crop) {
     int i;
 
     // if out poly is zero, just copy in into out
@@ -1065,8 +1029,7 @@ void BPU_gf2PolyAdd(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in, int crop)
 
 // operation add with binary polynomials with high degree
 void BPU_gf2SparsePolyAdd(BPU_T_GF2_Poly * out,
-                          const BPU_T_GF2_Sparse_Poly * in)
-{
+                          const BPU_T_GF2_Sparse_Poly * in) {
     int i;
     uint8_t bit;
 
@@ -1078,8 +1041,7 @@ void BPU_gf2SparsePolyAdd(BPU_T_GF2_Poly * out,
 }
 
 int BPU_gf2SparsePolyAndHW(const BPU_T_GF2_Poly * a,
-                           const BPU_T_GF2_Sparse_Poly * b)
-{
+                           const BPU_T_GF2_Sparse_Poly * b) {
     int i, hw = 0;
 
     // for all coefficients
@@ -1094,8 +1056,7 @@ int BPU_gf2SparsePolyAndHW(const BPU_T_GF2_Poly * a,
 
 void BPU_gf2SparseQcMatrixGetRow(BPU_T_GF2_Sparse_Poly * p,
                                  const BPU_T_GF2_Sparse_Qc_Matrix * m,
-                                 int row_num)
-{
+                                 int row_num) {
     int i;
 
     // if rownum is in matrix
@@ -1122,8 +1083,7 @@ void BPU_gf2SparseQcMatrixGetRow(BPU_T_GF2_Sparse_Poly * p,
 }
 
 void BPU_gf2PolyMulMod(const BPU_T_GF2_Poly * a, const BPU_T_GF2_Poly * b,
-                       BPU_T_GF2_Poly * c, const BPU_T_GF2_Poly * m, int crop)
-{
+                       BPU_T_GF2_Poly * c, const BPU_T_GF2_Poly * m, int crop) {
     int i;
     BPU_T_GF2_Poly temp_b;
 
@@ -1159,8 +1119,7 @@ void BPU_gf2PolyMulMod(const BPU_T_GF2_Poly * a, const BPU_T_GF2_Poly * b,
 }
 
 void BPU_gf2PolyDiv(BPU_T_GF2_Poly * q, BPU_T_GF2_Poly * r,
-                    const BPU_T_GF2_Poly * a, const BPU_T_GF2_Poly * b)
-{
+                    const BPU_T_GF2_Poly * a, const BPU_T_GF2_Poly * b) {
     BPU_T_GF2_Poly divisor, dividend;
     int limit_deg = a->len - b->len;
     int i = 0;
@@ -1200,8 +1159,7 @@ void BPU_gf2PolyDiv(BPU_T_GF2_Poly * q, BPU_T_GF2_Poly * r,
 // XGCD with binary polynomial with high degree
 void BPU_gf2PolyExtEuclidA(BPU_T_GF2_Poly * d, BPU_T_GF2_Poly * s,
                            BPU_T_GF2_Poly * t, const BPU_T_GF2_Poly * a,
-                           const BPU_T_GF2_Poly * b, const BPU_T_GF2_Poly * m)
-{
+                           const BPU_T_GF2_Poly * b, const BPU_T_GF2_Poly * m) {
     BPU_T_GF2_Poly tmp, tmp_2, old_s, old_t, old_r, r, q;
     int deg = (a->len > b->len) ? a->len : b->len;
 
@@ -1218,7 +1176,8 @@ void BPU_gf2PolyExtEuclidA(BPU_T_GF2_Poly * d, BPU_T_GF2_Poly * s,
     if (a->len == 0) {
         old_t.elements[0] = 1ul;
         BPU_gf2PolySetDeg(&old_t, -1);
-    } else if (b->len == 0) {
+    }
+    else if (b->len == 0) {
         BPU_gf2PolyFree(&old_r, 0);
         BPU_gf2PolyCopy(&old_r, a);
         old_s.elements[0] = 1ul;
@@ -1292,8 +1251,7 @@ void BPU_gf2PolyExtEuclidA(BPU_T_GF2_Poly * d, BPU_T_GF2_Poly * s,
 }
 
 int BPU_gf2PolyInv(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * a,
-                   const BPU_T_GF2_Poly * m)
-{
+                   const BPU_T_GF2_Poly * m) {
     BPU_T_GF2_Poly d, s;
     int ret = 1;
 
@@ -1311,8 +1269,7 @@ int BPU_gf2PolyInv(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * a,
     return ret;
 }
 
-void BPU_gf2PolyTransp(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in)
-{
+void BPU_gf2PolyTransp(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in) {
     int i;
 
     // allocate output poly
@@ -1328,8 +1285,7 @@ void BPU_gf2PolyTransp(BPU_T_GF2_Poly * out, const BPU_T_GF2_Poly * in)
 }
 
 void BPU_gf2QcMatrixTransp(BPU_T_GF2_QC_Matrix * out,
-                           const BPU_T_GF2_QC_Matrix * in)
-{
+                           const BPU_T_GF2_QC_Matrix * in) {
     int i;
 
     // allocate output matrix
@@ -1341,8 +1297,7 @@ void BPU_gf2QcMatrixTransp(BPU_T_GF2_QC_Matrix * out,
         BPU_gf2PolyTransp(&out->matrices[i], &in->matrices[i]);
 }
 
-int BPU_gf2PolyIsZero(const BPU_T_GF2_Poly * a)
-{
+int BPU_gf2PolyIsZero(const BPU_T_GF2_Poly * a) {
     int i;
 
     // scan all elements

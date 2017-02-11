@@ -26,8 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/math/gf2.h>
 
 int BPU_padAdd(BPU_T_GF2_Vector * padded_message,
-               const BPU_T_GF2_Vector * message, const uint16_t padding_len)
-{
+               const BPU_T_GF2_Vector * message, const uint16_t padding_len) {
     int i;
     int rv = BPU_ERROR;
 
@@ -44,13 +43,12 @@ int BPU_padAdd(BPU_T_GF2_Vector * padded_message,
     BPU_gf2VecSetBit(padded_message, message->len, 1);
 
     rv = BPU_SUCCESS;
-err:
+  err:
     return rv;
 }
 
 int BPU_padDel(BPU_T_GF2_Vector * message,
-               const BPU_T_GF2_Vector * padded_message)
-{
+               const BPU_T_GF2_Vector * padded_message) {
     int i, message_size = 0;
 
     // count the message size

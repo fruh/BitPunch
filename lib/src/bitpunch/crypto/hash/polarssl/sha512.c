@@ -29,30 +29,29 @@
 
 #if defined(POLARSSL_SHA512_C)
 
-# include <bitpunch/crypto/hash/polarssl/polarssl/sha512.h>
+#include <bitpunch/crypto/hash/polarssl/polarssl/sha512.h>
 
-# if defined(POLARSSL_FS_IO) || defined(POLARSSL_SELF_TEST)
-#  include <stdio.h>
-# endif
+#if defined(POLARSSL_FS_IO) || defined(POLARSSL_SELF_TEST)
+#include <stdio.h>
+#endif
 
-# define polarssl_printf printf
+#define polarssl_printf printf
 
 /* Implementation that should never be optimized out by the compiler */
-static void polarssl_zeroize(void *v, size_t n)
-{
+static void polarssl_zeroize(void *v, size_t n) {
     volatile unsigned char *p = v;
 
     while (n--)
         *p++ = 0;
 }
 
-# if !defined(POLARSSL_SHA512_ALT)
+#if !defined(POLARSSL_SHA512_ALT)
 
 /*
  * 64-bit integer manipulation macros (big endian)
  */
-#  ifndef GET_UINT64_BE
-#   define GET_UINT64_BE(n,b,i)                            \
+#ifndef GET_UINT64_BE
+#define GET_UINT64_BE(n,b,i)                            \
 {                                                       \
     (n) = ( (uint64_t) (b)[(i)    ] << 56 )       \
         | ( (uint64_t) (b)[(i) + 1] << 48 )       \
@@ -63,10 +62,10 @@ static void polarssl_zeroize(void *v, size_t n)
         | ( (uint64_t) (b)[(i) + 6] <<  8 )       \
         | ( (uint64_t) (b)[(i) + 7]       );      \
 }
-#  endif                        /* GET_UINT64_BE */
+#endif /* GET_UINT64_BE */
 
-#  ifndef PUT_UINT64_BE
-#   define PUT_UINT64_BE(n,b,i)                            \
+#ifndef PUT_UINT64_BE
+#define PUT_UINT64_BE(n,b,i)                            \
 {                                                       \
     (b)[(i)    ] = (unsigned char) ( (n) >> 56 );       \
     (b)[(i) + 1] = (unsigned char) ( (n) >> 48 );       \
@@ -77,7 +76,7 @@ static void polarssl_zeroize(void *v, size_t n)
     (b)[(i) + 6] = (unsigned char) ( (n) >>  8 );       \
     (b)[(i) + 7] = (unsigned char) ( (n)       );       \
 }
-#  endif                        /* PUT_UINT64_BE */
+#endif /* PUT_UINT64_BE */
 
 /*
  * Round constants
@@ -125,13 +124,11 @@ static const uint64_t K[80] = {
     UL64(0x5FCB6FAB3AD6FAEC), UL64(0x6C44198C4A475817)
 };
 
-void sha512_init(sha512_context * ctx)
-{
+void sha512_init(sha512_context * ctx) {
     memset(ctx, 0, sizeof(sha512_context));
 }
 
-void sha512_free(sha512_context * ctx)
-{
+void sha512_free(sha512_context * ctx) {
     if (ctx == NULL)
         return;
 
@@ -141,8 +138,7 @@ void sha512_free(sha512_context * ctx)
 /*
  * SHA-512 context setup
  */
-void sha512_starts(sha512_context * ctx, int is384)
-{
+void sha512_starts(sha512_context * ctx, int is384) {
     ctx->total[0] = 0;
     ctx->total[1] = 0;
 
@@ -156,7 +152,8 @@ void sha512_starts(sha512_context * ctx, int is384)
         ctx->state[5] = UL64(0x9B05688C2B3E6C1F);
         ctx->state[6] = UL64(0x1F83D9ABFB41BD6B);
         ctx->state[7] = UL64(0x5BE0CD19137E2179);
-    } else {
+    }
+    else {
         /* SHA-384 */
         ctx->state[0] = UL64(0xCBBB9D5DC1059ED8);
         ctx->state[1] = UL64(0x629A292A367CD507);
@@ -171,25 +168,24 @@ void sha512_starts(sha512_context * ctx, int is384)
     ctx->is384 = is384;
 }
 
-void sha512_process(sha512_context * ctx, const unsigned char data[128])
-{
+void sha512_process(sha512_context * ctx, const unsigned char data[128]) {
     int i;
     uint64_t temp1, temp2, W[80];
     uint64_t A, B, C, D, E, F, G, H;
 
-#  define  SHR(x,n) (x >> n)
-#  define ROTR(x,n) (SHR(x,n) | (x << (64 - n)))
+#define  SHR(x,n) (x >> n)
+#define ROTR(x,n) (SHR(x,n) | (x << (64 - n)))
 
-#  define S0(x) (ROTR(x, 1) ^ ROTR(x, 8) ^  SHR(x, 7))
-#  define S1(x) (ROTR(x,19) ^ ROTR(x,61) ^  SHR(x, 6))
+#define S0(x) (ROTR(x, 1) ^ ROTR(x, 8) ^  SHR(x, 7))
+#define S1(x) (ROTR(x,19) ^ ROTR(x,61) ^  SHR(x, 6))
 
-#  define S2(x) (ROTR(x,28) ^ ROTR(x,34) ^ ROTR(x,39))
-#  define S3(x) (ROTR(x,14) ^ ROTR(x,18) ^ ROTR(x,41))
+#define S2(x) (ROTR(x,28) ^ ROTR(x,34) ^ ROTR(x,39))
+#define S3(x) (ROTR(x,14) ^ ROTR(x,18) ^ ROTR(x,41))
 
-#  define F0(x,y,z) ((x & y) | (z & (x | y)))
-#  define F1(x,y,z) (z ^ (x & (y ^ z)))
+#define F0(x,y,z) ((x & y) | (z & (x | y)))
+#define F1(x,y,z) (z ^ (x & (y ^ z)))
 
-#  define P(a,b,c,d,e,f,g,h,x,K)                  \
+#define P(a,b,c,d,e,f,g,h,x,K)                  \
 {                                               \
     temp1 = h + S3(e) + F1(e,f,g) + K + x;      \
     temp2 = S2(a) + F0(a,b,c);                  \
@@ -248,24 +244,23 @@ void sha512_process(sha512_context * ctx, const unsigned char data[128])
  * SHA-512 process buffer
  */
 void sha512_update(sha512_context * ctx, const unsigned char *input,
-                   size_t ilen)
-{
+                   size_t ilen) {
     size_t fill;
     unsigned int left;
 
     if (ilen == 0)
         return;
 
-    left = (unsigned int)(ctx->total[0] & 0x7F);
+    left = (unsigned int) (ctx->total[0] & 0x7F);
     fill = 128 - left;
 
-    ctx->total[0] += (uint64_t)ilen;
+    ctx->total[0] += (uint64_t) ilen;
 
-    if (ctx->total[0] < (uint64_t)ilen)
+    if (ctx->total[0] < (uint64_t) ilen)
         ctx->total[1]++;
 
     if (left && ilen >= fill) {
-        memcpy((void *)(ctx->buffer + left), input, fill);
+        memcpy((void *) (ctx->buffer + left), input, fill);
         sha512_process(ctx, ctx->buffer);
         input += fill;
         ilen -= fill;
@@ -279,7 +274,7 @@ void sha512_update(sha512_context * ctx, const unsigned char *input,
     }
 
     if (ilen > 0)
-        memcpy((void *)(ctx->buffer + left), input, ilen);
+        memcpy((void *) (ctx->buffer + left), input, ilen);
 }
 
 static const unsigned char sha512_padding[128] = {
@@ -296,8 +291,7 @@ static const unsigned char sha512_padding[128] = {
 /*
  * SHA-512 final digest
  */
-void sha512_finish(sha512_context * ctx, unsigned char output[64])
-{
+void sha512_finish(sha512_context * ctx, unsigned char output[64]) {
     size_t last, padn;
     uint64_t high, low;
     unsigned char msglen[16];
@@ -309,7 +303,7 @@ void sha512_finish(sha512_context * ctx, unsigned char output[64])
     PUT_UINT64_BE(high, msglen, 0);
     PUT_UINT64_BE(low, msglen, 8);
 
-    last = (size_t)(ctx->total[0] & 0x7F);
+    last = (size_t) (ctx->total[0] & 0x7F);
     padn = (last < 112) ? (112 - last) : (240 - last);
 
     sha512_update(ctx, sha512_padding, padn);
@@ -328,14 +322,13 @@ void sha512_finish(sha512_context * ctx, unsigned char output[64])
     }
 }
 
-# endif                         /* !POLARSSL_SHA512_ALT */
+#endif /* !POLARSSL_SHA512_ALT */
 
 /*
  * output = SHA-512( input buffer )
  */
 void sha512(const unsigned char *input, size_t ilen,
-            unsigned char output[64], int is384)
-{
+            unsigned char output[64], int is384) {
     sha512_context ctx;
 
     sha512_init(&ctx);
@@ -345,12 +338,11 @@ void sha512(const unsigned char *input, size_t ilen,
     sha512_free(&ctx);
 }
 
-# if defined(POLARSSL_FS_IO)
+#if defined(POLARSSL_FS_IO)
 /*
  * output = SHA-512( file contents )
  */
-int sha512_file(const char *path, unsigned char output[64], int is384)
-{
+int sha512_file(const char *path, unsigned char output[64], int is384) {
     FILE *f;
     size_t n;
     sha512_context ctx;
@@ -376,15 +368,14 @@ int sha512_file(const char *path, unsigned char output[64], int is384)
     fclose(f);
     return (0);
 }
-# endif                         /* POLARSSL_FS_IO */
+#endif /* POLARSSL_FS_IO */
 
-# ifdef POLARSSL_SHA512_HMAC
+#ifdef POLARSSL_SHA512_HMAC
 /*
  * SHA-512 HMAC context setup
  */
 void sha512_hmac_starts(sha512_context * ctx, const unsigned char *key,
-                        size_t keylen, int is384)
-{
+                        size_t keylen, int is384) {
     size_t i;
     unsigned char sum[64];
 
@@ -398,8 +389,8 @@ void sha512_hmac_starts(sha512_context * ctx, const unsigned char *key,
     memset(ctx->opad, 0x5C, 128);
 
     for (i = 0; i < keylen; i++) {
-        ctx->ipad[i] = (unsigned char)(ctx->ipad[i] ^ key[i]);
-        ctx->opad[i] = (unsigned char)(ctx->opad[i] ^ key[i]);
+        ctx->ipad[i] = (unsigned char) (ctx->ipad[i] ^ key[i]);
+        ctx->opad[i] = (unsigned char) (ctx->opad[i] ^ key[i]);
     }
 
     sha512_starts(ctx, is384);
@@ -412,16 +403,14 @@ void sha512_hmac_starts(sha512_context * ctx, const unsigned char *key,
  * SHA-512 HMAC process buffer
  */
 void sha512_hmac_update(sha512_context * ctx,
-                        const unsigned char *input, size_t ilen)
-{
+                        const unsigned char *input, size_t ilen) {
     sha512_update(ctx, input, ilen);
 }
 
 /*
  * SHA-512 HMAC final digest
  */
-void sha512_hmac_finish(sha512_context * ctx, unsigned char output[64])
-{
+void sha512_hmac_finish(sha512_context * ctx, unsigned char output[64]) {
     int is384, hlen;
     unsigned char tmpbuf[64];
 
@@ -440,8 +429,7 @@ void sha512_hmac_finish(sha512_context * ctx, unsigned char output[64])
 /*
  * SHA-512 HMAC context reset
  */
-void sha512_hmac_reset(sha512_context * ctx)
-{
+void sha512_hmac_reset(sha512_context * ctx) {
     sha512_starts(ctx, ctx->is384);
     sha512_update(ctx, ctx->ipad, 128);
 }
@@ -451,8 +439,7 @@ void sha512_hmac_reset(sha512_context * ctx)
  */
 void sha512_hmac(const unsigned char *key, size_t keylen,
                  const unsigned char *input, size_t ilen,
-                 unsigned char output[64], int is384)
-{
+                 unsigned char output[64], int is384) {
     sha512_context ctx;
 
     sha512_init(&ctx);
@@ -461,8 +448,8 @@ void sha512_hmac(const unsigned char *key, size_t keylen,
     sha512_hmac_finish(&ctx, output);
     sha512_free(&ctx);
 }
-# endif                         // POLARSSL_SHA512_HMAC
-# ifdef POLARSSL_SELF_TEST
+#endif // POLARSSL_SHA512_HMAC
+#ifdef POLARSSL_SELF_TEST
 
 /*
  * FIPS-180-2 test vectors
@@ -530,7 +517,7 @@ static const unsigned char sha512_test_sum[6][64] = {
      0x4E, 0xAD, 0xB2, 0x17, 0xAD, 0x8C, 0xC0, 0x9B}
 };
 
-#  ifdef POLARSSL_SHA512_HMAC
+#ifdef POLARSSL_SHA512_HMAC
 /*
  * RFC 4231 test vectors
  */
@@ -673,12 +660,11 @@ static const unsigned char sha512_hmac_test_sum[14][64] = {
      0x13, 0x46, 0x76, 0xFB, 0x6D, 0xE0, 0x44, 0x60,
      0x65, 0xC9, 0x74, 0x40, 0xFA, 0x8C, 0x6A, 0x58}
 };
-#  endif                        // POLARSSL_SHA512_HMAC
+#endif // POLARSSL_SHA512_HMAC
 /*
  * Checkup routine
  */
-int sha512_self_test(int verbose)
-{
+int sha512_self_test(int verbose) {
     int i, j, k, buflen, ret = 0;
     unsigned char buf[1024];
     unsigned char sha512sum[64];
@@ -700,7 +686,8 @@ int sha512_self_test(int verbose)
 
             for (j = 0; j < 1000; j++)
                 sha512_update(&ctx, buf, buflen);
-        } else
+        }
+        else
             sha512_update(&ctx, sha512_test_buf[j], sha512_test_buflen[j]);
 
         sha512_finish(&ctx, sha512sum);
@@ -719,7 +706,7 @@ int sha512_self_test(int verbose)
 
     if (verbose != 0)
         polarssl_printf("\n");
-#  ifdef POLARSSL_SHA512_HMAC
+#ifdef POLARSSL_SHA512_HMAC
     for (i = 0; i < 14; i++) {
         j = i % 7;
         k = i < 7;
@@ -730,7 +717,8 @@ int sha512_self_test(int verbose)
         if (j == 5 || j == 6) {
             memset(buf, '\xAA', buflen = 131);
             sha512_hmac_starts(&ctx, buf, buflen, k);
-        } else
+        }
+        else
             sha512_hmac_starts(&ctx, sha512_hmac_test_key[j],
                                sha512_hmac_test_keylen[j], k);
 
@@ -755,13 +743,13 @@ int sha512_self_test(int verbose)
 
     if (verbose != 0)
         polarssl_printf("\n");
-#  endif                        // POLARSSL_SHA512_HMAC
- exit:
+#endif // POLARSSL_SHA512_HMAC
+  exit:
     sha512_free(&ctx);
 
     return (ret);
 }
 
-# endif                         /* POLARSSL_SELF_TEST */
+#endif /* POLARSSL_SELF_TEST */
 
-#endif                          /* POLARSSL_SHA512_C */
+#endif /* POLARSSL_SHA512_C */

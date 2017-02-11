@@ -288,9 +288,9 @@ BPU_mecsDestroyParamsGoppa(&params);
 return rc;
 }
 
- \endverbatim We can see our registered test in the list of the tests:
- -. / runTest - l \ verbatim fruh @ htfuws: ~/projects / BitPunch$. / runTest - l Test: testMemRun runLevel: regular Test: testFooName runLevel: regular Test: testMemLeakWithH runLevel: regular Test: testBuild runLevel: express Test: testMemLeakWoH runLevel: regular Test: testLibSize runLevel: express \ endverbatim We can run our dummy test using:
- -. / runTest testFooName \ verbatim fruh @ htfuws: ~/projects / BitPunch$. / runTest testFooName Tests to run(1): testFooName == == == == BEGIN::testFooName == == == == INFO: /media / fruh / data / projects / BitPunch / runtest / tests / foosuite INFO: fooarg1: testFoo INFO: fooarg2: fooarg2 WARNING: warning message INFO: cleaning build ... INFO: building static -lib ... PASSED-- -- ----END::testFooName-- -- ---- == == == == RESULTS == == == == Result folder: /media / fruh / data / projects / BitPunch / runtest / results / 2015 - 05 - 17 T23: 51: 36.709632 FAILED: 0 SKIPPED: 0 PASSED:1-- -- -- -- -- -- -- -- -- -- -- -- -\endverbatim
-    *
-    /
+\endverbatim We can see our registered test in the list of the tests:
+-. / runTest - l \ verbatim fruh @ htfuws: ~/projects / BitPunch$. / runTest - l Test: testMemRun runLevel: regular Test: testFooName runLevel: regular Test: testMemLeakWithH runLevel: regular Test: testBuild runLevel: express Test: testMemLeakWoH runLevel: regular Test: testLibSize runLevel: express \ endverbatim We can run our dummy test using:
+   -. / runTest testFooName \ verbatim fruh @ htfuws: ~/projects / BitPunch$. / runTest testFooName Tests to run(1): testFooName == == == == BEGIN::testFooName == == == == INFO: /media / fruh / data / projects / BitPunch / runtest / tests / foosuite INFO: fooarg1: testFoo INFO: fooarg2: fooarg2 WARNING: warning message INFO: cleaning build ... INFO: building static -lib ... PASSED-- -- ----END::testFooName-- -- ---- == == == == RESULTS == == == == Result folder: /media / fruh / data / projects / BitPunch / runtest / results / 2015 - 05 - 17 T23: 51: 36.709632 FAILED: 0 SKIPPED: 0 PASSED:1-- -- -- -- -- -- -- -- -- -- -- -- -\endverbatim
+         *
+         /
 #define VERSION = "0.0.4"

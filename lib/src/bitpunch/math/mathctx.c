@@ -21,8 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 #include <stdlib.h>
 
-BPU_T_Math_Ctx *BPU_mathCtxNew(const BPU_T_GF2_16x g, const BPU_T_GF2_16x mod)
-{
+BPU_T_Math_Ctx *BPU_mathCtxNew(const BPU_T_GF2_16x g, const BPU_T_GF2_16x mod) {
     BPU_T_GF2_16x b = 1;
     int i = 0;
     int mod_deg = -1;
@@ -84,15 +83,14 @@ BPU_T_Math_Ctx *BPU_mathCtxNew(const BPU_T_GF2_16x g, const BPU_T_GF2_16x mod)
     exp_table = NULL;
     math_ctx = math_ctx_local;
     math_ctx_local = NULL;
- err:
+  err:
     BPU_SAFE_FREE(free, math_ctx_local);
     BPU_SAFE_FREE(free, log_table);
     BPU_SAFE_FREE(free, exp_table);
     return math_ctx;
 }
 
-void BPU_mathCtxFree(BPU_T_Math_Ctx * ctx)
-{
+void BPU_mathCtxFree(BPU_T_Math_Ctx * ctx) {
     if (NULL == ctx) {
         return;
     }

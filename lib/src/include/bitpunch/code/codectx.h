@@ -17,17 +17,17 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef BPU_CODECTX_H
-# define BPU_CODECTX_H
+#define BPU_CODECTX_H
 
-# include <stdint.h>
+#include <stdint.h>
 
-# include <bitpunch/config.h>
-# include <bitpunch/math/gf2.h>
-# include <bitpunch/math/gf2x.h>
+#include <bitpunch/config.h>
+#include <bitpunch/math/gf2.h>
+#include <bitpunch/math/gf2x.h>
 
 // addiotional codes
-# include <bitpunch/code/goppa/goppatypes.h>
-# include <bitpunch/code/qcmdpc/qcmdpctypes.h>
+#include <bitpunch/code/goppa/goppatypes.h>
+#include <bitpunch/code/qcmdpc/qcmdpctypes.h>
 
 /// Available types of codes
 typedef enum _BPU_T_EN_Code_Types {
@@ -52,10 +52,10 @@ typedef union _BPU_T_UN_Code_Params {
 
 typedef struct _BPU_T_Code_Ctx {
     BPU_T_EN_Code_Types type;
-    int (*_encode) (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in, const struct _BPU_T_Code_Ctx * ctx); ///< This is reference to encode function. It will be set in BPU_codeInitCtx
+    int (*_encode) (BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in, const struct _BPU_T_Code_Ctx * ctx);   ///< This is reference to encode function. It will be set in BPU_codeInitCtx
     int (*_decode) (BPU_T_GF2_Vector * out, BPU_T_GF2_Vector * error, const BPU_T_GF2_Vector * in, const struct _BPU_T_Code_Ctx * ctx); ///< This is reference to decode function. It will be set in BPU_codeInitCtx
     BPU_T_Math_Ctx *math_ctx;   ///< Math context
-    BPU_T_UN_Code_Spec *code_spec; ///< Code specific structure, like generator matrix, control matrix, gen. poly ...
+    BPU_T_UN_Code_Spec *code_spec;      ///< Code specific structure, like generator matrix, control matrix, gen. poly ...
 
     uint16_t code_len;          ///< Code length
     uint16_t msg_len;           ///< Code dimension
@@ -116,9 +116,10 @@ void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params * params);
  * @param  t      count of errors
  * @return        [description]
  */
-BPU_T_UN_Code_Params* BPU_codeInitParamsQcmdpc(const uint16_t m,
-                             const uint16_t n0, const uint16_t w,
-                             const uint16_t t);
+BPU_T_UN_Code_Params *BPU_codeInitParamsQcmdpc(const uint16_t m,
+                                               const uint16_t n0,
+                                               const uint16_t w,
+                                               const uint16_t t);
 
 /**
  * Free memory for params.
@@ -126,4 +127,4 @@ BPU_T_UN_Code_Params* BPU_codeInitParamsQcmdpc(const uint16_t m,
  */
 void BPU_codeFreeParamsQcmdpc(BPU_T_UN_Code_Params * params);
 
-#endif                          // BPU_CODECTX_H
+#endif // BPU_CODECTX_H

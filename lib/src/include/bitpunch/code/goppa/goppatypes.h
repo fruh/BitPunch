@@ -16,19 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef GOPPATYPES_H
-# define GOPPATYPES_H
-# include <bitpunch/math/gf2.h>
-# include <bitpunch/math/gf2x.h>
-# include <bitpunch/math/perm.h>
+#define GOPPATYPES_H
+#include <bitpunch/math/gf2.h>
+#include <bitpunch/math/gf2x.h>
+#include <bitpunch/math/perm.h>
 
 /**
   Internal Goppa code structure.
   */
 typedef struct _BPU_T_Goppa_Spec {
     BPU_T_GF2_Matrix *g_mat;    ///< Generator matrix
-    BPU_T_GF2_16x_Matrix *h_mat; ///< Control matrix H
+    BPU_T_GF2_16x_Matrix *h_mat;        ///< Control matrix H
     BPU_T_GF2_16x_Poly *g;      ///< gen. polynomial
-    BPU_T_Perm_Vector *permutation; ///< permutation "matrix" TODO: this should not be here
+    BPU_T_Perm_Vector *permutation;     ///< permutation "matrix" TODO: this should not be here
     uint16_t support_len;       ///< number of elements in support
 } BPU_T_Goppa_Spec;
 
@@ -65,4 +65,4 @@ BPU_T_Goppa_Params *BPU_goppaParamsNew(const uint16_t m,
  */
 void BPU_goppaFreeParams(BPU_T_Goppa_Params * params);
 
-#endif                          // GOPPATYPES_H
+#endif // GOPPATYPES_H

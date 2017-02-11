@@ -30,8 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/code/qcmdpc/qcmdpc.h>
 
 BPU_T_Code_Ctx *BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
-                               const BPU_T_EN_Code_Types type)
-{
+                               const BPU_T_EN_Code_Types type) {
     BPU_T_Code_Ctx *ctx_local = NULL;
     BPU_T_Code_Ctx *ctx = NULL;
     BPU_T_UN_Code_Spec *code_spec_local = NULL;
@@ -79,9 +78,9 @@ BPU_T_Code_Ctx *BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
             goto err;
         }
 
-        goppa_spec_local->support_len = (1 << params->goppa->m); // ctx->math_ctx->ord + 1;
+        goppa_spec_local->support_len = (1 << params->goppa->m);        // ctx->math_ctx->ord + 1;
         ctx_local->code_len = goppa_spec_local->support_len;
-        ctx_local->msg_len = goppa_spec_local->support_len - params->goppa->m * params->goppa->t; // n - m*t
+        ctx_local->msg_len = goppa_spec_local->support_len - params->goppa->m * params->goppa->t;       // n - m*t
         ctx_local->t = params->goppa->t;
         code_spec_local->goppa = goppa_spec_local;
         goppa_spec_local = NULL;
@@ -133,7 +132,7 @@ BPU_T_Code_Ctx *BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
 
     ctx = ctx_local;
     ctx_local = NULL;
- err:
+  err:
     BPU_SAFE_FREE(free, ctx_local);
     BPU_SAFE_FREE(BPU_mathCtxFree, math_ctx_local);
     BPU_SAFE_FREE(free, goppa_spec_local);
@@ -141,23 +140,27 @@ BPU_T_Code_Ctx *BPU_codeCtxNew(const BPU_T_UN_Code_Params * params,
     return ctx;
 }
 
-BPU_T_Math_Ctx *BPU_codeMathCtxNew(const uint16_t m, const BPU_T_GF2_16x mod)
-{
+BPU_T_Math_Ctx *BPU_codeMathCtxNew(const uint16_t m, const BPU_T_GF2_16x mod) {
     BPU_T_Math_Ctx *math_ctx_local = NULL;
     BPU_T_Math_Ctx *math_ctx = NULL;
     BPU_T_GF2_16x context_mod = 0;
 
     if (mod != 0) {
         context_mod = mod;
-    } else if (m == 5) {
+    }
+    else if (m == 5) {
         context_mod = BPU_GF2_POLY_DEG_5;
-    } else if (m == 6) {
+    }
+    else if (m == 6) {
         context_mod = BPU_GF2_POLY_DEG_6;
-    } else if (m == 6) {
+    }
+    else if (m == 6) {
         context_mod = BPU_GF2_POLY_DEG_6;
-    } else if (m == 11) {
+    }
+    else if (m == 11) {
         context_mod = BPU_GF2_POLY_DEG_11;
-    } else {
+    }
+    else {
         BPU_printError
             ("Code params not supported. Supported only (m,t): (5,5), (6,6), (6,7), (11,50)");
         goto err;
@@ -171,13 +174,12 @@ BPU_T_Math_Ctx *BPU_codeMathCtxNew(const uint16_t m, const BPU_T_GF2_16x mod)
 
     math_ctx = math_ctx_local;
     math_ctx_local = NULL;
- err:
+  err:
     BPU_SAFE_FREE(BPU_mathCtxFree, math_ctx_local);
     return math_ctx;
 }
 
-void BPU_codeCtxFree(BPU_T_Code_Ctx * ctx)
-{
+void BPU_codeCtxFree(BPU_T_Code_Ctx * ctx) {
     if (NULL == ctx) {
         return;
     }
@@ -202,8 +204,7 @@ void BPU_codeCtxFree(BPU_T_Code_Ctx * ctx)
 
 BPU_T_UN_Code_Params *BPU_codeParamsGoppaNew(const uint16_t m,
                                              const uint16_t t,
-                                             const BPU_T_GF2_16x mod)
-{
+                                             const BPU_T_GF2_16x mod) {
     BPU_T_UN_Code_Params *code_params_local = NULL;
     BPU_T_UN_Code_Params *code_params = NULL;
     BPU_T_Goppa_Params *goppa_params = NULL;
@@ -226,22 +227,21 @@ BPU_T_UN_Code_Params *BPU_codeParamsGoppaNew(const uint16_t m,
 
     code_params = code_params_local;
     code_params_local = NULL;
- err:
+  err:
     BPU_SAFE_FREE(BPU_goppaFreeParams, goppa_params);
     BPU_SAFE_FREE(free, code_params_local);
     return code_params;
 }
 
-void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params * params)
-{
+void BPU_codeFreeParamsGoppa(BPU_T_UN_Code_Params * params) {
     BPU_SAFE_FREE(BPU_goppaFreeParams, params->goppa);
     BPU_SAFE_FREE(free, params);
 }
 
-BPU_T_UN_Code_Params * BPU_codeInitParamsQcmdpc(const uint16_t m,
-                             const uint16_t n0, const uint16_t w,
-                             const uint16_t t)
-{
+BPU_T_UN_Code_Params *BPU_codeInitParamsQcmdpc(const uint16_t m,
+                                               const uint16_t n0,
+                                               const uint16_t w,
+                                               const uint16_t t) {
     BPU_T_UN_Code_Params *code_params_local = NULL;
     BPU_T_UN_Code_Params *code_params = NULL;
     BPU_T_Qcmdpc_Params *qcmdpc_params = NULL;
@@ -264,14 +264,13 @@ BPU_T_UN_Code_Params * BPU_codeInitParamsQcmdpc(const uint16_t m,
 
     code_params = code_params_local;
     code_params_local = NULL;
- err:
+  err:
     BPU_SAFE_FREE(BPU_qcmdpcFreeParams, qcmdpc_params);
     BPU_SAFE_FREE(free, code_params_local);
     return code_params;
 }
 
-void BPU_codeFreeParamsQcmdpc(BPU_T_UN_Code_Params * params)
-{
+void BPU_codeFreeParamsQcmdpc(BPU_T_UN_Code_Params * params) {
     BPU_SAFE_FREE(BPU_qcmdpcFreeParams, params->qcmdpc);
     BPU_SAFE_FREE(free, params);
 }

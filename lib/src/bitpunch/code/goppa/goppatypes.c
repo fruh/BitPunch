@@ -25,8 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/math/gf2x.h>
 #include <bitpunch/math/perm.h>
 
-void BPU_goppaFreeSpec(BPU_T_Goppa_Spec * spec)
-{
+void BPU_goppaFreeSpec(BPU_T_Goppa_Spec * spec) {
     BPU_SAFE_FREE(BPU_gf2xPolyFree, spec->g);
     BPU_gf2MatFree(&spec->g_mat);
 #ifndef BPU_CONF_GOPPA_WO_H
@@ -37,8 +36,7 @@ void BPU_goppaFreeSpec(BPU_T_Goppa_Spec * spec)
 
 BPU_T_Goppa_Params *BPU_goppaParamsNew(const uint16_t m,
                                        const uint16_t t,
-                                       const BPU_T_GF2_16x mod)
-{
+                                       const BPU_T_GF2_16x mod) {
     BPU_T_Goppa_Params *params_local = NULL;
     BPU_T_Goppa_Params *params = NULL;
 
@@ -55,12 +53,11 @@ BPU_T_Goppa_Params *BPU_goppaParamsNew(const uint16_t m,
     params = params_local;
     params_local = NULL;
 
- err:
+  err:
     BPU_SAFE_FREE(free, params_local);
     return params;
 }
 
-void BPU_goppaFreeParams(BPU_T_Goppa_Params * params)
-{
+void BPU_goppaFreeParams(BPU_T_Goppa_Params * params) {
     BPU_SAFE_FREE(free, params);
 }

@@ -20,11 +20,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef BPU_PERM_H
-# define BPU_PERM_H
+#define BPU_PERM_H
 
-# include <bitpunch/config.h>
+#include <bitpunch/config.h>
 
-# include <stdint.h>
+#include <stdint.h>
 
 /// Definition of permutation element type.
 typedef uint16_t BPU_T_Perm_Element;
@@ -35,17 +35,17 @@ typedef uint16_t BPU_T_Perm_Element;
 * Size corresponds to count of columns in matrix.
 */
 typedef struct _BPU_T_Perm_Vector {
-    BPU_T_Perm_Element *elements; ///< permutation vector
+    BPU_T_Perm_Element *elements;       ///< permutation vector
     BPU_T_Perm_Element size;    ///< permutation size
 } BPU_T_Perm_Vector;
 
-# ifdef BPU_CONF_PRINT
+#ifdef BPU_CONF_PRINT
 /**
 * Print permutation.
 * @param permutation permutation
 */
 void BPU_printPerm(const BPU_T_Perm_Vector * permutation);
-# endif                         // BPU_CONF_PRINT
+#endif // BPU_CONF_PRINT
 
 /**
  * Free dynamically or statically alocated permutation vector.
@@ -103,4 +103,4 @@ int BPU_permPermute(BPU_T_Perm_Vector * to_permute,
  */
 int BPU_permIsValid(const BPU_T_Perm_Vector * p);
 
-#endif                          // BPU_PERM_H
+#endif // BPU_PERM_H

@@ -17,16 +17,16 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef BITPUNCH_H
-# define BITPUNCH_H
+#define BITPUNCH_H
 
-# include "config.h"
-# include "debugio.h"
+#include "config.h"
+#include "debugio.h"
 
-# include <bitpunch/crypto/mecs.h>
+#include <bitpunch/crypto/mecs.h>
 
-# define BPU_SUCCESS 0
-# define BPU_ERROR -1
+#define BPU_SUCCESS 0
+#define BPU_ERROR -1
 
-# define BPU_SAFE_FREE(function, pointer) do { if(NULL != pointer) { function(pointer); pointer = NULL; } } while(0)
+#define BPU_SAFE_FREE(function, pointer) do { if(NULL != pointer) { function(pointer); pointer = NULL; } } while(0)
 
-#endif                          // BITPUNCH_H
+#endif // BITPUNCH_H

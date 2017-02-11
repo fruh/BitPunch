@@ -18,14 +18,13 @@
 #include <bitpunch/asn1/asn1.h>
 
 #ifdef BPU_CONF_ASN1
-# include <bitpunch/debugio.h>
-# include <bitpunch/math/perm.h>
+#include <bitpunch/debugio.h>
+#include <bitpunch/math/perm.h>
 
-# include <libtasn1.h>
-# include <stdlib.h>
+#include <libtasn1.h>
+#include <stdlib.h>
 
-int BPU_asn1EncodePriKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx)
-{
+int BPU_asn1EncodePriKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx) {
     int rc = 0;
     asn1_node definitions = NULL;
     asn1_node asn1_element = NULL;
@@ -55,40 +54,40 @@ int BPU_asn1EncodePriKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx)
                               BPU_STR_ASN1_OID_MECS_BASIC_GOPPA,
                               strlen(BPU_STR_ASN1_OID_MECS_BASIC_GOPPA));
     }
-# ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     if (ctx->type == BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA) {
         rc = asn1_write_value(asn1_element, "oid",
                               BPU_STR_ASN1_OID_MECS_CCA2_POINTCHEVAL_GOPPA,
                               strlen
                               (BPU_STR_ASN1_OID_MECS_CCA2_POINTCHEVAL_GOPPA));
     }
-# endif
+#endif
     if (rc != ASN1_SUCCESS) {
         BPU_printError("asn1_write_value(): oid %d", rc);
         return rc;
     }
     rc = asn1_write_value(asn1_element, "m",
-                          (void *)&(ctx->code_ctx->math_ctx->mod_deg),
+                          (void *) &(ctx->code_ctx->math_ctx->mod_deg),
                           sizeof((ctx->code_ctx->math_ctx->mod_deg)));
     if (rc != ASN1_SUCCESS) {
         BPU_printError("asn1_write_value(): m %d", rc);
         return rc;
     }
-    rc = asn1_write_value(asn1_element, "t", (void *)&(ctx->code_ctx->t),
+    rc = asn1_write_value(asn1_element, "t", (void *) &(ctx->code_ctx->t),
                           sizeof((ctx->code_ctx->t)));
     if (rc != ASN1_SUCCESS) {
         BPU_printError("asn1_write_value(): t %d", rc);
         return rc;
     }
     rc = asn1_write_value(asn1_element, "mod",
-                          (void *)&(ctx->code_ctx->math_ctx->mod),
+                          (void *) &(ctx->code_ctx->math_ctx->mod),
                           sizeof(ctx->code_ctx->math_ctx->mod));
     if (rc != ASN1_SUCCESS) {
         BPU_printError("asn1_write_value(): mod %d", rc);
         return rc;
     }
     rc = asn1_write_value(asn1_element, "g",
-                          (void *)(ctx->code_ctx->code_spec->goppa->g->coef),
+                          (void *) (ctx->code_ctx->code_spec->goppa->g->coef),
                           sizeof(ctx->code_ctx->code_spec->goppa->g->coef[0]) *
                           (ctx->code_ctx->code_spec->goppa->g->deg + 1));
     if (rc != ASN1_SUCCESS) {
@@ -96,10 +95,10 @@ int BPU_asn1EncodePriKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx)
         return rc;
     }
     rc = asn1_write_value(asn1_element, "p",
-                          (void *)(ctx->code_ctx->code_spec->goppa->
-                                   permutation->elements),
-                          sizeof(ctx->code_ctx->code_spec->goppa->
-                                 permutation->elements[0]) *
+                          (void *) (ctx->code_ctx->code_spec->
+                                    goppa->permutation->elements),
+                          sizeof(ctx->code_ctx->code_spec->goppa->permutation->
+                                 elements[0]) *
                           ctx->code_ctx->code_spec->goppa->permutation->size);
     if (rc != ASN1_SUCCESS) {
         BPU_printError("asn1_write_value(): p %d", rc);
@@ -129,11 +128,12 @@ int BPU_asn1EncodePriKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx)
                    sizeof(BPU_T_GF2_16x));
             j += ctx->code_ctx->code_spec->goppa->h_mat->n;
         }
-    } else {
+    }
+    else {
         BPU_printError("Not supported for this CODE type.");
         return -1;
     }
-    rc = asn1_write_value(asn1_element, "h_mat", (void *)(h_mat), h_mat_bs);
+    rc = asn1_write_value(asn1_element, "h_mat", (void *) (h_mat), h_mat_bs);
     free(h_mat);
 
     if (rc != ASN1_SUCCESS) {
@@ -146,7 +146,7 @@ int BPU_asn1EncodePriKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx)
 
     // get size of data
     asn1_der_coding(asn1_element, "", NULL, size, NULL);
-    *buffer = (char *)malloc(*size);
+    *buffer = (char *) malloc(*size);
 
     rc = asn1_der_coding(asn1_element, "", *buffer, size, NULL);
     if (rc != ASN1_SUCCESS) {
@@ -159,8 +159,7 @@ int BPU_asn1EncodePriKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx)
 }
 
 int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
-                         const int size)
-{
+                         const int size) {
     int rc = 0;
     asn1_node definitions = NULL;
     asn1_node asn1_element = NULL;
@@ -203,13 +202,13 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
     if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, 1, "m", asn1_element)) {
         return -1;
     }
-    m = *(uint8_t *)tmp_buf;
+    m = *(uint8_t *) tmp_buf;
     free(tmp_buf);
 
     if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, 1, "t", asn1_element)) {
         return -1;
     }
-    t = *(uint8_t *)tmp_buf;
+    t = *(uint8_t *) tmp_buf;
     free(tmp_buf);
 
     if (BPU_asn1ReadValue
@@ -218,7 +217,9 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
     }
     if (type == BPU_EN_MECS_BASIC_GOPPA
         || type == BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA) {
-        if (NULL == (params = BPU_mecsParamsGoppaNew(m, t, *((BPU_T_GF2_16x *) tmp_buf)))) {
+        if (NULL ==
+            (params =
+             BPU_mecsParamsGoppaNew(m, t, *((BPU_T_GF2_16x *) tmp_buf)))) {
             return -1;
         }
         free(tmp_buf);
@@ -231,13 +232,15 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
              asn1_element)) {
             return -1;
         }
-        if (NULL == ((*ctx)->code_ctx->code_spec->goppa->g = BPU_gf2xPolyMalloc(t))) {
+        if (NULL ==
+            ((*ctx)->code_ctx->code_spec->goppa->g = BPU_gf2xPolyMalloc(t))) {
             return -1;
         }
         memcpy((*ctx)->code_ctx->code_spec->goppa->g->coef, tmp_buf, tmp_len);
         (*ctx)->code_ctx->code_spec->goppa->g->deg = t;
         free(tmp_buf);
-    } else {
+    }
+    else {
         BPU_printError("Not supported for this code type.");
         return -1;
     }
@@ -282,8 +285,7 @@ int BPU_asn1DecodePriKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
     return rc;
 }
 
-int BPU_asn1EncodePubKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx)
-{
+int BPU_asn1EncodePubKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx) {
     int rc = 0;
     asn1_node definitions = NULL;
     asn1_node asn1_element = NULL;
@@ -313,26 +315,26 @@ int BPU_asn1EncodePubKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx)
                               BPU_STR_ASN1_OID_MECS_BASIC_GOPPA,
                               strlen(BPU_STR_ASN1_OID_MECS_BASIC_GOPPA));
     }
-# ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     if (ctx->type == BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA) {
         rc = asn1_write_value(asn1_element, "oid",
                               BPU_STR_ASN1_OID_MECS_CCA2_POINTCHEVAL_GOPPA,
                               strlen
                               (BPU_STR_ASN1_OID_MECS_CCA2_POINTCHEVAL_GOPPA));
     }
-# endif
+#endif
     if (rc != ASN1_SUCCESS) {
         BPU_printError("asn1_write_value(): oid %d", rc);
         return rc;
     }
     rc = asn1_write_value(asn1_element, "m",
-                          (void *)&(ctx->code_ctx->math_ctx->mod_deg),
+                          (void *) &(ctx->code_ctx->math_ctx->mod_deg),
                           sizeof((ctx->code_ctx->math_ctx->mod_deg)));
     if (rc != ASN1_SUCCESS) {
         BPU_printError("asn1_write_value(): m %d", rc);
         return rc;
     }
-    rc = asn1_write_value(asn1_element, "t", (void *)&(ctx->code_ctx->t),
+    rc = asn1_write_value(asn1_element, "t", (void *) &(ctx->code_ctx->t),
                           sizeof((ctx->code_ctx->t)));
     if (rc != ASN1_SUCCESS) {
         BPU_printError("asn1_write_value(): t %d", rc);
@@ -341,8 +343,8 @@ int BPU_asn1EncodePubKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx)
     if (ctx->code_ctx->type == BPU_EN_CODE_GOPPA) {
         g_mat_bs =
             sizeof(BPU_T_GF2) * (ctx->code_ctx->code_spec->goppa->g_mat->k *
-                                 ctx->code_ctx->code_spec->goppa->g_mat->
-                                 elements_in_row);
+                                 ctx->code_ctx->code_spec->goppa->
+                                 g_mat->elements_in_row);
 
         // prepare G matrix
         g_mat = (BPU_T_GF2 *) malloc(g_mat_bs);
@@ -359,11 +361,12 @@ int BPU_asn1EncodePubKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx)
                    sizeof(BPU_T_GF2));
             j += ctx->code_ctx->code_spec->goppa->g_mat->elements_in_row;
         }
-    } else {
+    }
+    else {
         BPU_printError("Not supported for this MECS type.");
         return -1;
     }
-    rc = asn1_write_value(asn1_element, "g_mat", (void *)(g_mat), g_mat_bs);
+    rc = asn1_write_value(asn1_element, "g_mat", (void *) (g_mat), g_mat_bs);
     free(g_mat);
 
     if (rc != ASN1_SUCCESS) {
@@ -375,7 +378,7 @@ int BPU_asn1EncodePubKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx)
 
     // get size of data
     asn1_der_coding(asn1_element, "", NULL, size, NULL);
-    *buffer = (char *)malloc(*size);
+    *buffer = (char *) malloc(*size);
 
     rc = asn1_der_coding(asn1_element, "", *buffer, size, NULL);
     if (rc != ASN1_SUCCESS) {
@@ -387,8 +390,7 @@ int BPU_asn1EncodePubKey(char **buffer, int *size, const BPU_T_Mecs_Ctx * ctx)
 }
 
 int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
-                         const int size)
-{
+                         const int size) {
     int rc = 0;
     asn1_node definitions = NULL;
     asn1_node asn1_element = NULL;
@@ -431,13 +433,13 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
     if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, 1, "m", asn1_element)) {
         return -1;
     }
-    m = *(uint8_t *)tmp_buf;
+    m = *(uint8_t *) tmp_buf;
     free(tmp_buf);
 
     if (BPU_asn1ReadValue(&tmp_buf, &tmp_len, 1, "t", asn1_element)) {
         return -1;
     }
-    t = *(uint8_t *)tmp_buf;
+    t = *(uint8_t *) tmp_buf;
     free(tmp_buf);
 
     // init mecs context without mod
@@ -446,7 +448,8 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
         if (NULL == (params = BPU_mecsParamsGoppaNew(m, t, -1))) {
             return -1;
         }
-    } else {
+    }
+    else {
         BPU_printError("Type not supported");
         return -1;
     }
@@ -485,8 +488,7 @@ int BPU_asn1DecodePubKey(BPU_T_Mecs_Ctx ** ctx, const char *buffer,
 }
 
 int BPU_asn1ReadValue(char **buffer, int *len, const int max_len,
-                      const char *name, const asn1_node node)
-{
+                      const char *name, const asn1_node node) {
     int rc;
 
     // get size and malloc buffer
@@ -504,8 +506,7 @@ int BPU_asn1ReadValue(char **buffer, int *len, const int max_len,
     return rc;
 }
 
-BPU_T_EN_Mecs_Types BPU_asn1GetMecsTypeFromOid(asn1_node node)
-{
+BPU_T_EN_Mecs_Types BPU_asn1GetMecsTypeFromOid(asn1_node node) {
     int rc, tmp_len;
     char *tmp_buf = NULL;
 
@@ -518,11 +519,11 @@ BPU_T_EN_Mecs_Types BPU_asn1GetMecsTypeFromOid(asn1_node node)
     if (!strcmp(tmp_buf, BPU_STR_ASN1_OID_MECS_BASIC_GOPPA)) {
         rc = BPU_EN_MECS_BASIC_GOPPA;
     }
-# ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     else if (!strcmp(tmp_buf, BPU_STR_ASN1_OID_MECS_CCA2_POINTCHEVAL_GOPPA)) {
         rc = BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA;
     }
-# endif
+#endif
     else {
         rc = -1;
     }
@@ -532,8 +533,7 @@ BPU_T_EN_Mecs_Types BPU_asn1GetMecsTypeFromOid(asn1_node node)
 }
 
 int BPU_asn1MallocBuffer(char **buffer, int *len, const int max_len,
-                         const asn1_node node, const char *name)
-{
+                         const asn1_node node, const char *name) {
     int rc;
 
     rc = asn1_read_value(node, name, NULL, len);
@@ -542,23 +542,24 @@ int BPU_asn1MallocBuffer(char **buffer, int *len, const int max_len,
         BPU_printError("requested length %d is bigger than max expected %d",
                        *len, max_len);
         return -1;
-    } else if (*len > 0) {
+    }
+    else if (*len > 0) {
         // malloc data
-        *buffer = (char *)malloc(*len);
+        *buffer = (char *) malloc(*len);
 
         if (!(*buffer)) {
             BPU_printError("can not allocate memory.");
             return -1;
         }
-    } else {
+    }
+    else {
         BPU_printError("can not get size of data");
         return rc;
     }
     return 0;
 }
 
-int BPU_asn1LoadFileToBuffer(char **buffer, long *size, const char *file_name)
-{
+int BPU_asn1LoadFileToBuffer(char **buffer, long *size, const char *file_name) {
     FILE *fp = fopen(file_name, "rb");
     long tmp;
 
@@ -576,7 +577,7 @@ int BPU_asn1LoadFileToBuffer(char **buffer, long *size, const char *file_name)
 
         return -1;
     }
-    *buffer = (char *)malloc(*size);
+    *buffer = (char *) malloc(*size);
 
     if (!*buffer) {
         BPU_printError("can malloc buffer");
@@ -600,8 +601,7 @@ int BPU_asn1LoadFileToBuffer(char **buffer, long *size, const char *file_name)
 }
 
 int BPU_asn1LoadKeyPair(BPU_T_Mecs_Ctx ** ctx, const char *pri_key_file,
-                        const char *pub_key_file)
-{
+                        const char *pub_key_file) {
     if (BPU_asn1LoadPriKey(ctx, pri_key_file)
         || BPU_asn1LoadPubKey(ctx, pub_key_file)) {
         BPU_printError("can not load key pair");
@@ -610,8 +610,7 @@ int BPU_asn1LoadKeyPair(BPU_T_Mecs_Ctx ** ctx, const char *pri_key_file,
     return 0;
 }
 
-int BPU_asn1LoadPriKey(BPU_T_Mecs_Ctx ** ctx, const char *pri_key_file)
-{
+int BPU_asn1LoadPriKey(BPU_T_Mecs_Ctx ** ctx, const char *pri_key_file) {
     long size;
     char *buffer;
 
@@ -628,8 +627,7 @@ int BPU_asn1LoadPriKey(BPU_T_Mecs_Ctx ** ctx, const char *pri_key_file)
     return 0;
 }
 
-int BPU_asn1LoadPubKey(BPU_T_Mecs_Ctx ** ctx, const char *pub_key_file)
-{
+int BPU_asn1LoadPubKey(BPU_T_Mecs_Ctx ** ctx, const char *pub_key_file) {
     long size;
     char *buffer;
 
@@ -647,8 +645,7 @@ int BPU_asn1LoadPubKey(BPU_T_Mecs_Ctx ** ctx, const char *pub_key_file)
 }
 
 int BPU_asn1SaveKeyPair(const BPU_T_Mecs_Ctx * ctx, const char *pri_key_file,
-                        const char *pub_key_file)
-{
+                        const char *pub_key_file) {
     if (BPU_asn1SavePriKey(ctx, pri_key_file)
         || BPU_asn1SavePubKey(ctx, pub_key_file)) {
         BPU_printError("can not save key pair");
@@ -657,8 +654,7 @@ int BPU_asn1SaveKeyPair(const BPU_T_Mecs_Ctx * ctx, const char *pri_key_file,
     return 0;
 }
 
-int BPU_asn1SavePriKey(const BPU_T_Mecs_Ctx * ctx, const char *pri_key_file)
-{
+int BPU_asn1SavePriKey(const BPU_T_Mecs_Ctx * ctx, const char *pri_key_file) {
     char *buffer = NULL;
     int size;
 
@@ -676,8 +672,7 @@ int BPU_asn1SavePriKey(const BPU_T_Mecs_Ctx * ctx, const char *pri_key_file)
     return 0;
 }
 
-int BPU_asn1SavePubKey(const BPU_T_Mecs_Ctx * ctx, const char *pub_key_file)
-{
+int BPU_asn1SavePubKey(const BPU_T_Mecs_Ctx * ctx, const char *pub_key_file) {
     char *buffer = NULL;
     int size;
 
@@ -696,8 +691,7 @@ int BPU_asn1SavePubKey(const BPU_T_Mecs_Ctx * ctx, const char *pub_key_file)
 }
 
 int BPU_asn1WriteBufferToFile(const char *buffer, const long size,
-                              const char *file_name)
-{
+                              const char *file_name) {
     FILE *fp;
     long tmp;
 
@@ -722,4 +716,4 @@ int BPU_asn1WriteBufferToFile(const char *buffer, const long size,
 
     return 0;
 }
-#endif                          // BPU_CONF_ASN1
+#endif // BPU_CONF_ASN1

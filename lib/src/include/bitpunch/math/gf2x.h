@@ -20,13 +20,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef BPU_GF2X_H
-# define BPU_GF2X_H
+#define BPU_GF2X_H
 
-# include <stdint.h>
+#include <stdint.h>
 
-# include <bitpunch/config.h>
+#include <bitpunch/config.h>
 
-# include "gf2.h"
+#include "gf2.h"
 
 /**
  * @brief prototype of math context BPU_T_Math_Ctx
@@ -43,10 +43,10 @@ typedef uint16_t BPU_T_GF2_16x;
 typedef uint32_t BPU_T_GF2_32x;
 
 // polynomials in format BPU_GF2_POLY_DEG_m where 'm' is mceliece param m
-# define BPU_GF2_POLY_DEG_5 0x3b
-# define BPU_GF2_POLY_DEG_6 0x43
-# define BPU_GF2_POLY_DEG_10 0x71d
-# define BPU_GF2_POLY_DEG_11 0x805
+#define BPU_GF2_POLY_DEG_5 0x3b
+#define BPU_GF2_POLY_DEG_6 0x43
+#define BPU_GF2_POLY_DEG_10 0x71d
+#define BPU_GF2_POLY_DEG_11 0x805
 
 /**
 * Representation of aritmetics data.
@@ -102,7 +102,7 @@ typedef struct _BPU_T_GF2_16x_Poly {
     int16_t max_deg;            ///< degree
 } BPU_T_GF2_16x_Poly;
 
-# ifdef BPU_CONF_PRINT
+#ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
 /**
 * Print number as binary string. Print also new line at the end.
@@ -126,14 +126,14 @@ void BPU_printGf2xPoly(const BPU_T_GF2_16x_Poly * p,
 void BPU_printGf2xVec(const BPU_T_GF2_16x_Vector * v);
 
 /* ------------------------------------ Print functions ------------------------------------ */
-# endif                         // BPU_CONF_PRINT
+#endif // BPU_CONF_PRINT
 
 /**
  * Set Polynomial values to 0.
  * @param d_pointer[out] pointer to GF2_16x polynomial
  */
  /// Copy Polynomial.
-# define BPU_gf2xPolyNull(d_pointer) memset((void *) ((d_pointer)->coef), 0, sizeof(BPU_T_GF2_16x)*((d_pointer)->max_deg + 1));\
+#define BPU_gf2xPolyNull(d_pointer) memset((void *) ((d_pointer)->coef), 0, sizeof(BPU_T_GF2_16x)*((d_pointer)->max_deg + 1));\
   (d_pointer)->deg = -1
 
 void BPU_gf2xMatNull(BPU_T_GF2_16x_Matrix * mat);
@@ -206,7 +206,7 @@ void BPU_gf2xPolyFree(BPU_T_GF2_16x_Poly * p);
  * @return inverse element
  */
 /// Get inverse element of galois field.
-# define BPU_gf2xInvElement(gf2_16x_e, math_ctx_p) ((gf2_16x_e) == 1 ? 1 : (math_ctx_p)->exp_table[((math_ctx_p)->ord - (math_ctx_p)->log_table[gf2_16x_e])])
+#define BPU_gf2xInvElement(gf2_16x_e, math_ctx_p) ((gf2_16x_e) == 1 ? 1 : (math_ctx_p)->exp_table[((math_ctx_p)->ord - (math_ctx_p)->log_table[gf2_16x_e])])
 
 /**
  * Get leading coefitient of Polynomal over GF2x.
@@ -214,7 +214,7 @@ void BPU_gf2xPolyFree(BPU_T_GF2_16x_Poly * p);
  * @return leading coef (element from GF2^16) or 0
  */
 /// * Get leading coefitient of Polynomal over GF2x.
-# define BPU_gf2xPolyLeadCoef(poly_gf2_16x_p) ((poly_gf2_16x_p)->deg > -1 ? (poly_gf2_16x_p)->coef[(poly_gf2_16x_p)->deg] : 0)
+#define BPU_gf2xPolyLeadCoef(poly_gf2_16x_p) ((poly_gf2_16x_p)->deg > -1 ? (poly_gf2_16x_p)->coef[(poly_gf2_16x_p)->deg] : 0)
 
 /**
 * Multiplication over Galois field, modulus mod.
@@ -616,4 +616,4 @@ void BPU_gf2xPolyGenRandom(BPU_T_GF2_16x_Poly * p, int t,
 void BPU_gf2xPolyGenGoppa(BPU_T_GF2_16x_Poly * p, int t,
                           const BPU_T_Math_Ctx * math_ctx);
 
-#endif                          // BPU_GF2X_H
+#endif // BPU_GF2X_H

@@ -29,8 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/debugio.h>
 
 #ifdef BPU_CONF_PRINT
-void BPU_printPerm(const BPU_T_Perm_Vector * permutation)
-{
+void BPU_printPerm(const BPU_T_Perm_Vector * permutation) {
     int i;
 
     fprintf(stderr, "Perm (%4d): ", permutation->size);
@@ -39,10 +38,9 @@ void BPU_printPerm(const BPU_T_Perm_Vector * permutation)
     }
     fprintf(stderr, "\n");
 }
-#endif                          // BPU_CONF_PRINT
+#endif // BPU_CONF_PRINT
 
-void BPU_permFree(BPU_T_Perm_Vector ** p)
-{
+void BPU_permFree(BPU_T_Perm_Vector ** p) {
     if (!*p) {
         return;
     }
@@ -50,8 +48,7 @@ void BPU_permFree(BPU_T_Perm_Vector ** p)
     free(*p);
 }
 
-int BPU_permMalloc(BPU_T_Perm_Vector ** p, int size)
-{
+int BPU_permMalloc(BPU_T_Perm_Vector ** p, int size) {
     // allocate memory
     int i;
 
@@ -77,8 +74,7 @@ int BPU_permMalloc(BPU_T_Perm_Vector ** p, int size)
     return 0;
 }
 
-int BPU_permRandomize(BPU_T_Perm_Vector * permutation)
-{
+int BPU_permRandomize(BPU_T_Perm_Vector * permutation) {
     int i;
     uint32_t rand_value;
 
@@ -93,8 +89,7 @@ int BPU_permRandomize(BPU_T_Perm_Vector * permutation)
     return 0;
 }
 
-void BPU_permSwap(BPU_T_Perm_Element * a, BPU_T_Perm_Element * b)
-{
+void BPU_permSwap(BPU_T_Perm_Element * a, BPU_T_Perm_Element * b) {
     BPU_T_Perm_Element tmp;
 
     tmp = *a;
@@ -102,8 +97,7 @@ void BPU_permSwap(BPU_T_Perm_Element * a, BPU_T_Perm_Element * b)
     *b = tmp;
 }
 
-int BPU_permGetInv(BPU_T_Perm_Vector * out, const BPU_T_Perm_Vector * in)
-{
+int BPU_permGetInv(BPU_T_Perm_Vector * out, const BPU_T_Perm_Vector * in) {
     int i;
 
     if (out->size != in->size) {
@@ -118,8 +112,7 @@ int BPU_permGetInv(BPU_T_Perm_Vector * out, const BPU_T_Perm_Vector * in)
 }
 
 int BPU_permPermute(BPU_T_Perm_Vector * to_permute,
-                    const BPU_T_Perm_Vector * permutation)
-{
+                    const BPU_T_Perm_Vector * permutation) {
     int i;
     BPU_T_Perm_Vector *new_permutation;
 
@@ -136,7 +129,7 @@ int BPU_permPermute(BPU_T_Perm_Vector * to_permute,
         new_permutation->elements[i] = to_permute->elements[i];
     }
     // permute
-    for (i = 0; i < permutation->size; i++) { // row loop
+    for (i = 0; i < permutation->size; i++) {   // row loop
         to_permute->elements[i] =
             new_permutation->elements[permutation->elements[i]];
     }
@@ -145,8 +138,7 @@ int BPU_permPermute(BPU_T_Perm_Vector * to_permute,
     return 0;
 }
 
-int BPU_permIsValid(const BPU_T_Perm_Vector * p)
-{
+int BPU_permIsValid(const BPU_T_Perm_Vector * p) {
     int i, j;
 
     for (i = 0; i < p->size; i++) {

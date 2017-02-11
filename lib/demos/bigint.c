@@ -19,8 +19,7 @@
 #include <bitpunch/math/bigint.h>
 #include <bitpunch/math/uni.h>
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     BPU_T_Bigint *a, *b, *c;
 
     a = BPU_bigintMalloc(32);

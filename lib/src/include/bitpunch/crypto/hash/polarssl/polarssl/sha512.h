@@ -23,27 +23,27 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 #ifndef POLARSSL_SHA512_H
-# define POLARSSL_SHA512_H
+#define POLARSSL_SHA512_H
 
-# include <string.h>
+#include <string.h>
 
-# if defined(_MSC_VER) || defined(__WATCOMC__)
-#  define UL64(x) x##ui64
+#if defined(_MSC_VER) || defined(__WATCOMC__)
+#define UL64(x) x##ui64
 typedef unsigned __int64 uint64_t;
-# else
-#  include <inttypes.h>
-#  define UL64(x) x##ULL
-# endif
+#else
+#include <inttypes.h>
+#define UL64(x) x##ULL
+#endif
 
-# define POLARSSL_ERR_SHA512_FILE_IO_ERROR              -0x007A /**< Read/write error in file. */
+#define POLARSSL_ERR_SHA512_FILE_IO_ERROR              -0x007A  /**< Read/write error in file. */
 
-# if !defined(POLARSSL_SHA512_ALT)
+#if !defined(POLARSSL_SHA512_ALT)
 // Regular implementation
 //
 
-#  ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#  endif
+#endif
 
 /**
  * \brief          SHA-512 context structure
@@ -51,10 +51,10 @@ extern "C" {
     typedef struct {
         uint64_t total[2];      /*!< number of bytes processed  */
         uint64_t state[8];      /*!< intermediate digest state  */
-        unsigned char buffer[128]; /*!< data block being processed */
+        unsigned char buffer[128];      /*!< data block being processed */
 
-        unsigned char ipad[128]; /*!< HMAC: inner padding        */
-        unsigned char opad[128]; /*!< HMAC: outer padding        */
+        unsigned char ipad[128];        /*!< HMAC: inner padding        */
+        unsigned char opad[128];        /*!< HMAC: outer padding        */
         int is384;              /*!< 0 => SHA-512, else SHA-384 */
     } sha512_context;
 
@@ -98,16 +98,16 @@ extern "C" {
  */
     void sha512_finish(sha512_context * ctx, unsigned char output[64]);
 
-#  ifdef __cplusplus
+#ifdef __cplusplus
 }
-#  endif
-# else                          /* POLARSSL_SHA512_ALT */
-#  include "sha512_alt.h"
-# endif                         /* POLARSSL_SHA512_ALT */
+#endif
+#else /* POLARSSL_SHA512_ALT */
+#include "sha512_alt.h"
+#endif /* POLARSSL_SHA512_ALT */
 
-# ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-# endif
+#endif
 
 /**
  * \brief          Output = SHA-512( input buffer )
@@ -131,7 +131,7 @@ extern "C" {
  */
     int sha512_file(const char *path, unsigned char output[64], int is384);
 
-# ifdef POLARSSL_SHA512_HMAC
+#ifdef POLARSSL_SHA512_HMAC
 /**
  * \brief          SHA-512 HMAC context setup
  *
@@ -181,20 +181,20 @@ extern "C" {
     void sha512_hmac(const unsigned char *key, size_t keylen,
                      const unsigned char *input, size_t ilen,
                      unsigned char output[64], int is384);
-# endif                         // POLARSSL_SHA512_HMAC
+#endif                          // POLARSSL_SHA512_HMAC
 
-# ifdef POLLARSSL_SHA512_TEST
+#ifdef POLLARSSL_SHA512_TEST
 /**
  * \brief          Checkup routine
  *
  * \return         0 if successful, or 1 if the test failed
  */
     int sha512_self_test(int verbose);
-# endif
+#endif
 /* Internal use */
     void sha512_process(sha512_context * ctx, const unsigned char data[128]);
 
-# ifdef __cplusplus
+#ifdef __cplusplus
 }
-# endif
+#endif
 #endif                          /* sha512.h */

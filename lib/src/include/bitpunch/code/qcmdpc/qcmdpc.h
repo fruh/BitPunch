@@ -18,28 +18,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #ifndef BPU_QCMDPC_H
-# define BPU_QCMDPC_H
+#define BPU_QCMDPC_H
 
-# include <bitpunch/config.h>
-# include <bitpunch/code/codectx.h>
-# include <bitpunch/math/gf2.h>
-# include <bitpunch/debugio.h>
+#include <bitpunch/config.h>
+#include <bitpunch/code/codectx.h>
+#include <bitpunch/math/gf2.h>
+#include <bitpunch/debugio.h>
 
 /************************************************
 DECODE PARAMS
 ************************************************/
 
 // universal
-# define BPU_QCMDPC_PARAM_MAX_ITER 10///< maximum count of iterations in decoding
+#define BPU_QCMDPC_PARAM_MAX_ITER 10    ///< maximum count of iterations in decoding
 
 // decode1 alg
-# define BPU_QCMDPC_PARAM_DELTA 5///< starting param delta (threshold) for decode1 algorithm
+#define BPU_QCMDPC_PARAM_DELTA 5        ///< starting param delta (threshold) for decode1 algorithm
 
 // decode2 alg
-# define BPU_QCMDPC_PARAM_DELTA_B 0///< threshold for decode2
-# define BPU_QCMDPC_MAX_B_VALUES 5///< count of precalculated values for decode2 algorithm
+#define BPU_QCMDPC_PARAM_DELTA_B 0      ///< threshold for decode2
+#define BPU_QCMDPC_MAX_B_VALUES 5       ///< count of precalculated values for decode2 algorithm
 
-# ifdef BPU_CONF_ENCRYPTION
+#ifdef BPU_CONF_ENCRYPTION
 /**
  * McEliece QC-MDPC encode
  * @param  out          cipher text
@@ -49,9 +49,9 @@ DECODE PARAMS
  */
 int BPU_mecsQcmdpcEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
                          const struct _BPU_T_Code_Ctx *ctx);
-# endif
+#endif
 
-# ifdef BPU_CONF_DECRYPTION
+#ifdef BPU_CONF_DECRYPTION
 /**
  * McEliece QC-MDPC decrypt
  * @param  out          message
@@ -104,9 +104,9 @@ int BPU_mecsQcmdpcDecode2(BPU_T_GF2_Vector * error_vec,
 void BPU_mecsQcmdpcCalcSyndrom(BPU_T_GF2_Vector * syndrom,
                                const BPU_T_GF2_Vector * cipher_text,
                                const struct _BPU_T_Code_Ctx *ctx);
-# endif
+#endif
 
-# ifdef BPU_CONF_KEY_GEN
+#ifdef BPU_CONF_KEY_GEN
 /**
  * Test if generated matrices G x H^T = 0
  * @param  G     generator matrix of code
@@ -125,6 +125,6 @@ int BPU_mecsQcmdpcTestGHmatrices(const BPU_T_GF2_QC_Matrix * G,
  * @return          0 if OK, else error
  */
 int BPU_mecsQcmdpcGenKeys(BPU_T_Code_Ctx * ctx);
-# endif
+#endif
 
-#endif                          // BPU_QCMDPC_H
+#endif // BPU_QCMDPC_H

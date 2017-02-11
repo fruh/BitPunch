@@ -20,16 +20,16 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef BPU_GF2_H
-# define BPU_GF2_H
+#define BPU_GF2_H
 
-# include <stdio.h>
-# include <string.h>
+#include <stdio.h>
+#include <string.h>
 
-# include <bitpunch/config.h>
-# include "perm.h"
-# include "gf2.h"
-# include "int.h"
-# include "uni.h"
+#include <bitpunch/config.h>
+#include "perm.h"
+#include "gf2.h"
+#include "int.h"
+#include "uni.h"
 
 /**
 * Binary representation GF2
@@ -94,7 +94,7 @@ typedef struct _BPU_T_GF2_QC_Matrix {
  * The orientation of is set in isVertical.
  */
 typedef struct _BPU_T_GF2_Sparse_Qc_Matrix {
-    BPU_T_GF2_Sparse_Poly *matrices; ///< all cyclic matrices of matrix
+    BPU_T_GF2_Sparse_Poly *matrices;    ///< all cyclic matrices of matrix
     uint16_t element_count;     ///< number of cyclic matrices
     uint32_t element_size;      ///< size of cyclic matrix
     uint8_t isVertical;         ///< if 1, elements are in vertical orientation, if 0 horizontal orientation
@@ -102,7 +102,7 @@ typedef struct _BPU_T_GF2_Sparse_Qc_Matrix {
     uint32_t k;                 ///< rows of whole matrix
 } BPU_T_GF2_Sparse_Qc_Matrix;
 
-# ifdef BPU_CONF_PRINT
+#ifdef BPU_CONF_PRINT
 /* ==================================== Print functions ==================================== */
 // TODO: add possibility of turning off print functions, do not compile
 /**
@@ -115,19 +115,19 @@ void BPU_printGf2Mat(const BPU_T_GF2_Matrix * m);
 * Print vector GF2 with new line.
 * @param v vector
 */
-#  define BPU_printGf2Vec(v) BPU_printElementArray(v)
+#define BPU_printGf2Vec(v) BPU_printElementArray(v)
 
 /**
  * @brief BPU_printGf2VecMsb Most significant bit is printed first.
  * @param v
  */
-#  define BPU_printGf2VecMsb(v) BPU_printElementArrayMsb(v)
+#define BPU_printGf2VecMsb(v) BPU_printElementArrayMsb(v)
 
 /**
  * @brief BPU_printGf2VecOnes Print only ones.
  * @param vec
  */
-#  define BPU_printGf2VecOnes(v) BPU_printElementArrayOnes(v)
+#define BPU_printGf2VecOnes(v) BPU_printElementArrayOnes(v)
 
 /**
  * Print sparse polynomial.
@@ -161,7 +161,7 @@ void BPU_printGf2QcMatrix(const BPU_T_GF2_QC_Matrix * v);
 void BPU_printGf2SparseQcMatrix(const BPU_T_GF2_Sparse_Qc_Matrix * v);
 
 /* ------------------------------------ Print functions ------------------------------------ */
-# endif                         // BPU_CONF_PRINT
+#endif // BPU_CONF_PRINT
 
 /**
  * Null GF2 matrix row.
@@ -169,14 +169,14 @@ void BPU_printGf2SparseQcMatrix(const BPU_T_GF2_Sparse_Qc_Matrix * v);
  * @param[in]  row       row to null
  */
 /// Null GF2 matrix row.
-# define BPU_gf2MatNullRow(m_pointer, row) memset((void *) ((m_pointer)->elements[row]), 0, (m_pointer)->element_bit_size / 8 * (m_pointer)->elements_in_row)
+#define BPU_gf2MatNullRow(m_pointer, row) memset((void *) ((m_pointer)->elements[row]), 0, (m_pointer)->element_bit_size / 8 * (m_pointer)->elements_in_row)
 
 /**
  * Null GF2 vector.
  * @param[out]  v_pointer pointer to GF2 vector
  */
 /// Null GF2 vector.
-# define BPU_gf2VecNull(v_pointer) BPU_elementArrayNull(v_pointer)
+#define BPU_gf2VecNull(v_pointer) BPU_elementArrayNull(v_pointer)
 
 /**
  * Free dynamically or statically allocated matrix GF2.
@@ -190,7 +190,7 @@ void BPU_gf2MatFree(BPU_T_GF2_Matrix ** m);
  * @param[out] *m address of vector object
  */
 /// Free dynamically or statically allocated vector
-# define BPU_gf2VecFree(v_pointer) BPU_elementArrayFree(v_pointer)
+#define BPU_gf2VecFree(v_pointer) BPU_elementArrayFree(v_pointer)
 
 /**
  * Allocate memory for matrix GF2. It also nulls new matrix. After work you have to free memory using call BPU_freeMatGF2
@@ -205,7 +205,7 @@ int BPU_gf2MatMalloc(BPU_T_GF2_Matrix ** m, int rows, int cols);
  * @param len length of vector (bits)
  * @return on succes 0, else error
  */
-# define BPU_gf2VecNew(len) BPU_elementArrayMalloc(len)
+#define BPU_gf2VecNew(len) BPU_elementArrayMalloc(len)
 
 /**
  * @brief BPU_gf2VecResize Resize vecor.
@@ -213,7 +213,7 @@ int BPU_gf2MatMalloc(BPU_T_GF2_Matrix ** m, int rows, int cols);
  * @param len
  * @return
  */
-# define BPU_gf2VecResize(v_pointer, len) BPU_elementArrayResize(v_pointer, len)
+#define BPU_gf2VecResize(v_pointer, len) BPU_elementArrayResize(v_pointer, len)
 
 /**********************************************************
 gf2 POLY
@@ -314,7 +314,7 @@ void BPU_gf2SparseQcMatrixFree(BPU_T_GF2_Sparse_Qc_Matrix * v, int is_dyn);
  * @return 1 - is set, else zero
  */
  /// Check if is set bit at s, t position in matrix.
-# define BPU_gf2MatGetBit(m_pointer, s, t) (BPU_getBit((m_pointer)->elements[s][(t) / (m_pointer)->element_bit_size], (t) % (m_pointer)->element_bit_size))
+#define BPU_gf2MatGetBit(m_pointer, s, t) (BPU_getBit((m_pointer)->elements[s][(t) / (m_pointer)->element_bit_size], (t) % (m_pointer)->element_bit_size))
 
 /**
 * Check if is set bit at s, t position in vector.
@@ -323,7 +323,7 @@ void BPU_gf2SparseQcMatrixFree(BPU_T_GF2_Sparse_Qc_Matrix * v, int is_dyn);
 * @return 1 - is set, else zero
 */
 /// Check if is set bit at i-th position in vector.
-# define BPU_gf2VecGetBit(v_pointer, i) BPU_elementArrayGetBit(v_pointer, i)
+#define BPU_gf2VecGetBit(v_pointer, i) BPU_elementArrayGetBit(v_pointer, i)
 
 /**
  * Set bit in matrix GF2 at index s, t
@@ -332,7 +332,7 @@ void BPU_gf2SparseQcMatrixFree(BPU_T_GF2_Sparse_Qc_Matrix * v, int is_dyn);
  * @param  i         col index
  * @param  bit       bit value 0 or 1
  */
-# define BPU_gf2MatSetBit(m_pointer, s, t, bit)  if (bit) { \
+#define BPU_gf2MatSetBit(m_pointer, s, t, bit)  if (bit) { \
                                                                                                 (m_pointer)->elements[s][t / (m_pointer)->element_bit_size] |= ((BPU_T_GF2) 1) << ((t) % (m_pointer)->element_bit_size);\
                                                                                                 } \
                                                                                                 else { \
@@ -346,7 +346,7 @@ void BPU_gf2SparseQcMatrixFree(BPU_T_GF2_Sparse_Qc_Matrix * v, int is_dyn);
  * @param  i         col index
  * @param  bit       bit value 0 or 1
  */
-# define BPU_gf2VecSetBit(v_pointer, i, bit)  BPU_elementArraySetBit(v_pointer, i, bit)
+#define BPU_gf2VecSetBit(v_pointer, i, bit)  BPU_elementArraySetBit(v_pointer, i, bit)
 
 /**
  * Copy Matrix GF2 row to Vector GF2.
@@ -355,7 +355,7 @@ void BPU_gf2SparseQcMatrixFree(BPU_T_GF2_Sparse_Qc_Matrix * v, int is_dyn);
  * @param row[in] row index
  */
  /// Copy Matrix GF2 row to Vector GF2.
-# define BPU_gf2MatCopyRowToVec(v_pointer, m_pointer, row) memcpy((void *) ((v_pointer)->elements), (void *) ((m_pointer)->elements[row]), (v_pointer)->element_bit_size / 8 * (v_pointer)->array_length)
+#define BPU_gf2MatCopyRowToVec(v_pointer, m_pointer, row) memcpy((void *) ((v_pointer)->elements), (void *) ((m_pointer)->elements[row]), (v_pointer)->element_bit_size / 8 * (v_pointer)->array_length)
 
 /**
  * Check if is set coeff with index bit in poly.
@@ -363,7 +363,7 @@ void BPU_gf2SparseQcMatrixFree(BPU_T_GF2_Sparse_Qc_Matrix * v, int is_dyn);
  * @param  bit  index of coefficient
  * @return      1 if is set bit, else 0
  */
-# define BPU_gf2PolyGetBit(poly, bit) ((poly->elements[bit/poly->element_bit_size] >> (bit%poly->element_bit_size)) & 1ul)
+#define BPU_gf2PolyGetBit(poly, bit) ((poly->elements[bit/poly->element_bit_size] >> (bit%poly->element_bit_size)) & 1ul)
 
 /**
  * @brief BPU_gf2MatCopyCreate copy of input matrix.
@@ -776,4 +776,4 @@ void BPU_gf2SparseQcMatrixGetRow(BPU_T_GF2_Sparse_Poly * p,
 void BPU_gf2SparseQcMatrixTransp(BPU_T_GF2_Sparse_Qc_Matrix * out,
                                  const BPU_T_GF2_Sparse_Qc_Matrix * in);
 
-#endif                          // BPU_GF2_H
+#endif // BPU_GF2_H

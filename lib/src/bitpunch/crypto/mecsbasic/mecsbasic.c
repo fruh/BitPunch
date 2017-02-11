@@ -23,8 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifdef BPU_CONF_ENCRYPTION
 int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
-                         const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector * error)
-{
+                         const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector * error) {
     int rc = BPU_ERROR;
     BPU_T_GF2_Vector *local_error = NULL;
 
@@ -52,7 +51,8 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
 
     if (NULL != error) {
         local_error = error;
-    } else {
+    }
+    else {
         // generate random error vector e if needed
         local_error = BPU_gf2VecNew(ctx->code_ctx->code_len);
         if (BPU_SUCCESS != BPU_gf2VecRand(local_error, ctx->code_ctx->t)) {
@@ -68,7 +68,7 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
     }
 
     rc = BPU_SUCCESS;
- err:
+  err:
     if (NULL == error) {
         BPU_SAFE_FREE(BPU_gf2VecFree, local_error);
     }
@@ -81,8 +81,7 @@ int BPU_mecsBasicEncrypt(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
 int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector * out,
                          BPU_T_GF2_Vector * error,
                          const BPU_T_GF2_Vector * in,
-                         const BPU_T_Mecs_Ctx * ctx)
-{
+                         const BPU_T_Mecs_Ctx * ctx) {
     int rc = BPU_ERROR;
     BPU_T_GF2_Vector *temp = NULL;
 
@@ -102,7 +101,7 @@ int BPU_mecsBasicDecrypt(BPU_T_GF2_Vector * out,
     }
 
     rc = BPU_SUCCESS;
-err:
+  err:
     BPU_SAFE_FREE(BPU_gf2VecFree, temp);
     return rc;
 }

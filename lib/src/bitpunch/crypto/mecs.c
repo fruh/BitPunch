@@ -31,8 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * @return     0 - succes, else error
  */
 int BPU_mecsEncrypt(BPU_T_GF2_Vector * ct, const BPU_T_GF2_Vector * pt,
-                    const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector * error)
-{
+                    const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector * error) {
     return ctx->_encrypt(ct, pt, ctx, error);
 }
 
@@ -45,8 +44,7 @@ int BPU_mecsEncrypt(BPU_T_GF2_Vector * ct, const BPU_T_GF2_Vector * pt,
  */
 /// Decrypt cipher text (ct) and save it to plain text.
 int BPU_mecsDecrypt(BPU_T_GF2_Vector * pt, BPU_T_GF2_Vector * error,
-                    BPU_T_GF2_Vector * ct, const BPU_T_Mecs_Ctx * ctx)
-{
+                    BPU_T_GF2_Vector * ct, const BPU_T_Mecs_Ctx * ctx) {
     return ctx->_decrypt(pt, error, ct, ctx);
 }
 
@@ -56,7 +54,6 @@ int BPU_mecsDecrypt(BPU_T_GF2_Vector * pt, BPU_T_GF2_Vector * error,
  * @return     0 - success, else error
  */
 /// Key generation, first must be initialized context using BPU_mecsCtxNew().
-int BPU_mecsGenKeyPair(BPU_T_Mecs_Ctx * ctx)
-{
+int BPU_mecsGenKeyPair(BPU_T_Mecs_Ctx * ctx) {
     return ctx->_genKeyPair(ctx->code_ctx);
 }

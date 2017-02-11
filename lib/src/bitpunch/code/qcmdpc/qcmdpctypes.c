@@ -20,16 +20,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/code/qcmdpc/qcmdpctypes.h>
 #include <bitpunch/math/gf2.h>
 
-void BPU_qcmdpcFreeSpec(BPU_T_Qcmdpc_Spec * spec)
-{
+void BPU_qcmdpcFreeSpec(BPU_T_Qcmdpc_Spec * spec) {
     BPU_gf2QcMatrixFree(&spec->G, 0);
     BPU_gf2SparseQcMatrixFree(&spec->H, 0);
     free(spec);
 }
 
-BPU_T_Qcmdpc_Params* BPU_qcmdpcInitParams(const uint16_t m,
-                         const uint16_t n0, const uint16_t w, const uint16_t t)
-{
+BPU_T_Qcmdpc_Params *BPU_qcmdpcInitParams(const uint16_t m,
+                                          const uint16_t n0, const uint16_t w,
+                                          const uint16_t t) {
     BPU_T_Qcmdpc_Params *params = NULL;
     BPU_T_Qcmdpc_Params *params_local = NULL;
 
@@ -46,12 +45,11 @@ BPU_T_Qcmdpc_Params* BPU_qcmdpcInitParams(const uint16_t m,
 
     params = params_local;
     params_local = NULL;
-err:
+  err:
     BPU_SAFE_FREE(free, params_local);
     return params;
 }
 
-void BPU_qcmdpcFreeParams(BPU_T_Qcmdpc_Params * params)
-{
+void BPU_qcmdpcFreeParams(BPU_T_Qcmdpc_Params * params) {
     BPU_SAFE_FREE(free, params);
 }

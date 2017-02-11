@@ -21,15 +21,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #ifndef BPU_GOPPA_H
-# define BPU_GOPPA_H
+#define BPU_GOPPA_H
 
-# include <bitpunch/config.h>
+#include <bitpunch/config.h>
 
-# include <bitpunch/code/codectx.h>
-# include <bitpunch/math/gf2.h>
-# include <bitpunch/math/gf2x.h>
+#include <bitpunch/code/codectx.h>
+#include <bitpunch/math/gf2.h>
+#include <bitpunch/math/gf2x.h>
 
-# ifdef BPU_CONF_ENCRYPTION
+#ifdef BPU_CONF_ENCRYPTION
 /**
  * @brief BPU_goppaEncode Encode message using goppa code.
  * @param out
@@ -39,9 +39,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 int BPU_goppaEncode(BPU_T_GF2_Vector * out, const BPU_T_GF2_Vector * in,
                     const struct _BPU_T_Code_Ctx *ctx);
-# endif
+#endif
 
-# ifdef BPU_CONF_DECRYPTION
+#ifdef BPU_CONF_DECRYPTION
 /**
  * Decode message using Patterson alg.
  * @param encoded[in] encoded message
@@ -89,9 +89,9 @@ void BPU_goppaFindPolyAB(BPU_T_GF2_16x_Poly * a, BPU_T_GF2_16x_Poly * b,
 void BPU_goppaDetSyndrome(BPU_T_GF2_16x_Poly * syndrome,
                           const BPU_T_GF2_Vector * z,
                           const BPU_T_Code_Ctx * ctx);
-# endif
+#endif
 
-# ifdef BPU_CONF_KEY_GEN
+#ifdef BPU_CONF_KEY_GEN
 /**
  * @brief BPU_goppaGenCode Generate random code based on params.
  * @param ctx
@@ -108,6 +108,6 @@ int BPU_goppaGenCode(BPU_T_Code_Ctx * ctx);
  */
 int BPU_goppaInitMatH2(BPU_T_GF2_Matrix * h2, BPU_T_GF2_16x_Matrix * hx,
                        const BPU_T_Code_Ctx * ctx);
-# endif
+#endif
 
-#endif                          // BPU_GOPPA_H
+#endif // BPU_GOPPA_H

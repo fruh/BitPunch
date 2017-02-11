@@ -18,16 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <bitpunch/crypto/cca2/mecspointcheval.h>
 
 #if defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA) || defined(BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC)
-# include <bitpunch/debugio.h>
-# include <bitpunch/math/gf2.h>
-# include <bitpunch/crypto/mecsbasic/mecsbasic.h>
+#include <bitpunch/debugio.h>
+#include <bitpunch/math/gf2.h>
+#include <bitpunch/crypto/mecsbasic/mecsbasic.h>
 
-# ifdef BPU_CONF_ENCRYPTION
+#ifdef BPU_CONF_ENCRYPTION
 int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
                                    const BPU_T_GF2_Vector * in,
                                    const BPU_T_Mecs_Ctx * ctx,
-                                   BPU_T_GF2_Vector * error)
-{
+                                   BPU_T_GF2_Vector * error) {
     BPU_T_GF2_Vector *r1, *r2, *cca2_pt, *hash, *hash_in, *enc_pt, *tmp;
     int rc = 0;
 
@@ -74,14 +73,13 @@ int BPU_mecsPointchevalCCA2Encrypt(BPU_T_GF2_Vector * out,
 
     return rc;
 }
-# endif                         // BPU_CONF_ENCRYPTION
+#endif // BPU_CONF_ENCRYPTION
 
-# ifdef BPU_CONF_DECRYPTION
+#ifdef BPU_CONF_DECRYPTION
 int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector * out,
                                    BPU_T_GF2_Vector * error,
                                    const BPU_T_GF2_Vector * in,
-                                   const BPU_T_Mecs_Ctx * ctx)
-{
+                                   const BPU_T_Mecs_Ctx * ctx) {
     BPU_T_GF2_Vector *z1, *z3;  // n, l, l-bit
     BPU_T_GF2_Vector *tmp_2, *pt_cca2;
     BPU_T_GF2_Vector *r;        // k - l
@@ -136,6 +134,6 @@ int BPU_mecsPointchevalCCA2Decrypt(BPU_T_GF2_Vector * out,
     BPU_gf2VecFree(h_tmp);
     return rc;
 }
-# endif                         // BPU_CONF_DECRYPTION
+#endif // BPU_CONF_DECRYPTION
 
-#endif                          // BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+#endif // BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA

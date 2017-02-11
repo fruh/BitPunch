@@ -17,22 +17,22 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef MECSCTX_H
-# define MECSCTX_H
+#define MECSCTX_H
 
-# include <bitpunch/config.h>
-# include <bitpunch/math/gf2.h>
-# include <bitpunch/code/codectx.h>
+#include <bitpunch/config.h>
+#include <bitpunch/math/gf2.h>
+#include <bitpunch/code/codectx.h>
 
 /// Possible types of MECS
 typedef enum _BPU_T_EN_Mecs_Types {
-    BPU_EN_MECS_BASIC_GOPPA = 1, ///< basic mecs, without any conversion
-# ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
+    BPU_EN_MECS_BASIC_GOPPA = 1,        ///< basic mecs, without any conversion
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_GOPPA
     BPU_EN_MECS_CCA2_POINTCHEVAL_GOPPA, ///< adapted Pointcheval's cca2 conversion
-# endif
+#endif
     BPU_EN_MECS_BASIC_QCMDPC,   ///< basic qc-mdpc mecs, without any conversion
-# ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC
-    BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC, ///< adapted Pointcheval's cca2 conversion for qcmdpc
-# endif
+#ifdef BPU_CONF_MECS_CCA2_POINTCHEVAL_QCMDPC
+    BPU_EN_MECS_CCA2_POINTCHEVAL_QCMDPC,        ///< adapted Pointcheval's cca2 conversion for qcmdpc
+#endif
 } BPU_T_EN_Mecs_Types;
 
 typedef struct _BPU_T_Mecs_Ctx {
@@ -74,9 +74,10 @@ void BPU_mecsDestroyParamsGoppa(BPU_T_UN_Mecs_Params * params);
  * @param  t      count of errors
  * @return        [description]
  */
-BPU_T_UN_Mecs_Params* BPU_mecsInitParamsQcmdpc(const uint16_t m,
-                             const uint16_t n0, const uint16_t w,
-                             const uint16_t t);
+BPU_T_UN_Mecs_Params *BPU_mecsInitParamsQcmdpc(const uint16_t m,
+                                               const uint16_t n0,
+                                               const uint16_t w,
+                                               const uint16_t t);
 
 /**
  * Free memory for params.
@@ -86,4 +87,4 @@ void BPU_mecsFreeParamsQcmdpc(BPU_T_UN_Mecs_Params * params);
 
 // add yours additional params if needed
 
-#endif                          // MECSCTX_H
+#endif // MECSCTX_H

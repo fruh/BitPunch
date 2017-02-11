@@ -20,31 +20,31 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef BPU_MECS_H
-# define BPU_MECS_H
+#define BPU_MECS_H
 
-# include "mecsctx.h"
+#include "mecsctx.h"
 
-# include <bitpunch/config.h>
-# include <bitpunch/math/gf2.h>
-# include <bitpunch/math/gf2x.h>
-# include <bitpunch/code/codectx.h>
+#include <bitpunch/config.h>
+#include <bitpunch/math/gf2.h>
+#include <bitpunch/math/gf2x.h>
+#include <bitpunch/code/codectx.h>
 
 /******************************************************************/
-# ifdef BPU_CONF_ENCRYPTION
+#ifdef BPU_CONF_ENCRYPTION
 
 int BPU_mecsEncrypt(BPU_T_GF2_Vector * ct, const BPU_T_GF2_Vector * pt,
                     const BPU_T_Mecs_Ctx * ctx, BPU_T_GF2_Vector * error);
-# endif
+#endif
 
-# ifdef BPU_CONF_DECRYPTION
+#ifdef BPU_CONF_DECRYPTION
 
 int BPU_mecsDecrypt(BPU_T_GF2_Vector * pt, BPU_T_GF2_Vector * error,
                     BPU_T_GF2_Vector * ct, const BPU_T_Mecs_Ctx * ctx);
-# endif
+#endif
 
-# ifdef BPU_CONF_KEY_GEN
+#ifdef BPU_CONF_KEY_GEN
 
 int BPU_mecsGenKeyPair(BPU_T_Mecs_Ctx * ctx);
-# endif
+#endif
 
-#endif                          // BPU_MECS_H
+#endif // BPU_MECS_H
